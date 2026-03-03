@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "organization": "teable",
+  "abstract": "AI assistant skill for operating Teable databases — manage bases, tables, fields, views, records, automations, and app workflows with a safe read-before-write process.",
+  "references": [
+    {
+      "title": "Teable",
+      "url": "https://teable.ai"
+    }
+  ]
+}
