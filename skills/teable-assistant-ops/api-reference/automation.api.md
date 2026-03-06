@@ -493,9 +493,9 @@ GET responses return expanded objects for user/link fields:
     "fldAttachment": [{
       "id": "attXXX",
       "name": "file.jpg",
-      "url": "https://example.com/file.jpg",
+      "presignedUrl": "https://example.com/file.jpg",
       "size": 1024,
-      "type": "image/jpeg",
+      "mimetype": "image/jpeg",
       "width": 800,
       "height": 600,
       "smThumbnailUrl": "https://example.com/thumb-sm.jpg",
