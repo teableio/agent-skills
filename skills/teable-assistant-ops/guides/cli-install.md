@@ -12,12 +12,6 @@ Install globally via npm:
 npm install -g @teable/cli
 ```
 
-Or use npx to run without installing:
-
-```bash
-npx @teable/cli <command>
-```
-
 ## Authentication
 
 Two ways to authenticate:
