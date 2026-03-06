@@ -28,6 +28,7 @@ Run `teable <command> --help` for full options of any command.
   - [AI Fill](#ai-fill)
     - [trigger-ai-fill](#trigger-ai-fill)
   - [Integrations \& Advanced](#integrations--advanced)
+    - [search-api + call-api](#search-api--call-api)
 
 ## Global Options
 
@@ -118,7 +119,6 @@ Attachment values are **always arrays of objects**, never strings. Each object r
 Use `--typecast` to auto-convert values to proper field types.
 
 **Batch limits**: max 1000 records per call. For larger datasets, split into multiple calls.
-
 ### update-records
 Compact array format — header first element MUST be `"recordId"`:
 ```
