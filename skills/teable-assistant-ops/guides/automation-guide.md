@@ -49,7 +49,7 @@ Use bearer token authorization for production webhooks. The `setup-automation-tr
 
 ### 1. Create workflow + trigger
 ```bash
-teable-ai-tools setup-automation-trigger --base-id bseXXX \
+teable setup-automation-trigger \
   --trigger-type recordCreated \
   --table-id tblXXX \
   --name "My Automation" \
@@ -58,9 +58,15 @@ teable-ai-tools setup-automation-trigger --base-id bseXXX \
 ```
 Returns: `workflowId`, `triggerId`, `actionId`, `inputSchema`, `scriptUsage`
 
-### 2. Add script logic
+### 2. Get script input (optional)
 ```bash
-teable-ai-tools generate-script-action --base-id bseXXX \
+teable get-script-input --workflow-id wflXXX --action-id actXXX
+```
+Returns the input object available in the script — each key is a nodeId with its output data. Use this to understand what data is available from previous workflow actions before writing script code.
+
+### 3. Add script logic
+```bash
+teable generate-script-action \
   --workflow-id wflXXX \
   --action-id actXXX \
   --code '<javascript code>' \
@@ -69,19 +75,19 @@ teable-ai-tools generate-script-action --base-id bseXXX \
 
 Optional: `--dependencies '["lodash"]'` for npm packages, `--integrations '[{"id":"...","provider":"slack"}]'` for external services.
 
-### 3. Visualize (optional)
+### 4. Visualize (optional)
 ```bash
-teable-ai-tools generate-script-flowchart --base-id bseXXX --workflow-id wflXXX --action-id actXXX
+teable generate-script-flowchart --workflow-id wflXXX --action-id actXXX
 ```
 
-### 4. Test
+### 5. Test
 ```bash
-teable-ai-tools test-automation-node --base-id bseXXX --workflow-id wflXXX --node-id <triggerId|actionId>
+teable test-automation-node --workflow-id wflXXX --node-id <triggerId|actionId>
 ```
 
-### 5. Activate
+### 6. Activate
 ```bash
-teable-ai-tools activate-automation --base-id bseXXX --workflow-id wflXXX
+teable activate-automation --workflow-id wflXXX
 ```
 
 ## Script Action API
@@ -135,19 +141,19 @@ For full REST API reference: see [../api-reference/automation.api.md](../api-ref
 
 ```bash
 # List all automations
-teable-ai-tools get-automations --base-id bseXXX
+teable get-automations
 
 # View details (code, variables, trigger config)
-teable-ai-tools get-automation --base-id bseXXX --workflow-id wflXXX
+teable get-automation --workflow-id wflXXX
 
 # View run history
-teable-ai-tools get-automation-runs --base-id bseXXX --workflow-id wflXXX
+teable get-automation-runs --workflow-id wflXXX
 
 # Deactivate
-teable-ai-tools activate-automation --base-id bseXXX --workflow-id wflXXX --disable
+teable activate-automation --workflow-id wflXXX --disable
 
 # Delete a node
-teable-ai-tools delete-automation-node --base-id bseXXX --workflow-id wflXXX --node-id actXXX
+teable delete-automation-node --workflow-id wflXXX --node-id actXXX
 ```
 
 ## External Integrations

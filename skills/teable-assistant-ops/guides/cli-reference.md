@@ -1,6 +1,6 @@
 # CLI Command Reference
 
-Run `teable-ai-tools <command> --help` for full options of any command.
+Run `teable <command> --help` for full options of any command.
 
 ## Table of Contents
 - [CLI Command Reference](#cli-command-reference)
@@ -31,19 +31,13 @@ Run `teable-ai-tools <command> --help` for full options of any command.
 
 ## Global Options
 
-Most commands require `--base-id <baseId>`. Auth is resolved from config or `--token` / `TEABLE_TOKEN`.
-
-**Commands that do NOT need `--base-id`:**
-- `auth` / `auth status` — manage authentication
-- `upload-attachment` — upload local files (returns attachment token)
-- `get-user-integrations` — check connected external services (Slack, etc.)
-- `connect-integration` — open OAuth authorization for external services
+Most commands accept `--base-id <baseId>`, but it can be omitted if a default base is configured via `teable config`. Auth is resolved from config or `--token` / `TEABLE_TOKEN`. For a full list of which commands accept `--base-id`, see [base-id-reference.md](base-id-reference.md).
 
 ## Data Query Commands
 
 | Command | Purpose | Key Options |
 |---------|---------|-------------|
-| `get-tables-meta` | List tables (returns tableId, dbTableName) | `--base-id` |
+| `get-tables-meta` | List tables (returns tableId, dbTableName) | |
 | `get-fields` | Field definitions (returns fieldId, dbFieldName, type) | `--table-id` |
 | `get-records` | Query records with pagination | `--table-id`, `--take`, `--skip`, `--search-value`, `--projection` |
 | `get-views` | List views in a table | `--table-id` |
@@ -91,7 +85,7 @@ Create a field (column) in a table.
 ```
 --ai-config '{"type": "summary", "sourceFieldName": "Description"}'
 ```
-Run `get-ai-config --base-id bseXXX` to get available models and full aiConfig schema.
+Run `get-ai-config` to get available models and full aiConfig schema.
 After creating/updating AI field, must call `trigger-ai-fill` to generate content.
 
 ### update-field / delete-field
@@ -210,6 +204,7 @@ Returns taskId — generation runs asynchronously.
 | `connect-integration` | Connect to Slack |
 | `get-user-integrations` | List connected integrations |
 | `execute-script` | Run JavaScript in sandbox |
+| `get-script-input` | Get script input data from previous workflow actions |
 | `search-api` | Search Teable APIs by description |
 | `call-api` | Call any Teable API by ID (use `search-api` first) |
 
@@ -219,14 +214,14 @@ Use this pair to access any Teable API not covered by dedicated CLI commands (e.
 
 **Step 1 — Find the API:**
 ```bash
-teable-ai-tools search-api --base-id bseXXX --query "duplicate record"
+teable search-api --query "duplicate record"
 # Returns apiId, method, path, parameters
 ```
 Options: `--tags '["record"]'` to filter by category, `--limit 10` for more results (default 5).
 
 **Step 2 — Call it:**
 ```bash
-teable-ai-tools call-api --base-id bseXXX \
+teable call-api \
   --api-id "POST:/table/{tableId}/record/{recordId}/duplicate" \
   --path-params '{"tableId": "tblXXX", "recordId": "recXXX"}'
 ```

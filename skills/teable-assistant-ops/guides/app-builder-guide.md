@@ -16,20 +16,20 @@ Use `generate-app` when users want to build:
 
 ### 1. Check existing apps
 ```bash
-teable-ai-tools get-apps --base-id bseXXX
+teable get-apps
 ```
 
 ### 2. Create or update
 ```bash
 # Create new app
-teable-ai-tools generate-app --base-id bseXXX \
+teable generate-app \
   --action create \
   --name "Sales Dashboard" \
   --requirement "build a sales dashboard showing monthly revenue trends" \
   --table-ids '["tblXXX","tblYYY"]'
 
 # Update existing app
-teable-ai-tools generate-app --base-id bseXXX \
+teable generate-app \
   --action update \
   --app-id appXXX \
   --requirement "add a filter by date range"
