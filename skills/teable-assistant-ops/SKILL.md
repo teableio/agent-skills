@@ -36,7 +36,7 @@ All operations use `teable` CLI. Do NOT run `auth status` proactively — start 
 
 ## Core principles
 
-- If `teable` is not installed or a command fails with auth errors, guide the user through installation and auth setup per [guides/cli-install.md](guides/cli-install.md)
+- If `teable` is not installed or a command fails with "command not found", run the install script: `bash <skill-path>/scripts/install.sh`. It handles Node.js check, CLI installation, and authentication automatically. For alternative auth methods (PAT, custom endpoint), see [guides/cli-install.md](guides/cli-install.md).
 - **Always verify data before making changes** — reading first confirms field structure and avoids silent data corruption from wrong field names or types
 - New tables default to 3 empty fields + 3 empty records; safely delete empties and alter fields to fit user needs
 - **Per-row AI tasks** (sentiment, tagging, summarization, translation, etc.): create AI-configured fields (`--ai-config`) + `trigger-ai-fill`, do NOT manually read/analyze/write each row — manual per-row processing is slow and wastes tokens; AI fields execute server-side in parallel, orders of magnitude faster. Run `get-ai-config` for available AI types and models.
