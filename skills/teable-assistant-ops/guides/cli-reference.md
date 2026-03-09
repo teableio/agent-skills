@@ -201,12 +201,30 @@ Returns taskId — generation runs asynchronously.
 
 | Command | Purpose |
 |---------|---------|
-| `connect-integration` | Connect to Slack |
-| `get-user-integrations` | List connected integrations |
+| `connect-integration` | Open OAuth page to connect external service (e.g., Slack) |
+| `get-user-integrations` | Check if user has connected external services — use before creating automation scripts that depend on integrations |
 | `execute-script` | Run JavaScript in sandbox |
 | `get-script-input` | Get script input data from previous workflow actions |
 | `search-api` | Search Teable APIs by description |
 | `call-api` | Call any Teable API by ID (use `search-api` first) |
+
+### connect-integration
+```bash
+# Open Slack OAuth page and return immediately
+teable connect-integration --provider slack
+# Wait for user to complete OAuth (polls until connected or timeout)
+teable connect-integration --provider slack --wait --timeout 120 --interval 2
+# Custom integration name
+teable connect-integration --provider slack --name "Team Slack Bot"
+```
+
+### get-user-integrations
+```bash
+# Check all integrations
+teable get-user-integrations
+# Filter by provider
+teable get-user-integrations --provider slack
+```
 
 ### search-api + call-api
 
