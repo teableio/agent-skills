@@ -111,7 +111,7 @@ teable test-automation-node --workflow-id wflXXX --node-id <triggerId|actionId>
 
 ### 6. Activate
 ```bash
-teable activate-automation --workflow-id wflXXX
+teable activate-automation --workflow-id wflXXX --method activate
 ```
 
 ## Script Action API
@@ -163,6 +163,19 @@ For full REST API reference: see [../api-reference/automation.api.md](../api-ref
 
 ## Managing Automations
 
+**Workflow lifecycle**: `Edit → Test → Activate → Running → Edit → Test → Activate → ...`
+An active automation can be paused: `Deactivate → Paused`
+
+**Draft system**: All edits (trigger config, script code, node changes) create a **draft** version — they are NOT immediately effective on a running automation. Use `activate-automation` to publish or manage drafts:
+
+- `--method activate` — Enable automation AND apply all draft changes to the running version
+- `--method deactivate` — Disable the automation (stops all automated actions immediately)
+- `--method discard` — Discard draft changes and revert to last active version
+
+**Risk**: Activating in production will start sending real emails/API calls. Deactivating stops all automated actions immediately.
+
+Use `get-automation --include-active-snapshot` to compare draft vs published version when `hasDraft=true`.
+
 ```bash
 # List all automations
 teable get-automations
@@ -170,11 +183,20 @@ teable get-automations
 # View details (code, variables, trigger config)
 teable get-automation --workflow-id wflXXX
 
+# Compare draft vs active version
+teable get-automation --workflow-id wflXXX --include-active-snapshot
+
 # View run history
 teable get-automation-runs --workflow-id wflXXX
 
-# Deactivate
-teable activate-automation --workflow-id wflXXX --disable
+# Activate — enable + apply draft changes
+teable activate-automation --workflow-id wflXXX --method activate
+
+# Deactivate — pause automation
+teable activate-automation --workflow-id wflXXX --method deactivate
+
+# Discard — revert draft to last active version
+teable activate-automation --workflow-id wflXXX --method discard
 
 # Delete a node
 teable delete-automation-node --workflow-id wflXXX --node-id actXXX

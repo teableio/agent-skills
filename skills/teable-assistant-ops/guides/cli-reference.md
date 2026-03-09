@@ -27,6 +27,7 @@ Run `teable <command> --help` for full options of any command.
     - [upload-attachment](#upload-attachment)
   - [AI Fill](#ai-fill)
     - [trigger-ai-fill](#trigger-ai-fill)
+  - [Automation Commands](#automation-commands)
   - [Integrations \& Advanced](#integrations--advanced)
     - [connect-integration](#connect-integration)
     - [get-user-integrations](#get-user-integrations)
@@ -200,6 +201,22 @@ After creating/updating a field with `--ai-config`, must trigger generation:
 --table-id tblXXX --field-id fldXXX --mode emptyOnly    # fill empty cells only
 ```
 Returns taskId — generation runs asynchronously.
+
+## Automation Commands
+
+For creation workflow, script API patterns, and detailed usage, see [automation-guide.md](automation-guide.md).
+
+| Command | Purpose | Key Options |
+|---------|---------|-------------|
+| `get-automations` | List all automations in the base | |
+| `get-automation` | Get detailed workflow (trigger, actions, script code, edges) | `--workflow-id`, `--include-active-snapshot` |
+| `get-automation-runs` | View run history | `--workflow-id`, `--take`, `--skip` |
+| `setup-automation-trigger` | Create or update workflow + trigger | `--trigger-type`, `--table-id`, `--create-script-action` |
+| `generate-script-action` | Add/update script code for an action | `--workflow-id`, `--action-id`, `--code`, `--dependencies`, `--integrations` |
+| `generate-script-flowchart` | Generate flowchart for script action | `--workflow-id`, `--action-id`, `--nodes`, `--edges` (all required) |
+| `test-automation-node` | Test a trigger or action node | `--workflow-id`, `--node-id`, `--side-effect`, `--record-id` |
+| `activate-automation` | Activate, deactivate, or discard draft | `--workflow-id`, `--method activate\|deactivate\|discard` |
+| `delete-automation-node` | Delete an action/logic node (not trigger) | `--workflow-id`, `--node-id` |
 
 ## Integrations & Advanced
 

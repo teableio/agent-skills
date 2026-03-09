@@ -126,7 +126,7 @@ Build event-driven workflows with trigger + script actions.
 1. `get-tables-meta` / `get-fields` / `get-views` — gather IDs for the target table
 2. Create automation with a trigger (specify type + tableId/viewId/fieldId as needed)
 3. Add script action — scripts run in sandbox with access to Teable REST API via `process.env` variables
-4. Generate flowchart with `generate-script-flowchart` — always visualize the script logic after creating it
+4. Generate flowchart with `generate-script-flowchart` — analyze the script code and pass `--nodes` and `--edges` (both required). If only workflow-id is known, use `get-automation --workflow-id` to find the script action-id first. See [guides/automation-guide.md](guides/automation-guide.md#4-generate-flowchart) for node/edge types and examples
 5. Test the automation, then activate it
 
 For full creation workflow, scheduling, script API patterns, and managing automations: see [guides/automation-guide.md](guides/automation-guide.md)
