@@ -81,6 +81,13 @@ teable create-records --table-id tblXXX \
   --header '["Name","Status"]' --records '[["Task A","Done"],["Task B","Pending"]]'
 ```
 
+### Update records
+```bash
+teable update-records --table-id tblXXX \
+  --header '["recordId","Status"]' --records '[["recAAA","Done"],["recBBB","Pending"]]'
+```
+Header first element MUST be `"recordId"`. Use `""` to skip a field, `null` to clear it.
+
 ### Field type selection guide
 
 When adding computed/derived fields, choose the right type:
