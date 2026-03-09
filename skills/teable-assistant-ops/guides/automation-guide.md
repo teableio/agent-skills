@@ -75,10 +75,17 @@ teable generate-script-action \
 
 Optional: `--dependencies '["lodash"]'` for npm packages, `--integrations '[{"id":"...","provider":"slack"}]'` for external services.
 
-### 4. Visualize (optional)
+### 4. Generate flowchart
+After generating the script, always create a flowchart to visualize the script logic — this helps users understand the automation flow at a glance.
 ```bash
-teable generate-script-flowchart --workflow-id wflXXX --action-id actXXX
+teable generate-script-flowchart \
+  --workflow-id wflXXX \
+  --action-id actXXX \
+  --nodes '[{"id":"start","type":"start","label":"Start"},...]' \
+  --edges '[{"source":"start","target":"step1","type":"default"},...]'
 ```
+Node types: `start`, `end`, `step`, `condition`, `loop`, `tryCatch`
+Edge types: `default`, `true`, `false`, `error`, `loop`
 
 ### 5. Test
 ```bash
