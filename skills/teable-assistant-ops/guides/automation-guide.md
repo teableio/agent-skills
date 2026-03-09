@@ -1,5 +1,12 @@
 # Automation Guide
 
+## Table of Contents
+- [Trigger Types](#trigger-types) — 7 trigger types, output variables, schedule config, webhook security
+- [Creation Workflow](#creation-workflow) — step-by-step: trigger → script input → script → flowchart → test → activate
+- [Script Action API](#script-action-api) — runtime variables, common API patterns (records, email, Slack)
+- [Managing Automations](#managing-automations) — list, view, run history, deactivate, delete
+- [External Integrations](#external-integrations) — Slack and other integrations in scripts
+
 ## Trigger Types
 
 | Trigger | Required Options | Description |
@@ -77,6 +84,14 @@ Optional: `--dependencies '["lodash"]'` for npm packages, `--integrations '[{"id
 
 ### 4. Generate flowchart
 After generating the script, always create a flowchart to visualize the script logic — this helps users understand the automation flow at a glance.
+
+If the user only provides a workflow ID (no action ID), first retrieve the automation details to find the script action:
+```bash
+teable get-automation --workflow-id wflXXX
+# Look for the node with type: "script" → its id is the action-id
+```
+
+Then analyze the script code from the response and construct the flowchart nodes and edges:
 ```bash
 teable generate-script-flowchart \
   --workflow-id wflXXX \
@@ -84,6 +99,8 @@ teable generate-script-flowchart \
   --nodes '[{"id":"start","type":"start","label":"Start"},...]' \
   --edges '[{"source":"start","target":"step1","type":"default"},...]'
 ```
+`--nodes` and `--edges` are **required** — you must read the script code and build the flow structure yourself.
+
 Node types: `start`, `end`, `step`, `condition`, `loop`, `tryCatch`
 Edge types: `default`, `true`, `false`, `error`, `loop`
 

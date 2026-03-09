@@ -28,11 +28,15 @@ Run `teable <command> --help` for full options of any command.
   - [AI Fill](#ai-fill)
     - [trigger-ai-fill](#trigger-ai-fill)
   - [Integrations \& Advanced](#integrations--advanced)
+    - [connect-integration](#connect-integration)
+    - [get-user-integrations](#get-user-integrations)
     - [search-api + call-api](#search-api--call-api)
 
 ## Global Options
 
 Most commands accept `--base-id <baseId>`, but it can be omitted if a default base is configured via `teable config`. Auth is resolved from config or `--token` / `TEABLE_TOKEN`. For a full list of which commands accept `--base-id`, see [base-id-reference.md](base-id-reference.md).
+
+Use `teable config show` to check current config (endpoint, baseId, token status) when troubleshooting.
 
 ## Data Query Commands
 
