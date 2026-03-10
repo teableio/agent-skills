@@ -35,6 +35,15 @@
 | `update-table` | `--table-id` |
 | `delete-table` | `--table-id` |
 
+### Node & Folder Management
+| Command | Also requires |
+|---------|---------------|
+| `get-node-tree` | |
+| `create-folder` | `--name` |
+| `rename-folder` | `--folder-id`, `--name` |
+| `delete-folder` | `--folder-id` |
+| `move-node` | `--node-id` |
+
 ### View Management
 | Command | Also requires |
 |---------|---------------|

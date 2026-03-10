@@ -88,6 +88,10 @@ teable update-records --table-id tblXXX \
 ```
 Header first element MUST be `"recordId"`. Use `""` to skip a field, `null` to clear it.
 
+### Node & folder management
+
+Organize nodes (tables, folders, dashboards, etc.) in a base: `get-node-tree`, `create-folder`, `rename-folder`, `delete-folder`, `move-node`. Always `get-node-tree` first to see current structure. See [guides/cli-reference.md](guides/cli-reference.md#node--folder-management) for usage.
+
 ### Field type selection guide
 
 When adding computed/derived fields, choose the right type:

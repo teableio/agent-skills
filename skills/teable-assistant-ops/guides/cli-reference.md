@@ -18,6 +18,7 @@ Run `teable <command> --help` for full options of any command.
   - [Table Management](#table-management)
     - [create-table](#create-table)
     - [update-table / delete-table](#update-table--delete-table)
+  - [Node & Folder Management](#node--folder-management)
   - [View Management](#view-management)
   - [SQL Query](#sql-query)
     - [Critical rules:](#critical-rules)
@@ -152,6 +153,50 @@ Compact array format — header first element MUST be `"recordId"`:
 ### update-table / delete-table
 - `update-table --table-id tblXXX --name "New Name"`
 - `delete-table --table-id tblXXX` (permanent)
+
+## Node & Folder Management
+
+Bases contain a tree of nodes — tables, folders, dashboards, apps, and workflows. Use these commands to organize them into folders and control their order.
+
+| Command | Purpose | Key Options |
+|---------|---------|-------------|
+| `get-node-tree` | Get full node hierarchy of a base | |
+| `create-folder` | Create a new folder | `--name` |
+| `rename-folder` | Rename a folder | `--folder-id`, `--name` |
+| `delete-folder` | Delete an empty folder (move children out first) | `--folder-id` |
+| `move-node` | Move/reorder a node | `--node-id`, `--parent-id`, `--anchor-id`, `--position` |
+
+### get-node-tree
+Returns the tree structure of all nodes in the base — use this first to understand current organization before making changes.
+```bash
+teable get-node-tree
+```
+
+### create-folder
+```bash
+teable create-folder --name "Reports"
+```
+
+### rename-folder / delete-folder
+```bash
+# Rename
+teable rename-folder --folder-id fldXXX --name "Monthly Reports"
+# Delete — folder must be empty; move children out first with move-node
+teable delete-folder --folder-id fldXXX
+```
+
+### move-node
+Move a node (table, folder, dashboard, etc.) into a folder, out to root, or reorder within the same level.
+```bash
+# Move a table into a folder
+teable move-node --node-id tblXXX --parent-id fldYYY
+# Move to root (no parent)
+teable move-node --node-id tblXXX --parent-id null
+# Reorder: place node before a sibling
+teable move-node --node-id tblXXX --anchor-id tblYYY --position before
+# Reorder: place node after a sibling inside a folder
+teable move-node --node-id tblXXX --parent-id fldYYY --anchor-id tblZZZ --position after
+```
 
 ## View Management
 
