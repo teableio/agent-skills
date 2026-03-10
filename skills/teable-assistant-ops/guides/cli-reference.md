@@ -224,6 +224,8 @@ teable move-node --node-id tblXXX --parent-id fldYYY --anchor-id tblZZZ --positi
 
 ## Import / Export
 
+For the full import workflow (Excel conversion, error handling, large files, inplace import), see [data-import-guide.md](data-import-guide.md).
+
 ### import-excel
 Two-stage process:
 1. **Analyze**: `--stage analyze --attachment-token <token>` → returns structure + suggestedFieldMappings
