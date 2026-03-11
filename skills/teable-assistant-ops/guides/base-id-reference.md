@@ -82,7 +82,8 @@
 | `search-api` | `--query` |
 | `call-api` | `--api-id` |
 | `execute-script` | |
-| `import-excel` | `--stage` |
+| `import-excel` | `--attachment-token` |
+| `inplace-import` | `--table-id`, `--attachment-token`, `--source-column-map` |
 
 ## Commands that do NOT need --base-id
 
@@ -91,5 +92,6 @@
 | `auth` / `auth status` | Manage authentication |
 | `config` | Configure default base ID and other settings |
 | `upload-attachment` | Upload local files (returns attachment token) |
+| `import-status` | Poll import job status (uses `--table-id`) |
 | `get-user-integrations` | List connected external services |
 | `connect-integration` | OAuth authorization for external services |

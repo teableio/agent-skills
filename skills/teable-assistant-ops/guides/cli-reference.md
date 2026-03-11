@@ -222,21 +222,16 @@ teable move-node --node-id tblXXX --parent-id fldYYY --anchor-id tblZZZ --positi
 ### System fields (always available):
 `__id`, `__auto_number`, `__created_time`, `__last_modified_time`, `__created_by`, `__last_modified_by`, `__version`
 
-## Import / Export
+## Import
 
-For the full import workflow (Excel conversion, error handling, large files, inplace import), see [data-import-guide.md](data-import-guide.md).
+| Command | Purpose | Key Options |
+|---------|---------|-------------|
+| `upload-attachment` | Upload file, get attachment token | `--file-path` |
+| `import-excel` | Create new table from CSV/Excel | `--attachment-token`, `--table-name`, `--worksheet-key`, `--field-mappings` |
+| `inplace-import` | Append data into existing table | `--table-id`, `--attachment-token`, `--source-column-map` |
+| `import-status` | Poll import progress | `--table-id`, `--poll` |
 
-### import-excel
-Two-stage process:
-1. **Analyze**: `--stage analyze --attachment-token <token>` → returns structure + suggestedFieldMappings
-2. **Import**: `--stage import --table-name "..." --field-mappings '<from_analyze>' --worksheet-key '<from_analyze>'`
-
-Note: For CSV files, worksheet-key is `"Import Table"`, not `"0"`.
-
-First upload the file with `upload-attachment`, then use the returned token.
-
-### upload-attachment
-Upload local files: `--file-path /path/to/file.csv` (must be absolute path)
+For the full import workflow (Excel conversion, error handling, large files), see [data-import-guide.md](data-import-guide.md).
 
 ## AI Fill
 
