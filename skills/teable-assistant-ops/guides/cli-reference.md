@@ -23,9 +23,8 @@ Run `teable <command> --help` for full options of any command.
   - [SQL Query](#sql-query)
     - [Critical rules:](#critical-rules)
     - [System fields (always available):](#system-fields-always-available)
-  - [Import / Export](#import--export)
-    - [import-excel](#import-excel)
-    - [upload-attachment](#upload-attachment)
+  - [Import](#import)
+    - [import](#import-1)
   - [AI Fill](#ai-fill)
     - [trigger-ai-fill](#trigger-ai-fill)
   - [Automation Commands](#automation-commands)
@@ -226,12 +225,42 @@ teable move-node --node-id tblXXX --parent-id fldYYY --anchor-id tblZZZ --positi
 
 | Command | Purpose | Key Options |
 |---------|---------|-------------|
-| `upload-attachment` | Upload file, get attachment token | `--file-path` |
-| `import-excel` | Create new table from CSV/Excel | `--attachment-token`, `--table-name`, `--worksheet-key`, `--field-mappings` |
-| `inplace-import` | Append data into existing table | `--table-id`, `--attachment-token`, `--source-column-map` |
-| `import-status` | Poll import progress | `--table-id`, `--poll` |
+| `import` | Unified import: preview, create table, or append to existing | `--file`, `--preview`, `--table-name`, `--table-id`, `--sheet`, `--field-mappings`, `--source-column-map`, `--no-poll` |
+| `import-status` | Poll import progress (standalone) | `--table-id`, `--poll` |
 
-For the full import workflow (Excel conversion, error handling, large files), see [data-import-guide.md](data-import-guide.md).
+### import
+
+Thin API wrapper — handles upload, analysis, and import. All mapping/filtering decisions are the agent's job.
+
+Three modes (pick one): `--preview`, `--table-name`, or `--table-id`.
+Two input sources (pick one): `--file <path>` (local, auto-uploads) or `--attachment-token <token>`.
+Execution policy: all real imports must use `--no-poll`, then run `import-status --poll` in a background task and report only final status.
+
+```bash
+# Preview file structure
+teable import --file data.xlsx --preview
+
+# Create new table (server auto-detects types)
+teable import --file data.csv --table-name "Sales" --no-poll
+# Then poll in background:
+teable import-status --table-id <tableId-from-import> --poll
+
+# Create new table with agent-constructed field mappings
+teable import --file data.csv --table-name "Sales" --no-poll \
+  --field-mappings '{"0": {"sourceColumn": "amt", "sourceColumnIndex": 0, "fieldName": "Amount", "fieldType": "number"}}'
+# Then poll in background:
+teable import-status --table-id <tableId-from-import> --poll
+
+# Append to existing table (agent maps field IDs to column indices)
+teable import --file data.csv --table-id tblXXX --no-poll \
+  --source-column-map '{"fldAAA": 0, "fldBBB": 2}'
+# Then poll in background:
+teable import-status --table-id tblXXX --poll
+```
+
+Options: `--sheet <name>` (Excel worksheet), `--no-header` (first row is data), `--no-poll` (don't wait).
+
+For the full import workflow (strategy guide, agent workflows), see [data-import-guide.md](data-import-guide.md).
 
 ## AI Fill
 

@@ -82,8 +82,7 @@
 | `search-api` | `--query` |
 | `call-api` | `--api-id` |
 | `execute-script` | |
-| `import-excel` | `--attachment-token` |
-| `inplace-import` | `--table-id`, `--attachment-token`, `--source-column-map` |
+| `import` | `--file` or `--attachment-token`, mode flag |
 
 ## Commands that do NOT need --base-id
 

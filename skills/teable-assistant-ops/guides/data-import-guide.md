@@ -1,117 +1,182 @@
 # Data Import Guide
 
-Import CSV/Excel files into Teable tables.
+Import CSV/Excel files into Teable tables using the unified `import` command.
 
-## Overview
+## Design Philosophy
 
-Use the CLI pipeline: `upload-attachment` -> `import-excel` -> `import-status --poll` -> verify.
+The `import` command is a **thin API wrapper**. It handles file upload, server-side analysis, and import — nothing more. All data analysis, field mapping decisions, column filtering, and row transformations are the **AI agent's responsibility**:
 
-If the file is not local, download it first.
+- **Structure analysis** → `import --preview` returns raw column info; the agent interprets it
+- **Field mapping** → the agent builds `--field-mappings` or `--source-column-map` JSON
+- **Data filtering/transformation** → the agent writes scripts (e.g., `execute-script` or local processing) before importing
+- **Type decisions** → the agent decides field types based on preview + user intent
 
-For pure analysis (no Teable import), just process the file with your own tools — no Teable APIs needed.
-
-## Import Flow
-
-```
-CSV/Excel file (download first if needed)
-  -> upload-attachment (get attachment token)
-  -> import-excel (create table with field mappings)
-  -> import-status --poll (wait for completion)
-  -> Report result to user
-```
-
-### Step 1: Upload
+## Quick Start
 
 ```bash
-teable upload-attachment --file-path /absolute/path/to/file.csv
+# Preview file structure (returns columns, types, sheets)
+teable import --file data.xlsx --preview
+
+# Create new table — always use --no-poll, then poll in background
+teable import --file data.csv --table-name "Sales" --no-poll
+# Then poll separately (run this in background to avoid context bloat):
+teable import-status --table-id tblXXX --poll
+
+# Create new table with AI-constructed field mappings
+teable import --file data.csv --table-name "Sales" --no-poll \
+  --field-mappings '{"col1": {"sourceColumn": "Amount", "sourceColumnIndex": 0, "fieldName": "Total Amount", "fieldType": "number"}}'
+
+# Append to existing table (requires source-column-map)
+teable import --file data.csv --table-id tblXXX --no-poll \
+  --source-column-map '{"fldAAA": 0, "fldBBB": 2}'
 ```
 
-Returns an attachment token for the next step.
+## Decision Flow
 
-### Step 2: Import
+### 1. Resolve base ID
 
-Profile the file yourself locally to decide field types, then import directly.
+1. User provided explicitly → use it
+2. Earlier command used one → reuse it
+3. Omit → CLI uses configured default
+4. Command fails → ask user
+
+### 2. Choose mode
+
+| User wants | Command |
+|---|---|
+| Preview file structure | `import --preview` |
+| Create new table | `import --table-name "Name"` |
+| Append to existing table | `import --table-id tblXXX` |
+| Small data already parsed | `create-records` (max 1000/batch) |
+
+### 3. Resolve file input
+
+| File source | How |
+|---|---|
+| **Local file** | `--file /path/to/file` (auto-uploads) |
+| **Teable URL** (`.../chat-file/xxx`) | Extract last path segment → `--attachment-token xxx` |
+| **Already uploaded** | `--attachment-token xxx` |
+| **External URL** | Download locally first → `--file /path/to/downloaded` |
+
+---
+
+## Preview Mode
 
 ```bash
-teable import-excel \
-  --attachment-token <token> \
-  --table-name "My Table" \
-  --worksheet-key "Import Table" \
-  --field-mappings '[
-    {"sourceColumnIndex": 0, "name": "Name", "type": "singleLineText"},
-    {"sourceColumnIndex": 1, "name": "Amount", "type": "number"},
-    {"sourceColumnIndex": 2, "name": "Date", "type": "date"}
-  ]'
+teable import --file data.xlsx --preview
 ```
 
-**Field mappings format**: JSON array with `sourceColumnIndex`, `name`, `type`. NOT an object.
-
-**Worksheet key**: Use `"Import Table"` for CSV files.
-
-**Common field types**: `singleLineText`, `longText`, `number`, `date`, `checkbox`, `singleSelect`, `multipleSelect`, `rating`
-
-### Step 3: Poll Status
-
-Import runs asynchronously. Use the CLI to poll until completion:
+Returns: `attachmentToken`, sheets list, columns with detected types. The `attachmentToken` can be reused in a subsequent import call to avoid re-uploading.
 
 ```bash
+# After preview, import using the cached token
+teable import --attachment-token <token-from-preview> --table-name "My Table" --no-poll
+# Then poll in background:
+teable import-status --table-id <tableId-from-import> --poll
+```
+
+---
+
+## New Table Import
+
+```bash
+# Simplest — accept all server-detected defaults
+teable import --file data.csv --table-name "Sales" --no-poll
+
+# With AI-constructed field mappings (rename, retype, skip columns)
+teable import --file data.csv --table-name "Sales" --no-poll \
+  --field-mappings '{"0": {"sourceColumn": "amt", "sourceColumnIndex": 0, "fieldName": "Amount", "fieldType": "number"}, "1": {"sourceColumn": "nm", "sourceColumnIndex": 1, "fieldName": "Name"}}'
+
+# Specific Excel worksheet
+teable import --file data.xlsx --table-name "Q1" --sheet "Sheet2" --no-poll
+
+# Poll in background after each real import:
+teable import-status --table-id <tableId-from-import> --poll
+```
+
+The `--field-mappings` JSON lets the agent fully control which columns to include, their names, types, and order. Omitted source columns are skipped.
+
+**fieldType values**: `text`, `long`, `number`/`num`, `date`, `checkbox`/`check`, `singleSelect`/`sel`, `multipleSelect`/`multi`, `rating`/`rate`
+
+---
+
+## Existing Table Import
+
+```bash
+# With explicit field-to-column mapping (required)
+teable import --file data.csv --table-id tblXXX --no-poll \
+  --source-column-map '{"fldAAA": 0, "fldBBB": 2, "fldCCC": null}'
+# Then poll in background:
+teable import-status --table-id tblXXX --poll
+```
+
+The `--source-column-map` maps field IDs to source column indices (0-based). Set a field to `null` to skip it. The agent should use `get-fields` to get field IDs, then `import --preview` to see source columns, and construct the mapping.
+
+---
+
+## Typical Agent Workflow
+
+**IMPORTANT — Avoid context bloat**: Always use `--no-poll` with `import`. Then run `import-status --table-id tblXXX --poll` in a **background task** (`run_in_background: true`). The poll command outputs repeated JSON status lines that will flood the conversation context if run in foreground. When the background task completes, report only the final status (success/fail count) to the user.
+
+### Simple import (user says "import this CSV")
+```bash
+# Step 1: Import with --no-poll
+teable import --file data.csv --table-name "Data" --no-poll
+# Step 2: Poll in background (run_in_background: true)
+teable import-status --table-id <tableId-from-step1> --poll
+# Step 3: When background task completes, report final status to user
+```
+
+### Import with analysis (user wants specific columns/types)
+```bash
+# 1. Preview to see structure
+teable import --file data.xlsx --preview
+# 2. Agent analyzes preview output, decides mappings
+# 3. Import with constructed mappings (--no-poll)
+teable import --attachment-token <token> --table-name "Sales" --no-poll \
+  --field-mappings '...'
+# 4. Poll in background
 teable import-status --table-id <tableId> --poll
 ```
 
-The `--poll` flag continuously polls (default 5s interval) until the import completes or fails.
-
-Returns: `status` (pending/running/completed/failed/not_found), `successCount`, `failedCount`, `errorReportUrl`.
-
-Show progress to user during polling. Report final result with success/failed counts.
-
-## Excel Files
-
-Excel files should be converted to CSV locally before upload. Server-side Excel import has a 5MB limit. Use openpyxl streaming for conversion (O(1) memory):
-
-```python
-import openpyxl, csv
-wb = openpyxl.load_workbook('file.xlsx', read_only=True)
-ws = wb[wb.sheetnames[0]]
-with open('/tmp/output.csv', 'w', newline='') as f:
-    writer = csv.writer(f)
-    for row in ws.iter_rows(values_only=True):
-        writer.writerow(row)
-wb.close()
+### Append to existing table
+```bash
+# 1. Get target table fields
+teable get-fields --table-id tblXXX
+# 2. Preview file structure
+teable import --file data.csv --preview
+# 3. Agent maps source columns to field IDs (--no-poll)
+teable import --attachment-token <token> --table-id tblXXX --no-poll \
+  --source-column-map '{"fldAAA": 0, "fldBBB": 1}'
+# 4. Poll in background
+teable import-status --table-id tblXXX --poll
 ```
 
-## Inplace Import (Append to Existing Table)
-
-To import data into an **existing table** (e.g., re-importing fixed error rows, appending chunks):
-
+### Large file with filtering needed
+The agent writes a script to preprocess the file, then imports the result:
 ```bash
-# 1. Upload the CSV
-teable upload-attachment --file-path /tmp/data.csv
-
-# 2. Get field IDs for source-column-map
-teable get-fields --table-id <tableId>
-
-# 3. Inplace import
-teable inplace-import \
-  --table-id <tableId> \
-  --attachment-token <token> \
-  --source-column-map '{"fldXXX": 0, "fldYYY": 1}'
-
-# 4. Poll status
+# 1. Agent writes filtering/transformation script
+# 2. Execute locally or via execute-script
+# 3. Import the processed file (--no-poll)
+teable import --file filtered.csv --table-name "Filtered Data" --no-poll
+# 4. Poll in background
 teable import-status --table-id <tableId> --poll
 ```
 
-**source-column-map**: JSON object mapping field IDs to source column indices (0-based).
+---
 
 ## Error Handling
 
-When `failedCount > 0`, download the error report CSV from `errorReportUrl`. It contains failed rows with an `__error` column.
+`failedCount > 0` in import status → report `errorReportUrl` to user and ask how they want to handle it. Do NOT auto-download or auto-fix.
 
-Fix the data, remove the `__error` column, then use inplace import (see above) to re-import the fixed rows into the same table.
+If `failedCount = 0`, report concise success metrics (imported/updated/skipped counts) and stop polling.
 
-## Large Files (>4GB)
+## Strategy Guide
 
-S3 single PUT limit is 5GB. For files approaching this limit, split the CSV before uploading:
-
-- First chunk: `import-excel` (creates the table)
-- Subsequent chunks: `inplace-import` (appends to the same table)
-- Use the same field mappings for all chunks
+| Scenario | Approach |
+|----------|----------|
+| Direct import, no processing | `import --file --table-name --no-poll` → background `import-status --poll` |
+| Need to control columns/types | `import --preview` → build mappings → `import --field-mappings --no-poll` → background poll |
+| Append to existing table | `get-fields` + `import --preview` → build map → `import --source-column-map --no-poll` → background poll |
+| Row filtering needed | Agent writes script → `import --no-poll` processed file → background poll |
+| Pure analysis, no import | `import --preview` (1 call) |
