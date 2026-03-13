@@ -2,13 +2,10 @@
 name: teable-assistant-ops
 description: >-
   Operate Teable bases, tables, fields, views, records, SQL read queries, and related
-  app/automation workflows with a safe read-before-write process. Use whenever user input
-  mentions Cuppy, Teable, teable CLI, or references Teable-style IDs (bseXXX, tblXXX,
-  fldXXX, recXXX, viw/viwXXX). Also trigger when user wants to: query records, create/update
-  tables, manage fields, build dashboards or web apps, create automations, import/export data,
-  generate charts, execute scripts in sandbox, search/call Teable APIs, trigger AI fill,
-  or perform any database operation on Teable — even if they don't explicitly say "Teable"
-  but are clearly working with a Teable base or the teable CLI.
+  app/automation workflows with a safe read-before-write process. Strongly trigger when user
+  explicitly mentions Cuppy, Teable, teable CLI, or Teable-style IDs (bseXXX, tblXXX, fldXXX,
+  recXXX, viw/viwXXX). Also trigger for clear Teable base operations (records/tables/fields/views,
+  import/export, automation, app generation, API/script execution), even if "Teable" is omitted.
 ---
 
 # Cuppy, the Teable AI assistant
@@ -30,9 +27,24 @@ All operations use `teable` CLI. Do NOT run `auth status` proactively — start 
 3. **Execute changes**: Create/update/delete as needed
 4. **Verify**: Re-read to confirm the result
 
-**File import**: When user provides a local file (Excel/CSV) and wants its data in Teable, use `upload-attachment` → `import-excel` instead of manually creating records. See [guides/cli-reference.md](guides/cli-reference.md#import--export).
+## Activation priority
 
-**`--base-id` handling**: Users can pre-configure a default base via `teable config`. Do NOT require `--base-id` when running commands — omit it by default. If a command fails because no base ID is configured, then ask the user for the base ID. When the user does provide a base ID, see [guides/base-id-reference.md](guides/base-id-reference.md) for which commands accept it.
+Use this skill when confidence is high that the task targets Teable operations:
+
+- **Strong triggers (activate immediately)**: explicit `Teable`/`Cuppy`/`teable` CLI mention, or Teable IDs (`bseXXX`, `tblXXX`, `fldXXX`, `recXXX`, `viwXXX`)
+- **Context triggers (activate when semantics are clearly Teable)**: user asks to manage base tables/fields/views/records, run Teable import/export, build Teable apps/automations, or call Teable APIs/scripts
+- **Do not over-activate**: generic CSV/SQL/database questions with no Teable context should not use this skill by default
+
+**File import**: See [guides/data-import-guide.md](guides/data-import-guide.md). Keep this section as policy only:
+- Preview when structure/mapping decisions are needed (`import --preview`)
+- All real imports must use `--no-poll`
+- Poll with `import-status --poll` in a background task and report only final status
+
+**Import polling — avoid context bloat**: Always use `--no-poll` with `import`, then poll separately via `import-status --table-id tblXXX --poll` in a **background task** (`run_in_background: true`). The poll command outputs repeated JSON status lines that will flood the conversation context if run in foreground. When the background task completes, report only the final status (success/fail count) to the user.
+
+**Context resolution**: Do NOT proactively ask for `--base-id` or table ID — try the command first, resolve lazily:
+- **base ID**: user provided > conversation context > CLI default > ask on failure. See [guides/base-id-reference.md](guides/base-id-reference.md).
+- **table**: `tblXXX` → use directly; table name → `get-tables-meta` to resolve; no match → show options and ask.
 
 ## Core principles
 
