@@ -30,7 +30,7 @@ All operations use `teable` CLI. Do NOT run `auth status` proactively — start 
 3. **Execute changes**: Create/update/delete as needed
 4. **Verify**: Re-read to confirm the result
 
-**File import**: When user provides a local file (Excel/CSV) and wants its data in Teable, use `upload-attachment` → `import-excel` instead of manually creating records. See [guides/cli-reference.md](guides/cli-reference.md#import--export).
+**File import**: For CSV/Excel imports, use unified `import` command instead of manually creating records. Keep import behavior in [guides/data-import-guide.md](guides/data-import-guide.md): use `import --preview` when mapping decisions are needed; all real imports must use `--no-poll`, then poll with `import-status --poll` in a background task and report only final status.
 
 **`--base-id` handling**: Users can pre-configure a default base via `teable config`. Do NOT require `--base-id` when running commands — omit it by default. If a command fails because no base ID is configured, then ask the user for the base ID. When the user does provide a base ID, see [guides/base-id-reference.md](guides/base-id-reference.md) for which commands accept it.
 
