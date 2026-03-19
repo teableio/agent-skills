@@ -1,7 +1,7 @@
 # Automation Trigger Configuration
 
 ## Table of Contents
-- [Trigger Types](#trigger-types) — recordCreated, recordUpdated, recordMatchesConditions, formSubmitted, scheduledTime, buttonClick, webhook
+- [Trigger Types](#trigger-types) — recordCreated, recordUpdated, recordMatchesConditions, formSubmitted, scheduledTime, buttonClick, webhook, emailReceived
 - [Common Patterns](#common-patterns) — getting table/view/field IDs
 
 Triggers define WHEN an automation should run. Each trigger type has specific configuration requirements.
@@ -147,6 +147,28 @@ Triggers when an external HTTP request is sent to the webhook endpoint.
 - `method` - HTTP method (POST, etc.)
 
 **Security:** Use bearer token authorization for production webhooks. The setup-automation-trigger tool can auto-generate tokens.
+
+### 8. emailReceived - When Email Received
+Triggers when an email is received via a connected Gmail integration.
+
+```json
+{
+  "type": "emailReceived",
+  "config": {
+    "integrationId": "intXXXXXXX"          // Required: ID of the connected Gmail
+  }
+}
+```
+
+**Prerequisites:** The user must first connect a Gmail integration via `connect-integration --provider gmail`. Use `get-user-integrations --provider gmail` to get the integration ID.
+
+**Output Variables:**
+- `email.from` - Sender email address
+- `email.to` - Recipient email address(es)
+- `email.subject` - Email subject line
+- `email.body` - Email body content
+- `email.date` - Timestamp the email was received
+- `email.attachments` - Array of attachment metadata (name, size, type)
 
 ## Common Patterns
 
