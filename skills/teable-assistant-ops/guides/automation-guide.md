@@ -1,7 +1,7 @@
 # Automation Guide
 
 ## Table of Contents
-- [Trigger Types](#trigger-types) — 7 trigger types, output variables, schedule config, webhook security
+- [Trigger Types](#trigger-types) — 8 trigger types, output variables, schedule config, webhook security
 - [Creation Workflow](#creation-workflow) — step-by-step: trigger → script input → script → flowchart → test → activate
 - [Script Action API](#script-action-api) — runtime variables, common API patterns (records, email, Slack)
 - [Managing Automations](#managing-automations) — list, view, run history, deactivate, delete
@@ -18,6 +18,7 @@
 | `scheduledTime` | `--schedule-config` | Fires at scheduled intervals |
 | `buttonClick` | `--table-id`, `--field-id` | Fires when a button field is clicked |
 | `webhook` | optional `--webhook-authorization` | Fires on incoming webhook request |
+| `emailReceived` | `--integration-id` | Fires when an email is received via connected Gmail |
 
 ### Trigger Output Variables
 
@@ -34,6 +35,9 @@ Each trigger provides output variables accessible by subsequent actions:
 
 **webhook:**
 - `body` (parsed JSON), `headers`, `method`
+
+**emailReceived:**
+- `email.from`, `email.to`, `email.subject`, `email.body`, `email.date`, `email.attachments`
 
 ### Schedule Config
 
@@ -204,7 +208,7 @@ teable delete-automation-node --workflow-id wflXXX --node-id actXXX
 
 ## External Integrations
 
-To use Slack or other integrations in scripts:
+To use Slack, Gmail, or other integrations in scripts:
 1. `get-user-integrations` — get integration IDs
 2. Pass `--integrations '[{"id":"<integration-id>","provider":"slack"}]'` to `generate-script-action`
 3. Access in script via `input.integrations["<id>"].authConfig`

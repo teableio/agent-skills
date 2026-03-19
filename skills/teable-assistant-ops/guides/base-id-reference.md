@@ -83,6 +83,9 @@
 | `call-api` | `--api-id` |
 | `execute-script` | |
 | `import` | `--file` or `--attachment-token`, mode flag |
+| `scrape` | `--dataset-id`, `--inputs` |
+| `tools list` | |
+| `get-doc` | `--topic` |
 
 ## Commands that do NOT need --base-id
 

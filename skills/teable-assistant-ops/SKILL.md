@@ -6,9 +6,10 @@ description: >-
   mentions Cuppy, Teable, teable CLI, or references Teable-style IDs (bseXXX, tblXXX,
   fldXXX, recXXX, viw/viwXXX). Also trigger when user wants to: query records, create/update
   tables, manage fields, build dashboards or web apps, create automations, import/export data,
-  generate charts, execute scripts in sandbox, search/call Teable APIs, trigger AI fill,
-  or perform any database operation on Teable — even if they don't explicitly say "Teable"
-  but are clearly working with a Teable base or the teable CLI.
+  scrape data from websites (LinkedIn, Amazon, YouTube, etc.), generate charts, execute scripts
+  in sandbox, search/call Teable APIs, trigger AI fill, or perform any database operation on
+  Teable — even if they don't explicitly say "Teable" but are clearly working with a Teable
+  base or the teable CLI.
 ---
 
 # Cuppy, the Teable AI assistant
@@ -31,6 +32,17 @@ All operations use `teable` CLI. Do NOT run `auth status` proactively — start 
 4. **Verify**: Re-read to confirm the result
 
 **File import**: For CSV/Excel imports, use unified `import` command instead of manually creating records. Keep import behavior in [guides/data-import-guide.md](guides/data-import-guide.md): use `import --preview` when mapping decisions are needed; all real imports must use `--no-poll`, then poll with `import-status --poll` in a background task and report only final status.
+
+**Web scraping**: Use `teable scrape` to extract structured data from websites into Teable tables. Requires `--dataset-id` (identifies the scraping template) and `--inputs` (JSON with URL or URLs to scrape).
+
+```bash
+# Scrape a single URL
+teable scrape --dataset-id "linkedin-profile" --inputs '{"url": "https://linkedin.com/in/example"}'
+# Batch scrape multiple URLs
+teable scrape --dataset-id "amazon-products" --inputs '{"urls": ["https://amazon.com/dp/XXX", "https://amazon.com/dp/YYY"]}'
+```
+
+Run `teable get-doc --topic scrape.datasets` for the full list of supported platforms and dataset IDs.
 
 **`--base-id` handling**: Users can pre-configure a default base via `teable config`. Do NOT require `--base-id` when running commands — omit it by default. If a command fails because no base ID is configured, then ask the user for the base ID. When the user does provide a base ID, see [guides/base-id-reference.md](guides/base-id-reference.md) for which commands accept it.
 
@@ -131,7 +143,7 @@ For details and parameters: see [guides/app-builder-guide.md](guides/app-builder
 
 Build event-driven workflows with trigger + script actions.
 
-**Trigger types:** `recordCreated`, `recordUpdated`, `recordMatchesConditions`, `formSubmitted`, `scheduledTime`, `buttonClick`, `webhook`
+**Trigger types:** `recordCreated`, `recordUpdated`, `recordMatchesConditions`, `formSubmitted`, `scheduledTime`, `buttonClick`, `webhook`, `emailReceived`
 
 **Quick creation workflow:**
 1. `get-tables-meta` / `get-fields` / `get-views` — gather IDs for the target table
@@ -158,8 +170,15 @@ Beyond the standard CLI commands, three commands let you access any Teable capab
 - **`search-api`** — find any Teable API by description (e.g., `--query "duplicate record"`). Use when no dedicated CLI command exists for the operation.
 - **`call-api`** — call any Teable API by its ID. Pair with `search-api` to discover the API first, then call it.
 - **`execute-script`** — run JavaScript in a server-side sandbox. Useful for complex multi-step logic that would be cumbersome as separate CLI calls.
+- **`tools list`** — list all available CLI commands. Use `--search` to filter by keyword.
 
 For full CLI command reference including import/export, AI fill, integrations, and usage examples: see [guides/cli-reference.md](guides/cli-reference.md)
+
+## Dynamic documentation
+
+Use `teable get-doc --topic <topic>` to retrieve runtime reference for specific features. This is useful when docs are updated independently of the skill files.
+
+Available topics: `scrape.datasets`, `integration.gmail`
 
 ## API reference index
 
@@ -192,5 +211,6 @@ Detailed config reference is in `api-reference/`, named `{category}.{subtopic}.m
 
 **Integrations**:
 - **Slack integration** → `integration.slack.md`
+- **Gmail integration** — run `teable get-doc --topic integration.gmail`
 
 **AI fields**: Model list is dynamic. Run `teable get-ai-config` to get current AI field config documentation (available models, aiConfig schema, and examples).

@@ -32,6 +32,9 @@ Run `teable <command> --help` for full options of any command.
     - [connect-integration](#connect-integration)
     - [get-user-integrations](#get-user-integrations)
     - [search-api + call-api](#search-api--call-api)
+  - [Web Scraping](#web-scraping)
+  - [Documentation](#documentation)
+  - [Tool Discovery](#tool-discovery)
 
 ## Global Options
 
@@ -293,7 +296,7 @@ For creation workflow, script API patterns, and detailed usage, see [automation-
 
 | Command | Purpose |
 |---------|---------|
-| `connect-integration` | Open OAuth page to connect external service (e.g., Slack) |
+| `connect-integration` | Open OAuth page to connect external service (e.g., Slack, Gmail) |
 | `get-user-integrations` | Check if user has connected external services — use before creating automation scripts that depend on integrations |
 | `execute-script` | Run JavaScript in sandbox |
 | `get-script-input` | Get script input data from previous workflow actions |
@@ -308,6 +311,8 @@ teable connect-integration --provider slack
 teable connect-integration --provider slack --wait --timeout 120 --interval 2
 # Custom integration name
 teable connect-integration --provider slack --name "Team Slack Bot"
+# Connect Gmail
+teable connect-integration --provider gmail --wait --timeout 120 --interval 2
 ```
 
 ### get-user-integrations
@@ -316,6 +321,8 @@ teable connect-integration --provider slack --name "Team Slack Bot"
 teable get-user-integrations
 # Filter by provider
 teable get-user-integrations --provider slack
+# Check Gmail integration
+teable get-user-integrations --provider gmail
 ```
 
 ### search-api + call-api
@@ -338,3 +345,51 @@ teable call-api \
 Options: `--query-params '{...}'` for query string, `--body '{...}'` for request body.
 
 **Note**: `search-api` only returns GET (read-only) APIs in search results, but `call-api` can execute any method (POST/PUT/PATCH/DELETE) if you know the apiId.
+
+## Web Scraping
+
+| Command | Purpose | Key Options |
+|---------|---------|-------------|
+| `scrape` | Extract structured data from websites into Teable tables | `--dataset-id`, `--inputs`, `--table-id` |
+
+`--dataset-id` identifies the scraping template (platform-specific). `--inputs` is a JSON object containing the URL(s) to scrape.
+
+```bash
+# Scrape a LinkedIn profile
+teable scrape --dataset-id "linkedin-profile" --inputs '{"url": "https://linkedin.com/in/example"}'
+# Batch scrape Amazon products
+teable scrape --dataset-id "amazon-products" --inputs '{"urls": ["https://amazon.com/dp/XXX", "https://amazon.com/dp/YYY"]}'
+```
+
+**Note:** The `--inputs` value format varies by dataset — some accept a single `url` string, others accept a `urls` array for batch operations. Run `teable get-doc --topic scrape.datasets` for the full list of supported platforms, dataset IDs, and their expected input formats.
+
+## Documentation
+
+| Command | Purpose | Key Options |
+|---------|---------|-------------|
+| `get-doc` | Retrieve runtime reference documentation for a topic | `--topic` |
+
+Use `get-doc` when you need up-to-date reference for features whose docs may change independently of the skill files.
+
+```bash
+# Get available scraping datasets
+teable get-doc --topic scrape.datasets
+# Get Gmail integration reference
+teable get-doc --topic integration.gmail
+```
+
+Available topics: `scrape.datasets`, `integration.gmail`
+
+## Tool Discovery
+
+| Command | Purpose | Key Options |
+|---------|---------|-------------|
+| `tools list` | List all available CLI commands | `--search` |
+
+```bash
+# List all available tools
+teable tools list
+# Search for tools by keyword
+teable tools list --search "record"
+teable tools list --search "scrape"
+```
