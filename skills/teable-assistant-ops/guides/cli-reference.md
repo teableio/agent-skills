@@ -18,7 +18,11 @@ Run `teable <command> --help` for full options of any command.
   - [Table Management](#table-management)
     - [create-table](#create-table)
     - [update-table / delete-table](#update-table--delete-table)
-  - [Node & Folder Management](#node--folder-management)
+  - [Node \& Folder Management](#node--folder-management)
+    - [get-node-tree](#get-node-tree)
+    - [create-folder](#create-folder)
+    - [rename-folder / delete-folder](#rename-folder--delete-folder)
+    - [move-node](#move-node)
   - [View Management](#view-management)
   - [SQL Query](#sql-query)
     - [Critical rules:](#critical-rules)
@@ -119,7 +123,7 @@ Compact array format:
 | Select | `"choice"` | `"Done"` |
 | Multi-select | `["A","B"]` | `["Bug","Feature"]` |
 | Link | `"Record Name"` | `"Project Alpha"` (with `--typecast`) |
-| User | `{"id":"usrXXX","title":"Name"}` | `{"id":"usrXXX","title":"Alice"}` |
+| User | `"name/email"` or `{"id":"usrXXX","title":"Name"}` | `"Alice"` or `"alice@example.com"` (with `--typecast`) or `{"id":"usrXXX","title":"Alice"}` |
 | Attachment | `[{name,token}]` | `[{"name":"file.png","token":"attXXX"}]` |
 
 Attachment values are **always arrays of objects**, never strings. Each object requires `name` and `token`. Get tokens via `upload-attachment --file-path /path/to/file`.

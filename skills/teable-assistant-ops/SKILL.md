@@ -87,18 +87,18 @@ teable create-table --table-name "Tasks" \
 ```
 Field type shorthand: `text`, `long`, `num`, `date`, `check`, `rate`, `user`, `file`, `auto`, `created`, `modified`, `sel:A,B,C`, `multi:A,B,C`
 
-### Create records
+### Create & update records
 ```bash
 teable create-records --table-id tblXXX \
   --header '["Name","Status"]' --records '[["Task A","Done"],["Task B","Pending"]]'
 ```
-
-### Update records
 ```bash
 teable update-records --table-id tblXXX \
   --header '["recordId","Status"]' --records '[["recAAA","Done"],["recBBB","Pending"]]'
 ```
-Header first element MUST be `"recordId"`. Use `""` to skip a field, `null` to clear it.
+Update header first element MUST be `"recordId"`. Use `""` to skip a field, `null` to clear it.
+
+Both commands support `--typecast` to auto-convert human-readable values (user name/email → user ID, record name → link record ID, etc.). See [value formats & typecast](guides/cli-reference.md#create-records) for details.
 
 ### Node & folder management
 
