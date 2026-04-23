@@ -4,7 +4,7 @@
 Send messages and notifications to Slack from automation scripts.
 
 ## Setup
-1. activate and call connect-integration tool let user create a connection to Slack
+1. activate and call `integration connect` tool let user create a connection to Slack
 
 ## Two Types of Tokens
 

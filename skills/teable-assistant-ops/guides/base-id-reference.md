@@ -7,49 +7,50 @@
 ### Data Query
 | Command | Also requires |
 |---------|---------------|
-| `get-tables-meta` | |
-| `get-fields` | `--table-id` |
-| `get-records` | `--table-id` |
-| `get-views` | `--table-id` |
+| `table get` | |
+| `field get` | `--table-id` |
+| `record get` | `--table-id` |
+| `view get` | `--table-id` |
 | `sql-query` | `--sql` |
 | `get-ai-config` | |
+| `get-collaborators` | |
 
 ### Field Management
 | Command | Also requires |
 |---------|---------------|
-| `create-field` | `--table-id` |
-| `update-field` | `--table-id`, `--field-id` |
-| `delete-field` | `--table-id`, `--field-id` |
+| `field create` | `--table-id` |
+| `field update` | `--table-id`, `--field-id` |
+| `field delete` | `--table-id`, `--field-id` |
 
 ### Record Management
 | Command | Also requires |
 |---------|---------------|
-| `create-records` | `--table-id` |
-| `update-records` | `--table-id` |
-| `delete-records` | `--table-id` |
+| `record create` | `--table-id` |
+| `record update` | `--table-id` |
+| `record delete` | `--table-id` |
 
 ### Table Management
 | Command | Also requires |
 |---------|---------------|
-| `create-table` | |
-| `update-table` | `--table-id` |
-| `delete-table` | `--table-id` |
+| `table create` | |
+| `table update` | `--table-id` |
+| `table delete` | `--table-id` |
 
 ### Node & Folder Management
 | Command | Also requires |
 |---------|---------------|
 | `get-node-tree` | |
-| `create-folder` | `--name` |
-| `rename-folder` | `--folder-id`, `--name` |
-| `delete-folder` | `--folder-id` |
-| `move-node` | `--node-id` |
+| `folder create` | `--name` |
+| `folder rename` | `--folder-id`, `--name` |
+| `folder delete` | `--folder-id` |
+| `folder move` | `--node-id` |
 
 ### View Management
 | Command | Also requires |
 |---------|---------------|
-| `create-view` | `--table-id` |
-| `update-view` | `--view-id` |
-| `delete-view` | `--view-id` |
+| `view create` | `--table-id` |
+| `view update` | `--view-id` |
+| `view delete` | `--view-id` |
 
 ### AI Fill
 | Command | Also requires |
@@ -59,30 +60,31 @@
 ### App Builder
 | Command | Also requires |
 |---------|---------------|
-| `get-apps` | |
-| `generate-app` | `--action` |
+| `app list` | |
+| `app create` | |
+| `app update` | `--app-id` |
 
 ### Automation
 | Command | Also requires |
 |---------|---------------|
-| `get-script-input` | `--workflow-id`, `--action-id` |
-| `setup-automation-trigger` | `--trigger-type` |
-| `generate-script-action` | `--workflow-id`, `--action-id` |
-| `generate-script-flowchart` | `--workflow-id`, `--action-id` |
-| `test-automation-node` | `--workflow-id`, `--node-id` |
-| `activate-automation` | `--workflow-id` |
-| `get-automations` | |
-| `get-automation` | `--workflow-id` |
-| `get-automation-runs` | `--workflow-id` |
-| `delete-automation-node` | `--workflow-id`, `--node-id` |
+| `automation get-script-input` | `--workflow-id`, `--action-id` |
+| `automation setup-trigger` | `--trigger-type` |
+| `automation generate-script` | `--workflow-id`, `--action-id` |
+| `automation generate-flowchart` | `--workflow-id`, `--action-id`, `--flowchart` |
+| `automation test-node` | `--workflow-id`, `--node-id` |
+| `automation activate` | `--workflow-id` |
+| `automation list` | |
+| `automation get` | `--workflow-id` |
+| `automation get-runs` | `--workflow-id` |
+| `automation get-run` | `--workflow-id`, `--run-id` |
+| `automation delete-node` | `--workflow-id`, `--node-id` |
 
 ### Advanced
 | Command | Also requires |
 |---------|---------------|
 | `search-api` | `--query` |
-| `call-api` | `--api-id` |
-| `execute-script` | |
-| `import` | `--file` or `--attachment-token`, mode flag |
+| `call-api` | `--method`, `--url` |
+| `import` | `--file` or `--attachment-token` or `--data` |
 | `scrape` | `--dataset-id`, `--inputs` |
 | `tools list` | |
 | `get-doc` | `--topic` |
@@ -95,5 +97,6 @@
 | `config` | Configure default base ID and other settings |
 | `upload-attachment` | Upload local files (returns attachment token) |
 | `import-status` | Poll import job status (uses `--table-id`) |
-| `get-user-integrations` | List connected external services |
-| `connect-integration` | OAuth authorization for external services |
+| `integration list` | List connected external services |
+| `integration connect` | OAuth authorization for external services |
+| `integration get-token` | Get access token for a connected integration |

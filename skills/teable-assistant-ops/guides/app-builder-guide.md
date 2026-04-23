@@ -2,7 +2,7 @@
 
 ## When to Use
 
-Use `generate-app` when users want to build:
+Use `app create` when users want to build:
 - Dashboards with live data
 - Custom web interfaces / portals
 - Interactive tools with user input
@@ -16,21 +16,19 @@ Use `generate-app` when users want to build:
 
 ### 1. Check existing apps
 ```bash
-teable get-apps
+teable app list
 ```
 
 ### 2. Create or update
 ```bash
 # Create new app
-teable generate-app \
-  --action create \
+teable app create \
   --name "Sales Dashboard" \
   --requirement "build a sales dashboard showing monthly revenue trends" \
   --table-ids '["tblXXX","tblYYY"]'
 
 # Update existing app
-teable generate-app \
-  --action update \
+teable app update \
   --app-id appXXX \
   --requirement "add a filter by date range"
 ```
@@ -39,7 +37,6 @@ teable generate-app \
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
-| `--action` | Yes | `create` or `update` |
 | `--requirement` | Yes | User's request — pass exactly as stated |
 | `--name` | No | App name (for create) |
 | `--app-id` | For update | Target app ID |

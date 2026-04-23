@@ -116,6 +116,6 @@ Apply custom filter conditions to limit linkable records. **Supports field refer
 ## Notes
 
 - Link field automatically creates symmetric field in foreign table
-- Use `get-tables-meta` tool to find `foreignTableId`
+- Use `table get` tool to find `foreignTableId`
 - Advanced options control the link selection UI experience
 - Filters can reference current record's fields for dynamic behavior

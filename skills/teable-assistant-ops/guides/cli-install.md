@@ -84,5 +84,5 @@ teable --version
 teable auth status
 
 # List tables in a base
-teable get-tables-meta
+teable table get
 ```
