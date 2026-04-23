@@ -1,25 +1,20 @@
 # App Builder Guide
 
+> **Required**: `app create --help` — parameters, requirement rules, full usage
+
 ## When to Use
 
-Use `app create` when users want to build:
-- Dashboards with live data
-- Custom web interfaces / portals
-- Interactive tools with user input
-- Monitoring panels with real-time updates
-
-**Do NOT use for**: simple one-time charts or reports — use inline HTML code blocks instead.
-
-**Do NOT duplicate**: basic CRUD / admin interfaces — the database already has built-in UI for that. Focus on custom visualizations, interactions, and unique user experiences.
+- Dashboards with live data, custom web interfaces, interactive tools, monitoring panels
+- **Do NOT use for**: simple one-time charts — use inline HTML code blocks instead
+- **Do NOT duplicate**: basic CRUD / admin interfaces — the database already has built-in UI
 
 ## Workflow
 
-### 1. Check existing apps
-```bash
-teable app list
-```
+1. `app list` — check existing apps (update existing instead of creating duplicate)
+2. `app create` / `app update` — create or update app
+3. Include `--table-ids` to give the app data access
+4. Built-in AI API available for text/image generation features
 
-### 2. Create or update
 ```bash
 # Create new app
 teable app create \
@@ -37,16 +32,16 @@ teable app update \
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
+| `--action` | Yes | `create` or `update` |
 | `--requirement` | Yes | User's request — pass exactly as stated |
-| `--name` | No | App name (for create) |
-| `--app-id` | For update | Target app ID |
-| `--table-ids` | No | Array of table IDs for data access |
+| `--name` | Create only | App name |
+| `--app-id` | Update only | Target app ID |
+| `--table-ids` | No | JSON array of table IDs for data access |
 | `--attachment-tokens` | No | Screenshots or design reference images |
+| `--description` | No | App description |
 
-## Important Rules
+## Key Rules
 
-1. **Pass user requirements verbatim** — do not interpret, expand, or add extra features
-2. **Do not use markdown** in the requirement text
-3. **Do not specify tech stack** unless the user explicitly requests it
-4. **Keep the original intent** — if user says "add a button", just pass "add a button"
-5. **Built-in AI API** is available in app builder for text and image generation features
+- **Pass user requirements verbatim** to `--requirement` — do not interpret, expand, or add features
+- Do not use markdown formatting in the requirement text
+- Do not specify tech stack unless the user explicitly requests it

@@ -1,141 +1,106 @@
 # Automation Guide
 
-## Table of Contents
-- [Trigger Types](#trigger-types) — 8 trigger types, output variables, schedule config, webhook security
-- [Creation Workflow](#creation-workflow) — step-by-step: trigger → script input → script → flowchart → test → activate
-- [Script Action API](#script-action-api) — runtime variables, common API patterns (records, email, Slack)
-- [Managing Automations](#managing-automations) — list, view, run history, deactivate, delete
-- [External Integrations](#external-integrations) — Slack and other integrations in scripts
+Use automations for event-driven or recurring work — if the user's task fits a supported trigger, prefer automation over a manual script or polling loop.
 
-## Trigger Types
+Run `teable automation --help` for all subcommands, and `teable automation <subcommand> --help` for syntax.
 
-| Trigger | Required Options | Description |
-|---------|-----------------|-------------|
-| `recordCreated` | `--table-id` | Fires when a new record is created |
-| `recordUpdated` | `--table-id`, optional `--watch-field-ids` | Fires when a record is updated |
-| `recordMatchesConditions` | `--table-id` | Fires when record matches filter conditions on create/update |
-| `formSubmitted` | `--table-id`, `--form-id` | Fires when a form is submitted |
-| `scheduledTime` | `--schedule-config` | Fires at scheduled intervals |
-| `buttonClick` | `--table-id`, `--field-id` | Fires when a button field is clicked |
-| `webhook` | optional `--webhook-authorization` | Fires on incoming webhook request |
-| `emailReceived` | `--email-received-config` | Fires when an email is received via connected email integration |
+## Available Commands
 
-### Trigger Output Variables
+> **Required**: run `teable automation <subcommand> --help` before executing any automation subcommand
 
-Each trigger provides output variables accessible by subsequent actions:
+| Command | Purpose |
+|---------|---------|
+| `automation list` | List all automations in the base |
+| `automation get` | Get detailed workflow (trigger, actions, script code, edges) |
+| `automation setup-trigger` | Create or update workflow + trigger |
+| `automation generate-script` | Add/update script code for an action |
+| `automation generate-flowchart` | Generate flowchart for a script action |
+| `automation test-node` | Test a trigger or action node |
+| `automation activate` | Activate, deactivate, or discard draft |
+| `automation get-runs` | View run history (filter with `--status`) |
+| `automation get-run` | Step-level detail of a single run |
+| `automation delete-node` | Delete an action/logic node (not trigger) |
+| `automation get-script-input` | Get input data from previous workflow actions |
 
-**recordCreated / formSubmitted / buttonClick:**
-- `record.id`, `record.fields.{fieldName}`, `user`
+## Trigger Selection
 
-**recordUpdated / recordMatchesConditions:**
-- `record.id`, `record.fields.{fieldName}`, `record.oldFields.{fieldName}` (previous values), `user`
+> **Required**: `api-reference/automation.trigger.md` — trigger config, output variables, schedule config reference
 
-**scheduledTime:**
-- `actualTriggeredTime`, `expectTriggerTime`, `nextTriggerTime` (all ISO 8601 strings)
+| User scenario | Trigger type | Required options |
+|--------------|-------------|-----------------|
+| React to new records | `recordCreated` | `--table-id` |
+| React to record changes | `recordUpdated` | `--table-id`; optional `--watch-field-ids` to limit fields |
+| React when record matches filter | `recordMatchesConditions` | `--table-id`, `--filter` |
+| React to form submission | `formSubmitted` | `--table-id`, `--form-id` |
+| Run on a schedule (see timing types below) | `scheduledTime` | `--schedule-config` (see trigger reference) |
+| User clicks a button field | `buttonClick` | `--table-id`, `--field-id` |
+| External system sends HTTP request | `webhook` | optional `--webhook-authorization` |
+| Email received via connected mailbox | `emailReceived` | `--email-received-config` |
 
-**webhook:**
-- `body` (parsed JSON)
+**Schedule timing types** (for `scheduledTime` trigger):
 
-**emailReceived:**
-- `emails[]` (array of email objects with `from`, `fromName`, `to`, `cc`, `subject`, `date`, `messageId`, `body`, `priority`, `inReplyTo`, `attachments[]`), `emailCount`, `triggerTime`
-
-### Schedule Config
-
-`timing.type` enum: `"minutes" | "hours" | "days" | "weeks" | "months" | "OneTime"`
-
-```json
-{
-  "starting": "2026-04-21T09:00:00.000Z",
-  "tz": "Asia/Shanghai",
-  "timing": {
-    "type": "days",
-    "interval": 1,
-    "triggerTime": { "hour": 9, "minute": 0 }
-  }
-}
-```
-
-### Webhook Security
-
-Use bearer token authorization for production webhooks. The `automation setup-trigger` tool can auto-generate tokens.
+| Frequency | `timing.type` | Extra config needed |
+|-----------|--------------|-------------------|
+| Every N minutes (1–60) | `minutes` | `interval` |
+| Every N hours (1–24) | `hours` | `interval` |
+| Daily / every N days | `days` | `interval`, `triggerTime: {hour, minute}` |
+| Specific weekdays | `weeks` | `interval`, `weekdays: ["MO","TU",...]`, `triggerTime` |
+| Monthly on specific dates | `months` | `interval`, `daysOfMonth: [1,15,...]`, `triggerTime` |
 
 ## Creation Workflow
 
-### 1. Create workflow + trigger
-```bash
-teable automation setup-trigger \
-  --trigger-type recordCreated \
-  --table-id tblXXX \
-  --name "My Automation" \
-  --description "Trigger when new record created" \
-  --create-script-action
-```
-Returns: `workflowId`, `triggerId`, `actionId`, `inputSchema`, `scriptUsage`
+1. Gather IDs: `table get` / `field get` / `view get`
+2. `automation setup-trigger` — creates workflow + trigger + optional script action (use `--create-script-action`)
+3. `automation get-script-input` — see what data is available from previous actions
+4. `automation generate-script` — add script code (use `--dependencies` for npm packages, `--integrations` for external services)
+5. `automation generate-flowchart` — visualize the script logic. If only workflow-id is known, use `automation get` to find the script action-id first. All three flags required: `--workflow-id`, `--action-id`, `--flowchart`
+   - Node types: `start`, `end`, `step`, `condition`, `loop`, `tryCatch`
+   - Edge types: `default`, `true`, `false`, `error`, `loop`
+6. `automation test-node` — test trigger or action
+7. `automation activate --method activate`
 
-### 2. Get script input (optional)
-```bash
-teable automation get-script-input --workflow-id wflXXX --action-id actXXX
-```
-Returns the input object available in the script — each key is a nodeId with its output data. Use this to understand what data is available from previous workflow actions before writing script code.
+**Script files**: `automation get` and `automation get-script-input` persist scripts to `.teable/cli/scripts/<workflowId>/<actionId>.js` and return that path as `code`.
+To modify: read the file at that path → **edit the existing file (do NOT create a new file)** → pass the same path to `automation generate-script --code <path>`.
 
-### 3. Add script logic
-```bash
-teable automation generate-script \
-  --workflow-id wflXXX \
-  --action-id actXXX \
-  --code '<javascript code>' \
-  --description "What this script does"
-```
+## Draft System & Lifecycle
 
-Optional: `--dependencies '["lodash"]'` for npm packages, `--integrations '[{"id":"...","provider":"slack"}]'` for external services.
+**Lifecycle**: `Edit → Test → Activate → Running → Edit → Test → Activate → ...`
 
-**Script files** — `automation get` and `automation get-script-input` write the current script code to `.teable/cli/scripts/<actionId>.js` and return the file path. Edit the file in place, then pass its path to `automation generate-script --code <path>`.
+All edits (trigger config, script code, node changes) create a **draft** version — they are NOT immediately effective on a running automation.
 
-### 4. Generate flowchart
-After generating the script, always create a flowchart to visualize the script logic — this helps users understand the automation flow at a glance.
+| Situation | `--method` | Effect |
+|-----------|-----------|--------|
+| New automation ready to go live | `activate` | Enable + apply all draft changes |
+| Running automation causing issues | `deactivate` | Stop immediately, draft preserved |
+| Want to undo draft edits | `discard` | Revert to last active version |
 
-If the user only provides a workflow ID (no action ID), first retrieve the automation details to find the script action:
-```bash
-teable automation get --workflow-id wflXXX
-# Look for the node with type: "script" → its id is the action-id
-```
+**Risk**: `activate` in production starts sending real emails/API calls immediately.
 
-Then analyze the script code from the response and construct a single flowchart JSON object:
-```bash
-teable automation generate-flowchart \
-  --workflow-id wflXXX \
-  --action-id actXXX \
-  --flowchart '{"nodes":[{"id":"start","type":"start","label":"Start"},...],"edges":[{"source":"start","target":"step1","type":"default"},...]}'
-```
-`--flowchart` is **required** — you must read the script code and build the flow structure as a single JSON object containing both `nodes` and `edges`.
+Use `automation get --include-active-snapshot` to compare draft vs published version when `hasDraft=true`.
 
-Node types: `start`, `end`, `step`, `condition`, `loop`, `tryCatch`
-Edge types: `default`, `true`, `false`, `error`, `loop`
+## Script Rules
 
-### 5. Test
-```bash
-teable automation test-node --workflow-id wflXXX --node-id <triggerId|actionId>
-```
+Script actions are Turing-complete: CRUD, AI generation, email, HTTP requests, Slack/Teams/webhook integrations — all via Teable REST API and built-in `fetch()`.
 
-### 6. Activate
-```bash
-teable automation activate --workflow-id wflXXX --method activate
-```
+> **Required**: `api-reference/automation.api.md` — REST APIs available in scripts (records, fields, filters)
+> **Optional**: `api-reference/automation.send-email.md` — email sending; `api-reference/integration.slack.md` — Slack API
 
-## Script Action API
+**Script environment** (available at runtime):
 
-Available in script runtime:
-
-| Variable | Description |
-|----------|-------------|
-| `process.env.AUTOMATION_TOKEN` | Auth token for API calls |
-| `process.env.PUBLIC_ORIGIN` | Base URL for Teable API |
+| Variable | Purpose |
+|----------|---------|
+| `process.env.AUTOMATION_TOKEN` | Auth token for Teable API calls (NEVER use `TEABLE_TOKEN` — it does not exist in scripts) |
+| `process.env.PUBLIC_ORIGIN` | Base URL for API requests |
 | `input[triggerId]` | Trigger data (record, fields, etc.) |
 | `input.integrations["<id>"].authConfig` | Integration credentials |
 | `output.set(key, value)` | Return data for next action |
 
-### Common API patterns
+**Rules:**
+- Use built-in `fetch()` only — never `node-fetch` or other HTTP libraries
+- `console.log` is debug-only — never use it to notify users
+- Notifications: default to **Email API** when no channel is specified (read `api-reference/automation.send-email.md` first); Slack/Teams/webhook via HTTP requests in script
 
+**Common script patterns** (runtime variables + fetch):
 ```javascript
 const baseUrl = process.env.PUBLIC_ORIGIN;
 const headers = {
@@ -152,7 +117,7 @@ await fetch(`${baseUrl}/api/table/${tableId}/record`, {
   body: JSON.stringify({ records: [{ fields: { Name: "Test" } }] })
 });
 
-// Send email
+// Send email (built-in API)
 await fetch(`${baseUrl}/api/automation/runtime/email`, {
   method: "POST", headers,
   body: JSON.stringify({ to: "user@example.com", subject: "Hi", body: "Hello" })
@@ -165,62 +130,12 @@ await fetch("https://hooks.slack.com/...", {
 });
 ```
 
-**Rules**: Use built-in `fetch()` only — never `node-fetch` or other HTTP libraries.
-
-**Notifications**: `console.log` is debug-only — never use it to notify users. Default to Email API when no notification channel is specified (read `../api-reference/automation.send-email.md` first). For Slack or webhooks, use HTTP requests in script to external services.
-
-For full REST API reference: see [../api-reference/automation.api.md](../api-reference/automation.api.md), [../api-reference/automation.send-email.md](../api-reference/automation.send-email.md), and [../api-reference/integration.slack.md](../api-reference/integration.slack.md)
-
-## Managing Automations
-
-**Workflow lifecycle**: `Edit → Test → Activate → Running → Edit → Test → Activate → ...`
-An active automation can be paused: `Deactivate → Paused`
-
-**Draft system**: All edits (trigger config, script code, node changes) create a **draft** version — they are NOT immediately effective on a running automation. Use `automation activate` to publish or manage drafts:
-
-- `--method activate` — Enable automation AND apply all draft changes to the running version
-- `--method deactivate` — Disable the automation (stops all automated actions immediately)
-- `--method discard` — Discard draft changes and revert to last active version
-
-**Risk**: Activating in production will start sending real emails/API calls. Deactivating stops all automated actions immediately.
-
-Use `automation get --include-active-snapshot` to compare draft vs published version when `hasDraft=true`.
-
-```bash
-# List all automations
-teable automation list
-
-# View details (code, variables, trigger config)
-teable automation get --workflow-id wflXXX
-
-# Compare draft vs active version
-teable automation get --workflow-id wflXXX --include-active-snapshot
-
-# View run history
-teable automation get-runs --workflow-id wflXXX
-
-# View run history (filter by status)
-teable automation get-runs --workflow-id wflXXX --status completed
-
-# Step-level detail of a single run
-teable automation get-run --workflow-id wflXXX --run-id runXXX
-
-# Activate — enable + apply draft changes
-teable automation activate --workflow-id wflXXX --method activate
-
-# Deactivate — pause automation
-teable automation activate --workflow-id wflXXX --method deactivate
-
-# Discard — revert draft to last active version
-teable automation activate --workflow-id wflXXX --method discard
-
-# Delete a node
-teable automation delete-node --workflow-id wflXXX --node-id actXXX
-```
-
 ## External Integrations
 
-To use Slack or other integrations in scripts:
+Use `integration list` to check connected services, `integration connect --provider slack` to start OAuth, and `integration get-token --integration-id intXXX` to get access tokens.
+
+To use integrations in scripts:
 1. `integration list` — get integration IDs
 2. Pass `--integrations '[{"id":"<integration-id>","provider":"slack"}]'` to `automation generate-script`
 3. Access in script via `input.integrations["<id>"].authConfig`
+4. See `get-doc --topic integration.slack` for Slack API patterns
