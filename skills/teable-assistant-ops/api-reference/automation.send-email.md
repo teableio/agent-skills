@@ -15,11 +15,11 @@ Content-Type: application/json
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| to | string \| string[] | Yes | Recipient email(s) |
+| to | string \| string[] | No (to or bcc required) | Recipient email(s) |
 | subject | string | Yes | Email subject |
 | body | string | Yes | Email body (Markdown or HTML) |
 | cc | string \| string[] | No | CC recipients |
-| bcc | string \| string[] | No | BCC recipients |
+| bcc | string \| string[] | No (to or bcc required) | BCC recipients |
 | senderName | string | No | Sender display name |
 | replyTo | string | No | Reply-to address |
 | smtp | object | No | Custom SMTP config |

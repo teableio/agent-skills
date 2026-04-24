@@ -72,7 +72,7 @@ Using the same project management system:
   tableId: "tblEmployees",
   fields: [
     { fieldId: "fldEmpName", name: "Name", type: "singleLineText" },
-    { fieldId: "fldEmpEmail", name: "Email", type: "email" }
+    { fieldId: "fldEmpEmail", name: "Email", type: "singleLineText" }
   ]
 }
 ```

@@ -49,7 +49,7 @@ teable auth status
 teable auth logout
 ```
 
-Auth config is saved to `~/.teable/config.json` by default.
+Auth config is saved to `~/.teable/cli/config.json` by default.
 
 ## Getting a Personal Access Token
 
@@ -62,7 +62,7 @@ Auth config is saved to `~/.teable/config.json` by default.
 
 Config is loaded in this order (later overrides earlier):
 
-1. **User-level**: `~/.teable/config.json`
+1. **User-level**: `~/.teable/cli/config.json`
 2. **Project-level** (optional): `teable.config.json` or `.teablerc.json` in current directory
 
 Example config file:
@@ -84,5 +84,5 @@ teable --version
 teable auth status
 
 # List tables in a base
-teable get-tables-meta
+teable table get
 ```
