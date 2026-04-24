@@ -20,7 +20,7 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 - **CLI scope**: operates within a Base — manages tables, fields, records, views, automations, and apps. Cannot create Spaces or Bases (direct user to Teable web UI).
 - **Install**: if `teable` not found → run the install script at `scripts/install.sh` relative to this skill's directory. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
 - **`--base-id`**: omit by default; ask user only if a command fails. See [guides/base-id-reference.md](guides/base-id-reference.md).
-- **Unfamiliar commands**: run `teable <command> --help` before first use to confirm parameters.
+- **Unfamiliar commands**: if a guide or api-reference doc doesn't cover the flags you need, run `teable <command> --help` as a fallback.
 - **Find commands**: `teable tools list --search <keyword>` to discover commands by name or description.
 
 ## 2. Module & Command Navigation
@@ -30,10 +30,10 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Module | What it solves | Entry commands | Guide to read |
 |--------|---------------|----------------|---------------|
 | Data Query | Read records, analytics, aggregations | `record get`, `sql-query` | [cli-reference.md § Data Queries](guides/cli-reference.md#data-queries) |
-| Tables | Create/modify table structure | `table create/update/delete` | — (run `--help`) |
+| Tables | Create/modify table structure | `table create/update/delete` | [cli-reference.md § Field Type Aliases](guides/cli-reference.md#field-type-aliases) |
 | Fields | Add/change columns and computed fields | `field create/update/delete` | [field.simple.md](api-reference/field.simple.md) |
 | Records | Write row data, attachments, reordering | `record create/update/delete` | [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) |
-| Views | Persistent filtered/sorted/grouped perspectives | `view create/update/delete` | — (run `--help`) |
+| Views | Persistent filtered/sorted/grouped perspectives | `view create/update/delete` | [view.filter.md](api-reference/view.filter.md), [view.sort.md](api-reference/view.sort.md) |
 | Import | CSV/Excel file loading (>50 rows) | `import`, `import-status` | [data-import-guide.md](guides/data-import-guide.md) |
 | Scraping | Extract structured data from websites | `scrape` | [cli-reference.md § Scraping](guides/cli-reference.md#scraping) |
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
@@ -60,41 +60,39 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Computed/derived values (same row) | Fields: Formula | — |
 | Display value from linked record | Fields: Lookup (`--is-conditional-lookup` without link) | — |
 | Aggregate across linked records | Fields: Rollup (`condRollup` without link) | — |
+| Modify/update an existing app | App Builder: `app list` → `app update` | Creating a duplicate app |
+| Export records as file | Data Query: `record get` / `sql-query` → agent formats output | `import` (wrong direction) |
 
-### 2.3 Quick Syntax — Common Command Examples
+### 2.3 Quick Syntax
 
 ```bash
 # Create table with shorthand field types
 teable table create --table-name "Tasks" --fields '["Title:text","Status:sel:Todo,In Progress,Done","Due:date"]'
-# Query records (default first 20 fields; use --projection for all)
-teable record get --table-id tblXXX --take 50 --projection '["all"]'
 # SQL query (must use dbTableName/dbFieldName from table get/field get)
 teable sql-query --sql 'SELECT "name","status" FROM "bseXXX"."dbTableName" LIMIT 100'
 # Create records — header + compact array format
 teable record create --table-id tblXXX --header '["Name","Status"]' --records '[["Task A","Done"],["Task B","Pending"]]'
 # Update records — first header element MUST be "recordId"
 teable record update --table-id tblXXX --header '["recordId","Status"]' --records '[["recXXX","Done"]]'
-# Scrape a website
-teable scrape --dataset-id "linkedin-profile" --inputs '[{"url":"https://linkedin.com/in/example"}]'
-# App builder — pass user requirement verbatim
-teable app create --name "Dashboard" --requirement "show monthly revenue trends" --table-ids '["tblXXX"]'
 ```
 
+For complete syntax, value formats, and all command options, read [cli-reference.md](guides/cli-reference.md).
+
 **Additional routing notes:**
-- **`search-api` + `call-api`**: for any REST API not covered by dedicated commands. `search-api` returns GET APIs only; `call-api` can execute any method.
-- **Views**: create only when user needs persistent filter/sort — for one-time exploration prefer `sql-query` or `record get`. Types: `grid` (default table), `kanban` (by status/category), `gallery` (image-heavy), `calendar` (date-based), `form` (data collection).
+- **`search-api` + `call-api`**: for any REST API not covered by dedicated commands. `call-api` can execute any method.
+- **Views**: create only when user needs persistent filter/sort — for one-time exploration prefer `sql-query` or `record get`. Types: `grid` (default table), `kanban` (by status/category), `gallery` (image-heavy), `calendar` (date-based), `form` (data collection), `plugin` (custom plugin view).
 - **Multi-table**: plan relationships before creating tables. Read [cli-reference.md § Multi-Table](guides/cli-reference.md#multi-table-relationship-design).
-- **AI fields**: check `get-doc --topic field.ai` first — don't manually write AI content into cells.
+- **AI fields**: `field create --ai-config '{"type":"...","sourceFieldName":"..."}' + trigger-ai-fill`. Check `get-doc --topic field.ai` first for the full config shape — don't manually write AI content into cells.
 - **Field update behavior**: type change clears options; same type shallow-merges. Lookup/rollup require an existing link field.
 
 ## 3. Key Constraints
 
 - Primary field must be: text, long text, number, or auto-number
 - New tables default to 3 empty fields + 3 empty records; safely delete empties
-- `record get` without `--projection` returns only first 20 fields — use `--projection '["all"]'`
-- Batch limits: `record get` max 1000 per call (`--skip` to paginate); `record create`/`update` max 2000 per call
-- SQL uses `dbTableName`/`dbFieldName` (from `table get`/`field get`), double-quote all identifiers
-- Value semantics: `""` = skip field, `null` = clear cell; checkbox: `true`/`null`; attachment: array of `{name, token}`, update replaces all
+- `record get` without `--projection` defaults to all fields — use `--projection '["fldXXX","fldYYY"]'` to select specific fields
+- Batch limits: max 1000 per `record get`, max 2000 per `record create`/`update` — see [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) for pagination and delete limits
+- SQL uses `dbTableName`/`dbFieldName` (from `table get`/`field get`), double-quote all identifiers, add `LIMIT 100` to non-aggregate queries
+- Value semantics: `""` = skip field, `null` = clear cell — see [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) for full value type table
 - Formula uses field names: `{Budget} - {Actual}` (auto-converted to field IDs)
 
 ## 4. Execution Rules
@@ -103,18 +101,17 @@ teable app create --name "Dashboard" --requirement "show monthly revenue trends"
 
 1. **Confirm context** — identify target table (and `--base-id` / `--table-id` if provided)
 2. **Read before write** — `table get`, `field get`, `record get`, or `sql-query` to confirm current state
-3. **Check flags** — `teable <command> --help` before first use
-4. **Execute changes** — create/update/delete as needed
-5. **Verify** — re-read to confirm the result
+3. **Execute changes** — create/update/delete as needed
+4. **Verify** — re-read to confirm the result
 
 ### 4.2 Critical Rules (with reasoning)
 
 1. **Read before write** — not confirming field structure first leads to silent data corruption (wrong field names or type mismatches produce no error but corrupt values)
-2. **Per-row AI → AI field + `trigger-ai-fill`** — manual row-by-row processing is orders of magnitude slower and wastes tokens; AI fields execute server-side in parallel
-3. **Pass user requirements verbatim to `app create`/`app update`** — the app builder has its own AI that interprets requirements; adding features yourself causes scope creep and unexpected results
-4. **Use `--typecast` for link/user values by display name** — without it, link and user fields expect internal IDs; `--typecast` auto-resolves display names to IDs
-5. **Design relationships before creating multi-table systems** — retrofitting Link/Lookup/Rollup onto existing tables wastes time and often leaves data poorly connected; plan Link fields first
-6. **Read [field.simple.md](api-reference/field.simple.md) before creating fields** — contains type aliases and smart inference rules that eliminate redundant config parameters; skipping it leads to overly verbose or incorrect field definitions
+2. **Read [field.simple.md](api-reference/field.simple.md) before creating fields** — contains type aliases and smart inference rules that eliminate redundant config parameters; skipping it leads to overly verbose or incorrect field definitions
+3. **Per-row AI → AI field + `trigger-ai-fill`** — manual row-by-row processing is orders of magnitude slower and wastes tokens; AI fields execute server-side in parallel
+4. **Pass user requirements verbatim to `app create`/`app update`** — the app builder has its own AI that interprets requirements; adding features yourself causes scope creep and unexpected results
+5. **Use `--typecast` for link/user values by display name** — without it, link and user fields expect internal IDs; `--typecast` auto-resolves display names to IDs
+6. **Design relationships before creating multi-table systems** — retrofitting Link/Lookup/Rollup onto existing tables wastes time and often leaves data poorly connected; plan Link fields first
 
 ## 5. Common Errors & Recovery
 

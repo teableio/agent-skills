@@ -1,14 +1,12 @@
 # CLI Operations Reference
 
-Run `teable <command> --help` for full options, formats, and examples.
-Run `teable --help` to see all available commands.
 Use `teable config show` to check current endpoint, baseId, and token status.
 
 ## Common Pitfalls
 
 | Pitfall | Fix |
 |---------|-----|
-| `record get` returns only 20 fields by default | Add `--projection '["all"]'` for all fields (max 50) |
+| `record get` defaults to all fields | Use `--projection '["fldXXX","fldYYY"]'` to select specific fields |
 | `record create/update` with `{"fields":{...}}` object format | Object format auto-converts; canonical form: `--header '[...]' --records '[[...]]'` |
 | `--search "keyword"` scope | Plain string auto-wraps to `{"value":"keyword"}`; for field-scoped: `--search '{"value":"keyword","fieldId":"fldXXX"}'` |
 | `field update --name "X"` | `--name` is a convenience flag; for other properties use `--updates '{"name":"X"}'` |
@@ -32,13 +30,13 @@ When creating tables or fields, use these shorthand type aliases:
 | `created` | Created time | `"Created:created"` |
 | `modified` | Last modified time | `"Modified:modified"` |
 | `sel:A,B,C` | Single select | `"Status:sel:Todo,Done"` |
-| `multi:A,B,C` | Multi-select | `"Tags:multi:Bug,Feature"` |
+| `mul:A,B,C` | Multi-select | `"Tags:mul:Bug,Feature"` |
 
 Advanced types (link, lookup, rollup, formula, AI) require `field create` with options — see [field.simple.md](../api-reference/field.simple.md).
 
-## Data Queries
+**Name resolution**: `field create` accepts table/field names in place of IDs (e.g., `foreignTableName: "Projects"` instead of `foreignTableId: "tblXXX"`). This reduces the need to look up IDs before creating link/lookup/rollup fields.
 
-> **Required**: `record get --help`, `sql-query --help`
+## Data Queries
 
 **`record get` vs `sql-query`** — if you'll write back to the same records, use `record get` (returns record IDs); for analytics or cross-table reads, use `sql-query`.
 
@@ -47,8 +45,8 @@ Advanced types (link, lookup, rollup, formula, AI) require `field create` with o
 - **Aggregation**: prefer `sql-query` with GROUP BY. Alternatively, `search-api --query "aggregation"` + `call-api` for the dedicated aggregation endpoint.
 
 ```bash
-# Without --projection, record get only returns first 20 fields
-teable record get --table-id tblXXX --projection '["all"]'  # all fields (max 50)
+# record get defaults to all fields; use --projection to select specific ones
+teable record get --table-id tblXXX --projection '["fldXXX","fldYYY"]'
 # SQL: must use dbTableName/dbFieldName from table get/field get, double-quote identifiers
 teable sql-query --sql 'SELECT "name" FROM "bseXXX"."dbTableName" LIMIT 100'
 ```
@@ -59,22 +57,33 @@ teable sql-query --sql 'SELECT "name" FROM "bseXXX"."dbTableName" LIMIT 100'
 2. **Table format**: `"baseId"."dbTableName"` (e.g., `"bseXXX"."receipts"`)
 3. **Double-quote all identifiers**: `SELECT "fieldName" FROM "schema"."table"`
 4. **SELECT only** — read-only (PostgreSQL 15.4), no INSERT/UPDATE/DELETE
-5. **Add LIMIT** for non-aggregate queries to avoid large result sets
+5. **Always add `LIMIT 100`** to non-aggregate queries to avoid large result sets
 6. **JSON fields**: `json_extract_path_text("field"::json, 'key')`
 7. **Dates are UTC** — convert with `timezone('Asia/Shanghai', col)` for local time
 
 **System fields** (always available, use these exact column names): `__id`, `__auto_number`, `__created_time`, `__last_modified_time`, `__created_by`, `__last_modified_by`, `__version`
 
-**View types**: `grid` (default), `kanban`, `form`, `gallery`, `calendar` — run `view create --help` for options.
+**View types**: `grid` (default), `kanban`, `form`, `gallery`, `calendar`, `plugin` — see [view.filter.md](../api-reference/view.filter.md) and related view docs for configuration.
+
+### View Configuration
+
+`view create` creates a bare view. Use `view update` to configure filters, sorts, grouping, and column visibility afterward:
+
+```bash
+teable view update --table-id tblXXX --view-id viwXXX --filter '<json>' --sort '<json>' --group '<json>' --column-meta '<json>'
+```
+
+See [view.filter.md](../api-reference/view.filter.md), [view.sort.md](../api-reference/view.sort.md), [view.group.md](../api-reference/view.group.md), [view.column.md](../api-reference/view.column.md) for JSON formats.
 
 ## Record Operations
 
-> **Required**: `record create --help`, `record update --help` — full value types and format reference
-> **Optional**: `api-reference/record.value-format.md` — exact value formats without typecast
+> **Tip**: for exact value formats without typecast, see [record.value-format.md](../api-reference/record.value-format.md)
+
+**Single record**: `record get --table-id tblXXX --record-id recXXX` fetches one record by ID, ignoring `--search`/`--take`/`--skip`.
 
 **Value semantics**: `""` = skip field (no change), `null` = clear cell; checkbox: `true` = checked, `null` = unchecked
 
-**`--typecast`**: auto-converts human-readable values (user name/email → user ID, record name → link record ID). Run `record create --help` for value types.
+**`--typecast`**: auto-converts human-readable values (user name/email → user ID, record name → link record ID). See value types table below.
 
 **Value types in compact array format:**
 
@@ -90,7 +99,7 @@ teable sql-query --sql 'SELECT "name" FROM "bseXXX"."dbTableName" LIMIT 100'
 | User | `"name"` or `"email"` | With `--typecast`; without: `{"id":"usrXXX","title":"Name"}` |
 | Attachment | `[{"name":"f.png","token":"xxx"}]` | Always array of objects; update **replaces all** |
 
-**Batch limits**: `record create`/`update` max 2000 per call; `record delete` max 2000 IDs per call. For larger datasets, split into multiple calls.
+**Batch limits**: `record create`/`update` max 2000 per call; `record delete` max 1000 IDs per call. `--take` (alias `--limit`) max 1000 per `record get`. For larger datasets, split into multiple calls.
 
 **Attachment handling**: Get tokens via `upload-attachment --file-path /path/to/file`. On update, passing attachments **replaces** all existing — not appends.
 
@@ -102,8 +111,7 @@ teable sql-query --sql 'SELECT "name" FROM "bseXXX"."dbTableName" LIMIT 100'
 
 ## Scraping
 
-> **Required**: `scrape --help` — URL-to-datasetId matching rules and polling mode
-> **Optional**: [scrape.datasets.md](../api-reference/scrape.datasets.md) — full 44+ platform index and input formats
+> **Reference**: [scrape.datasets.md](../api-reference/scrape.datasets.md) — full 44+ platform index and input formats
 
 Use `teable scrape` to extract structured data from websites. Requires `--dataset-id` (scraping template) and `--inputs` (JSON array with URL objects).
 
@@ -124,20 +132,21 @@ For all 44+ platforms: read [scrape.datasets.md](../api-reference/scrape.dataset
 
 ```bash
 # Scrape a single URL
-teable scrape --dataset-id "linkedin-profile" --inputs '[{"url": "https://linkedin.com/in/example"}]'
+teable scrape --dataset-id "linkedin_person_profile" --inputs '[{"url": "https://linkedin.com/in/example"}]'
 # Batch scrape multiple URLs
-teable scrape --dataset-id "amazon-products" --inputs '[{"url": "https://amazon.com/dp/XXX"}, {"url": "https://amazon.com/dp/YYY"}]'
+teable scrape --dataset-id "amazon_product" --inputs '[{"url": "https://amazon.com/dp/XXX"}, {"url": "https://amazon.com/dp/YYY"}]'
 # Polling mode — for long-running scrapes, first call returns snapshot-id; poll with:
-teable scrape --dataset-id "linkedin-profile" --snapshot-id <snapshot-id-from-above>
+# Pass ONLY --snapshot-id when polling (adding --dataset-id or --inputs starts a new scrape)
+teable scrape --snapshot-id <snapshot-id-from-above>
 ```
 
-For all platforms and input formats, read [scrape.datasets.md](../api-reference/scrape.datasets.md). Run `scrape --help` for URL-to-datasetId matching.
+For all platforms and input formats, read [scrape.datasets.md](../api-reference/scrape.datasets.md).
 
 ## Node & Folder Management
 
 Organize nodes (tables, folders, dashboards, etc.) in a base: `get-node-tree`, `folder create`, `folder rename`, `folder delete`, `folder move`.
 
-Always `get-node-tree` first to see current structure. Run `folder move --help` for reordering syntax.
+Always `get-node-tree` first to see current structure. Reorder with: `folder move --node-id <nodeId> --parent-id <parentId> --anchor-id <siblingId> --position before|after`.
 
 ## Multi-Table Relationship Design
 
@@ -179,7 +188,9 @@ Use this pair to access any Teable API not covered by dedicated CLI commands.
 1. `search-api --query "duplicate record"` — find the API
 2. `call-api --method POST --url "/path" --params '{...}'` — execute it
 
-**Note**: `search-api` results only return GET (read-only) APIs, but `call-api` can execute any method (POST/PUT/PATCH/DELETE) if you know the URL.
+**Narrowing results**: `--tags '["record"]'` filters by API category; `--limit 10` returns up to 10 results (default 5, max 10).
+
+**Note**: `call-api` can execute any method (GET/POST/PUT/PATCH/DELETE).
 
 ## One-Time Data Visualization
 

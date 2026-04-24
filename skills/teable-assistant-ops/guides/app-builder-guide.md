@@ -1,7 +1,5 @@
 # App Builder Guide
 
-> **Required**: `app create --help` — parameters, requirement rules, full usage
-
 ## When to Use
 
 - Dashboards with live data, custom web interfaces, interactive tools, monitoring panels
@@ -13,7 +11,7 @@
 1. `app list` — check existing apps (update existing instead of creating duplicate)
 2. `app create` / `app update` — create or update app
 3. Include `--table-ids` to give the app data access
-4. Built-in AI API available for text/image generation features
+4. The app runtime includes an AI API for text and image generation — pass AI-related features in `--requirement` and the builder handles integration
 
 ```bash
 # Create new app
@@ -32,13 +30,11 @@ teable app update \
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
-| `--action` | Yes | `create` or `update` |
 | `--requirement` | Yes | User's request — pass exactly as stated |
 | `--name` | Create only | App name |
 | `--app-id` | Update only | Target app ID |
 | `--table-ids` | No | JSON array of table IDs for data access |
 | `--attachment-tokens` | No | Screenshots or design reference images |
-| `--description` | No | App description |
 
 ## Key Rules
 

@@ -2,11 +2,7 @@
 
 Use automations for event-driven or recurring work — if the user's task fits a supported trigger, prefer automation over a manual script or polling loop.
 
-Run `teable automation --help` for all subcommands, and `teable automation <subcommand> --help` for syntax.
-
 ## Available Commands
-
-> **Required**: run `teable automation <subcommand> --help` before executing any automation subcommand
 
 | Command | Purpose |
 |---------|---------|
@@ -60,7 +56,7 @@ Run `teable automation --help` for all subcommands, and `teable automation <subc
 7. `automation activate --method activate`
 
 **Script files**: `automation get` and `automation get-script-input` persist scripts to `.teable/cli/scripts/<workflowId>/<actionId>.js` and return that path as `code`.
-To modify: read the file at that path → **edit the existing file (do NOT create a new file)** → pass the same path to `automation generate-script --code <path>`.
+To modify: read the file at that path → edit the script file in place — creating a new file breaks the path linkage to the workflow. Pass the same persisted path to `automation generate-script --code <path>`.
 
 ## Draft System & Lifecycle
 

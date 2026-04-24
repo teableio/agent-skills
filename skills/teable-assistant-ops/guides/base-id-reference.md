@@ -2,7 +2,7 @@
 
 `--base-id` can be pre-configured via `teable config`. When the user explicitly provides a base ID, pass it with `-b` / `--base-id` to the commands below.
 
-Run `teable <command> --help` to verify — commands that accept it show `-b, --base-id <baseId>` in their options.
+Commands that accept it show `-b, --base-id <baseId>` in their options. The tables below list all commands.
 
 ## Commands that accept --base-id
 
