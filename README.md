@@ -10,26 +10,10 @@ A collection of agent skills for AI coding assistants. Skills extend agent capab
 
 ## Usage
 
-### Claude Code
-
 Install via the skills CLI:
 
 ```bash
-npx skills add https://github.com/teableio/agent-skills/tree/main/skills/teable-assistant-ops
-```
-
-Or copy the skill folder manually:
-
-```bash
-cp -r skills/teable-assistant-ops .claude/skills/
-```
-
-### Claude.ai / Claude Desktop
-
-Package the skill as a zip and upload it as project knowledge:
-
-```bash
-cd skills && zip -r teable-assistant-ops.zip teable-assistant-ops/
+npx skills add https://github.com/teableio/agent-skills
 ```
 
 ## Structure
