@@ -42,6 +42,8 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 |---------|---------------|
 | `trigger-ai-fill` | `--table-id`, `--field-id` |
 | `app list/create/update` | — |
+| `app login-config/ai-enable` | `--app-id` |
+| `app ai-docs` | — |
 
 ### Automation
 
@@ -61,8 +63,10 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 | `call-api` | `--method`, `--url` |
 | `import` | `--file` or `--attachment-token` + mode flag |
 | `scrape` | `--dataset-id`, `--inputs` |
+| `send-email` | `--subject`, `--body`, `--to`/`--bcc` |
+| `import-airtable` | `--airtable-base-id` + `--space-id`/`--base-name` (new base) — note: `--base-id` here is an **optional import target** (no `-b` short flag), not the usual project base |
 | `tools list`, `get-doc` | `--topic` (get-doc only) |
 
 ## Commands that do NOT need --base-id
 
-`auth` / `auth status`, `config`, `upload-attachment`, `import-status`, `integration list/connect/get-token`
+`auth` / `auth status`, `config`, `upload-attachment`, `import-status`, `integration list/connect/get-token`, `env list/set/update/delete`

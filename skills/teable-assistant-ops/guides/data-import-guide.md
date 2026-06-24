@@ -29,6 +29,42 @@ teable import --file data.csv --table-name "Sales" --no-header
 
 **fieldType values**: `text`, `long`, `number`/`num`, `date`, `checkbox`/`check`, `singleSelect`/`sel`, `multipleSelect`/`mul`, `rating`/`rate`
 
+## Import from Airtable
+
+`teable import-airtable` migrates a **whole Airtable base** — tables, fields, links, views, records, and attachments — via the native importer. Unlike the row-level [`import`](#quick-start) command (which loads tabular files into a table), this creates a **new base** by default (or targets an existing one with `--base-id`).
+
+**Credential**: automatic when Airtable is connected via `integration connect --provider airtable` — the connected integration's token is resolved and refreshed server-side, so nothing needs to be pasted. Override with `--integration-id <id>` or `--access-token <pat>`.
+
+**Flow:**
+
+```bash
+# 1. List accessible Airtable bases
+teable import-airtable --analyze
+
+# 2. Inspect one base's schema
+teable import-airtable --analyze --airtable-base-id appXXXX
+
+# 3. Run the import into a NEW base
+teable import-airtable --space-id spcXXXX --airtable-base-id appXXXX --base-name "My Base"
+
+# 3b. Or import into an EXISTING base (no --space-id / --base-name needed)
+teable import-airtable --base-id bseXXXX --airtable-base-id appXXXX
+```
+
+**Flags:**
+
+| Flag | Notes |
+|------|-------|
+| `--analyze` | List bases (alone) or summarize one base's schema (with `--airtable-base-id`) |
+| `--space-id` | Target space for the new base (required unless `--base-id` is set) |
+| `--airtable-base-id` | Airtable base id (`appXXXX`) — required for import |
+| `--base-name` | Name for the new base (required unless `--base-id` is set) |
+| `--base-id` | Import into this existing base instead of creating one |
+| `--no-import-records` | Import structure only, skip record data |
+| `--no-import-attachments` | Skip downloading/re-uploading attachments |
+| `--import-view-config` | Import view filters/sorts/grouping — **requires** `--share-link` |
+| `--share-link` | Public Airtable shared-base URL (for view config import) |
+
 ## Decision Flow
 
 ### Choose mode
