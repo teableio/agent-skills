@@ -69,4 +69,4 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 
 ## Commands that do NOT need --base-id
 
-`auth` / `auth status`, `config`, `upload-attachment`, `import-status`, `integration list/connect/get-token`, `env list/set/update/delete` (scoped by `--scope`/`--scope-id`, no `-b`)
+`auth` / `auth status`, `config`, `upload-attachment`, `import-status`, `integration list/connect/get-token`, `env list/set/update/delete`
