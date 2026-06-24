@@ -90,6 +90,9 @@ Script actions are Turing-complete: CRUD, AI generation, email, HTTP requests, S
 | `input[triggerId]` | Trigger data (record, fields, etc.) |
 | `input.integrations["<id>"].authConfig` | Integration credentials |
 | `output.set(key, value)` | Return data for next action |
+| `process.env.<KEY>` | Custom secrets you provisioned (API keys, etc.) |
+
+**Custom secrets**: provision per-workflow with `teable env set --scope automation --scope-id <wflXXX> --key STRIPE_KEY --value ...` and read them in-script via `process.env.STRIPE_KEY`. See [env-guide.md](env-guide.md). (`AUTOMATION_TOKEN` / `PUBLIC_ORIGIN` are built-in and always present.)
 
 **Rules:**
 - Use built-in `fetch()` only — never `node-fetch` or other HTTP libraries

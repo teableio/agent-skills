@@ -34,10 +34,12 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Fields | Add/change columns and computed fields | `field create/update/delete` | [field.simple.md](api-reference/field.simple.md) |
 | Records | Write row data, attachments, reordering | `record create/update/delete` | [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) |
 | Views | Persistent filtered/sorted/grouped perspectives | `view create/update/delete` | [view.filter.md](api-reference/view.filter.md), [view.sort.md](api-reference/view.sort.md) |
-| Import | CSV/Excel file loading (>50 rows) | `import`, `import-status` | [data-import-guide.md](guides/data-import-guide.md) |
+| Import | CSV/Excel file loading (>50 rows); whole Airtable base migration | `import`, `import-status`, `import-airtable` | [data-import-guide.md](guides/data-import-guide.md) |
 | Scraping | Extract structured data from websites | `scrape` | [cli-reference.md § Scraping](guides/cli-reference.md#scraping) |
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
-| App Builder | Live dashboards, custom web UIs | `app create/update/list` | [app-builder-guide.md](guides/app-builder-guide.md) |
+| App Builder | Live dashboards, custom web UIs | `app create/update/list`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
+| Secrets/Env | Store API keys/secrets for apps & scripts | `env list/set/update/delete` | [env-guide.md](guides/env-guide.md) |
+| Email | Send an email directly (one-off) | `send-email` | [cli-reference.md § Sending Email](guides/cli-reference.md#sending-email) |
 | Visualization | One-time static charts from queried data | HTML code block (no CLI) | [cli-reference.md § Visualization](guides/cli-reference.md#one-time-data-visualization) |
 | Nodes | Organize tables/folders in base hierarchy | `get-node-tree`, `folder *` | [cli-reference.md § Node & Folder](guides/cli-reference.md#node--folder-management) |
 | Integrations | Slack, OAuth connections for automations | `integration list/connect/get-token` | [automation-guide.md § External](guides/automation-guide.md#external-integrations) |
@@ -84,6 +86,9 @@ For complete syntax, value formats, and all command options, read [cli-reference
 - **Multi-table**: plan relationships before creating tables. Read [cli-reference.md § Multi-Table](guides/cli-reference.md#multi-table-relationship-design).
 - **AI fields**: `field create --ai-config '{"type":"...","sourceFieldName":"..."}' + trigger-ai-fill`. Check `get-doc --topic field.ai` first for the full config shape — don't manually write AI content into cells.
 - **Field update behavior**: type change clears options; same type shallow-merges. Lookup/rollup require an existing link field.
+- **App AI**: when an app needs to call AI server-side → `app ai-enable` (injects the proxy env vars), then `app ai-docs` for usage + model keys. See [app-builder-guide.md § AI in apps](guides/app-builder-guide.md#ai-in-apps).
+- **App login**: to require end-user auth for a generated app → `app login-config`. See [app-builder-guide.md § App login](guides/app-builder-guide.md#app-login--authentication).
+- **Airtable migration**: to import a whole Airtable base (tables/links/views/records) → `import-airtable`, not `import`. See [data-import-guide.md § Import from Airtable](guides/data-import-guide.md#import-from-airtable).
 
 ## 3. Key Constraints
 
@@ -127,4 +132,4 @@ Files in `api-reference/`, named `{category}.{subtopic}.md` — read when you ne
 **Automations**: `automation.trigger.md`, `automation.api.md`, `automation.send-email.md`
 **Integrations**: `integration.slack.md`
 **Scraping**: `scrape.datasets.md`
-**Dynamic** (use `get-doc`): `field.ai`
+**Dynamic** (use `get-doc`): `field.ai`, `app.ai`

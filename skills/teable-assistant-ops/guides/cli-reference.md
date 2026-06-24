@@ -142,6 +142,28 @@ teable scrape --snapshot-id <snapshot-id-from-above>
 
 For all platforms and input formats, read [scrape.datasets.md](../api-reference/scrape.datasets.md).
 
+## Sending Email
+
+`teable send-email` sends an email **directly** via the Teable mail sender (system SMTP by default). This is a one-off send — for event-driven emails *inside a workflow*, use the automation SendEmail action instead (see [automation.send-email.md](../api-reference/automation.send-email.md)).
+
+```bash
+teable send-email \
+  --to "a@example.com,b@example.com" \
+  --subject "Weekly report" \
+  --body "## Summary\nAll green." \
+  --body-type markdown
+```
+
+| Flag | Notes |
+|------|-------|
+| `--subject` | Email subject |
+| `--body` | Body string **or a path to a file** |
+| `--to` | Comma-separated recipients (required unless `--bcc` given) |
+| `--cc` / `--bcc` | Comma-separated; `--bcc` satisfies the recipient requirement on its own |
+| `--body-type` | `markdown` (default) or `html` |
+| `--reply-to` | Reply-to address |
+| `--smtp` | Custom SMTP transport as a JSON string (omit to use system SMTP) |
+
 ## Node & Folder Management
 
 Organize nodes (tables, folders, dashboards, etc.) in a base: `get-node-tree`, `folder create`, `folder rename`, `folder delete`, `folder move`.
