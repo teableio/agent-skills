@@ -8,6 +8,31 @@ A collection of agent skills for AI coding assistants. Skills extend agent capab
 | ----- | ----------- |
 | [teable-assistant-ops](skills/teable-assistant-ops) | Operate Teable bases, tables, fields, views, records, SQL queries, and automations with a safe read-before-write process. |
 
+## Quick Start (AI Agent)
+
+> The following steps are for AI agents. Some steps require the user to complete actions in a browser.
+
+### Step 1 — Install skill
+
+```bash
+npx skills add https://github.com/teableio/agent-skills
+```
+
+### Step 2 — Install Teable CLI and authenticate
+
+> Run this from the installed `teable-assistant-ops` skill directory. The script installs or upgrades `@teable/cli`, then proactively starts CLI browser authentication when no valid login is found. If an authorization URL is printed, extract it and send it to the user.
+
+```bash
+bash scripts/install.sh
+```
+
+### Step 3 — Verify
+
+```bash
+teable --version
+teable auth status
+```
+
 ## Usage
 
 Install via the skills CLI:
