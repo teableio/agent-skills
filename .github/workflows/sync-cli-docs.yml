@@ -1,0 +1,278 @@
+# Automated docs sync for the teable-assistant-ops skill.
+#
+# Triggered by teable-enterprise's publish-cli.yaml after a successful
+# @teable/cli publish (repository_dispatch: cli-published, payload
+# {version, source_ref}), or manually via workflow_dispatch.
+#
+# Flow: install the published CLI → `teable manifest` → structural diff against
+# the committed snapshot (.github/teable-cli-manifest.json). An empty diff ends
+# the run; a non-empty diff becomes Claude's input for updating the skill docs,
+# and the result is opened as a PR on a fixed bot branch (a newer publish
+# supersedes an unmerged sync PR in place).
+#
+# The doc-update step runs the pi coding agent (https://pi.dev) against any
+# OpenAI-compatible endpoint — configure via secrets/variables:
+#   PI_BASE_URL           (required) — OpenAI-compatible endpoint base URL,
+#                         e.g. https://api.deepseek.com/v1 (secret or variable)
+#   PI_API_KEY            (required, secret) — API key for that endpoint
+#   PI_MODEL              (required) — model id, e.g. deepseek-chat
+#                         (variable or secret)
+#   SYNC_GITHUB_TOKEN     (recommended) — PAT/App token used to open the PR so
+#                         that CI (validate-skill-docs) runs on it; with the
+#                         default github.token, bot PRs trigger no workflows
+#   TEABLE_EE_READ_TOKEN  (optional) — read access to teableio/teable-ee for
+#                         commit-log context between synced refs
+
+name: sync-cli-docs
+
+on:
+  repository_dispatch:
+    types: [cli-published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '@teable/cli version to sync docs to (must be on npm)'
+        required: true
+        type: string
+
+concurrency:
+  group: sync-cli-docs
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      SNAPSHOT: .github/teable-cli-manifest.json
+      SYNC_META: .github/teable-cli-sync.json
+      SOURCE_REF: ${{ github.event.client_payload.source_ref }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: version
+        env:
+          RAW_VERSION: ${{ github.event.client_payload.version || inputs.version }}
+        run: |
+          set -euo pipefail
+          VERSION="${RAW_VERSION#v}"
+          if [ -z "$VERSION" ]; then
+            echo "::error::no CLI version in dispatch payload or workflow input"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install @teable/cli
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          # The dispatch fires right after `npm publish`; wait out registry propagation.
+          found=""
+          for attempt in 1 2 3 4 5 6; do
+            if npm view "@teable/cli@${VERSION}" version >/dev/null 2>&1; then
+              found=1
+              break
+            fi
+            echo "@teable/cli@${VERSION} not on the registry yet (attempt ${attempt}); retrying in 30s"
+            sleep 30
+          done
+          if [ -z "$found" ]; then
+            echo "::error::@teable/cli@${VERSION} not found on npm"
+            exit 1
+          fi
+          npm install -g "@teable/cli@${VERSION}"
+
+      - name: Generate manifest
+        run: |
+          set -euo pipefail
+          # Canonical manifests come from a clean environment: no TEABLE_* env,
+          # cwd outside the repo so no project config is picked up.
+          while IFS= read -r name; do unset "$name"; done \
+            < <(env | sed -n 's/^\(TEABLE_[A-Za-z0-9_]*\)=.*/\1/p')
+          cd "$RUNNER_TEMP"
+          teable manifest > "$RUNNER_TEMP/new-manifest.json"
+          node -e "JSON.parse(require('fs').readFileSync('$RUNNER_TEMP/new-manifest.json','utf8'))"
+
+      - name: Diff against last-synced snapshot
+        id: diff
+        run: |
+          set -euo pipefail
+          set +e
+          node scripts/diff-cli-manifest.mjs "$SNAPSHOT" "$RUNNER_TEMP/new-manifest.json" > "$RUNNER_TEMP/manifest-diff.md"
+          code=$?
+          set -e
+          case "$code" in
+            0)  echo "changed=false" >> "$GITHUB_OUTPUT" ;;
+            10) echo "changed=true"  >> "$GITHUB_OUTPUT" ;;
+            *)  echo "::error::diff-cli-manifest.mjs failed (exit $code)"; exit "$code" ;;
+          esac
+          cat "$RUNNER_TEMP/manifest-diff.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: No surface changes
+        if: steps.diff.outputs.changed != 'true'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: echo "Command surface of v${VERSION} matches the committed snapshot — no docs PR needed."
+
+      # Best effort, and must run before the snapshot/meta update below
+      # (it reads the previously synced source ref from the old meta file).
+      - name: Collect teable-ee commit log
+        if: steps.diff.outputs.changed == 'true' && env.TEABLE_EE_READ_TOKEN != ''
+        env:
+          TEABLE_EE_READ_TOKEN: ${{ secrets.TEABLE_EE_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          PREV_REF="$(jq -r '.sourceRef // empty' "$SYNC_META" 2>/dev/null || true)"
+          if [ -z "$PREV_REF" ] || [ -z "${SOURCE_REF:-}" ]; then
+            echo "No previous/current source ref — skipping commit log."
+            exit 0
+          fi
+          curl -sf -H "Authorization: token ${TEABLE_EE_READ_TOKEN}" \
+            "https://api.github.com/repos/teableio/teable-ee/compare/${PREV_REF}...${SOURCE_REF}" \
+            | jq -r '.commits[] | "- " + (.commit.message | split("\n")[0]) + " (" + .sha[:8] + ")"' \
+            > "$RUNNER_TEMP/commit-log.md" \
+            || echo "(commit log unavailable)" > "$RUNNER_TEMP/commit-log.md"
+
+      - name: Update snapshot and sync metadata
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          cp "$RUNNER_TEMP/new-manifest.json" "$SNAPSHOT"
+          jq -n --arg version "$VERSION" --arg sourceRef "${SOURCE_REF:-}" \
+            '{version: $version} + (if $sourceRef != "" then {sourceRef: $sourceRef} else {} end)' \
+            > "$SYNC_META"
+
+      - name: Configure pi coding agent
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          PI_BASE_URL: ${{ secrets.PI_BASE_URL || vars.PI_BASE_URL }}
+          PI_MODEL: ${{ vars.PI_MODEL || secrets.PI_MODEL }}
+          PI_API_KEY: ${{ secrets.PI_API_KEY }}
+        run: |
+          set -euo pipefail
+          for required in PI_BASE_URL PI_MODEL PI_API_KEY; do
+            if [ -z "${!required:-}" ]; then
+              echo "::error::${required} is not set (repo secret or variable) — required for the doc-update step"
+              exit 1
+            fi
+          done
+          npm install -g @earendil-works/pi-coding-agent
+          mkdir -p ~/.pi/agent
+          # apiKey stays an env reference ("$PI_API_KEY") so the key never lands on disk.
+          jq -n --arg baseUrl "$PI_BASE_URL" --arg model "$PI_MODEL" \
+            '{providers: {custom: {baseUrl: $baseUrl, api: "openai-completions", apiKey: "$PI_API_KEY", models: [{id: $model}]}}}' \
+            > ~/.pi/agent/models.json
+
+      - name: Update skill docs with pi
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          PI_MODEL: ${{ vars.PI_MODEL || secrets.PI_MODEL }}
+          PI_API_KEY: ${{ secrets.PI_API_KEY }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/pi-prompt.md" <<EOF
+          Update the teable-assistant-ops skill in this repository to match the newly
+          published @teable/cli v${VERSION}.
+
+          Ground truth (already prepared for you):
+          - .github/teable-cli-manifest.json — the full manifest of the new version, produced by
+            \`teable manifest\`. Authoritative for every command, option, and rendered --help text.
+          - $RUNNER_TEMP/manifest-diff.md — what changed versus the previously documented
+            version. Read this first; it defines the entire scope of your edits.
+          - $RUNNER_TEMP/commit-log.md — commit messages behind the changes (may not exist).
+
+          Task:
+          1. Read $RUNNER_TEMP/manifest-diff.md, then AGENTS.md for repo conventions.
+          2. Grep skills/teable-assistant-ops/ for every mention of each changed command, then update
+             the skill files (SKILL.md, guides/, api-reference/) so that:
+             - added commands/options are documented where they belong,
+             - changed commands/options/help are corrected everywhere they are mentioned,
+             - removed commands/options disappear from the docs entirely.
+             Follow the existing style and keep diffs minimal — do not rewrite unrelated prose.
+          3. Update skills/teable-assistant-ops/metadata.json: bump "version" (minor for new
+             capability, patch for corrections). If the docs now rely on commands that only exist
+             since this CLI release, raise the "engines.teableCli" minimum accordingly.
+          4. Write a concise reviewer summary to $RUNNER_TEMP/pr-summary.md: what changed in the
+             CLI, what you changed in the docs, and anything you were unsure about.
+
+          Hard rules:
+          - Never document a command or flag that is absent from the manifest — CI validates every
+            documented \`teable\` invocation against it and will fail the PR.
+          - Only edit files under skills/teable-assistant-ops/ plus the summary file above. Do not
+            touch .github/, scripts/, or the manifest snapshot.
+          - Do not run git commands; committing and opening the PR happen after you finish.
+          EOF
+          pi --provider custom --model "$PI_MODEL" \
+            --tools read,edit,write,grep,find,ls \
+            -p "$(cat "$RUNNER_TEMP/pi-prompt.md")"
+
+      - name: Assemble PR body
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          BODY="$RUNNER_TEMP/pr-body.md"
+          DIFF="$RUNNER_TEMP/manifest-diff.md"
+          {
+            echo "Automated docs sync: \`@teable/cli\` **v${VERSION}** changed the CLI command surface."
+            echo "Docs were updated by an AI agent (pi) from the manifest diff below; the manifest"
+            echo "snapshot and sync metadata were updated deterministically by the workflow."
+            echo
+            echo "## Summary"
+            echo
+            if [ -s "$RUNNER_TEMP/pr-summary.md" ]; then
+              cat "$RUNNER_TEMP/pr-summary.md"
+            else
+              echo "_(no model summary was produced — review the diff below directly)_"
+            fi
+            echo
+            echo "<details>"
+            echo "<summary>Command-surface diff</summary>"
+            echo
+            head -c 40000 "$DIFF"
+            if [ "$(wc -c < "$DIFF")" -gt 40000 ]; then
+              echo
+              echo "_(truncated — full diff in the workflow run summary)_"
+            fi
+            echo
+            echo "</details>"
+            echo
+            echo "## Review checklist"
+            echo
+            echo "- [ ] Spot-check updated examples against \`teable <cmd> --help\` of v${VERSION}"
+            echo "- [ ] Removed commands no longer appear anywhere in the docs"
+            echo "- [ ] \`metadata.json\` version/engines bump is sensible"
+            echo "- [ ] validate-skill-docs CI is green (if no checks appear, the PR was opened with the"
+            echo "      default token — run the validate-skill-docs workflow manually or set SYNC_GITHUB_TOKEN)"
+            echo
+            echo "🤖 Auto-generated by the sync-cli-docs workflow — review before merging."
+          } > "$BODY"
+
+      - name: Create or update PR
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.SYNC_GITHUB_TOKEN || github.token }}
+          branch: bot/sync-cli-docs
+          base: main
+          delete-branch: true
+          title: 'docs: sync teable-assistant-ops skill to Teable CLI v${{ steps.version.outputs.version }}'
+          commit-message: 'docs: sync teable-assistant-ops skill to Teable CLI v${{ steps.version.outputs.version }}'
+          body-path: ${{ runner.temp }}/pr-body.md
+          add-paths: |
+            skills/**
+            .github/teable-cli-manifest.json
+            .github/teable-cli-sync.json
