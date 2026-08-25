@@ -114,7 +114,7 @@ For complete syntax, value formats, and all command options, read [cli-reference
 1. **Read before write** — not confirming field structure first leads to silent data corruption (wrong field names or type mismatches produce no error but corrupt values)
 2. **Read [field.simple.md](api-reference/field.simple.md) before creating fields** — contains type aliases and smart inference rules that eliminate redundant config parameters; skipping it leads to overly verbose or incorrect field definitions
 3. **Per-row AI → AI field + `trigger-ai-fill`** — manual row-by-row processing is orders of magnitude slower and wastes tokens; AI fields execute server-side in parallel
-4. **Pass user requirements verbatim to `app create`/`app update`** — the app builder has its own AI that interprets requirements; adding features yourself causes scope creep and unexpected results
+4. **Pass user requirements verbatim to `app create`/`app update` via `--prompt`** — the app builder has its own AI that interprets the prompt; adding features yourself causes scope creep and unexpected results
 5. **Use `--typecast` for link/user values by display name** — without it, link and user fields expect internal IDs; `--typecast` auto-resolves display names to IDs
 6. **Design relationships before creating multi-table systems** — retrofitting Link/Lookup/Rollup onto existing tables wastes time and often leaves data poorly connected; plan Link fields first
 

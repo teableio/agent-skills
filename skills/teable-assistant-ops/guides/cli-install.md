@@ -30,14 +30,14 @@ Options:
 ### Option 2: Personal Access Token
 
 ```bash
-teable auth --token <your-personal-access-token> --endpoint https://app.teable.ai
+teable auth --token <your-personal-access-token> --endpoint https://app.teable.ai --force
 ```
 
 Options:
 - `--token` — Teable Personal Access Token (PAT), also settable via `TEABLE_TOKEN` or `TEABLE_PAT` env vars
 - `--endpoint` — Teable server URL (default: `https://app.teable.ai`), also settable via `TEABLE_ENDPOINT` env var
 - `--force` — overwrite existing config
-- `--path <file>` — save config to a custom path
+- `--path <dir>` — save config to `<dir>/.teable/cli/config.json`
 
 ### Auth management
 
@@ -56,7 +56,7 @@ Auth config is saved to `~/.teable/cli/config.json` by default.
 1. Log in to your Teable instance (e.g. https://app.teable.ai)
 2. Go to **Settings** → **Personal Access Tokens**
 3. Click **Create new token**, give it a name, and copy the generated token
-4. Use it with `teable auth --token teable_pat_xxx`
+4. Use it with `teable auth --token teable_pat_xxx --force`
 
 ## Configuration
 

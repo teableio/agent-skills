@@ -11,7 +11,7 @@
 1. `app list` — check existing apps (update existing instead of creating duplicate)
 2. `app create` / `app update` — create or update app
 3. Include `--table-ids` to give the app data access
-4. The app runtime includes an AI API for text and image generation — pass AI-related features in `--requirement` and the builder handles integration
+4. The app runtime includes an AI API for text and image generation — pass AI-related features in `--prompt` and the builder handles integration
 
 **Optional capabilities** (applied to an app independently, in any order):
 - **AI access** — `app ai-enable` + `app ai-docs` (see [AI in apps](#ai-in-apps))
@@ -21,20 +21,20 @@
 # Create new app
 teable app create \
   --name "Sales Dashboard" \
-  --requirement "build a sales dashboard showing monthly revenue trends" \
+  --prompt "build a sales dashboard showing monthly revenue trends" \
   --table-ids '["tblXXX","tblYYY"]'
 
 # Update existing app
 teable app update \
   --app-id appXXX \
-  --requirement "add a filter by date range"
+  --prompt "add a filter by date range"
 ```
 
 ## Key Parameters
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
-| `--requirement` | Yes | User's request — pass exactly as stated |
+| `--prompt` | Yes | User's request — pass exactly as stated |
 | `--name` | Create only | App name |
 | `--app-id` | Update only | Target app ID |
 | `--table-ids` | No | JSON array of table IDs for data access |
@@ -43,7 +43,7 @@ teable app update \
 
 ## Key Rules
 
-- **Pass user requirements verbatim** to `--requirement` — do not interpret, expand, or add features
+- **Pass user requirements verbatim** to `--prompt` — do not interpret, expand, or add features
 - Do not use markdown formatting in the requirement text
 - Do not specify tech stack unless the user explicitly requests it
 
@@ -90,3 +90,13 @@ teable app login-config --app-id appXXX --login-config '{
 | `access` (optional) | `{ "mode": "open" \| "domain" \| "existing-only", "domains": [...] }` — `domains` only used in `domain` mode |
 
 Pass `--login-config null` to disable login entirely.
+
+## Publish lifecycle
+
+```bash
+teable app publish --app-id appXXX
+teable app status --app-id appXXX
+teable app unpublish --app-id appXXX
+```
+
+`app publish` may return `deploying`; poll `app status` until the result is `success` or `failed`.

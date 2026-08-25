@@ -33,7 +33,7 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 |---------|---------------|
 | `get-node-tree` | — |
 | `folder create` | `--name` |
-| `folder rename/delete` | `--folder-id` |
+| `folder update/delete` | `--folder-id` |
 | `folder move` | `--node-id` |
 
 ### AI / App

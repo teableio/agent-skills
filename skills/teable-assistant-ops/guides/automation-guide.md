@@ -53,7 +53,7 @@ Use automations for event-driven or recurring work — if the user's task fits a
    - Node types: `start`, `end`, `step`, `condition`, `loop`, `tryCatch`
    - Edge types: `default`, `true`, `false`, `error`, `loop`
 6. `automation test-node` — test trigger or action
-7. `automation activate --method activate`
+7. `automation activate --workflow-id wflXXX --method activate`
 
 **Script files**: `automation get` and `automation get-script-input` persist scripts to `.teable/cli/scripts/<workflowId>/<actionId>.js` and return that path as `code`.
 To modify: read the file at that path → edit the script file in place — creating a new file breaks the path linkage to the workflow. Pass the same persisted path to `automation generate-script --code <path>`.
@@ -72,7 +72,7 @@ All edits (trigger config, script code, node changes) create a **draft** version
 
 **Risk**: `activate` in production starts sending real emails/API calls immediately.
 
-Use `automation get --include-active-snapshot` to compare draft vs published version when `hasDraft=true`.
+Use `automation get --workflow-id wflXXX --include-active-snapshot` to compare draft vs published version when `hasDraft=true`.
 
 ## Script Rules
 

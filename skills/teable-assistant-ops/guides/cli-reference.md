@@ -166,7 +166,7 @@ teable send-email \
 
 ## Node & Folder Management
 
-Organize nodes (tables, folders, dashboards, etc.) in a base: `get-node-tree`, `folder create`, `folder rename`, `folder delete`, `folder move`.
+Organize nodes (tables, folders, dashboards, etc.) in a base: `get-node-tree`, `folder create`, `folder update`, `folder delete`, `folder move`.
 
 Always `get-node-tree` first to see current structure. Reorder with: `folder move --node-id <nodeId> --parent-id <parentId> --anchor-id <siblingId> --position before|after`.
 

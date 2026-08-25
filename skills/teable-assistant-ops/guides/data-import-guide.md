@@ -8,14 +8,14 @@ teable import --file data.csv --table-name "Sales"
 
 # 2. Import with mappings — rename columns and set types
 teable import --file data.csv --table-name "Sales" \
-  --mappings '[{"sourceColumnIndex": 0, "fieldName": "Amount", "fieldType": "number"}, {"sourceColumnIndex": 1, "fieldName": "Name"}]'
+  --mappings '[{"column":"Amount","field":"Amount","type":"number"},{"column":"Name","field":"Name"}]'
 
 # 3. Specific Excel worksheet
 teable import --file data.xlsx --table-name "Q1" --sheet "Sheet2"
 
 # 4. Append to existing table (map source columns to field IDs)
 teable import --file data.csv --table-id tblXXX \
-  --mappings '[{"sourceColumnIndex": 0, "fieldId": "fldAAA"}, {"sourceColumnIndex": 2, "fieldId": "fldBBB"}]'
+  --mappings '{"fldAAA":0,"fldBBB":2}'
 
 # 5. Inline data (JSON array of objects)
 teable import --table-name "Sales" --data '[{"Name":"Alice","Amount":100},{"Name":"Bob","Amount":200}]'
@@ -118,7 +118,7 @@ teable field get --table-id tblXXX
 # 2. Analyze source structure
 teable import --file data.csv
 # 3. Map source columns to field IDs
-teable import --attachment-token <token> --table-id tblXXX --mappings '[{"sourceColumnIndex": 0, "fieldId": "fldAAA"}, {"sourceColumnIndex": 1, "fieldId": "fldBBB"}]'
+teable import --attachment-token <token> --table-id tblXXX --mappings '{"fldAAA":0,"fldBBB":1}'
 # 4. For large files, poll in background (run_in_background: true)
 teable import-status --table-id tblXXX --poll
 ```
