@@ -52,6 +52,7 @@ jobs:
           echo "head_ref=$(jq -r '.headRefName' <<< "$info")" >> "$GITHUB_OUTPUT"
 
       - name: Acknowledge comment
+        id: ack
         continue-on-error: true
         env:
           COMMENT_ID: ${{ github.event.comment.id }}
@@ -61,7 +62,9 @@ jobs:
           else
             endpoint="repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}/reactions"
           fi
-          gh api -X POST "$endpoint" -f content=eyes >/dev/null
+          echo "endpoint=$endpoint" >> "$GITHUB_OUTPUT"
+          eyes_id="$(gh api -X POST "$endpoint" -f content=eyes --jq .id)"
+          echo "eyes_id=$eyes_id" >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v4
         with:
@@ -202,3 +205,19 @@ jobs:
             echo "_[workflow run](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}) — triggered by /pi_"
           } > "$RUNNER_TEMP/pr-reply.md"
           gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/pr-reply.md"
+
+      # Swap the 👀 acknowledgment for a final status reaction: 👍 done, 😕 failed.
+      - name: Update reaction
+        if: always() && steps.ack.outputs.endpoint != ''
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          if [ "${{ steps.validate.outcome }}" = "success" ] && [ "${{ steps.push.outcome }}" = "success" ]; then
+            content="+1"
+          else
+            content="confused"
+          fi
+          gh api -X POST "${{ steps.ack.outputs.endpoint }}" -f content="$content" >/dev/null
+          if [ -n "${{ steps.ack.outputs.eyes_id }}" ]; then
+            gh api -X DELETE "${{ steps.ack.outputs.endpoint }}/${{ steps.ack.outputs.eyes_id }}" >/dev/null || true
+          fi
