@@ -4,7 +4,9 @@
 Send messages and notifications to Slack from automation scripts.
 
 ## Setup
-1. activate and call `integration connect` tool let user create a connection to Slack
+1. Check status: `teable integration list`
+2. Not connected / invalid → `teable integration connect --provider slack`
+3. Connected → fetch tokens: `teable integration get-token`
 
 ## Two Types of Tokens
 
@@ -51,10 +53,8 @@ await fetch('https://slack.com/api/chat.postMessage', {
     blocks: [
       { type: 'header', text: { type: 'plain_text', text: '📋 New Record' } },
       { type: 'section', fields: [
-        { type: 'mrkdwn', text: `*Name:*
-${record.fields.Name}` },
-        { type: 'mrkdwn', text: `*Status:*
-${record.fields.Status}` }
+        { type: 'mrkdwn', text: `*Name:*\n${record.fields.Name}` },
+        { type: 'mrkdwn', text: `*Status:*\n${record.fields.Status}` }
       ]},
       { type: 'actions', elements: [
         { type: 'button', text: { type: 'plain_text', text: 'View' }, url: recordUrl }

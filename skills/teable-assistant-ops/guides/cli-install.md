@@ -26,6 +26,12 @@ Opens a browser for OAuth login (Authorization Code + PKCE). No token needed —
 
 Options:
 - `--endpoint` — Teable server URL (default: `https://app.teable.ai`)
+- `--device-code` — device authorization grant for environments where the local OAuth callback can never arrive (cloud IDE, SSH session, container): the CLI prints a URL plus a one-time code, the user approves in a browser on any device, and the CLI polls until tokens are issued
+
+```bash
+# No reachable local callback port (SSH / container / cloud IDE)
+teable auth login --device-code
+```
 
 ### Option 2: Personal Access Token
 

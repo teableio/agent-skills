@@ -129,14 +129,14 @@ Triggers on a schedule.
 }
 ```
 
-**Every-5-minutes example:**
+**Every-15-minutes example:**
 ```json
 {
   "type": "scheduledTime",
   "config": {
     "starting": "2026-04-21T09:00:00.000Z",
     "tz": "Asia/Shanghai",
-    "timing": { "type": "minutes", "interval": 5 }
+    "timing": { "type": "minutes", "interval": 15 }
   }
 }
 ```

@@ -92,8 +92,7 @@ await fetch(process.env.PUBLIC_ORIGIN + '/api/automation/runtime/email', {
 The `body` field is rendered using **markdown-it** with:
 - `html: true` - Raw HTML allowed
   - Important: `<!-- -->` html comment will break the email rendering, do not use it! 
-- `breaks: true` - 
- → `<br>`
+- `breaks: true` - `\n` → `<br>`
 
 ### Supported Syntax
 
@@ -107,8 +106,7 @@ The `body` field is rendered using **markdown-it** with:
 | `![alt](src)` | `<img alt="alt" src="src">` |
 | `> quote` | `<blockquote>quote</blockquote>` |
 | `---` | `<hr>` |
-| Line break (
-) | `<br>` (auto-converted) |
+| Line break (`\n`) | `<br>` (auto-converted) |
 
 ### Lists
 

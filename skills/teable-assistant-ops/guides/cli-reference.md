@@ -48,13 +48,13 @@ Advanced types (link, lookup, rollup, formula, AI) require `field create` with o
 # record get defaults to all fields; use --projection to select specific ones
 teable record get --table-id tblXXX --projection '["fldXXX","fldYYY"]'
 # SQL: must use dbTableName/dbFieldName from table get/field get, double-quote identifiers
-teable sql-query --sql 'SELECT "name" FROM "bseXXX"."dbTableName" LIMIT 100'
+teable sql-query --sql 'SELECT "name" FROM "bseXXX"."tbl_users" LIMIT 100'
 ```
 
 ### SQL Critical Rules
 
 1. **Must use database names**: get `dbTableName` from `table get`, `dbFieldName` from `field get` — display names won't work
-2. **Table format**: `"baseId"."dbTableName"` (e.g., `"bseXXX"."receipts"`)
+2. **Table format**: `dbTableName` from `table get` is one dotted value (e.g. `bseXXX.tbl_users`); split it on the dot into two quoted identifiers: `"bseXXX"."tbl_users"`
 3. **Double-quote all identifiers**: `SELECT "fieldName" FROM "schema"."table"`
 4. **SELECT only** — read-only (PostgreSQL 15.4), no INSERT/UPDATE/DELETE
 5. **Always add `LIMIT 100`** to non-aggregate queries to avoid large result sets
@@ -166,9 +166,15 @@ teable send-email \
 
 ## Node & Folder Management
 
-Organize nodes (tables, folders, dashboards, etc.) in a base: `get-node-tree`, `folder create`, `folder rename`, `folder delete`, `folder move`.
+Organize nodes (tables, folders, dashboards, etc.) in a base: `get-node-tree`, `folder create`, `folder update` (rename), `folder delete`, `folder move`.
 
 Always `get-node-tree` first to see current structure. Reorder with: `folder move --node-id <nodeId> --parent-id <parentId> --anchor-id <siblingId> --position before|after`.
+
+To create a table directly inside a folder, pass `--folder-id` to `table create` or `import` (also supported by `import-airtable` with `--base-id`, and `app create`).
+
+## Authority Matrix (Advanced Permissions)
+
+Per-table / per-view / per-row / per-field access control for base collaborators via the `authority` command group. All config changes go through export → edit → diff → apply. Read [authority-guide.md](authority-guide.md) before running any `authority` command.
 
 ## Multi-Table Relationship Design
 

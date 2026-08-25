@@ -99,6 +99,8 @@ Script actions are Turing-complete: CRUD, AI generation, email, HTTP requests, S
 - `console.log` is debug-only — never use it to notify users
 - Notifications: default to **Email API** when no channel is specified (read `api-reference/automation.send-email.md` first); Slack/Teams/webhook via HTTP requests in script
 
+**AI in scripts**: call `POST ${PUBLIC_ORIGIN}/api/automation/runtime/ai` with `{ prompt, attachments?, modelKey?, temperature?, outputType? }` — supports up to 10 file attachments (images, PDFs, Office docs; each ≤20MB) and `outputType: "object"` for parsed JSON output. The base comes from the automation context — do NOT put a baseId in the URL. Read `teable get-doc --topic automation.ai` first for the full request shape, attachment field mapping, and available model keys. Prefer one request with several attachments over one request per attachment; on 429 (AI concurrency saturated) retry later, don't loop immediately.
+
 **Common script patterns** (runtime variables + fetch):
 ```javascript
 const baseUrl = process.env.PUBLIC_ORIGIN;
@@ -121,6 +123,13 @@ await fetch(`${baseUrl}/api/automation/runtime/email`, {
   method: "POST", headers,
   body: JSON.stringify({ to: "user@example.com", subject: "Hi", body: "Hello" })
 });
+
+// Call AI (built-in API — see get-doc --topic automation.ai for models & attachments)
+const aiRes = await fetch(`${baseUrl}/api/automation/runtime/ai`, {
+  method: "POST", headers,
+  body: JSON.stringify({ prompt: "Extract invoice number and total. Return JSON.", outputType: "object" })
+});
+const { message } = await aiRes.json(); // string, or parsed object for outputType "object"
 
 // External API (e.g., Slack webhook)
 await fetch("https://hooks.slack.com/...", {

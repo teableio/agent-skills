@@ -72,15 +72,17 @@ Note: Always uses "has" operators for array matching
 ```typescript
 "is" | "isNot" | "isAnyOf" | "isNoneOf" | "isEmpty" | "isNotEmpty"
 ```
-**When `isMultipleCellValue: false`**  
+**When `isMultipleCellValue: false`**
 Applies to: user, createdBy, lastModifiedBy
+**Values**: a user id (`usrXXXX`), or the literal `"Me"` — the dynamic "current user" token. Case-sensitive: lowercase `"me"` is treated as a plain string and matches nothing.
 
 ### User (Multiple)
 ```typescript
 "hasAnyOf" | "hasAllOf" | "isExactly" | "hasNoneOf" | "isNotExactly" | "isEmpty" | "isNotEmpty"
 ```
-**When `isMultipleCellValue: true`**  
+**When `isMultipleCellValue: true`**
 Note: Uses "has" operators instead of "is" operators
+**Values**: array-wrapped — `["usrXXXX"]` or `["Me"]`. The "has" operators (`hasAnyOf`, `hasAllOf`, `isExactly`) reject scalar values.
 
 ### Link (Single)
 ```typescript
@@ -163,6 +165,8 @@ Example:
 { filterSet: [{ fieldId: "fldDate", operator: "isWithIn", value: "pastWeek" }] }
 // Object value with mode (timeZone auto-filled from user context if omitted)
 { filterSet: [{ fieldId: "fldDate", operator: "isWithIn", value: { mode: "pastNumberOfDays", numberOfDays: 7, timeZone: "Asia/Shanghai" } }] }
+// Exact date: mode "exactDate" matches the selected day range; mode "exactDateTime" matches the exact timestamp
+{ filterSet: [{ fieldId: "fldDate", operator: "is", value: { mode: "exactDate", exactDate: "2026-04-27T00:00:00.000Z" } }] }
 ```
 
 ### Empty Check

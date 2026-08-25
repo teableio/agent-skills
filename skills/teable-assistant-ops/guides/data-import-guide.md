@@ -25,9 +25,14 @@ cat data.csv | teable import --table-name "Sales"
 
 # 7. Raw CSV without header row
 teable import --file data.csv --table-name "Sales" --no-header
+
+# 8. Create the new table inside a base-node folder (only with --table-name)
+teable import --file data.csv --table-name "Sales" --folder-id <folderNodeId>
 ```
 
 **fieldType values**: `text`, `long`, `number`/`num`, `date`, `checkbox`/`check`, `singleSelect`/`sel`, `multipleSelect`/`mul`, `rating`/`rate`
+
+**File formats**: `.csv`, `.tsv`, `.xlsx`, `.xlsm`, `.xls`
 
 ## Import from Airtable
 
@@ -60,6 +65,7 @@ teable import-airtable --base-id bseXXXX --airtable-base-id appXXXX
 | `--airtable-base-id` | Airtable base id (`appXXXX`) — required for import |
 | `--base-name` | Name for the new base (required unless `--base-id` is set) |
 | `--base-id` | Import into this existing base instead of creating one |
+| `--folder-id` | Place the imported tables under this base-node folder (only with `--base-id`) |
 | `--no-import-records` | Import structure only, skip record data |
 | `--no-import-attachments` | Skip downloading/re-uploading attachments |
 | `--import-view-config` | Import view filters/sorts/grouping — **requires** `--share-link` |
@@ -75,6 +81,7 @@ teable import-airtable --base-id bseXXXX --airtable-base-id appXXXX
 | Create new table | `import --table-name "Name"` |
 | Append to existing table | `import --table-id tblXXX` |
 | Small data already parsed (≤50 records) | `record create` directly |
+| Row filtering/transformation before import | Agent processes the file locally first → `import` the processed file |
 
 ### Resolve file input
 
@@ -126,13 +133,3 @@ teable import-status --table-id tblXXX --poll
 ## Error Handling
 
 `failedCount > 0` in import status → report `errorReportUrl` to user and ask how they want to handle it. Do not auto-download or auto-fix.
-
-## Strategy Guide
-
-| Scenario | Approach |
-|----------|----------|
-| Direct import, no processing | `import --file --table-name` |
-| Need to control columns/types | `import` (analyze) → build mappings → `import --mappings` |
-| Append to existing table | `field get` + `import` (analyze) → build map → `import --mappings` with `fieldId` |
-| Row filtering needed | Agent writes script → `import` processed file |
-| Pure analysis, no import | `import` with no target flags (omit `--table-name` and `--table-id`) |

@@ -434,8 +434,7 @@ const record = {
     "fields": {
       // Text fields
       "fldSingleText": "Single line text",
-      "fldLongText": "Multi-line
-text content",
+      "fldLongText": "Multi-line\ntext content",
 
       // Number & boolean
       "fldNumber": 123.45,

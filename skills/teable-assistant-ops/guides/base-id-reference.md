@@ -33,7 +33,8 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 |---------|---------------|
 | `get-node-tree` | — |
 | `folder create` | `--name` |
-| `folder rename/delete` | `--folder-id` |
+| `folder update` | `--folder-id`, `--name` |
+| `folder delete` | `--folder-id` |
 | `folder move` | `--node-id` |
 
 ### AI / App
@@ -42,8 +43,17 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 |---------|---------------|
 | `trigger-ai-fill` | `--table-id`, `--field-id` |
 | `app list/create/update` | — |
+| `app get-code/delete/publish/status/unpublish` | `--app-id` |
 | `app login-config/ai-enable` | `--app-id` |
 | `app ai-docs` | — |
+
+### Authority
+
+| Command | Also requires |
+|---------|---------------|
+| `authority get/export/enable/disable/role-list` | — |
+| `authority diff/apply` | `--file` |
+| `authority role-get/role-delete/role-duplicate` | `--role-id` |
 
 ### Automation
 
