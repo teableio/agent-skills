@@ -206,6 +206,13 @@ jobs:
              - changed commands/options/help are corrected everywhere they are mentioned,
              - removed commands/options disappear from the docs entirely.
              Follow the existing style and keep diffs minimal — do not rewrite unrelated prose.
+             Style — these are agent skills, not CLI manuals (see "Writing Style for Skill
+             Content" in AGENTS.md): the reader is an AI agent that can always run
+             \`teable <cmd> --help\`, so never restate flag lists or per-command syntax; write
+             the operational knowledge help cannot provide (when to use which command, decision
+             rules, workflows, pitfalls, destructive-operation warnings), with examples only
+             where the invocation shape is non-obvious, and keep it tight — every line costs
+             agent context tokens.
           3. Update skills/teable-assistant-ops/metadata.json: bump "version" (minor for new
              capability, patch for corrections). If the docs now rely on commands that only exist
              since this CLI release, raise the "engines.teableCli" minimum accordingly.

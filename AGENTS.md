@@ -36,6 +36,24 @@ description: >-
 - Instructions should be concise and action-oriented
 - Reference supporting files using relative paths
 
+## Writing Style for Skill Content
+
+These files are **agent skills, not CLI manuals**. The reader is an AI agent
+that can always run `teable <cmd> --help` at runtime, so:
+
+- **Never restate what `--help` already says** — no flag inventories, no
+  per-command syntax walkthroughs, no one-section-per-command structure.
+- **Write the operational knowledge help cannot provide**: when to use which
+  command, decision rules ("if you need X, use A; otherwise B"), cross-command
+  workflows, prerequisites, pitfalls, value formats, safe defaults, and
+  warnings for destructive operations.
+- **Prefer pitfall tables and decision rules over command catalogs** (see the
+  Common Pitfalls table in `cli-reference.md` for the house style).
+- **Examples only where the invocation shape is non-obvious** — complex JSON
+  payloads, quoting, multi-step sequences. Trivial invocations need none.
+- **Brevity is a feature**: skill files are loaded into an agent's context
+  window; every line costs tokens on every task that uses the skill.
+
 ## File Organization
 
 - **api-reference/**: One file per API area (e.g., `field.basic.md`, `view.filter.md`)
