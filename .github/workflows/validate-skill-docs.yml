@@ -32,3 +32,17 @@ jobs:
           node-version: 22
       - name: Validate CLI docs against manifest snapshot
         run: node scripts/validate-cli-docs.mjs
+
+      # Advisory until the mirrors first converge — flip continue-on-error to
+      # false once a sync PR with regenerated mirrors has merged.
+      - name: Check api-reference mirrors against embedded CLI docs
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          if [ ! -f .github/teable-cli-manifest.json ]; then
+            echo "no manifest snapshot yet — skipping mirror check (bootstrap)"
+            exit 0
+          fi
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('.github/teable-cli-manifest.json','utf8')).version")"
+          npm install -g "@teable/cli@${VERSION}"
+          node scripts/dump-cli-docs.mjs --manifest .github/teable-cli-manifest.json --check
