@@ -103,7 +103,8 @@ Configuration (repo secrets/variables):
 | `PI_BASE_URL` | yes | OpenAI-compatible endpoint base URL (secret or variable) |
 | `PI_API_KEY` | yes (secret) | API key for that endpoint |
 | `PI_MODEL` | yes | Model id at that endpoint (variable or secret) |
-| `SYNC_GITHUB_TOKEN` | recommended | PAT/App token for opening the PR so CI runs on it (default `github.token` PRs trigger no workflows) |
+| `PI_APP_ID` (variable) + `PI_APP_PRIVATE_KEY` (secret) | recommended | teable-pi-agent GitHub App (Contents + Pull requests + Issues R/W, installed on this repo). Bot PRs, `/pi` pushes, and replies act as `<app>[bot]` and trigger CI. Takes precedence over `SYNC_GITHUB_TOKEN`. |
+| `SYNC_GITHUB_TOKEN` | fallback | PAT used when the app is not configured, so CI still runs on bot PRs (default `github.token` PRs trigger no workflows) |
 | `TEABLE_EE_READ_TOKEN` | optional | Read access to teable-ee for commit-log context |
 
 Bootstrap: until the first manifest-capable CLI (≥0.6.29) is published there is
