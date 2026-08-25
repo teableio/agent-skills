@@ -44,6 +44,7 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Nodes | Organize tables/folders in base hierarchy | `get-node-tree`, `folder *` | [cli-reference.md § Node & Folder](guides/cli-reference.md#node--folder-management) |
 | Integrations | Slack, OAuth connections for automations | `integration list/connect/get-token` | [automation-guide.md § External](guides/automation-guide.md#external-integrations) |
 | API Access | Any Teable API not covered by CLI commands | `search-api`, `call-api`, `tools list` | [cli-reference.md § search-api](guides/cli-reference.md#search-api--call-api) |
+| Authority | Advanced permissions, roles, grants, and matrix state | `authority get/export/diff/apply/enable/disable` | [cli-reference.md § Authority Matrix](guides/cli-reference.md#authority-matrix) |
 
 ### 2.2 Routing Rules
 
