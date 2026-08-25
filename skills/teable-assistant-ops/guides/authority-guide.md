@@ -22,8 +22,8 @@ Per-table / per-view / per-row / per-field access control for base collaborators
 |---------|---------|
 | `authority get` | Current config + on/off status |
 | `authority export` | Write config as JSON (`--file`; `--role` for one role) — start of every edit |
-| `authority diff` | Preview what an edited config file would change (dry run) |
-| `authority apply` | Reconcile live state to match the file (`--prune` also deletes roles absent from the file) |
+| `authority diff` | Preview what an edited config file would change (does NOT model `--prune` deletions) |
+| `authority apply` | Reconcile live state to match the file; `--dry-run` = full preflight incl. prune preview; `--prune` also deletes roles absent from the file |
 | `authority enable` / `disable` | Turn the matrix on/off (config is kept on disable) |
 | `authority role-list` | List roles with assigned users/departments |
 | `authority role-get` | One role's members + per-table grants (`--role-id`; `--raw` for API form) |
@@ -41,6 +41,9 @@ teable authority export -b bseXXXX --role "Sales" --file sales.json  #    or sco
 # 2. edit the JSON file
 teable authority diff -b bseXXXX --file authority.json               # 3. preview changes (dry run)
 teable authority apply -b bseXXXX --file authority.json              # 4. reconcile live state to the file
+# Pruning? diff does NOT model prune deletions — always preview them first:
+teable authority apply -b bseXXXX --file authority.json --dry-run --prune
+teable authority apply -b bseXXXX --file authority.json --prune
 teable authority enable -b bseXXXX                                   # on/off state is NOT part of the file
 ```
 

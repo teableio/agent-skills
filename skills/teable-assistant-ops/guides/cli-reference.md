@@ -40,7 +40,7 @@ Advanced types (link, lookup, rollup, formula, AI) require `field create` with o
 
 **`record get` vs `sql-query`** — if you'll write back to the same records, use `record get` (returns record IDs); for analytics or cross-table reads, use `sql-query`.
 
-- **record get** — record IDs for subsequent writes, `--search` for fuzzy search, simple pagination. Returns structured records with `recordId`.
+- **record get** — record IDs for subsequent writes, `--search` for fuzzy search, simple pagination. Returns compact tabular output with an `id` column per row.
 - **sql-query** — JOINs across tables, aggregations (COUNT/SUM/AVG/GROUP BY), complex WHERE, subqueries. Returns flat rows without record IDs. Read-only (SELECT only).
 - **Aggregation**: prefer `sql-query` with GROUP BY. Alternatively, `search-api --query "aggregation"` + `call-api` for the dedicated aggregation endpoint.
 

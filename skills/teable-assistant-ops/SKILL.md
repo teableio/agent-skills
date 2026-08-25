@@ -40,6 +40,8 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | App Builder | Live dashboards, custom web UIs | `app create/update/list/get-code`, `app publish/status/unpublish`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
 | Authority | Per-table/row/field permissions for collaborators | `authority get/export/diff/apply`, `authority enable/disable`, `authority role-*` | [authority-guide.md](guides/authority-guide.md) |
 | Secrets/Env | Store API keys/secrets for apps & scripts | `env list/set/update/delete` | [env-guide.md](guides/env-guide.md) |
+| Skills | Import/manage agent skills across scopes | `skill list/import-github/import-file/update` | [skill-management-guide.md](guides/skill-management-guide.md) |
+| Sandbox tools | Persist tool installs across sandbox rebuilds (Teable-managed sandboxes only) | `sandbox tool *` | [sandbox-tools-guide.md](guides/sandbox-tools-guide.md) |
 | Email | Send an email directly (one-off) | `send-email` | [cli-reference.md § Sending Email](guides/cli-reference.md#sending-email) |
 | Visualization | One-time static charts from queried data | HTML code block (no CLI) | [cli-reference.md § Visualization](guides/cli-reference.md#one-time-data-visualization) |
 | Nodes | Organize tables/folders in base hierarchy | `get-node-tree`, `folder *` | [cli-reference.md § Node & Folder](guides/cli-reference.md#node--folder-management) |

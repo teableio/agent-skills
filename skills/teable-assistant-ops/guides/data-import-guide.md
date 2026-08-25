@@ -6,16 +6,18 @@
 # 1. Simplest import — create new table from CSV
 teable import --file data.csv --table-name "Sales"
 
-# 2. Import with mappings — rename columns and set types
+# 2. Import with mappings — rename columns and set types (new-table mode: ARRAY;
+#    "column" = source column name, optional — entries default to positional order)
 teable import --file data.csv --table-name "Sales" \
-  --mappings '[{"sourceColumnIndex": 0, "fieldName": "Amount", "fieldType": "number"}, {"sourceColumnIndex": 1, "fieldName": "Name"}]'
+  --mappings '[{"column": "amt", "field": "Amount", "type": "number"}, {"column": "name", "field": "Name"}]'
 
 # 3. Specific Excel worksheet
 teable import --file data.xlsx --table-name "Q1" --sheet "Sheet2"
 
-# 4. Append to existing table (map source columns to field IDs)
+# 4. Append to existing table (append mode: OBJECT, not array —
+#    key = field ID or field name, value = 0-based source column index, null = skip)
 teable import --file data.csv --table-id tblXXX \
-  --mappings '[{"sourceColumnIndex": 0, "fieldId": "fldAAA"}, {"sourceColumnIndex": 2, "fieldId": "fldBBB"}]'
+  --mappings '{"fldAAA": 0, "fldBBB": 2}'
 
 # 5. Inline data (JSON array of objects)
 teable import --table-name "Sales" --data '[{"Name":"Alice","Amount":100},{"Name":"Bob","Amount":200}]'
@@ -30,7 +32,9 @@ teable import --file data.csv --table-name "Sales" --no-header
 teable import --file data.csv --table-name "Sales" --folder-id <folderNodeId>
 ```
 
-**fieldType values**: `text`, `long`, `number`/`num`, `date`, `checkbox`/`check`, `singleSelect`/`sel`, `multipleSelect`/`mul`, `rating`/`rate`
+**`--mappings` shape differs by mode** — new table (`--table-name`) takes an **array** of `{column?, field, type?}`; append (`--table-id`) takes an **object** `{"<field ID or name>": <0-based column index>}` (arrays are rejected; omit `--mappings` entirely to auto-match by header name).
+
+**`type` values** (new-table mappings): `text`/`singleLineText`, `long`/`longText`, `num`/`number`, `check`/`checkbox`, `date`, `sel`/`singleSelect`, `multi`/`multipleSelect`, `rate`/`rating` — note `multi`, NOT `mul` (that alias only exists in `table create --fields` shorthand)
 
 **File formats**: `.csv`, `.tsv`, `.xlsx`, `.xlsm`, `.xls`
 
@@ -38,7 +42,7 @@ teable import --file data.csv --table-name "Sales" --folder-id <folderNodeId>
 
 `teable import-airtable` migrates a **whole Airtable base** — tables, fields, links, views, records, and attachments — via the native importer. Unlike the row-level [`import`](#quick-start) command (which loads tabular files into a table), this creates a **new base** by default (or targets an existing one with `--base-id`).
 
-**Credential**: automatic when Airtable is connected via `integration connect --provider airtable` — the connected integration's token is resolved and refreshed server-side, so nothing needs to be pasted. Override with `--integration-id <id>` or `--access-token <pat>`.
+**Credential**: automatic when the user has connected Airtable via the connectors UI — the connected integration's token is auto-detected and refreshed server-side, so nothing needs to be pasted. Override with `--integration-id <id>`, `--access-token <pat>`, or the `AIRTABLE_TOKEN` env var. (`integration connect` cannot connect Airtable — its `--provider` only accepts `slack`.)
 
 **Flow:**
 
@@ -124,8 +128,8 @@ teable import-status --table-id <tableId> --poll
 teable field get --table-id tblXXX
 # 2. Analyze source structure
 teable import --file data.csv
-# 3. Map source columns to field IDs
-teable import --attachment-token <token> --table-id tblXXX --mappings '[{"sourceColumnIndex": 0, "fieldId": "fldAAA"}, {"sourceColumnIndex": 1, "fieldId": "fldBBB"}]'
+# 3. Map field IDs (or names) to 0-based source column indexes (object, not array)
+teable import --attachment-token <token> --table-id tblXXX --mappings '{"fldAAA": 0, "fldBBB": 1}'
 # 4. For large files, poll in background (run_in_background: true)
 teable import-status --table-id tblXXX --poll
 ```

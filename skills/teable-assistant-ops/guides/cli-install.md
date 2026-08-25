@@ -43,7 +43,7 @@ Options:
 - `--token` — Teable Personal Access Token (PAT), also settable via `TEABLE_TOKEN` or `TEABLE_PAT` env vars
 - `--endpoint` — Teable server URL (default: `https://app.teable.ai`), also settable via `TEABLE_ENDPOINT` env var
 - `--force` — overwrite existing config
-- `--path <file>` — save config to a custom path
+- `--path <dir>` — takes a **directory**, writes `<dir>/.teable/cli/config.json` (e.g. `--path .` for a project-level config)
 
 ### Auth management
 
