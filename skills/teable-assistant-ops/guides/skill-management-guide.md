@@ -1,56 +1,24 @@
 # Skill Management Guide
 
-Use `teable skill` to list, import, and enable or disable managed agent skills. Skill commands are scoped independently of the current Teable base.
+Managed skills are independent of the current project base. Choose scope by intended audience: `user` for personal reuse, `base` or `space` for shared context, and `app` or `cuppyclaw` for one runtime.
 
-## Scopes
+## Scope Resolution
 
-`--scope-type` (alias `--scope`) accepts `user`, `base`, `space`, `system`, `app`, or `cuppyclaw`.
+- Base and space imports need an explicit scope ID.
+- App and CuppyClaw operations can fall back to `TEABLE_APP_ID` and `TEABLE_BOT_ID`; pass the ID when environment context could be ambiguous.
+- A user-scope list normally shows personal skills. Add base context only when the agent needs skills available through that base.
+- Use the available list when looking for chat slash-command exposure; use the managed list when locating a skill to configure.
 
-- Supply `--scope-id` for base and space imports.
-- App and CuppyClaw operations require a scope ID, but may obtain it from `TEABLE_APP_ID` or `TEABLE_BOT_ID`.
-- For `skill list --scope-type user`, optional `--base-id` also includes skills available from that base.
+## Import Workflow
 
-## List Skills
+1. Choose the narrowest scope that should own the skill.
+2. Import it, then list that scope to verify ownership and obtain the skill ID.
+3. Change enabled state only after verifying the ID and scope.
 
-```bash
-teable skill list --scope-type user
-teable skill list --scope-type user --list-type available --base-id bseXXXX
-teable skill list --scope-type app --scope-id appXXXX
-```
-
-`--list-type managed` (the default) returns full managed-skill details. Use `available` for skills exposed as chat slash commands.
-
-## Import from GitHub
-
-The URL must point to a skill folder through `/tree/<ref>/<path>` or `/blob/<ref>/<path>`; a plain repository URL is rejected.
+GitHub imports require a URL to the skill directory, not the repository root. The URL must include `/tree/<ref>/<path>` (or `/blob/<ref>/<path>`):
 
 ```bash
-teable skill import-github \
-  --scope-type user \
-  --url https://github.com/owner/repo/tree/main/skills/my-skill
-
-teable skill import-github \
-  --scope-type base \
-  --scope-id bseXXXX \
-  --url https://github.com/owner/repo/tree/main/skills/my-skill
+teable skill import-github --scope-type base --scope-id bseXXXX --url https://github.com/owner/repo/tree/main/skills/my-skill
 ```
 
-## Import a Local Archive
-
-Both `.skill` and `.zip` names are accepted, but the file content must be a valid ZIP archive.
-
-```bash
-teable skill import-file --scope-type user --file-path ./my-skill.skill
-teable skill import-file --scope-type app --scope-id appXXXX --file-path ./my-skill.zip
-```
-
-## Enable or Disable a Skill
-
-Find the `sklXXXX` ID with `skill list`, then update its enabled state:
-
-```bash
-teable skill update --skill-id sklXXXX --is-enabled true
-teable skill update --skill-id sklXXXX --is-enabled false
-```
-
-`--is-enabled` is required and accepts `true` or `false`.
+For local imports, both `.skill` and `.zip` filenames are accepted, but the content must be a valid ZIP archive. Importing does not infer a target from the configured base; scope must be chosen explicitly.

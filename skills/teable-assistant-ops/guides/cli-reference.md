@@ -14,30 +14,10 @@ Use `teable config show` to check the resolved endpoint, base ID, and token stat
 
 ## Base, Table, Field, and View Lifecycle
 
-Use the base commands to discover and manage bases. Base creation targets a space; the other operations use a base ID:
-
-```bash
-teable base list
-teable base create --space-id spcXXXX --name "My Base"
-teable base get --base-id bseXXXX
-teable base update --base-id bseXXXX --name "Renamed Base"
-```
-
-`base create` requires `--space-id`; `--name` and `--icon` are optional. `base list` can be narrowed with `--space-id`, while `base update` accepts a new name and/or emoji icon.
-
-**Destructive operation:** `base delete` moves the whole base to trash. Verify the base ID and confirm the user's intent before running:
-
-```bash
-teable base delete --base-id bseXXXX
-```
-
-For resources inside a base, use the resource ID together with the base ID. Delete operations are destructive (tables move to trash; fields and views are permanent):
-
-```bash
-teable table delete --base-id bseXXXX --table-id tblXXXX
-teable field delete --base-id bseXXXX --table-id tblXXXX --field-id fldXXXX
-teable view delete --base-id bseXXXX --table-id tblXXXX --view-id viwXXXX
-```
+- Base creation is space-scoped; all later base operations target the returned base ID. Use `base list` to discover existing bases before creating one and avoid duplicates.
+- Before mutating a table, field, or view, inspect its parent resource and verify that every ID belongs to the intended base.
+- Treat every delete as destructive and confirm the user's intent immediately before execution. Base and table deletion move resources to trash; field and view deletion is permanent and can invalidate formulas, automations, apps, and saved view-dependent workflows.
+- Prefer updating in place when identity or downstream references matter. After any lifecycle change, reread the resource and affected dependents.
 
 ## Field Type Aliases
 
