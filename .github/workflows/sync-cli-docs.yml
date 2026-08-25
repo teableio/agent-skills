@@ -26,10 +26,6 @@
 name: sync-cli-docs
 
 on:
-  # TEMP (pre-merge debugging): registers this workflow so it can be dispatched
-  # on the PR branch via the API. Remove this pull_request trigger before merge.
-  pull_request:
-    paths: ['.github/workflows/sync-cli-docs.yml']
   repository_dispatch:
     types: [cli-published]
   workflow_dispatch:
@@ -49,8 +45,6 @@ permissions:
 
 jobs:
   sync:
-    # TEMP guard paired with the pull_request trigger above: registration runs skip.
-    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     env:
       SNAPSHOT: .github/teable-cli-manifest.json
