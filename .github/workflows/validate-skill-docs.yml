@@ -1,0 +1,34 @@
+# Validates that every `teable ...` invocation documented in the
+# teable-assistant-ops skill exists in the committed CLI manifest snapshot.
+# This is the mechanical guard against hallucinated commands/flags in the
+# AI-generated sync PRs (and in human edits alike).
+
+name: validate-skill-docs
+
+on:
+  pull_request:
+    paths:
+      - 'skills/teable-assistant-ops/**'
+      - '.github/teable-cli-manifest.json'
+      - 'scripts/validate-cli-docs.mjs'
+  push:
+    branches: [main]
+    paths:
+      - 'skills/teable-assistant-ops/**'
+      - '.github/teable-cli-manifest.json'
+      - 'scripts/validate-cli-docs.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate CLI docs against manifest snapshot
+        run: node scripts/validate-cli-docs.mjs
