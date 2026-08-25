@@ -144,9 +144,17 @@ jobs:
              dedicated guides/<topic>-guide.md (modeled on the existing guides) linked
              from SKILL.md — never a large section appended to an existing file such
              as cli-reference.md. Small corrections belong in place.
-          4. Never document a command or flag that is absent from the manifest — CI
+          4. Style — these are agent skills, not CLI manuals (see "Writing Style for
+             Skill Content" in AGENTS.md). The reader is an AI agent that can always
+             run \`teable <cmd> --help\`, so never restate flag lists or per-command
+             syntax; write the operational knowledge help cannot provide: when to use
+             which command, decision rules, cross-command workflows, pitfalls, and
+             destructive-operation warnings. Examples only where the invocation shape
+             is non-obvious. Keep it tight — skill files are loaded into an agent's
+             context and every line costs tokens.
+          5. Never document a command or flag that is absent from the manifest — CI
              validates every documented \`teable\` invocation against it.
-          5. Write a short reply to the reviewer to $RUNNER_TEMP/reply.md: what you
+          6. Write a short reply to the reviewer to $RUNNER_TEMP/reply.md: what you
              changed, or why you made no changes (e.g. the request conflicts with the
              manifest). Plain conversational markdown, no headings. Write the reply
              in English regardless of the language of the instruction — everything in
