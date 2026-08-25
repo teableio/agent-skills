@@ -8,6 +8,7 @@ Use automations for event-driven or recurring work — if the user's task fits a
 |---------|---------|
 | `automation list` | List all automations in the base |
 | `automation get` | Get detailed workflow (trigger, actions, script code, edges) |
+| `automation update` | Immediately update the workflow name and/or description |
 | `automation setup-trigger` | Create or update workflow + trigger |
 | `automation generate-script` | Add/update script code for an action |
 | `automation generate-flowchart` | Generate flowchart for a script action |
@@ -15,8 +16,19 @@ Use automations for event-driven or recurring work — if the user's task fits a
 | `automation activate` | Activate, deactivate, or discard draft |
 | `automation get-runs` | View run history (filter with `--status`) |
 | `automation get-run` | Step-level detail of a single run |
+| `automation delete` | Permanently delete a complete workflow |
 | `automation delete-node` | Delete an action/logic node (not trigger) |
 | `automation get-script-input` | Get input data from previous workflow actions |
+
+## Workflow Metadata
+
+Rename a workflow or change its description without modifying its trigger or creating a draft:
+
+```bash
+teable automation update --workflow-id wflXXX --name "Daily report" --description "Emails the daily sales summary"
+```
+
+At least one of `--name` or `--description` is required. This update applies immediately; no `automation activate` call is needed. Use `automation setup-trigger --workflow-id wflXXX ...` for trigger changes instead.
 
 ## Trigger Selection
 
@@ -52,7 +64,7 @@ Use automations for event-driven or recurring work — if the user's task fits a
 5. `automation generate-flowchart` — visualize the script logic. If only workflow-id is known, use `automation get` to find the script action-id first. All three flags required: `--workflow-id`, `--action-id`, `--flowchart`
    - Node types: `start`, `end`, `step`, `condition`, `loop`, `tryCatch`
    - Edge types: `default`, `true`, `false`, `error`, `loop`
-6. `automation test-node` — test trigger or action
+6. `automation test-node` — test trigger or action; it is safe by default, while `--side-effect` executes real actions. Use `--with-dependency` to test prerequisite nodes together and `--record-id` to pin record-based triggers
 7. `automation activate --workflow-id wflXXX --method activate`
 
 **Script files**: `automation get` and `automation get-script-input` persist scripts to `.teable/cli/scripts/<workflowId>/<actionId>.js` and return that path as `code`.
@@ -73,6 +85,16 @@ All edits (trigger config, script code, node changes) create a **draft** version
 **Risk**: `activate` in production starts sending real emails/API calls immediately.
 
 Use `automation get --workflow-id wflXXX --include-active-snapshot` to compare draft vs published version when `hasDraft=true`.
+
+For run history, `automation get-runs --workflow-id wflXXX --take 10` returns at most 10 runs and can filter `--status` to `success`, `failed`, `running`, `canceled`, or `pending`. When a response has `nextCursor`, pass it with `--cursor` instead of increasing `--skip`, because offset pagination can skip archived runs.
+
+To remove an entire workflow:
+
+```bash
+teable automation delete --workflow-id wflXXX
+```
+
+**Warning:** this permanently deletes the workflow, trigger, actions, and logic nodes. Verify the workflow ID first. Use `automation delete-node` when only one non-trigger node should be removed.
 
 ## Script Rules
 

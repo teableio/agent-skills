@@ -25,7 +25,11 @@ teable auth login
 Opens a browser for OAuth login (Authorization Code + PKCE). No token needed — credentials are saved automatically.
 
 Options:
-- `--endpoint` — Teable server URL (default: `https://app.teable.ai`)
+- `--client-id` — OAuth client ID (default: `clttckxmg4deadomjhs`)
+- `--scopes` — comma-separated OAuth scopes
+- `--device-code` — use a one-time browser code instead of a local callback; use this in cloud IDEs, SSH sessions, and containers
+
+To target a custom deployment, pass `--endpoint` to the parent auth command before `login`.
 
 ### Option 2: Personal Access Token
 
@@ -34,8 +38,8 @@ teable auth --token <your-personal-access-token> --endpoint https://app.teable.a
 ```
 
 Options:
-- `--token` — Teable Personal Access Token (PAT), also settable via `TEABLE_TOKEN` or `TEABLE_PAT` env vars
-- `--endpoint` — Teable server URL (default: `https://app.teable.ai`), also settable via `TEABLE_ENDPOINT` env var
+- `--token` — Teable Personal Access Token (PAT)
+- `--endpoint` — Teable server URL (default: `https://app.teable.ai`)
 - `--force` — overwrite existing config
 - `--path <dir>` — save config to `<dir>/.teable/cli/config.json`
 

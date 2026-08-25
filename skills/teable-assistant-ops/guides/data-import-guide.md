@@ -27,13 +27,13 @@ cat data.csv | teable import --table-name "Sales"
 teable import --file data.csv --table-name "Sales" --no-header
 ```
 
-**fieldType values**: `text`, `long`, `number`/`num`, `date`, `checkbox`/`check`, `singleSelect`/`sel`, `multipleSelect`/`mul`, `rating`/`rate`
+**Mapping `type` values**: `text`, `long`, `number`, `checkbox`, `date`, `singleSelect`, `multiSelect`, `rating`
 
 ## Import from Airtable
 
 `teable import-airtable` migrates a **whole Airtable base** — tables, fields, links, views, records, and attachments — via the native importer. Unlike the row-level [`import`](#quick-start) command (which loads tabular files into a table), this creates a **new base** by default (or targets an existing one with `--base-id`).
 
-**Credential**: automatic when Airtable is connected via `integration connect --provider airtable` — the connected integration's token is resolved and refreshed server-side, so nothing needs to be pasted. Override with `--integration-id <id>` or `--access-token <pat>`.
+**Credential**: automatic when Airtable is connected through Teable's connectors UI — the connected integration's token is resolved and refreshed server-side, so nothing needs to be pasted. Override with `--integration-id <id>` or `--access-token <pat>`.
 
 **Flow:**
 
@@ -60,6 +60,9 @@ teable import-airtable --base-id bseXXXX --airtable-base-id appXXXX
 | `--airtable-base-id` | Airtable base id (`appXXXX`) — required for import |
 | `--base-name` | Name for the new base (required unless `--base-id` is set) |
 | `--base-id` | Import into this existing base instead of creating one |
+| `--folder-id` | Put imported tables in this folder; only valid with `--base-id` |
+| `--access-token` | Airtable PAT override for this run |
+| `--integration-id` | Connected Airtable integration override; otherwise auto-detected |
 | `--no-import-records` | Import structure only, skip record data |
 | `--no-import-attachments` | Skip downloading/re-uploading attachments |
 | `--import-view-config` | Import view filters/sorts/grouping — **requires** `--share-link` |
@@ -89,7 +92,7 @@ teable import-airtable --base-id bseXXXX --airtable-base-id appXXXX
 
 ## Context Bloat Warning
 
-`import-status --poll` outputs repeated JSON status lines on each polling tick. Running it in the foreground floods the conversation context with duplicate data and degrades subsequent reasoning. Always run it with `run_in_background: true` and report only the final summary (success/fail count) to the user.
+`import-status --poll` outputs repeated JSON status lines on each polling tick. It polls every 5000 ms by default (the minimum) and times out after 1800000 ms; override with `--poll-interval` and `--timeout`. Running it in the foreground floods the conversation context with duplicate data and degrades subsequent reasoning. Always run it with `run_in_background: true` and report only the final summary (success/fail count) to the user.
 
 ## Typical Agent Workflows
 

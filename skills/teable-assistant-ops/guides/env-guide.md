@@ -43,7 +43,7 @@ teable env update --id evvXXX --value new-value
 teable env delete --id evvXXX
 ```
 
-**`env set` flags**: `-S, --scope`, `--scope-id`, `-k, --key`, `-v, --value`, `-d, --description` (optional).
+**`env set` flags**: `-S, --scope` (alias `--scope-type`), `--scope-id`, `-k, --key`, `-v, --value`, `-d, --description` (optional). `env list` supports the same scope alias.
 
 ## How values are read
 

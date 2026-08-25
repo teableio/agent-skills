@@ -17,7 +17,7 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 ## 1. Prerequisites & Constraints
 
 - All operations use `teable` CLI. Only check auth (`auth status`) if a command fails.
-- **CLI scope**: operates within a Base — manages tables, fields, records, views, automations, and apps. Cannot create Spaces or Bases (direct user to Teable web UI).
+- **CLI scope**: manages bases and resources within them (tables, fields, records, views, automations, and apps). It can list, create, inspect, update, and delete bases, but cannot manage Spaces themselves.
 - **Install**: if `teable` not found → run the install script at `scripts/install.sh` relative to this skill's directory. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
 - **`--base-id`**: omit by default; ask user only if a command fails. See [guides/base-id-reference.md](guides/base-id-reference.md).
 - **Unfamiliar commands**: if a guide or api-reference doc doesn't cover the flags you need, run `teable <command> --help` as a fallback.
@@ -29,6 +29,7 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 
 | Module | What it solves | Entry commands | Guide to read |
 |--------|---------------|----------------|---------------|
+| Bases | Discover and manage bases | `base list/create/get/update/delete`, `config base-id` | [cli-reference.md § Base, Table, Field, and View Lifecycle](guides/cli-reference.md#base-table-field-and-view-lifecycle) |
 | Data Query | Read records, analytics, aggregations | `record get`, `sql-query` | [cli-reference.md § Data Queries](guides/cli-reference.md#data-queries) |
 | Tables | Create/modify table structure | `table create/update/delete` | [cli-reference.md § Field Type Aliases](guides/cli-reference.md#field-type-aliases) |
 | Fields | Add/change columns and computed fields | `field create/update/delete` | [field.simple.md](api-reference/field.simple.md) |
@@ -37,8 +38,10 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Import | CSV/Excel file loading (>50 rows); whole Airtable base migration | `import`, `import-status`, `import-airtable` | [data-import-guide.md](guides/data-import-guide.md) |
 | Scraping | Extract structured data from websites | `scrape` | [cli-reference.md § Scraping](guides/cli-reference.md#scraping) |
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
-| App Builder | Live dashboards, custom web UIs | `app create/update/list`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
+| App Builder | Live dashboards, custom web UIs and app source snapshots | `app list/get-code/create/update/delete`, `app publish/status/unpublish/login-config/ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
 | Secrets/Env | Store API keys/secrets for apps & scripts | `env list/set/update/delete` | [env-guide.md](guides/env-guide.md) |
+| Skills | List, import, enable, or disable agent skills | `skill list/import-github/import-file/update` | [skill-management-guide.md](guides/skill-management-guide.md) |
+| Sandbox Tools | Persist tool setup and state across sandbox rebuilds | `sandbox tool upsert/setup/list/delete` | [sandbox-tools-guide.md](guides/sandbox-tools-guide.md) |
 | Email | Send an email directly (one-off) | `send-email` | [cli-reference.md § Sending Email](guides/cli-reference.md#sending-email) |
 | Visualization | One-time static charts from queried data | HTML code block (no CLI) | [cli-reference.md § Visualization](guides/cli-reference.md#one-time-data-visualization) |
 | Nodes | Organize tables/folders in base hierarchy | `get-node-tree`, `folder *` | [cli-reference.md § Node & Folder](guides/cli-reference.md#node--folder-management) |

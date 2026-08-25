@@ -1,6 +1,6 @@
 # CLI Operations Reference
 
-Use `teable config show` to check current endpoint, baseId, and token status.
+Use `teable config show` to check the resolved endpoint, base ID, and token status. Save a project-level default base ID with `teable config base-id bseXXXX`; commands that require a base can then omit `--base-id`.
 
 ## Common Pitfalls
 
@@ -21,6 +21,14 @@ teable base list
 teable base create --space-id spcXXXX --name "My Base"
 teable base get --base-id bseXXXX
 teable base update --base-id bseXXXX --name "Renamed Base"
+```
+
+`base create` requires `--space-id`; `--name` and `--icon` are optional. `base list` can be narrowed with `--space-id`, while `base update` accepts a new name and/or emoji icon.
+
+**Destructive operation:** `base delete` moves the whole base to trash. Verify the base ID and confirm the user's intent before running:
+
+```bash
+teable base delete --base-id bseXXXX
 ```
 
 For resources inside a base, use the resource ID together with the base ID. Delete operations are destructive (tables move to trash; fields and views are permanent):
@@ -59,7 +67,7 @@ Advanced types (link, lookup, rollup, formula, AI) require `field create` with o
 
 **`record get` vs `sql-query`** — if you'll write back to the same records, use `record get` (returns record IDs); for analytics or cross-table reads, use `sql-query`.
 
-- **record get** — record IDs for subsequent writes, `--search` for fuzzy search, simple pagination. Returns structured records with `recordId`.
+- **record get** — record IDs for subsequent writes, `--search` for fuzzy search, simple pagination. Returns compact tabular data with an `id` column.
 - **sql-query** — JOINs across tables, aggregations (COUNT/SUM/AVG/GROUP BY), complex WHERE, subqueries. Returns flat rows without record IDs. Read-only (SELECT only).
 - **Aggregation**: prefer `sql-query` with GROUP BY. Alternatively, `search-api --query "aggregation"` + `call-api` for the dedicated aggregation endpoint.
 
@@ -118,7 +126,7 @@ See [view.filter.md](../api-reference/view.filter.md), [view.sort.md](../api-ref
 | User | `"name"` or `"email"` | With `--typecast`; without: `{"id":"usrXXX","title":"Name"}` |
 | Attachment | `[{"name":"f.png","token":"xxx"}]` | Always array of objects; update **replaces all** |
 
-**Batch limits**: `record create`/`update` max 2000 per call; `record delete` max 1000 IDs per call. `--take` (alias `--limit`) max 1000 per `record get`. For larger datasets, split into multiple calls.
+**Batch limits**: `record create`/`update` max 2000 per call; `record delete` max 1000 IDs per call. `record get` defaults to 100 rows; `--take` (alias `--limit`) is max 1000 and `--projection` is max 50 fields. Use `--skip` for pagination. For larger writes, split into multiple calls.
 
 **Attachment handling**: Get tokens via `upload-attachment --file-path /path/to/file`. On update, passing attachments **replaces** all existing — not appends.
 

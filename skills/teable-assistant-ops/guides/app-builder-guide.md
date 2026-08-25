@@ -8,10 +8,11 @@
 
 ## Workflow
 
-1. `app list` — check existing apps (update existing instead of creating duplicate)
-2. `app create` / `app update` — create or update app
-3. Include `--table-ids` to give the app data access
-4. The app runtime includes an AI API for text and image generation — pass AI-related features in `--prompt` and the builder handles integration
+1. `app list` — check existing apps (update existing instead of creating duplicate); use `--search` for a case-insensitive name filter
+2. When an existing app's implementation is relevant, `app get-code` downloads a read-only source snapshot for context
+3. `app create` / `app update` — create or update app
+4. Include `--table-ids` to give the app data access
+5. The app runtime includes an AI API for text and image generation — pass AI-related features in `--prompt` and the builder handles integration
 
 **Optional capabilities** (applied to an app independently, in any order):
 - **AI access** — `app ai-enable` + `app ai-docs` (see [AI in apps](#ai-in-apps))
@@ -43,9 +44,28 @@ teable app update \
 
 ## Key Rules
 
-- **Pass user requirements verbatim** to `--prompt` — do not interpret, expand, or add features
+- Complete requested setup, inspection, analysis, and data changes before calling the builder; do not put those steps in `--prompt`
+- **Pass the user's app intent faithfully** to `--prompt`; include only app purpose, UI/workflow, explicit constraints, relevant table IDs, and verified data context—do not add features
 - Do not use markdown formatting in the requirement text
 - Do not specify tech stack unless the user explicitly requests it
+
+## Read an existing app's code
+
+When an app is mentioned and its implementation is needed as context, download its latest saved source:
+
+```bash
+teable app get-code --app-id appXXX
+```
+
+The command extracts a detached snapshot to `~/.teable/refs/<appId>/`. Treat it as **read-only**: local edits do not update the app and can be overwritten by a later download. Environment files and secrets are excluded. Use `app update` to make changes. The command requires app editing permission (Base Owner/Creator).
+
+## Delete an app
+
+```bash
+teable app delete --app-id appXXX
+```
+
+**Warning:** this permanently deletes the app. Verify `--app-id` before running it.
 
 ## AI in apps
 
@@ -65,6 +85,8 @@ For usage patterns and the **available model keys for the current base** (resolv
 ```bash
 teable app ai-docs            # equivalent to: teable get-doc --topic app.ai
 ```
+
+Both commands require the target base (explicitly or through the configured project base ID).
 
 ## App login / authentication
 
