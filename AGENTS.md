@@ -86,3 +86,14 @@ no snapshot; the first sync run treats that as a full diff and opens a
 one-time full-audit PR. The validator skips silently while the snapshot is
 absent. To trigger a sync manually, run the `sync-cli-docs` workflow with a
 version input.
+
+### Comment-driven fixes (`/pi`)
+
+On any PR, a maintainer (OWNER/MEMBER/COLLABORATOR) can comment
+`/pi <instruction>` — top-level or as an inline review comment (inline carries
+the file/line/diff context to the agent). The `pi-pr-assistant` workflow applies
+the requested change to the PR branch, runs the doc validator (a failing
+validation is reported instead of pushed), pushes, and replies on the PR.
+Comments from other users, fork PRs, and comments not starting with `/pi` are
+ignored. Note: GitHub runs comment-triggered workflows from the default branch,
+so changes to this workflow only take effect after merging to main.

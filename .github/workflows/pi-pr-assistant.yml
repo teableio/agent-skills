@@ -1,0 +1,202 @@
+# Comment-driven doc fixes: a maintainer comments `/pi <instruction>` on a PR
+# (top-level or inline review comment) and the pi coding agent applies the
+# requested change to the PR branch, validates it, pushes, and replies.
+#
+# Notes:
+# - issue_comment/pull_request_review_comment always run the workflow from the
+#   DEFAULT branch, so this only works once merged to main.
+# - Only comments from OWNER/MEMBER/COLLABORATOR trigger a run (anyone else's
+#   `/pi` is ignored) and fork PRs are rejected — both to keep untrusted input
+#   away from the agent and the push token.
+# - Reuses the PI_BASE_URL / PI_API_KEY / PI_MODEL configuration of
+#   sync-cli-docs. Pushes use SYNC_GITHUB_TOKEN when set so CI runs on the new
+#   commit; with the default token it pushes fine but triggers no workflows.
+
+name: pi-pr-assistant
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: pi-pr-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  assist:
+    if: >
+      (github.event_name == 'pull_request_review_comment' || github.event.issue.pull_request) &&
+      startsWith(github.event.comment.body, '/pi') &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.SYNC_GITHUB_TOKEN || github.token }}
+      PR_NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
+    steps:
+      - name: Resolve PR branch
+        id: pr
+        run: |
+          set -euo pipefail
+          info="$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json headRefName,isCrossRepository)"
+          if [ "$(jq -r '.isCrossRepository' <<< "$info")" = "true" ]; then
+            echo "::error::fork PRs are not supported by /pi"
+            exit 1
+          fi
+          echo "head_ref=$(jq -r '.headRefName' <<< "$info")" >> "$GITHUB_OUTPUT"
+
+      - name: Acknowledge comment
+        continue-on-error: true
+        env:
+          COMMENT_ID: ${{ github.event.comment.id }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request_review_comment" ]; then
+            endpoint="repos/${GITHUB_REPOSITORY}/pulls/comments/${COMMENT_ID}/reactions"
+          else
+            endpoint="repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}/reactions"
+          fi
+          gh api -X POST "$endpoint" -f content=eyes >/dev/null
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.pr.outputs.head_ref }}
+          token: ${{ secrets.SYNC_GITHUB_TOKEN || github.token }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Assemble feedback context
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
+          COMMENT_PATH: ${{ github.event.comment.path }}
+          COMMENT_LINE: ${{ github.event.comment.line }}
+          COMMENT_HUNK: ${{ github.event.comment.diff_hunk }}
+          PR_TITLE: ${{ github.event.issue.title || github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+          {
+            printf 'PR #%s: %s\n' "$PR_NUMBER" "$PR_TITLE"
+            printf 'Reviewer: @%s\n\n' "$COMMENT_AUTHOR"
+            if [ -n "${COMMENT_PATH:-}" ]; then
+              printf 'Inline comment on %s (line %s). Diff hunk:\n' "$COMMENT_PATH" "${COMMENT_LINE:-?}"
+              printf '```\n%s\n```\n\n' "$COMMENT_HUNK"
+            fi
+            printf 'Instruction:\n%s\n' "$COMMENT_BODY"
+          } > "$RUNNER_TEMP/feedback.md"
+
+      - name: Configure pi coding agent
+        env:
+          PI_BASE_URL: ${{ secrets.PI_BASE_URL || vars.PI_BASE_URL }}
+          PI_MODEL: ${{ vars.PI_MODEL || secrets.PI_MODEL }}
+          PI_API_KEY: ${{ secrets.PI_API_KEY }}
+        run: |
+          set -euo pipefail
+          for required in PI_BASE_URL PI_MODEL PI_API_KEY; do
+            if [ -z "${!required:-}" ]; then
+              echo "::error::${required} is not set (repo secret or variable)"
+              exit 1
+            fi
+          done
+          npm install -g @earendil-works/pi-coding-agent
+          mkdir -p ~/.pi/agent
+          # apiKey stays an env reference ("$PI_API_KEY") so the key never lands on disk.
+          jq -n --arg baseUrl "$PI_BASE_URL" --arg model "$PI_MODEL" \
+            '{providers: {custom: {baseUrl: $baseUrl, api: "openai-completions", apiKey: "$PI_API_KEY", models: [{id: $model}]}}}' \
+            > ~/.pi/agent/models.json
+
+      - name: Apply feedback with pi
+        env:
+          PI_MODEL: ${{ vars.PI_MODEL || secrets.PI_MODEL }}
+          PI_API_KEY: ${{ secrets.PI_API_KEY }}
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/pi-prompt.md" <<EOF
+          You are addressing review feedback on a pull request in this repository.
+
+          Read $RUNNER_TEMP/feedback.md first — it contains the reviewer's instruction
+          (and, for inline comments, the file/line/diff context it refers to).
+
+          Context: this PR updates the teable-assistant-ops skill docs.
+          .github/teable-cli-manifest.json is the authoritative CLI manifest — every
+          command, option, and rendered --help text of the current \`teable\` CLI.
+
+          Task:
+          1. Make exactly the change the reviewer asked for, in files under
+             skills/teable-assistant-ops/. Keep unrelated content untouched.
+          2. Never document a command or flag that is absent from the manifest — CI
+             validates every documented \`teable\` invocation against it.
+          3. Write a short reply to the reviewer to $RUNNER_TEMP/reply.md: what you
+             changed, or why you made no changes (e.g. the request conflicts with the
+             manifest). Plain conversational markdown, no headings.
+
+          Hard rules:
+          - Only edit files under skills/teable-assistant-ops/ plus the reply file.
+            Do not touch .github/, scripts/, or workflow files.
+          - Do not run git commands.
+          EOF
+          pi --provider custom --model "$PI_MODEL" \
+            --tools read,edit,write,grep,find,ls \
+            -p "$(cat "$RUNNER_TEMP/pi-prompt.md")"
+
+      - name: Validate docs
+        id: validate
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          if [ -f scripts/validate-cli-docs.mjs ]; then
+            node scripts/validate-cli-docs.mjs 2>&1 | tee "$RUNNER_TEMP/validate.log"
+          else
+            echo "validator not present on this branch — skipping" | tee "$RUNNER_TEMP/validate.log"
+          fi
+
+      - name: Commit and push
+        id: push
+        if: steps.validate.outcome == 'success'
+        env:
+          COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
+        run: |
+          set -euo pipefail
+          git add -A skills/teable-assistant-ops
+          if git diff --cached --quiet; then
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "docs: address review feedback from @${COMMENT_AUTHOR} (via /pi)"
+          git push
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Reply to reviewer
+        if: always() && steps.pr.outcome == 'success'
+        run: |
+          set -euo pipefail
+          {
+            if [ -s "$RUNNER_TEMP/reply.md" ]; then
+              cat "$RUNNER_TEMP/reply.md"
+            else
+              echo "The agent finished without leaving a reply — check the workflow log."
+            fi
+            echo
+            if [ "${{ steps.validate.outcome }}" = "failure" ]; then
+              echo "⚠️ **Changes were NOT pushed** — doc validation failed:"
+              echo '```'
+              tail -c 3000 "$RUNNER_TEMP/validate.log" 2>/dev/null || true
+              echo '```'
+            elif [ "${{ steps.push.outputs.pushed }}" = "true" ]; then
+              echo "✅ Pushed to this PR's branch."
+            else
+              echo "ℹ️ No file changes were produced."
+            fi
+            echo
+            echo "_[workflow run](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}) — triggered by /pi_"
+          } > "$RUNNER_TEMP/pr-reply.md"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/pr-reply.md"
