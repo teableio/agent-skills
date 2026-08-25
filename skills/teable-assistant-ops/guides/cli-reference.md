@@ -12,6 +12,25 @@ Use `teable config show` to check current endpoint, baseId, and token status.
 | `field update --name "X"` | `--name` is a convenience flag; for other properties use `--updates '{"name":"X"}'` |
 | `table create --fields '[{...}]'` object format | Object format auto-converts; canonical shorthand: `--fields '["X:text"]'` |
 
+## Base, Table, Field, and View Lifecycle
+
+Use the base commands to discover and manage bases. Base creation targets a space; the other operations use a base ID:
+
+```bash
+teable base list
+teable base create --space-id spcXXXX --name "My Base"
+teable base get --base-id bseXXXX
+teable base update --base-id bseXXXX --name "Renamed Base"
+```
+
+For resources inside a base, use the resource ID together with the base ID. Delete operations are destructive (tables move to trash; fields and views are permanent):
+
+```bash
+teable table delete --base-id bseXXXX --table-id tblXXXX
+teable field delete --base-id bseXXXX --table-id tblXXXX --field-id fldXXXX
+teable view delete --base-id bseXXXX --table-id tblXXXX --view-id viwXXXX
+```
+
 ## Field Type Aliases
 
 When creating tables or fields, use these shorthand type aliases:
