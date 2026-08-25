@@ -135,7 +135,9 @@ jobs:
              validates every documented \`teable\` invocation against it.
           3. Write a short reply to the reviewer to $RUNNER_TEMP/reply.md: what you
              changed, or why you made no changes (e.g. the request conflicts with the
-             manifest). Plain conversational markdown, no headings.
+             manifest). Plain conversational markdown, no headings. Write the reply
+             in English regardless of the language of the instruction — everything in
+             this repository (docs, comments, replies) is English-only.
 
           Hard rules:
           - Only edit files under skills/teable-assistant-ops/ plus the reply file.
