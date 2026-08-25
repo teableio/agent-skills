@@ -117,11 +117,28 @@ jobs:
           esac
           cat "$RUNNER_TEMP/manifest-diff.md" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: No surface changes
-        if: steps.diff.outputs.changed != 'true'
+      # The CLI ships static get-doc topic content in its bundle; api-reference/
+      # mirrors it. Content can change in a release without any manifest change,
+      # so this drift check is part of the "should we open a PR" gate.
+      - name: Check embedded doc topics
+        id: docs
+        run: |
+          set -euo pipefail
+          set +e
+          node scripts/dump-cli-docs.mjs --manifest "$RUNNER_TEMP/new-manifest.json" --check | tee -a "$GITHUB_STEP_SUMMARY"
+          code=${PIPESTATUS[0]}
+          set -e
+          case "$code" in
+            0)  echo "drift=false" >> "$GITHUB_OUTPUT" ;;
+            10) echo "drift=true"  >> "$GITHUB_OUTPUT" ;;
+            *)  echo "::error::dump-cli-docs.mjs failed (exit $code)"; exit "$code" ;;
+          esac
+
+      - name: No changes at all
+        if: steps.diff.outputs.changed != 'true' && steps.docs.outputs.drift != 'true'
         env:
           VERSION: ${{ steps.version.outputs.version }}
-        run: echo "Command surface of v${VERSION} matches the committed snapshot — no docs PR needed."
+        run: echo "Command surface and embedded docs of v${VERSION} match the repo — no docs PR needed."
 
       # Best effort, and must run before the snapshot/meta update below
       # (it reads the previously synced source ref from the old meta file).
@@ -143,7 +160,7 @@ jobs:
             || echo "(commit log unavailable)" > "$RUNNER_TEMP/commit-log.md"
 
       - name: Update snapshot and sync metadata
-        if: steps.diff.outputs.changed == 'true'
+        if: steps.diff.outputs.changed == 'true' || steps.docs.outputs.drift == 'true'
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
@@ -152,6 +169,13 @@ jobs:
           jq -n --arg version "$VERSION" --arg sourceRef "${SOURCE_REF:-}" \
             '{version: $version} + (if $sourceRef != "" then {sourceRef: $sourceRef} else {} end)' \
             > "$SYNC_META"
+
+      # Mechanical regeneration — mirrors are verbatim copies of the CLI's
+      # embedded docs; no AI involved. Curated files (no matching topic) and
+      # excluded runtime/AI topics are untouched.
+      - name: Regenerate api-reference mirrors
+        if: steps.diff.outputs.changed == 'true' || steps.docs.outputs.drift == 'true'
+        run: node scripts/dump-cli-docs.mjs --manifest "$SNAPSHOT"
 
       - name: Configure pi coding agent
         if: steps.diff.outputs.changed == 'true'
@@ -223,6 +247,10 @@ jobs:
           Hard rules:
           - Never document a command or flag that is absent from the manifest — CI validates every
             documented \`teable\` invocation against it and will fail the PR.
+          - api-reference files named <category>.<subtopic>.md (e.g. field.formula.md) are
+            generated verbatim mirrors of the CLI's embedded get-doc content — never edit them;
+            they are regenerated mechanically. Curated exceptions you may edit: field.simple.md,
+            view.statistic.md.
           - Only edit files under skills/teable-assistant-ops/ plus the summary file above. Do not
             touch .github/, scripts/, or the manifest snapshot.
           - Do not run git commands; committing and opening the PR happen after you finish.
@@ -232,37 +260,52 @@ jobs:
             -p "$(cat "$RUNNER_TEMP/pi-prompt.md")"
 
       - name: Assemble PR body
-        if: steps.diff.outputs.changed == 'true'
+        if: steps.diff.outputs.changed == 'true' || steps.docs.outputs.drift == 'true'
         env:
           VERSION: ${{ steps.version.outputs.version }}
+          CHANGED: ${{ steps.diff.outputs.changed }}
+          DRIFT: ${{ steps.docs.outputs.drift }}
         run: |
           set -euo pipefail
           BODY="$RUNNER_TEMP/pr-body.md"
           DIFF="$RUNNER_TEMP/manifest-diff.md"
           {
-            echo "Automated docs sync: \`@teable/cli\` **v${VERSION}** changed the CLI command surface."
-            echo "Docs were updated by an AI agent (pi) from the manifest diff below; the manifest"
-            echo "snapshot and sync metadata were updated deterministically by the workflow."
-            echo
-            echo "## Summary"
-            echo
-            if [ -s "$RUNNER_TEMP/pr-summary.md" ]; then
-              cat "$RUNNER_TEMP/pr-summary.md"
+            if [ "$CHANGED" = "true" ]; then
+              echo "Automated docs sync: \`@teable/cli\` **v${VERSION}** changed the CLI command surface."
+              echo "Docs were updated by an AI agent (pi) from the manifest diff below; the manifest"
+              echo "snapshot, sync metadata, and api-reference mirrors were updated deterministically"
+              echo "by the workflow."
             else
-              echo "_(no model summary was produced — review the diff below directly)_"
+              echo "Docs-only refresh: \`@teable/cli\` **v${VERSION}** changed its embedded get-doc"
+              echo "content while the command surface stayed the same. The api-reference mirrors were"
+              echo "regenerated mechanically — no AI involved."
             fi
-            echo
-            echo "<details>"
-            echo "<summary>Command-surface diff</summary>"
-            echo
-            head -c 40000 "$DIFF"
-            if [ "$(wc -c < "$DIFF")" -gt 40000 ]; then
+            if [ "$DRIFT" = "true" ]; then
               echo
-              echo "_(truncated — full diff in the workflow run summary)_"
+              echo "api-reference mirror files were regenerated verbatim from the CLI's embedded docs."
             fi
             echo
-            echo "</details>"
-            echo
+            if [ "$CHANGED" = "true" ]; then
+              echo "## Summary"
+              echo
+              if [ -s "$RUNNER_TEMP/pr-summary.md" ]; then
+                cat "$RUNNER_TEMP/pr-summary.md"
+              else
+                echo "_(no model summary was produced — review the diff below directly)_"
+              fi
+              echo
+              echo "<details>"
+              echo "<summary>Command-surface diff</summary>"
+              echo
+              head -c 40000 "$DIFF"
+              if [ "$(wc -c < "$DIFF")" -gt 40000 ]; then
+                echo
+                echo "_(truncated — full diff in the workflow run summary)_"
+              fi
+              echo
+              echo "</details>"
+              echo
+            fi
             echo "## Review checklist"
             echo
             echo "- [ ] Spot-check updated examples against \`teable <cmd> --help\` of v${VERSION}"
@@ -275,7 +318,7 @@ jobs:
           } > "$BODY"
 
       - name: Create or update PR
-        if: steps.diff.outputs.changed == 'true'
+        if: steps.diff.outputs.changed == 'true' || steps.docs.outputs.drift == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.SYNC_GITHUB_TOKEN || github.token }}

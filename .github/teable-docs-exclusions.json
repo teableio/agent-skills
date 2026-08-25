@@ -1,0 +1,4 @@
+{
+  "comment": "get-doc topics intentionally NOT mirrored into api-reference/: their content depends on the runtime environment (AI model keys etc.). Agents should call `teable get-doc --topic <t>` live for these.",
+  "topics": ["app.ai", "automation.ai", "field.ai"]
+}

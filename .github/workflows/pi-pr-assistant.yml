@@ -166,6 +166,11 @@ jobs:
           Hard rules:
           - Only edit files under skills/teable-assistant-ops/ plus the reply file.
             Do not touch .github/, scripts/, or workflow files.
+          - api-reference files named <category>.<subtopic>.md (e.g. field.formula.md) are
+            generated verbatim mirrors of the CLI's embedded get-doc content — never edit
+            them; they are regenerated mechanically and your edits would be overwritten.
+            Curated exceptions you may edit: field.simple.md, view.statistic.md. If the
+            request requires changing mirror content, say so in your reply instead.
           - Do not run git commands.
           EOF
           pi --provider custom --model "$PI_MODEL" \

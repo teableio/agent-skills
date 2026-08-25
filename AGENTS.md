@@ -112,6 +112,25 @@ one-time full-audit PR. The validator skips silently while the snapshot is
 absent. To trigger a sync manually, run the `sync-cli-docs` workflow with a
 version input.
 
+### api-reference mirror layer
+
+The `api-reference/<category>.<subtopic>.md` files (e.g. `field.formula.md`)
+are **verbatim mirrors** of the static documentation embedded in the
+`@teable/cli` bundle (what `teable get-doc --topic <t>` serves). Do not edit
+them by hand — they are regenerated mechanically by
+`scripts/dump-cli-docs.mjs` during each sync run (the script answers get-doc's
+base-context init with a local mock, so no credentials are involved).
+
+- Topics listed in `.github/teable-docs-exclusions.json` (runtime/AI-dependent
+  content such as `app.ai`) are intentionally not mirrored — agents call
+  `teable get-doc` live for those.
+- Files without a matching topic (`field.simple.md`, `view.statistic.md`) are
+  curated by hand and never touched by the regeneration.
+- Improvements to mirror content belong upstream in the CLI's embedded docs;
+  operational guidance belongs in `guides/`.
+- CI runs `dump-cli-docs.mjs --check` to flag drift between the mirrors and
+  the snapshot CLI version.
+
 ### Comment-driven fixes (`/pi`)
 
 On any PR, a maintainer (OWNER/MEMBER/COLLABORATOR) can comment
