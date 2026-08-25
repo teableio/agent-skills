@@ -39,8 +39,15 @@ description: >-
 ## File Organization
 
 - **api-reference/**: One file per API area (e.g., `field.basic.md`, `view.filter.md`)
-- **guides/**: Workflow guides and CLI references
+- **guides/**: Workflow guides and CLI references. Each major topic or command
+  group gets its own `<topic>-guide.md` (e.g., `automation-guide.md`,
+  `app-builder-guide.md`), linked from SKILL.md. `cli-reference.md` is a
+  cross-cutting quick reference — do not grow whole new subsystems inside it;
+  create a dedicated guide instead.
 - **rules/**: Individual rule files with frontmatter (for compiled skills)
+
+Before adding or moving content, read SKILL.md (the module map) and survey the
+existing files so new material lands where a reader would look for it.
 
 ## Quality Checklist
 

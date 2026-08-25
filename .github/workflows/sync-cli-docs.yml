@@ -194,10 +194,15 @@ jobs:
           - $RUNNER_TEMP/commit-log.md — commit messages behind the changes (may not exist).
 
           Task:
-          1. Read $RUNNER_TEMP/manifest-diff.md, then AGENTS.md for repo conventions.
+          1. Read $RUNNER_TEMP/manifest-diff.md, then AGENTS.md for repo conventions (especially
+             File Organization). Survey the whole skill before editing: read SKILL.md (the module
+             map) and every file under skills/teable-assistant-ops/ so you know the existing
+             structure and where content belongs.
           2. Grep skills/teable-assistant-ops/ for every mention of each changed command, then update
              the skill files (SKILL.md, guides/, api-reference/) so that:
-             - added commands/options are documented where they belong,
+             - added commands/options are documented where they belong — a brand-new command group
+               or topic area gets a dedicated guides/<topic>-guide.md (modeled on the existing
+               guides) linked from SKILL.md, never a large section appended to an existing file;
              - changed commands/options/help are corrected everywhere they are mentioned,
              - removed commands/options disappear from the docs entirely.
              Follow the existing style and keep diffs minimal — do not rewrite unrelated prose.
