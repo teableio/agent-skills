@@ -159,6 +159,9 @@ jobs:
              manifest). Plain conversational markdown, no headings. Write the reply
              in English regardless of the language of the instruction — everything in
              this repository (docs, comments, replies) is English-only.
+          7. Write a one-line conventional-commit subject describing the actual change
+             (imperative, ≤70 chars, e.g. "docs: rewrite authority guide in skill
+             style") to $RUNNER_TEMP/commit-subject.txt. English only.
 
           Hard rules:
           - Only edit files under skills/teable-assistant-ops/ plus the reply file.
@@ -185,6 +188,7 @@ jobs:
         if: steps.validate.outcome == 'success'
         env:
           COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
+          COMMENT_URL: ${{ github.event.comment.html_url }}
         run: |
           set -euo pipefail
           git add -A skills/teable-assistant-ops
@@ -192,9 +196,15 @@ jobs:
             echo "pushed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          # Subject comes from the agent (describes the actual change); fall back to
+          # a generic one if it produced nothing usable.
+          subject="$(head -n1 "$RUNNER_TEMP/commit-subject.txt" 2>/dev/null | tr -d '\r' | cut -c1-72 || true)"
+          if [ -z "$subject" ]; then
+            subject="docs: address review feedback (via /pi)"
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "docs: address review feedback from @${COMMENT_AUTHOR} (via /pi)"
+          git commit -m "$subject" -m "Requested by @${COMMENT_AUTHOR} via /pi: ${COMMENT_URL}"
           git push
           echo "pushed=true" >> "$GITHUB_OUTPUT"
 
