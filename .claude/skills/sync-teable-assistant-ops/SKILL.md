@@ -104,10 +104,14 @@ Principles learned the hard way:
   `package.json`; the oldest hit is the introducing commit. Works only with an
   exact `X.Y.Z`, not a range like `0.6`.
 - **`teable manifest` (0.6.29+) is the best command-surface primitive** — a
-  deterministic full-surface JSON dump, independent of local config. Two
-  independent `npx` dumps are byte-identical, so `diff -u` on snapshots is
-  reliable. It does not exist before 0.6.29, so `manifest-diff` needs a stored
-  snapshot (created by `mark-synced`).
+  deterministic full-surface JSON dump. It does not exist before 0.6.29, so
+  `manifest-diff` needs a stored snapshot (created by `mark-synced`).
+- **Manifest dumps need isolated HOME AND cwd** — the CLI searches upward from
+  cwd for project config, so running from anywhere under the user's home bakes
+  their configured endpoint into option defaults and breaks canonical output
+  (real bug: a snapshot once carried `staging.teable.ai` defaults). The
+  driver's `dump_manifest` handles this; verified byte-identical to the CI
+  pipeline's snapshot.
 
 ## Troubleshooting
 

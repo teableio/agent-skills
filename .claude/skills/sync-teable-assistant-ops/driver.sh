@@ -56,10 +56,15 @@ last_synced_version() {
   fi
 }
 
-# Dump `teable manifest` for an exact published version. Isolated HOME keeps the
-# output canonical (no user config / TEABLE_* interference). Needs npm network.
+# Dump `teable manifest` for an exact published version. Must run with isolated
+# HOME **and cwd**: the CLI searches upward from cwd for project config and would
+# bake the user's endpoint into option defaults, breaking canonical output.
+# Needs npm network.
 dump_manifest() { # <version> <outfile>
-  HOME=$(mktemp -d) npx -y "@teable/cli@$1" manifest > "$2" 2>/dev/null
+  local iso
+  iso=$(mktemp -d)
+  (cd "$iso" && HOME="$iso" env -u TEABLE_ENDPOINT -u TEABLE_TOKEN -u TEABLE_PAT \
+    npx -y "@teable/cli@$1" manifest) > "$2" 2>/dev/null
   grep -q '"version": "'"$1"'"' "$2" || { echo "ERROR: manifest dump for $1 failed"; exit 1; }
 }
 
