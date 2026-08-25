@@ -45,7 +45,7 @@ teable app update \
 ## Key Rules
 
 - Complete requested setup, inspection, analysis, and data changes before calling the builder; do not put those steps in `--prompt`
-- **Pass the user's app intent faithfully** to `--prompt`; include only app purpose, UI/workflow, explicit constraints, relevant table IDs, and verified data context—do not add features
+- **Pass the user's app requirements verbatim** to `--prompt`; do not distill, rewrite, or add features
 - Do not use markdown formatting in the requirement text
 - Do not specify tech stack unless the user explicitly requests it
 
@@ -65,7 +65,7 @@ The command extracts a detached snapshot to `~/.teable/refs/<appId>/`. Treat it 
 teable app delete --app-id appXXX
 ```
 
-**Warning:** this permanently deletes the app. Verify `--app-id` before running it.
+**Warning:** this soft-deletes the app into trash. It is recoverable, but verify `--app-id` before running it.
 
 ## AI in apps
 

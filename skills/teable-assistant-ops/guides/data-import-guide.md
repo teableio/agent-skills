@@ -27,7 +27,7 @@ cat data.csv | teable import --table-name "Sales"
 teable import --file data.csv --table-name "Sales" --no-header
 ```
 
-**Mapping `type` values**: `text`, `long`, `number`, `checkbox`, `date`, `singleSelect`, `multiSelect`, `rating`
+**Multi-select mappings**: use `multipleSelect` or its `multi` alias.
 
 ## Import from Airtable
 

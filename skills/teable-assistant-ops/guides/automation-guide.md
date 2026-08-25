@@ -16,7 +16,7 @@ Use automations for event-driven or recurring work — if the user's task fits a
 | `automation activate` | Activate, deactivate, or discard draft |
 | `automation get-runs` | View run history (filter with `--status`) |
 | `automation get-run` | Step-level detail of a single run |
-| `automation delete` | Permanently delete a complete workflow |
+| `automation delete` | Move a complete workflow to trash |
 | `automation delete-node` | Delete an action/logic node (not trigger) |
 | `automation get-script-input` | Get input data from previous workflow actions |
 
@@ -94,7 +94,7 @@ To remove an entire workflow:
 teable automation delete --workflow-id wflXXX
 ```
 
-**Warning:** this permanently deletes the workflow, trigger, actions, and logic nodes. Verify the workflow ID first. Use `automation delete-node` when only one non-trigger node should be removed.
+**Warning:** this soft-deletes the whole workflow into trash, including its trigger, actions, and logic nodes. It is recoverable, but verify the workflow ID first. Use `automation delete-node` when only one non-trigger node should be removed.
 
 ## Script Rules
 

@@ -6,15 +6,6 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 
 ## Commands that accept --base-id
 
-### Base Management
-
-| Command | Also requires |
-|---------|---------------|
-| `base get/delete` | — |
-| `base update` | `--name` and/or `--icon` |
-
-`base list` and `base create` are space-scoped rather than base-scoped.
-
 ### Data Query
 
 | Command | Also requires |

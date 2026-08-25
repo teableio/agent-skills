@@ -55,6 +55,10 @@ teable auth logout
 
 Auth config is saved to `~/.teable/cli/config.json` by default.
 
+### Environment variables
+
+For non-interactive sessions, set `TEABLE_TOKEN` or `TEABLE_PAT` to a Personal Access Token. This avoids persisting or exposing the token in a command; prefer `TEABLE_TOKEN` for new setups.
+
 ## Getting a Personal Access Token
 
 1. Log in to your Teable instance (e.g. https://app.teable.ai)
