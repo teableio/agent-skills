@@ -64,6 +64,25 @@ const server = createServer((req, res) => {
 await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 const endpoint = `http://127.0.0.1:${server.address().port}`;
 
+// Known upstream content bug: some prose lists separate backticked tokens with
+// a literal "\n" (e.g. the field.colors color lists). Convert ONLY the exact
+// `token`\n`token` adjacency, and only outside fenced code blocks — JS string
+// examples inside code fences keep their \n. Remove once the doc source in
+// teable-ee is fixed.
+function normalizeContent(content) {
+  const lines = content.split('\n');
+  let inFence = false;
+  return lines
+    .map((line) => {
+      if (/^\s*(```|~~~)/.test(line)) {
+        inFence = !inFence;
+        return line;
+      }
+      return inFence ? line : line.replace(/`\\n`/g, '`\n`');
+    })
+    .join('\n');
+}
+
 function fetchTopic(topic) {
   return new Promise((resolve, reject) => {
     const child = spawn(cliBin, ['get-doc', '--topic', topic, '-b', 'bseMOCK', '--token', 'mock', '--endpoint', endpoint], {
@@ -93,7 +112,7 @@ function fetchTopic(topic) {
       if (!parsed.success || typeof parsed.content !== 'string') {
         return reject(new Error(`get-doc --topic ${topic}: unexpected envelope: ${out.slice(0, 200)}`));
       }
-      resolve(parsed.content.replace(/^\n+/, '').replace(/\s*$/, '\n'));
+      resolve(normalizeContent(parsed.content.replace(/^\n+/, '').replace(/\s*$/, '\n')));
     });
   });
 }
