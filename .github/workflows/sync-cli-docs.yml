@@ -205,7 +205,8 @@ jobs:
              capability, patch for corrections). If the docs now rely on commands that only exist
              since this CLI release, raise the "engines.teableCli" minimum accordingly.
           4. Write a concise reviewer summary to $RUNNER_TEMP/pr-summary.md: what changed in the
-             CLI, what you changed in the docs, and anything you were unsure about.
+             CLI, what you changed in the docs, and anything you were unsure about. Write it in
+             English — everything in this repository is English-only.
 
           Hard rules:
           - Never document a command or flag that is absent from the manifest — CI validates every
