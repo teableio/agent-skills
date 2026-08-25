@@ -11,30 +11,36 @@
 1. `app list` — check existing apps (update existing instead of creating duplicate)
 2. `app create` / `app update` — create or update app
 3. Include `--table-ids` to give the app data access
-4. The app runtime includes an AI API for text and image generation — pass AI-related features in `--requirement` and the builder handles integration
+4. The app runtime includes an AI API for text and image generation — pass AI-related features in `--prompt` and the builder handles integration
 
 **Optional capabilities** (applied to an app independently, in any order):
 - **AI access** — `app ai-enable` + `app ai-docs` (see [AI in apps](#ai-in-apps))
 - **End-user login** — `app login-config` (see [App login / authentication](#app-login--authentication))
+- **Publishing** — `app publish` / `app status` / `app unpublish` (see [Publishing](#publishing))
 
 ```bash
 # Create new app
 teable app create \
   --name "Sales Dashboard" \
-  --requirement "build a sales dashboard showing monthly revenue trends" \
+  --prompt "build a sales dashboard showing monthly revenue trends" \
   --table-ids '["tblXXX","tblYYY"]'
 
 # Update existing app
 teable app update \
   --app-id appXXX \
-  --requirement "add a filter by date range"
+  --prompt "add a filter by date range"
+
+# Read an existing app's source code (to answer questions or ground an update)
+teable app get-code --app-id appXXX
 ```
+
+`app get-code` writes a **read-only snapshot** to `~/.teable/refs/<appId>/` (`.env*` files excluded; requires app update permission). `app list --search <keyword>` filters by name.
 
 ## Key Parameters
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
-| `--requirement` | Yes | User's request — pass exactly as stated |
+| `--prompt` | Yes | User's request — pass exactly as stated |
 | `--name` | Create only | App name |
 | `--app-id` | Update only | Target app ID |
 | `--table-ids` | No | JSON array of table IDs for data access |
@@ -43,9 +49,21 @@ teable app update \
 
 ## Key Rules
 
-- **Pass user requirements verbatim** to `--requirement` — do not interpret, expand, or add features
-- Do not use markdown formatting in the requirement text
+- **Pass user requirements verbatim** to `--prompt` — do not interpret, expand, or add features
+- Do not use markdown formatting in the prompt text
 - Do not specify tech stack unless the user explicitly requests it
+
+## Publishing
+
+A generated app runs in preview until published:
+
+```bash
+teable app publish --app-id appXXX     # deploy the app; returns success / failed / deploying
+teable app status --app-id appXXX      # check publish status
+teable app unpublish --app-id appXXX   # take the published app offline
+```
+
+If `app publish` returns `deploying`, poll `teable app status --app-id appXXX` until it reports `success` or `failed`.
 
 ## AI in apps
 
@@ -55,7 +73,7 @@ When an app needs to call AI (text/image generation) from its own server-side co
 teable app ai-enable --app-id appXXX
 ```
 
-- **Idempotent** — safe to run when already enabled.
+- **Idempotent** — safe to run when already enabled. `--app-id` falls back to `TEABLE_APP_ID` when omitted (`app login-config` has no such fallback — always pass it there).
 - Injects `TEABLE_AI_API_BASE_URL` and `TEABLE_AI_API_KEY` into the app on its **next preview restart**.
 - The proxy is **Anthropic-compatible** and **server-side only** — never expose `TEABLE_AI_API_KEY` to the browser. The key value is never printed.
 - System-model usage consumes credits; BYOK models run on the space's own key.

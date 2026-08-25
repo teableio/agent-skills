@@ -1,9 +1,10 @@
-
 # SendEmail in Script Action
 
-Send emails via the runtime API in automation scripts.
+Send emails from automation scripts using the built-in Email API.
 
-## API Endpoint
+## Built-in Email API
+
+### API Endpoint
 
 ```
 POST /api/automation/runtime/email
@@ -22,6 +23,7 @@ Content-Type: application/json
 | bcc | string \| string[] | No (to or bcc required) | BCC recipients |
 | senderName | string | No | Sender display name |
 | replyTo | string | No | Reply-to address |
+| headers | object | No | Custom SMTP headers. `List-Unsubscribe` and `List-Unsubscribe-Post` are managed by Teable. |
 | smtp | object | No | Custom SMTP config |
 
 ## Examples
@@ -78,6 +80,45 @@ await fetch(process.env.PUBLIC_ORIGIN + '/api/automation/runtime/email', {
 });
 ```
 
+### With SendGrid SMTP Metadata
+
+```javascript
+const smtpApiHeader = JSON.stringify({
+  category: ['newsletter'],
+  unique_args: {
+    campaign: 'product-update'
+  },
+  filters: {
+    clicktrack: { settings: { enable: 1 } },
+    opentrack: { settings: { enable: 1 } }
+  }
+});
+
+await fetch(process.env.PUBLIC_ORIGIN + '/api/automation/runtime/email', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${process.env.AUTOMATION_TOKEN}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    // Send one recipient per request so the Teable unsubscribe link belongs to this email.
+    to: 'user@example.com',
+    subject: 'Newsletter',
+    body: '<h1>HTML works too</h1>',
+    headers: {
+      'X-SMTPAPI': smtpApiHeader
+    },
+    smtp: {
+      host: 'smtp.sendgrid.net',
+      port: 587,
+      secure: false,
+      sender: 'noreply@myapp.com',
+      auth: { user: 'apikey', pass: 'sendgrid-api-key' }
+    }
+  })
+});
+```
+
 ## SMTP Providers
 
 | Provider | Host | Port |
@@ -92,8 +133,7 @@ await fetch(process.env.PUBLIC_ORIGIN + '/api/automation/runtime/email', {
 The `body` field is rendered using **markdown-it** with:
 - `html: true` - Raw HTML allowed
   - Important: `<!-- -->` html comment will break the email rendering, do not use it! 
-- `breaks: true` - 
- → `<br>`
+- `breaks: true` - \n → `<br>`
 
 ### Supported Syntax
 
@@ -107,8 +147,7 @@ The `body` field is rendered using **markdown-it** with:
 | `![alt](src)` | `<img alt="alt" src="src">` |
 | `> quote` | `<blockquote>quote</blockquote>` |
 | `---` | `<hr>` |
-| Line break (
-) | `<br>` (auto-converted) |
+| Line break (\n) | `<br>` (auto-converted) |
 
 ### Lists
 

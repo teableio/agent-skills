@@ -1,16 +1,5 @@
 # Record Value Format Reference
 
-## Table of Contents
-- [Simple Field Types](#simple-field-types) — text, number, checkbox, date, rating
-- [Select Fields](#select-fields) — singleSelect, multipleSelect
-- [User Fields](#user-fields) — user objects with id/title
-- [Link Fields](#link-fields) — single vs multiple link objects
-- [Attachment Fields](#attachment-fields) — name + token arrays
-- [Read-Only Fields](#read-only-fields) — formula, rollup, system fields
-- [Complete Example](#complete-example)
-- [Important Notes](#important-notes)
-- [Common Errors](#common-errors)
-
 This document defines the exact format for field values when creating or updating records.
 
 ## Simple Field Types
@@ -27,8 +16,7 @@ This document defines the exact format for field values when creating or updatin
 ```typescript
 // Value: string (can include newlines)
 {
-  "fldDescription": "This is a long description
-With multiple lines"
+  "fldDescription": "This is a long description\nWith multiple lines"
 }
 ```
 
@@ -147,8 +135,7 @@ These fields are computed or system-managed and CANNOT be set:
   "records": [{
     "fields": {
       "fldTitle": "Implement user authentication",
-      "fldDescription": "Add OAuth2 support
-Integrate with SSO",
+      "fldDescription": "Add OAuth2 support\nIntegrate with SSO",
       "fldEstimatedHours": 8,
       "fldDueDate": "2024-02-01T17:00:00.000Z",
       "fldStatus": "In Progress",

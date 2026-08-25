@@ -37,8 +37,11 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Import | CSV/Excel file loading (>50 rows); whole Airtable base migration | `import`, `import-status`, `import-airtable` | [data-import-guide.md](guides/data-import-guide.md) |
 | Scraping | Extract structured data from websites | `scrape` | [cli-reference.md § Scraping](guides/cli-reference.md#scraping) |
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
-| App Builder | Live dashboards, custom web UIs | `app create/update/list`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
+| App Builder | Live dashboards, custom web UIs | `app create/update/list/get-code`, `app publish/status/unpublish`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
+| Authority | Per-table/row/field permissions for collaborators | `authority get/export/diff/apply`, `authority enable/disable`, `authority role-*` | [authority-guide.md](guides/authority-guide.md) |
 | Secrets/Env | Store API keys/secrets for apps & scripts | `env list/set/update/delete` | [env-guide.md](guides/env-guide.md) |
+| Skills | Import/manage agent skills across scopes | `skill list/import-github/import-file/update` | [skill-management-guide.md](guides/skill-management-guide.md) |
+| Sandbox tools | Persist tool installs across sandbox rebuilds (Teable-managed sandboxes only) | `sandbox tool *` | [sandbox-tools-guide.md](guides/sandbox-tools-guide.md) |
 | Email | Send an email directly (one-off) | `send-email` | [cli-reference.md § Sending Email](guides/cli-reference.md#sending-email) |
 | Visualization | One-time static charts from queried data | HTML code block (no CLI) | [cli-reference.md § Visualization](guides/cli-reference.md#one-time-data-visualization) |
 | Nodes | Organize tables/folders in base hierarchy | `get-node-tree`, `folder *` | [cli-reference.md § Node & Folder](guides/cli-reference.md#node--folder-management) |
@@ -64,6 +67,7 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Aggregate across linked records | Fields: Rollup (`condRollup` without link) | — |
 | Modify/update an existing app | App Builder: `app list` → `app update` | Creating a duplicate app |
 | Export records as file | Data Query: `record get` / `sql-query` → agent formats output | `import` (wrong direction) |
+| Restrict collaborators to specific tables/rows/fields | Authority: `authority export` → edit → `diff` → `apply` | Editing roles via raw `call-api` |
 
 ### 2.3 Quick Syntax
 
@@ -88,6 +92,8 @@ For complete syntax, value formats, and all command options, read [cli-reference
 - **Field update behavior**: type change clears options; same type shallow-merges. Lookup/rollup require an existing link field.
 - **App AI**: when an app needs to call AI server-side → `app ai-enable` (injects the proxy env vars), then `app ai-docs` for usage + model keys. See [app-builder-guide.md § AI in apps](guides/app-builder-guide.md#ai-in-apps).
 - **App login**: to require end-user auth for a generated app → `app login-config`. See [app-builder-guide.md § App login](guides/app-builder-guide.md#app-login--authentication).
+- **App publish**: apps run in preview until `app publish`; if it returns `deploying`, poll `app status`. See [app-builder-guide.md § Publishing](guides/app-builder-guide.md#publishing).
+- **Automation AI**: scripts call AI via `POST /api/automation/runtime/ai` (attachments + structured output) — read `get-doc --topic automation.ai` first. See [automation-guide.md § Script Rules](guides/automation-guide.md#script-rules).
 - **Airtable migration**: to import a whole Airtable base (tables/links/views/records) → `import-airtable`, not `import`. See [data-import-guide.md § Import from Airtable](guides/data-import-guide.md#import-from-airtable).
 
 ## 3. Key Constraints
@@ -132,4 +138,5 @@ Files in `api-reference/`, named `{category}.{subtopic}.md` — read when you ne
 **Automations**: `automation.trigger.md`, `automation.api.md`, `automation.send-email.md`
 **Integrations**: `integration.slack.md`
 **Scraping**: `scrape.datasets.md`
-**Dynamic** (use `get-doc`): `field.ai`, `app.ai`
+**Reference**: `reference.url.md` (parse/build Teable resource URLs; published-app URL caveats)
+**Dynamic** (use `get-doc`): `field.ai`, `app.ai`, `automation.ai`

@@ -8,12 +8,14 @@ Use automations for event-driven or recurring work — if the user's task fits a
 |---------|---------|
 | `automation list` | List all automations in the base |
 | `automation get` | Get detailed workflow (trigger, actions, script code, edges) |
+| `automation update` | Rename/describe a workflow — applies **immediately**, bypasses the draft system |
+| `automation delete` | Delete a workflow (soft-delete to trash, restorable — not permanent) |
 | `automation setup-trigger` | Create or update workflow + trigger |
 | `automation generate-script` | Add/update script code for an action |
 | `automation generate-flowchart` | Generate flowchart for a script action |
 | `automation test-node` | Test a trigger or action node |
 | `automation activate` | Activate, deactivate, or discard draft |
-| `automation get-runs` | View run history (filter with `--status`) |
+| `automation get-runs` | Run history — `--status success\|failed\|running\|canceled\|pending`, paginate with `--cursor` + `--take` (max 10) |
 | `automation get-run` | Step-level detail of a single run |
 | `automation delete-node` | Delete an action/logic node (not trigger) |
 | `automation get-script-input` | Get input data from previous workflow actions |
@@ -52,7 +54,7 @@ Use automations for event-driven or recurring work — if the user's task fits a
 5. `automation generate-flowchart` — visualize the script logic. If only workflow-id is known, use `automation get` to find the script action-id first. All three flags required: `--workflow-id`, `--action-id`, `--flowchart`
    - Node types: `start`, `end`, `step`, `condition`, `loop`, `tryCatch`
    - Edge types: `default`, `true`, `false`, `error`, `loop`
-6. `automation test-node` — test trigger or action
+6. `automation test-node` — test trigger or action. `--record-id` picks the test record (record-based triggers); `--with-dependency` also runs dependency nodes; side effects (emails, API calls) only fire with `--side-effect` (default off for safe testing)
 7. `automation activate --method activate`
 
 **Script files**: `automation get` and `automation get-script-input` persist scripts to `.teable/cli/scripts/<workflowId>/<actionId>.js` and return that path as `code`.
@@ -99,6 +101,8 @@ Script actions are Turing-complete: CRUD, AI generation, email, HTTP requests, S
 - `console.log` is debug-only — never use it to notify users
 - Notifications: default to **Email API** when no channel is specified (read `api-reference/automation.send-email.md` first); Slack/Teams/webhook via HTTP requests in script
 
+**AI in scripts**: call `POST ${PUBLIC_ORIGIN}/api/automation/runtime/ai` with `{ prompt, attachments?, modelKey?, temperature?, outputType? }` — supports up to 10 file attachments (images, PDFs, Office docs; each ≤20MB) and `outputType: "object"` for parsed JSON output. The base comes from the automation context — do NOT put a baseId in the URL. Read `teable get-doc --topic automation.ai` first for the full request shape, attachment field mapping, and available model keys. Prefer one request with several attachments over one request per attachment; on 429 (AI concurrency saturated) retry later, don't loop immediately.
+
 **Common script patterns** (runtime variables + fetch):
 ```javascript
 const baseUrl = process.env.PUBLIC_ORIGIN;
@@ -121,6 +125,13 @@ await fetch(`${baseUrl}/api/automation/runtime/email`, {
   method: "POST", headers,
   body: JSON.stringify({ to: "user@example.com", subject: "Hi", body: "Hello" })
 });
+
+// Call AI (built-in API — see get-doc --topic automation.ai for models & attachments)
+const aiRes = await fetch(`${baseUrl}/api/automation/runtime/ai`, {
+  method: "POST", headers,
+  body: JSON.stringify({ prompt: "Extract invoice number and total. Return JSON.", outputType: "object" })
+});
+const { message } = await aiRes.json(); // string, or parsed object for outputType "object"
 
 // External API (e.g., Slack webhook)
 await fetch("https://hooks.slack.com/...", {
