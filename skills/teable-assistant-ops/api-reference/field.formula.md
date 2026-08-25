@@ -16,7 +16,7 @@ Formula fields compute values dynamically based on expressions.
 
 ## Available Functions
 
-All 78 available functions:
+All 80 available functions:
 
 ```
   SUM(number1, [number2, ...])                             → number
@@ -35,7 +35,7 @@ All 78 available functions:
   SQRT(value)                                              → number
   POWER(value)                                             → number
   EXP(value)                                               → number
-  LOG(number, [base=10]))                                  → number
+  LOG(number, [base=10])                                   → number
   MOD(value, divisor)                                      → number
   VALUE(text)                                              → number
   CONCATENATE(text1, [text2, ...])                         → string
@@ -47,6 +47,8 @@ All 78 available functions:
   REPLACE(text, whereToStart, count, replacement)          → string
   REGEXP_REPLACE(text, regular_expression, replacement)    → string
   SUBSTITUTE(text, oldText, newText, [index])              → string
+  TEXTBEFORE(text, delimiter)                              → string
+  TEXTSPLIT(text, delimiter)                               → array
   LOWER(text)                                              → string
   UPPER(text)                                              → string
   REPT(text, number)                                       → string
@@ -75,9 +77,9 @@ All 78 available functions:
   SECOND(date, [startDayOfWeek])                           → number
   FROMNOW(date, unit)                                      → number
   TONOW(date, unit)                                        → dateTime
-  DATETIME_DIFF(date1, date2, [unit])                      → number
+  DATETIME_DIFF(endDate, startDate, [unit])                → number
   WORKDAY(date, count, [holidayStr])                       → dateTime
-  WORKDAY_DIFF(date1, date2, [holidayStr])                 → number
+  WORKDAY_DIFF(startDate, endDate, [holidayStr])           → number
   IS_SAME(date1, date2, [unit])                            → boolean
   IS_AFTER(date1, date2, [unit])                           → boolean
   IS_BEFORE(date1, date2, [unit])                          → boolean

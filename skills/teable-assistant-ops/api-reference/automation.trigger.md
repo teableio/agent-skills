@@ -1,9 +1,5 @@
 # Automation Trigger Configuration
 
-## Table of Contents
-- [Trigger Types](#trigger-types) — recordCreated, recordUpdated, recordMatchesConditions, formSubmitted, scheduledTime, buttonClick, webhook, emailReceived
-- [Common Patterns](#common-patterns) — getting table/view/field IDs
-
 Triggers define WHEN an automation should run. Each trigger type has specific configuration requirements.
 
 ## Trigger Types
@@ -183,7 +179,7 @@ Triggers when an external HTTP request is sent to the webhook endpoint.
 **Output Variables:**
 - `body` - The parsed JSON body of the incoming request
 
-**Security:** Use bearer token authorization for production webhooks. The `automation setup-trigger` tool can auto-generate tokens.
+**Security:** Use bearer token authorization for production webhooks. The Setup Automation Trigger tool can auto-generate tokens.
 
 ### 8. emailReceived - When Email Received
 Triggers when a new email is received. Supports IMAP connection.
@@ -225,28 +221,3 @@ Each entry in `emails[]`:
 - `attachments[]` - `{ filename, contentType, size, fileUrl }`
 
 ⚠️ **`fileUrl` is a short-lived signed URL** (lifetime varies by storage provider — minutes to hours). Download any attachments you need within the same script run; do not cache `fileUrl` for later use.
-
-## Common Patterns
-
-### Getting Table ID
-Before creating a trigger, use `table get` to find available tables:
-```
-Tool: table get
-Result: [{ id: "tblXXX", name: "Tasks", ... }]
-```
-
-### Getting View ID (for forms)
-Use `view get` to find form views:
-```
-Tool: view get
-Input: { tableId: "tblXXX" }
-Result: [{ id: "viwXXX", name: "Contact Form", type: "form", ... }]
-```
-
-### Getting Field IDs
-Use `field get` to find field IDs for watchFieldIds:
-```
-Tool: field get
-Input: { tableId: "tblXXX" }
-Result: [{ id: "fldXXX", name: "Status", type: "singleSelect", ... }]
-```

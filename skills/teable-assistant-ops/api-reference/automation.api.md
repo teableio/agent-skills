@@ -1,23 +1,10 @@
-# Teable REST API Reference (for automation scripts)
-
-## Table of Contents
-- [Critical Rules](#critical-rules)
-- [Records API](#records-api) — CRUD operations
-- [Aggregation / Statistics API](#aggregation--statistics-api) — sum, count, average, etc.
-- [Fields API](#fields-api) — list, create, update, convert
-- [Upload Attachments](#upload-attachments) — signature → upload → notify flow
-- [Filter Guide](#filter-guide) — filter structure and operators
-- [Field Value Types](#field-value-types) — write and read formats
-- [Field Types Reference](#field-types-reference) — available types and field object structure
-- [Quick Examples](#quick-examples) — basic CRUD code
-
-## Critical Rules
+## 🔥 Critical Rules (READ FIRST)
 - **ALWAYS** use field IDs (`fldXXX`) not field names in all operations
 - **MANDATORY**: Set `fieldKeyType: "id"` for all record operations
 - **RECOMMENDED**: Set `typecast: true` for create/update record(s) operations (auto-converts data types)
 - **SECURITY**: Only call Teable APIs from server-side code, never from client-side
 
-## Records API
+## 📝 Records API
 
 ### Get Single Record
 ```
@@ -90,7 +77,7 @@ DELETE /table/{tableId}/record/{recordId}              // Single
 DELETE /table/{tableId}/record?recordIds=recA,recB    // Multiple
 ```
 
-## Aggregation / Statistics API
+## 📊 Aggregation / Statistics API
 
 **For any statistics/aggregation requirement, this is the PRIMARY recommended API.**
 Use this endpoint instead of fetching records and aggregating them.
@@ -138,7 +125,7 @@ GET /table/{tableId}/aggregation
 - Supported statistic functions include: `count`, `empty`, `filled`, `unique`, `max`, `min`, `sum`, `average`, `checked`, `unChecked`, `percentEmpty`, `percentFilled`, `percentUnique`, `percentChecked`, `percentUnChecked`, `earliestDate`, `latestDate`, `dateRangeOfDays`, `dateRangeOfMonths`, `totalAttachmentSize`.
 - **Strongly recommended:** For any statistics/aggregation tasks, always use this endpoint instead of iterating records and computing aggregations manually.
 
-## Fields API
+## 🏗️ Fields API
 
 ### List All Fields
 ```
@@ -177,7 +164,7 @@ PUT /table/{tableId}/field/{fieldId}/convert
 }
 ```
 
-## Upload Attachments
+## 📎 Upload Attachments
 
 The value of an attachment field is an **array**. Each item is an attachment object with at minimum:
 
@@ -353,7 +340,7 @@ Content-Type: application/json
 }
 ```
 
-## Filter Guide
+## 🔍 Filter Guide
 
 **Structure:**
 ```json
@@ -421,7 +408,7 @@ const dateFilter = {
 const url = `/table/tblXXX/record?filter=${encodeURIComponent(JSON.stringify(filter))}`;
 ```
 
-## Field Value Types
+## 📋 Field Value Types
 
 ### When Creating/Updating Records:
 
@@ -466,7 +453,7 @@ const record = {
 };
 ```
 
-**Tips:**
+**💡 Pro Tips:**
 - Fields with `isMultipleCellValue: true` accept arrays even for single values
 - Use `typecast: true` to let API auto-convert data types
 - Don't set computed fields (formula, rollup, autoNumber, createdTime, etc.)
@@ -492,9 +479,9 @@ GET responses return expanded objects for user/link fields:
     "fldAttachment": [{
       "id": "attXXX",
       "name": "file.jpg",
-      "presignedUrl": "https://example.com/file.jpg",
+      "url": "https://example.com/file.jpg",
       "size": 1024,
-      "mimetype": "image/jpeg",
+      "type": "image/jpeg",
       "width": 800,
       "height": 600,
       "smThumbnailUrl": "https://example.com/thumb-sm.jpg",
@@ -507,7 +494,7 @@ GET responses return expanded objects for user/link fields:
 }
 ```
 
-## Field Types Reference
+## 🎯 Field Types Reference
 
 **Available Types:**
 `singleLineText`, `longText`, `number`, `checkbox`, `singleSelect`, `multipleSelect`, `date`, `user`, `attachment`, `rating`, `link`, `formula`, `rollup`, `autoNumber`, `createdTime`, `lastModifiedTime`, `createdBy`, `lastModifiedBy`, `button`
@@ -527,7 +514,7 @@ GET responses return expanded objects for user/link fields:
 }
 ```
 
-## Quick Examples
+## ⚡ Quick Examples
 
 ### Basic CRUD Operations:
 ```javascript
@@ -576,4 +563,4 @@ const updateResponse = await fetch('/table/tblXXX/record/recXXX', {
 });
 ```
 
-**Remember:** Always use field IDs (fldXXX) and set fieldKeyType: "id"!
+**🚨 Remember:** Always use field IDs (fldXXX) and set fieldKeyType: "id"!

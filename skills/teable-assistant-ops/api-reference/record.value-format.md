@@ -1,16 +1,5 @@
 # Record Value Format Reference
 
-## Table of Contents
-- [Simple Field Types](#simple-field-types) — text, number, checkbox, date, rating
-- [Select Fields](#select-fields) — singleSelect, multipleSelect
-- [User Fields](#user-fields) — user objects with id/title
-- [Link Fields](#link-fields) — single vs multiple link objects
-- [Attachment Fields](#attachment-fields) — name + token arrays
-- [Read-Only Fields](#read-only-fields) — formula, rollup, system fields
-- [Complete Example](#complete-example)
-- [Important Notes](#important-notes)
-- [Common Errors](#common-errors)
-
 This document defines the exact format for field values when creating or updating records.
 
 ## Simple Field Types

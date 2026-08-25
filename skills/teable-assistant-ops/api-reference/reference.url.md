@@ -35,5 +35,5 @@ Example: `https://{origin}/base/bseAbc/table/tblXyz/viwQrs?recordId=rec123`
 Published/public app URLs are NOT constructible from `appId`: the default host embeds it
 (`https://{appId}.{system-domain}`), but a custom prefix or domain, the instance-specific
 `{system-domain}` suffix, and non-default deploy providers all break this — never template it.
-Fetch the app (`app get`/`app list`) and read `accessUrl` (else `systemDomainUrl` /
+Fetch the app (app get/list tool) and read `accessUrl` (else `systemDomainUrl` /
 `customDomain` / `metaData.publicUrl` / `metaData.previewUrl`).

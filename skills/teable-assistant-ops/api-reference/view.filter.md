@@ -1,13 +1,5 @@
 # View Filter Configuration
 
-## Table of Contents
-- [Filter Structure](#filter-structure) — filterSet + conjunction
-- [Operators by Cell Value Type](#operators-by-cell-value-type) — string, number, datetime, boolean
-- [Operators by Special Field Type](#operators-by-special-field-type) — select, user, link, attachment
-- [Dynamic Fields](#dynamic-fields-formula-rollup-lookup) — formula, rollup, lookup
-- [Key Rules](#key-rules) — isMultipleCellValue impact, operator meanings
-- [Examples](#examples) — basic, AND, multi-select, date, empty check
-
 Filters show only records matching conditions. Supported operators depend on field type and `isMultipleCellValue`.
 
 ## Filter Structure
@@ -82,7 +74,8 @@ Applies to: user, createdBy, lastModifiedBy
 ```
 **When `isMultipleCellValue: true`**
 Note: Uses "has" operators instead of "is" operators
-**Values**: array-wrapped — `["usrXXXX"]` or `["Me"]`. The "has" operators (`hasAnyOf`, `hasAllOf`, `isExactly`) reject scalar values.
+**Values**: array-wrapped — `["usrXXXX"]` or `["Me"]`. The "has" operators
+(`hasAnyOf`, `hasAllOf`, `isExactly`) reject scalar values.
 
 ### Link (Single)
 ```typescript
@@ -159,14 +152,47 @@ Example:
 { filterSet: [{ fieldId: "fldTags", operator: "hasAnyOf", value: ["Bug", "Feature"] }] }
 ```
 
-### Date Relative Filter
+### DateTime Value Format
+
+**ALL date/time operators require an object value** with a `mode` field. Never pass a plain date string.
+
 ```typescript
-// Simple string value (no timeZone needed)
-{ filterSet: [{ fieldId: "fldDate", operator: "isWithIn", value: "pastWeek" }] }
-// Object value with mode (timeZone auto-filled from user context if omitted)
-{ filterSet: [{ fieldId: "fldDate", operator: "isWithIn", value: { mode: "pastNumberOfDays", numberOfDays: 7, timeZone: "Asia/Shanghai" } }] }
-// Exact date: mode "exactDate" matches the selected day range; mode "exactDateTime" matches the exact timestamp
-{ filterSet: [{ fieldId: "fldDate", operator: "is", value: { mode: "exactDate", exactDate: "2026-04-27T00:00:00.000Z" } }] }
+{ mode: string, numberOfDays?: number, exactDate?: string, exactDateEnd?: string, timeZone?: string }
+```
+
+**Valid modes by operator:**
+
+- **Standard operators** (`isBefore`, `isAfter`, `isOnOrBefore`, `isOnOrAfter`):
+  `today`, `tomorrow`, `yesterday`, `currentWeek`, `lastWeek`, `nextWeekPeriod`, `currentMonth`, `lastMonth`, `nextMonthPeriod`, `currentYear`, `lastYear`, `nextYearPeriod`, `oneWeekAgo`, `oneWeekFromNow`, `oneMonthAgo`, `oneMonthFromNow`, `daysAgo`, `daysFromNow`, `exactDate`, `exactDateTime`, `exactFormatDate`
+- **`is` operator** (also supports `dateRange`):
+  `today`, `tomorrow`, `yesterday`, `currentWeek`, `lastWeek`, `nextWeekPeriod`, `currentMonth`, `lastMonth`, `nextMonthPeriod`, `currentYear`, `lastYear`, `nextYearPeriod`, `oneWeekAgo`, `oneWeekFromNow`, `oneMonthAgo`, `oneMonthFromNow`, `daysAgo`, `daysFromNow`, `exactDate`, `exactDateTime`, `exactFormatDate`, `dateRange`
+- **`isWithIn` operator** (all standard modes plus):
+  `pastWeek`, `pastMonth`, `pastYear`, `nextWeek`, `nextMonth`, `nextYear`, `pastNumberOfDays`, `nextNumberOfDays`
+
+**Mode-specific required fields:**
+- `daysAgo`, `daysFromNow` → `numberOfDays` (integer)
+- `pastNumberOfDays`, `nextNumberOfDays` → `numberOfDays` (integer, isWithIn only)
+- `exactDate` → `exactDate` (ISO 8601 string; matches the selected day range)
+- `exactDateTime` → `exactDate` (ISO 8601 string; exact timestamp match)
+- `exactFormatDate` → `exactDate` (ISO 8601 string, e.g. "2024-01-01T00:00:00.000Z")
+- `dateRange` → `exactDate` and `exactDateEnd` (ISO 8601 strings, `is` only)
+- All other modes (e.g. `today`, `pastWeek`) → no extra fields needed
+
+```typescript
+// isBefore today
+{ fieldId: "fldDate", operator: "isBefore", value: { mode: "today", timeZone: "UTC" } }
+
+// isWithIn pastWeek
+{ fieldId: "fldDate", operator: "isWithIn", value: { mode: "pastWeek", timeZone: "Asia/Shanghai" } }
+
+// isAfter 7 days ago
+{ fieldId: "fldDate", operator: "isAfter", value: { mode: "daysAgo", numberOfDays: 7, timeZone: "UTC" } }
+
+// is dateRange
+{ fieldId: "fldDate", operator: "is", value: { mode: "dateRange", exactDate: "2026-01-01T00:00:00.000Z", exactDateEnd: "2026-12-31T23:59:59.999Z", timeZone: "UTC" } }
+
+// isWithIn pastNumberOfDays
+{ fieldId: "fldDate", operator: "isWithIn", value: { mode: "pastNumberOfDays", numberOfDays: 30, timeZone: "UTC" } }
 ```
 
 ### Empty Check

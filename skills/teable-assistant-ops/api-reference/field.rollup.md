@@ -1,15 +1,5 @@
 # Rollup Field
 
-## Table of Contents
-- [Core Differences](#core-differences) — basic rollup vs conditional rollup
-- [Business Scenario](#business-scenario) — table structure example
-- [Basic Rollup Example](#basic-rollup-example) — aggregate linked records
-- [Conditional Rollup Example](#conditional-rollup-example) — dynamic filter, no link needed
-- [Comparison Table](#comparison-table)
-- [Aggregation Functions](#aggregation-functions) — countall, sum, average, etc.
-- [Complete Examples](#complete-examples)
-- [Important Notes](#important-notes)
-
 Rollup fields aggregate data from other tables. There are two types:
 
 ⚠️ **CRITICAL**: Rollup is NOT Lookup! Do NOT use `isLookup: true` for rollup fields.

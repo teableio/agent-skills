@@ -1,16 +1,5 @@
 # Lookup Field
 
-## Table of Contents
-- [Core Differences](#core-differences) — basic vs conditional lookup
-- [Business Scenario](#business-scenario) — table structure example
-- [Basic Lookup Example](#basic-lookup-example) — via existing link field
-- [Conditional Lookup Example](#conditional-lookup-example) — dynamic filter, no link needed
-- [Comparison Table](#comparison-table)
-- [Type Inheritance Rule](#type-inheritance-rule) — must match foreign field type
-- [Complete Examples](#complete-examples)
-- [Common Mistakes](#common-mistakes)
-- [Important Notes](#important-notes)
-
 Lookup fields display values from other tables.
 
 ⚠️ **Critical:** Lookup does NOT have its own FieldType. Use the **exact type** of the foreign field and set `isLookup: true`.

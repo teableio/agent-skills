@@ -1,11 +1,10 @@
-
 # Slack Integration
 
 Send messages and notifications to Slack from automation scripts.
 
 ## Setup
 1. Check status: `teable integration list`
-2. Not connected / invalid → `teable integration connect --provider slack`
+2. Not connected / invalid → call the `connect_integration` tool
 3. Connected → fetch tokens: `teable integration get-token`
 
 ## Two Types of Tokens

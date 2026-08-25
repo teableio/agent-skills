@@ -1,4 +1,3 @@
-
 # Scrape Tool — Dataset Reference
 
 Fetch structured data from 44+ web platforms. Each dataset requires a `datasetId` identifier and an `inputs` object with the required fields.
