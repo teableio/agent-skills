@@ -132,11 +132,21 @@ jobs:
           command, option, and rendered --help text of the current \`teable\` CLI.
 
           Task:
-          1. Make exactly the change the reviewer asked for, in files under
-             skills/teable-assistant-ops/. Keep unrelated content untouched.
-          2. Never document a command or flag that is absent from the manifest — CI
+          1. Read AGENTS.md first (repo conventions, especially File Organization),
+             then survey the whole skill before editing: read SKILL.md (the module
+             map) and every file under skills/teable-assistant-ops/ so you know the
+             existing structure and where content belongs.
+          2. Make the change the reviewer asked for, in files under
+             skills/teable-assistant-ops/. Reviewer comments can be terse — interpret
+             them against the PR, the existing docs, and the manifest, and make the
+             change a maintainer would expect. Keep unrelated content untouched.
+          3. Structure matters: documenting a new command group or topic area means a
+             dedicated guides/<topic>-guide.md (modeled on the existing guides) linked
+             from SKILL.md — never a large section appended to an existing file such
+             as cli-reference.md. Small corrections belong in place.
+          4. Never document a command or flag that is absent from the manifest — CI
              validates every documented \`teable\` invocation against it.
-          3. Write a short reply to the reviewer to $RUNNER_TEMP/reply.md: what you
+          5. Write a short reply to the reviewer to $RUNNER_TEMP/reply.md: what you
              changed, or why you made no changes (e.g. the request conflicts with the
              manifest). Plain conversational markdown, no headings. Write the reply
              in English regardless of the language of the instruction — everything in
