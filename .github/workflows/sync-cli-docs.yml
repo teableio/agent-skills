@@ -250,6 +250,11 @@ jobs:
           Hard rules:
           - Never document a command or flag that is absent from the manifest — CI validates every
             documented \`teable\` invocation against it and will fail the PR.
+          - The skill's readers run @teable/cli in their own environment, never inside a
+            Teable-managed agent sandbox. Treat the manifest's \`availability\` markers
+            (managed-sandbox-disabled / sandbox-only) as out of scope: never add
+            sandbox-conditional wording to the docs, and never document sandbox-only
+            commands (e.g. \`sandbox tool\`).
           - api-reference files named <category>.<subtopic>.md (e.g. field.formula.md) are
             generated verbatim mirrors of the CLI's embedded get-doc content — never edit them;
             they are regenerated mechanically. Curated exceptions you may edit: field.simple.md,
