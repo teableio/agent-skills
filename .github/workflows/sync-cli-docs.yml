@@ -370,6 +370,10 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
+          # pr-summary.md only exists when pi ran (surface_changed); jq turns
+          # an empty read into summary: null and truncates to 1500 chars.
+          SUMMARY_FILE="$RUNNER_TEMP/pr-summary.md"
+          [ -s "$SUMMARY_FILE" ] || SUMMARY_FILE=/dev/null
           jq -n \
             --arg event "sync-cli-docs-pr" \
             --arg repo "$GITHUB_REPOSITORY" \
@@ -380,6 +384,7 @@ jobs:
             --arg changed "$CHANGED" \
             --arg drift "$DRIFT" \
             --arg run_url "$RUN_URL" \
+            --rawfile summary "$SUMMARY_FILE" \
             '{
               event: $event,
               repo: $repo,
@@ -391,6 +396,7 @@ jobs:
               },
               surface_changed: ($changed == "true"),
               docs_drift: ($drift == "true"),
+              summary: ($summary | if . == "" then null else .[0:1500] end),
               run_url: $run_url
             }' > "$RUNNER_TEMP/webhook-payload.json"
           curl -sf -X POST "$GROUP_WEBHOOK_URL" \

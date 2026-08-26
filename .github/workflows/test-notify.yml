@@ -33,8 +33,16 @@ jobs:
             echo "::error::GROUP_WEBHOOK_URL secret is not configured — set it in repo secrets, then re-run"
             exit 1
           fi
+          # Fake pi reviewer summary, as the sync workflow would have produced.
+          printf '%s\n' \
+            '## Summary (test data)' \
+            '- Added `teable record import` command group' \
+            '- Removed deprecated `--legacy` flag from `teable base export`' \
+            > "$RUNNER_TEMP/pr-summary.md"
           # Keep this block identical to the Notify webhook step in
           # sync-cli-docs.yml so the test exercises the exact production script.
+          SUMMARY_FILE="$RUNNER_TEMP/pr-summary.md"
+          [ -s "$SUMMARY_FILE" ] || SUMMARY_FILE=/dev/null
           jq -n \
             --arg event "sync-cli-docs-pr" \
             --arg repo "$GITHUB_REPOSITORY" \
@@ -45,6 +53,7 @@ jobs:
             --arg changed "$CHANGED" \
             --arg drift "$DRIFT" \
             --arg run_url "$RUN_URL" \
+            --rawfile summary "$SUMMARY_FILE" \
             '{
               event: $event,
               repo: $repo,
@@ -56,6 +65,7 @@ jobs:
               },
               surface_changed: ($changed == "true"),
               docs_drift: ($drift == "true"),
+              summary: ($summary | if . == "" then null else .[0:1500] end),
               run_url: $run_url
             }' > "$RUNNER_TEMP/webhook-payload.json"
           echo "Payload:"
