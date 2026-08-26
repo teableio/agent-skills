@@ -53,6 +53,13 @@ that can always run `teable <cmd> --help` at runtime, so:
   payloads, quoting, multi-step sequences. Trivial invocations need none.
 - **Brevity is a feature**: skill files are loaded into an agent's context
   window; every line costs tokens on every task that uses the skill.
+- **The reader runs outside Teable-managed sandboxes**: this skill is consumed
+  by agents operating `@teable/cli` in their own environment, never inside a
+  Teable-managed agent sandbox. The manifest's `availability` markers
+  (`managed-sandbox-disabled`, `sandbox-only`) describe runtime gating those
+  readers never encounter — do not thread sandbox-conditional wording through
+  the docs, and do not document sandbox-only command groups (e.g.
+  `sandbox tool`).
 
 ## File Organization
 
