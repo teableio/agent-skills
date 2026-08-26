@@ -52,6 +52,7 @@ teable app get-code --app-id appXXX
 - **Pass user requirements verbatim** to `--prompt` — do not interpret, expand, or add features
 - Do not use markdown formatting in the prompt text
 - Do not specify tech stack unless the user explicitly requests it
+- `app delete` moves the app to base trash; verify the app ID first, then use trash if it must be restored
 
 ## Publishing
 

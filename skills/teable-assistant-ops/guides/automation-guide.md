@@ -9,7 +9,7 @@ Use automations for event-driven or recurring work — if the user's task fits a
 | `automation list` | List all automations in the base |
 | `automation get` | Get detailed workflow (trigger, actions, script code, edges) |
 | `automation update` | Rename/describe a workflow — applies **immediately**, bypasses the draft system |
-| `automation delete` | Delete a workflow (soft-delete to trash, restorable — not permanent) |
+| `automation delete` | Move a workflow to base trash; it is deactivated and restorable |
 | `automation setup-trigger` | Create or update workflow + trigger |
 | `automation generate-script` | Add/update script code for an action |
 | `automation generate-flowchart` | Generate flowchart for a script action |
@@ -142,7 +142,7 @@ await fetch("https://hooks.slack.com/...", {
 
 ## External Integrations
 
-Use `integration list` to check connected services, `integration connect --provider slack` to start OAuth, and `integration get-token --integration-id intXXX` to get access tokens.
+Use `integration list` to check connected services, `integration connect --provider slack` to start OAuth outside managed sandboxes, and `integration get-token --integration-id intXXX` to get access tokens. In a managed sandbox, `integration connect` is disabled; ask the user to connect Slack in the Teable UI.
 
 To use integrations in scripts:
 1. `integration list` — get integration IDs

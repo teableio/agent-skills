@@ -4,16 +4,16 @@ Managed skills are independent of the current project base. Choose scope by inte
 
 ## Scope Resolution
 
-- Base and space imports need an explicit scope ID.
+- Base and space operations need an explicit scope ID, including imports and scoped lists.
 - App and CuppyClaw operations can fall back to `TEABLE_APP_ID` and `TEABLE_BOT_ID`; pass the ID when environment context could be ambiguous.
 - A user-scope list normally shows personal skills. Add base context only when the agent needs skills available through that base.
-- Use the available list when looking for chat slash-command exposure; use the managed list when locating a skill to configure.
+- Use the available list when looking for chat slash-command exposure; use the managed list when locating a skill to configure. These are the only valid list modes.
 
 ## Import Workflow
 
 1. Choose the narrowest scope that should own the skill.
 2. Import it, then list that scope to verify ownership and obtain the skill ID.
-3. Change enabled state only after verifying the ID and scope.
+3. Change enabled state only after verifying the ID and scope; enabled state accepts only `true` or `false`.
 
 GitHub imports require a URL to the skill directory, not the repository root. The URL must include `/tree/<ref>/<path>` (or `/blob/<ref>/<path>`):
 

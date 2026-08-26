@@ -1,5 +1,7 @@
 # CLI Installation Guide
 
+> This guide applies to local/regular CLI environments. Teable-managed sandboxes inject credentials and disable `auth` and `config`; do not run the authentication steps there.
+
 ## Prerequisites
 
 - Node.js >= 18

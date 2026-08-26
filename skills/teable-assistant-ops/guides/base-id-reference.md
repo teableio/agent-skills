@@ -1,6 +1,6 @@
 # --base-id Reference
 
-`--base-id` can be pre-configured via `teable config`. When the user explicitly provides a base ID, pass it with `-b` / `--base-id` to the commands below.
+`--base-id` can be pre-configured via `teable config` outside Teable-managed sandboxes. Managed sandboxes inject base context and disable `config`. When the user explicitly provides a base ID, pass it with `-b` / `--base-id` to the commands below.
 
 Commands that accept it show `-b, --base-id <baseId>` in their options. The tables below list all commands.
 

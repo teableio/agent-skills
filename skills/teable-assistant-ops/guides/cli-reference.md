@@ -1,6 +1,6 @@
 # CLI Operations Reference
 
-Use `teable config show` to check current endpoint, baseId, and token status.
+Outside Teable-managed sandboxes, use `teable config show` to check current endpoint, baseId, and token status. Managed sandboxes inject this context and disable `config` and `auth` commands.
 
 ## Common Pitfalls
 
@@ -33,6 +33,8 @@ When creating tables or fields, use these shorthand type aliases:
 | `mul:A,B,C` | Multi-select | `"Tags:mul:Bug,Feature"` |
 
 Advanced types (link, lookup, rollup, formula, AI) require `field create` with options — see [field.simple.md](../api-reference/field.simple.md).
+
+`table delete` moves the table to base trash rather than permanently erasing it. Verify the table ID before deletion; restore it from trash if needed.
 
 **Name resolution**: `field create` accepts table/field names in place of IDs (e.g., `foreignTableName: "Projects"` instead of `foreignTableId: "tblXXX"`). This reduces the need to look up IDs before creating link/lookup/rollup fields.
 
@@ -231,8 +233,10 @@ For static charts/reports from already-queried data, use HTML code blocks (` ```
 
 ## Error Troubleshooting
 
-When a command fails, follow this procedure:
+When a command fails outside a managed sandbox, follow this procedure:
 1. `teable config show` — check current endpoint, baseId, and token status
 2. `teable auth status` — confirms connection and permissions
 3. Verify IDs exist: `table get` (for table IDs) or `field get` (for field IDs)
 4. Check common errors: **field type mismatch** (passing text to number field), **ID not found** (deleted or from different base), **permission denied** (user lacks write access)
+
+In a Teable-managed sandbox, skip steps 1–2 because `config` and `auth` are disabled; verify resource IDs and permissions directly.
