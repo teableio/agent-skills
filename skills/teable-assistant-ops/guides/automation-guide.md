@@ -9,7 +9,7 @@ Use automations for event-driven or recurring work — if the user's task fits a
 | `automation list` | List all automations in the base |
 | `automation get` | Get detailed workflow (trigger, actions, script code, edges) |
 | `automation update` | Rename/describe a workflow — applies **immediately**, bypasses the draft system |
-| `automation delete` | Delete a workflow (soft-delete to trash, restorable — not permanent) |
+| `automation delete` | Deactivate a workflow and move it to base trash (restorable — not permanent) |
 | `automation setup-trigger` | Create or update workflow + trigger |
 | `automation generate-script` | Add/update script code for an action |
 | `automation generate-flowchart` | Generate flowchart for a script action |

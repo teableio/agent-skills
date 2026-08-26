@@ -4,10 +4,11 @@ Managed skills are independent of the current project base. Choose scope by inte
 
 ## Scope Resolution
 
-- Base and space imports need an explicit scope ID.
+- Base and space imports and lists need an explicit scope ID; configured base context is not substituted for it.
 - App and CuppyClaw operations can fall back to `TEABLE_APP_ID` and `TEABLE_BOT_ID`; pass the ID when environment context could be ambiguous.
 - A user-scope list normally shows personal skills. Add base context only when the agent needs skills available through that base.
 - Use the available list when looking for chat slash-command exposure; use the managed list when locating a skill to configure.
+- Enabled state accepts only the boolean strings `true` and `false`; verify the skill ID before changing it.
 
 ## Import Workflow
 

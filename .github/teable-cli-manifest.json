@@ -1,6 +1,6 @@
 {
   "name": "teable",
-  "version": "0.6.29",
+  "version": "0.6.30",
   "description": "Teable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries, and related app/automation workflows with a safe read-before-write process.",
   "options": [
     {
@@ -124,7 +124,7 @@
         {
           "name": "delete",
           "summary": "Delete an app",
-          "description": "Delete an app permanently.\n\nParameters:\n  - appId (required): The ID of the app to delete\n\n⚠️ Warning: This operation is destructive. Verify appId before deletion.",
+          "description": "Delete an app (moves it to trash).\n\nParameters:\n  - appId (required): The ID of the app to delete\n\n⚠️ Warning: This operation is destructive. Verify appId before deletion. The app can be restored from the base trash.",
           "options": [
             {
               "flags": "--app-id <appId>",
@@ -150,7 +150,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable app delete [options]\n\nDelete an app permanently.\n\nParameters:\n  - appId (required): The ID of the app to delete\n\n⚠️ Warning: This operation is destructive. Verify appId before deletion.\n\nOptions:\n  --app-id <appId>        The ID of the app to delete\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
+          "help": "Usage: teable app delete [options]\n\nDelete an app (moves it to trash).\n\nParameters:\n  - appId (required): The ID of the app to delete\n\n⚠️ Warning: This operation is destructive. Verify appId before deletion. The app can be restored\nfrom the base trash.\n\nOptions:\n  --app-id <appId>        The ID of the app to delete\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
         },
         {
           "name": "get-code",
@@ -442,20 +442,24 @@
               "description": "Comma-separated scopes to request"
             }
           ],
-          "help": "Usage: teable auth login [options]\n\nLogin via browser using OAuth (Authorization Code + PKCE)\n\nOptions:\n  --client-id <clientId>  OAuth client ID (default: \"clttckxmg4deadomjhs\")\n  --scopes <scopes>       Comma-separated scopes to request\n  --device-code           Authorize with a one-time code entered in a browser, without a local\n                          callback port\n  -h, --help              display help for command\n\nUse `--endpoint <url>` to log in against a custom deployment.\nWhen this CLI runs where your browser cannot reach its 127.0.0.1 — a cloud IDE, an SSH\nsession, a container — use `--device-code`.\n"
+          "help": "Usage: teable auth login [options]\n\nLogin via browser using OAuth (Authorization Code + PKCE)\n\nOptions:\n  --client-id <clientId>  OAuth client ID (default: \"clttckxmg4deadomjhs\")\n  --scopes <scopes>       Comma-separated scopes to request\n  --device-code           Authorize with a one-time code entered in a browser, without a local\n                          callback port\n  -h, --help              display help for command\n\nUse `--endpoint <url>` to log in against a custom deployment.\nWhen this CLI runs where your browser cannot reach its 127.0.0.1 — a cloud IDE, an SSH\nsession, a container — use `--device-code`.\n",
+          "availability": "managed-sandbox-disabled"
         },
         {
           "name": "logout",
           "description": "Clear saved OAuth credentials",
-          "help": "Usage: teable auth logout [options]\n\nClear saved OAuth credentials\n\nOptions:\n  -h, --help  display help for command\n"
+          "help": "Usage: teable auth logout [options]\n\nClear saved OAuth credentials\n\nOptions:\n  -h, --help  display help for command\n",
+          "availability": "managed-sandbox-disabled"
         },
         {
           "name": "status",
           "description": "Show current auth status and endpoint",
-          "help": "Usage: teable auth status [options]\n\nShow current auth status and endpoint\n\nOptions:\n  -h, --help  display help for command\n"
+          "help": "Usage: teable auth status [options]\n\nShow current auth status and endpoint\n\nOptions:\n  -h, --help  display help for command\n",
+          "availability": "managed-sandbox-disabled"
         }
       ],
-      "help": "Usage: teable auth|init [options] [command]\n\nManage auth for teable\n\nOptions:\n  -f, --force            Overwrite config file if it already exists (default: false)\n  --path <dir>           Save config into <dir>/.teable/cli/config.json instead of the user-level\n                         path (e.g. --path .)\n  --token <token>        Personal access token\n  --endpoint <endpoint>  Teable endpoint (default: \"https://app.teable.ai\")\n  -h, --help             display help for command\n\nCommands:\n  login [options]        Login via browser using OAuth (Authorization Code + PKCE)\n  logout                 Clear saved OAuth credentials\n  status                 Show current auth status and endpoint\n"
+      "help": "Usage: teable auth|init [options] [command]\n\nManage auth for teable\n\nOptions:\n  -f, --force            Overwrite config file if it already exists (default: false)\n  --path <dir>           Save config into <dir>/.teable/cli/config.json instead of the user-level\n                         path (e.g. --path .)\n  --token <token>        Personal access token\n  --endpoint <endpoint>  Teable endpoint (default: \"https://app.teable.ai\")\n  -h, --help             display help for command\n\nCommands:\n  login [options]        Login via browser using OAuth (Authorization Code + PKCE)\n  logout                 Clear saved OAuth credentials\n  status                 Show current auth status and endpoint\n",
+      "availability": "managed-sandbox-disabled"
     },
     {
       "name": "authority",
@@ -834,7 +838,7 @@
         {
           "name": "delete",
           "summary": "Delete an automation workflow",
-          "description": "Delete an automation workflow permanently, including its trigger, action and logic nodes.\n\nParameters:\n  - workflowId (required): The ID of the automation workflow to delete\n\n⚠️ Warning: This operation is destructive and cannot be undone. Verify workflowId before deletion.\nTo remove a single node instead of the whole workflow, use delete-automation-node.",
+          "description": "Delete an automation workflow (moves it to trash), including its trigger, action and logic nodes.\n\nParameters:\n  - workflowId (required): The ID of the automation workflow to delete\n\n⚠️ Warning: This operation is destructive. Verify workflowId before deletion. The workflow is deactivated and can be restored from the base trash.\nTo remove a single node instead of the whole workflow, use delete-automation-node.",
           "options": [
             {
               "flags": "--endpoint <endpoint>",
@@ -860,7 +864,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable automation delete [options]\n\nDelete an automation workflow permanently, including its trigger, action and logic nodes.\n\nParameters:\n  - workflowId (required): The ID of the automation workflow to delete\n\n⚠️ Warning: This operation is destructive and cannot be undone. Verify workflowId before deletion.\nTo remove a single node instead of the whole workflow, use delete-automation-node.\n\nOptions:\n  --workflow-id <workflowId>  The ID of the automation workflow to delete\n  -b, --base-id <baseId>      Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                              base-id <id>`.\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
+          "help": "Usage: teable automation delete [options]\n\nDelete an automation workflow (moves it to trash), including its trigger, action and logic nodes.\n\nParameters:\n  - workflowId (required): The ID of the automation workflow to delete\n\n⚠️ Warning: This operation is destructive. Verify workflowId before deletion. The workflow is\ndeactivated and can be restored from the base trash.\nTo remove a single node instead of the whole workflow, use delete-automation-node.\n\nOptions:\n  --workflow-id <workflowId>  The ID of the automation workflow to delete\n  -b, --base-id <baseId>      Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                              base-id <id>`.\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
         },
         {
           "name": "delete-node",
@@ -1401,7 +1405,8 @@
               "required": true
             }
           ],
-          "help": "Usage: teable base create [options]\n\nCreates a new base in the given space.\n\nOptions:\n  -s, --space-id <spaceId>  Target space ID (e.g. spcXXXX)\n  --name <name>             Base name\n  --icon <icon>             Base icon (emoji)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+          "help": "Usage: teable base create [options]\n\nCreates a new base in the given space.\n\nOptions:\n  -s, --space-id <spaceId>  Target space ID (e.g. spcXXXX)\n  --name <name>             Base name\n  --icon <icon>             Base icon (emoji)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n",
+          "availability": "managed-sandbox-disabled"
         },
         {
           "name": "delete",
@@ -1427,7 +1432,8 @@
               "required": true
             }
           ],
-          "help": "Usage: teable base delete [options]\n\nDeletes a base by ID (moves it to trash).\n\nOptions:\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
+          "help": "Usage: teable base delete [options]\n\nDeletes a base by ID (moves it to trash).\n\nOptions:\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n",
+          "availability": "managed-sandbox-disabled"
         },
         {
           "name": "get",
@@ -1453,7 +1459,8 @@
               "required": true
             }
           ],
-          "help": "Usage: teable base get [options]\n\nFetches metadata for a single base by ID.\n\nOptions:\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
+          "help": "Usage: teable base get [options]\n\nFetches metadata for a single base by ID.\n\nOptions:\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n",
+          "availability": "managed-sandbox-disabled"
         },
         {
           "name": "list",
@@ -1478,7 +1485,8 @@
               "description": "List only bases in this space (e.g. spcXXXX)"
             }
           ],
-          "help": "Usage: teable base list [options]\n\nLists bases the current user can access, optionally scoped to one space.\n\nOptions:\n  -s, --space-id <spaceId>  List only bases in this space (e.g. spcXXXX)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+          "help": "Usage: teable base list [options]\n\nLists bases the current user can access, optionally scoped to one space.\n\nOptions:\n  -s, --space-id <spaceId>  List only bases in this space (e.g. spcXXXX)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n",
+          "availability": "managed-sandbox-disabled"
         },
         {
           "name": "update",
@@ -1512,10 +1520,12 @@
               "required": true
             }
           ],
-          "help": "Usage: teable base update [options]\n\nUpdates a base name and/or icon.\n\nOptions:\n  --name <name>           New base name\n  --icon <icon>           New base icon (emoji)\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
+          "help": "Usage: teable base update [options]\n\nUpdates a base name and/or icon.\n\nOptions:\n  --name <name>           New base name\n  --icon <icon>           New base icon (emoji)\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n",
+          "availability": "managed-sandbox-disabled"
         }
       ],
-      "help": "Usage: teable base [options] [command]\n\nbase operations (create, get, list, update, delete)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  create [options]  Create a base\n  get [options]     Get a base\n  list [options]    List bases\n  update [options]  Update a base\n  delete [options]  Delete a base\n  help [command]    display help for command\n\nExamples:\n  teable base list\n  teable base list --space-id spcXXXX\n  teable base create --space-id spcXXXX --name \"My Base\"\n  teable base get --base-id bseXXXX\n  teable base update --base-id bseXXXX --name \"Renamed\"\n  teable base delete --base-id bseXXXX\n"
+      "help": "Usage: teable base [options] [command]\n\nbase operations (create, get, list, update, delete)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  create [options]  Create a base\n  get [options]     Get a base\n  list [options]    List bases\n  update [options]  Update a base\n  delete [options]  Delete a base\n  help [command]    display help for command\n\nExamples:\n  teable base list\n  teable base list --space-id spcXXXX\n  teable base create --space-id spcXXXX --name \"My Base\"\n  teable base get --base-id bseXXXX\n  teable base update --base-id bseXXXX --name \"Renamed\"\n  teable base delete --base-id bseXXXX\n",
+      "availability": "managed-sandbox-disabled"
     },
     {
       "name": "call-api",
@@ -1568,15 +1578,18 @@
         {
           "name": "base-id",
           "description": "Save a default base ID into the project-level config file",
-          "help": "Usage: teable config base-id [options] <baseId>\n\nSave a default base ID into the project-level config file\n\nOptions:\n  -h, --help  display help for command\n"
+          "help": "Usage: teable config base-id [options] <baseId>\n\nSave a default base ID into the project-level config file\n\nOptions:\n  -h, --help  display help for command\n",
+          "availability": "managed-sandbox-disabled"
         },
         {
           "name": "show",
           "description": "Show the resolved CLI configuration (merged user + project)",
-          "help": "Usage: teable config show [options]\n\nShow the resolved CLI configuration (merged user + project)\n\nOptions:\n  -h, --help  display help for command\n"
+          "help": "Usage: teable config show [options]\n\nShow the resolved CLI configuration (merged user + project)\n\nOptions:\n  -h, --help  display help for command\n",
+          "availability": "managed-sandbox-disabled"
         }
       ],
-      "help": "Usage: teable config [options] [command]\n\nManage project-level CLI configuration\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  base-id <baseId>  Save a default base ID into the project-level config file\n  show              Show the resolved CLI configuration (merged user + project)\n  help [command]    display help for command\n"
+      "help": "Usage: teable config [options] [command]\n\nManage project-level CLI configuration\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  base-id <baseId>  Save a default base ID into the project-level config file\n  show              Show the resolved CLI configuration (merged user + project)\n  help [command]    display help for command\n",
+      "availability": "managed-sandbox-disabled"
     },
     {
       "name": "env",
@@ -2415,7 +2428,8 @@
               "description": "Wait for OAuth connection completion by polling integration status"
             }
           ],
-          "help": "Usage: teable integration connect [options]\n\nOpen integration OAuth authorization page in browser\n\nOptions:\n  --provider <provider>  The integration provider to connect (choices: \"slack\")\n  --name <name>          The name of the integration (default: \"Slack integration\")\n  --wait                 Wait for OAuth connection completion by polling integration status\n  --timeout <number>     Wait timeout in seconds (default: 120)\n  --interval <number>    Polling interval in seconds (default: 2)\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
+          "help": "Usage: teable integration connect [options]\n\nOpen integration OAuth authorization page in browser\n\nOptions:\n  --provider <provider>  The integration provider to connect (choices: \"slack\")\n  --name <name>          The name of the integration (default: \"Slack integration\")\n  --wait                 Wait for OAuth connection completion by polling integration status\n  --timeout <number>     Wait timeout in seconds (default: 120)\n  --interval <number>    Polling interval in seconds (default: 2)\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n",
+          "availability": "managed-sandbox-disabled"
         },
         {
           "name": "get-token",
@@ -2703,7 +2717,8 @@
                   "description": "Personal access token; falls back to TEABLE_TOKEN env var"
                 }
               ],
-              "help": "Usage: teable sandbox tool delete [options] <name>\n\nForget this tool: drop its setup record and delete the state it had persisted, clearing the symlinks\nthat pointed at it. To change a tool, run `upsert` again instead: deleting and re-adding would\ndestroy the state in between.\n\nArguments:\n  name                   Tool name (from `teable sandbox tool list`)\n\nOptions:\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
+              "help": "Usage: teable sandbox tool delete [options] <name>\n\nForget this tool: drop its setup record and delete the state it had persisted, clearing the symlinks\nthat pointed at it. To change a tool, run `upsert` again instead: deleting and re-adding would\ndestroy the state in between.\n\nArguments:\n  name                   Tool name (from `teable sandbox tool list`)\n\nOptions:\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n",
+              "availability": "sandbox-only"
             },
             {
               "name": "list",
@@ -2724,7 +2739,8 @@
                   "description": "Personal access token; falls back to TEABLE_TOKEN env var"
                 }
               ],
-              "help": "Usage: teable sandbox tool list [options]\n\nList the tools recorded for this sandbox, with their setup command and persisted $HOME-relative\npaths.\n\nOptions:\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
+              "help": "Usage: teable sandbox tool list [options]\n\nList the tools recorded for this sandbox, with their setup command and persisted $HOME-relative\npaths.\n\nOptions:\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n",
+              "availability": "sandbox-only"
             },
             {
               "name": "setup",
@@ -2752,7 +2768,8 @@
                   "description": "Personal access token; falls back to TEABLE_TOKEN env var"
                 }
               ],
-              "help": "Usage: teable sandbox tool setup [options] <name>\n\nRun a recorded tool's setup command in this sandbox, exactly as recorded. Recorded tools are not set\nup automatically after a rebuild — run this before first use; a missing binary right after a rebuild\nusually just means this has not run yet. State directories are already relinked at startup, so setup\nand state compose.\n\nArguments:\n  name                   Tool name (from `teable sandbox tool list`)\n\nOptions:\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
+              "help": "Usage: teable sandbox tool setup [options] <name>\n\nRun a recorded tool's setup command in this sandbox, exactly as recorded. Recorded tools are not set\nup automatically after a rebuild — run this before first use; a missing binary right after a rebuild\nusually just means this has not run yet. State directories are already relinked at startup, so setup\nand state compose.\n\nArguments:\n  name                   Tool name (from `teable sandbox tool list`)\n\nOptions:\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n",
+              "availability": "sandbox-only"
             },
             {
               "name": "upsert",
@@ -2791,10 +2808,12 @@
                   "required": true
                 }
               ],
-              "help": "Usage: teable sandbox tool upsert [options]\n\nRecord one tool: its setup command, the $HOME directories holding state that command cannot\nregenerate, a description — each optional, in any combination. Keyed by name — running this again\nupdates the record in place (paths accumulate); never delete and re-add, which would destroy the\nstate in between. A path belongs to exactly one tool: record a companion sharing the directory with\n--command only. Existing ~/.<name>, ~/.local/share/<name> and ~/.local/state/<name> dirs are\ndiscovered and persisted automatically. Each --path is moved into ~/.teable/home now and symlinked\nback; after a rebuild the symlinks are restored and `setup <name>` replays the command on demand.\nAlways give a --description: the agent decides from it whether a recorded tool fits a task. Pin\nversions in the command (e.g. npm i -g <package>@<version>) for reproducible rebuilds. Prefer $KEY\nreferences (stored via `teable env set`) over embedding secrets in the command.\n\nOptions:\n  -n, --name <name>         Tool-like identifier (upsert key)\n  -c, --command <command>   Shell command `setup <name>` replays after a rebuild\n  -d, --description <text>  One line of what the tool is for\n  --path <path>             State directory to persist, e.g. ~/.<tool> or ~/.local/share/<tool>;\n                            repeatable (default: [])\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+              "help": "Usage: teable sandbox tool upsert [options]\n\nRecord one tool: its setup command, the $HOME directories holding state that command cannot\nregenerate, a description — each optional, in any combination. Keyed by name — running this again\nupdates the record in place (paths accumulate); never delete and re-add, which would destroy the\nstate in between. A path belongs to exactly one tool: record a companion sharing the directory with\n--command only. Existing ~/.<name>, ~/.local/share/<name> and ~/.local/state/<name> dirs are\ndiscovered and persisted automatically. Each --path is moved into ~/.teable/home now and symlinked\nback; after a rebuild the symlinks are restored and `setup <name>` replays the command on demand.\nAlways give a --description: the agent decides from it whether a recorded tool fits a task. Pin\nversions in the command (e.g. npm i -g <package>@<version>) for reproducible rebuilds. Prefer $KEY\nreferences (stored via `teable env set`) over embedding secrets in the command.\n\nOptions:\n  -n, --name <name>         Tool-like identifier (upsert key)\n  -c, --command <command>   Shell command `setup <name>` replays after a rebuild\n  -d, --description <text>  One line of what the tool is for\n  --path <path>             State directory to persist, e.g. ~/.<tool> or ~/.local/share/<tool>;\n                            repeatable (default: [])\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n",
+              "availability": "sandbox-only"
             }
           ],
-          "help": "Usage: teable sandbox tool [options] [command]\n\nManage the tools recorded on the server: state directories are symlinked back whenever the sandbox\nis rebuilt, and `setup <name>` replays the recorded setup command on demand.\n\nOptions:\n  -h, --help               display help for command\n\nCommands:\n  upsert [options]         Record or update a tool so it survives sandbox rebuilds\n  setup [options] <name>   Run a recorded tool's setup command in this sandbox\n  list [options]           List tools recorded for sandbox rebuilds\n  delete [options] <name>  Delete a recorded tool by name\n  help [command]           display help for command\n"
+          "help": "Usage: teable sandbox tool [options] [command]\n\nManage the tools recorded on the server: state directories are symlinked back whenever the sandbox\nis rebuilt, and `setup <name>` replays the recorded setup command on demand.\n\nOptions:\n  -h, --help               display help for command\n\nCommands:\n  upsert [options]         Record or update a tool so it survives sandbox rebuilds\n  setup [options] <name>   Run a recorded tool's setup command in this sandbox\n  list [options]           List tools recorded for sandbox rebuilds\n  delete [options] <name>  Delete a recorded tool by name\n  help [command]           display help for command\n",
+          "availability": "sandbox-only"
         }
       ],
       "help": "Usage: teable sandbox [options] [command]\n\nsandbox operations (tool)\n\nOptions:\n  -h, --help      display help for command\n\nCommands:\n  tool            Manage tools that survive sandbox rebuilds (upsert, setup, list, delete)\n  help [command]  display help for command\n\nExamples:\n  teable sandbox tool upsert --name <tool> --command \"<install command>\"\n  teable sandbox tool upsert --name <tool> --path ~/.<dirname>   # state under a different name\n  teable sandbox tool list\n  teable sandbox tool delete <name>\n",
@@ -2974,7 +2993,7 @@
             },
             {
               "flags": "--scope-id <scopeId>",
-              "description": "Scope entity ID (required for base/app/cuppyclaw; app defaults to TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)"
+              "description": "Scope entity ID (required for base/space/app/cuppyclaw; app defaults to TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)"
             },
             {
               "flags": "--scope-type <scopeType>",
@@ -2991,7 +3010,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable skill import-file [options]\n\nImport a skill from a .skill or .zip file on disk. Both extensions are accepted; the file content\nmust be a valid ZIP archive (a .skill file is a renamed .zip).\n\nOptions:\n  --scope-type <scopeType>  One of: user, base, space, system, app, cuppyclaw\n  --scope <scopeType>       Alias for --scope-type\n  -f, --file-path <path>    Path to the .skill or .zip file (content must be a valid ZIP archive)\n  --scope-id <scopeId>      Scope entity ID (required for base/app/cuppyclaw; app defaults to\n                            TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+          "help": "Usage: teable skill import-file [options]\n\nImport a skill from a .skill or .zip file on disk. Both extensions are accepted; the file content\nmust be a valid ZIP archive (a .skill file is a renamed .zip).\n\nOptions:\n  --scope-type <scopeType>  One of: user, base, space, system, app, cuppyclaw\n  --scope <scopeType>       Alias for --scope-type\n  -f, --file-path <path>    Path to the .skill or .zip file (content must be a valid ZIP archive)\n  --scope-id <scopeId>      Scope entity ID (required for base/space/app/cuppyclaw; app defaults to\n                            TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
           "name": "import-github",
@@ -3013,7 +3032,7 @@
             },
             {
               "flags": "--scope-id <scopeId>",
-              "description": "Scope entity ID (required for base/app/cuppyclaw; app defaults to TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)"
+              "description": "Scope entity ID (required for base/space/app/cuppyclaw; app defaults to TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)"
             },
             {
               "flags": "--scope-type <scopeType>",
@@ -3030,7 +3049,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable skill import-github [options]\n\nImport a skill from a GitHub URL pointing to a skill folder via /tree/<ref>/<path> or\n/blob/<ref>/<path>. Plain repo URLs are rejected.\n\nOptions:\n  --scope-type <scopeType>  One of: user, base, space, system, app, cuppyclaw\n  --scope <scopeType>       Alias for --scope-type\n  -u, --url <url>           GitHub URL to a skill folder (must include /tree/<ref>/<path> or\n                            /blob/<ref>/<path>), e.g.\n                            https://github.com/owner/repo/tree/main/skills/my-skill\n  --scope-id <scopeId>      Scope entity ID (required for base/app/cuppyclaw; app defaults to\n                            TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+          "help": "Usage: teable skill import-github [options]\n\nImport a skill from a GitHub URL pointing to a skill folder via /tree/<ref>/<path> or\n/blob/<ref>/<path>. Plain repo URLs are rejected.\n\nOptions:\n  --scope-type <scopeType>  One of: user, base, space, system, app, cuppyclaw\n  --scope <scopeType>       Alias for --scope-type\n  -u, --url <url>           GitHub URL to a skill folder (must include /tree/<ref>/<path> or\n                            /blob/<ref>/<path>), e.g.\n                            https://github.com/owner/repo/tree/main/skills/my-skill\n  --scope-id <scopeId>      Scope entity ID (required for base/space/app/cuppyclaw; app defaults to\n                            TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
           "name": "list",
@@ -3048,6 +3067,10 @@
             {
               "flags": "--list-type <type>",
               "description": "managed or available",
+              "choices": [
+                "managed",
+                "available"
+              ],
               "default": "managed"
             },
             {
@@ -3061,7 +3084,7 @@
             },
             {
               "flags": "--scope-id <scopeId>",
-              "description": "Scope entity ID (required for app/cuppyclaw; app defaults to TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)"
+              "description": "Scope entity ID (required for base/space/app/cuppyclaw; app defaults to TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)"
             },
             {
               "flags": "--scope-type <scopeType>",
@@ -3073,7 +3096,7 @@
               "description": "Personal access token; falls back to TEABLE_TOKEN env var"
             }
           ],
-          "help": "Usage: teable skill list [options]\n\nList managed skills (full detail) or available skills (for chat slash-commands).\n\nOptions:\n  --scope-type <scopeType>  One of: user, base, space, system, app, cuppyclaw\n  --scope <scopeType>       Alias for --scope-type\n  --list-type <type>        managed or available (default: \"managed\")\n  --scope-id <scopeId>      Scope entity ID (required for app/cuppyclaw; app defaults to\n                            TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)\n  --base-id <baseId>        Base ID (includes base-scoped skills for user scope)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+          "help": "Usage: teable skill list [options]\n\nList managed skills (full detail) or available skills (for chat slash-commands).\n\nOptions:\n  --scope-type <scopeType>  One of: user, base, space, system, app, cuppyclaw\n  --scope <scopeType>       Alias for --scope-type\n  --list-type <type>        managed or available (choices: \"managed\", \"available\", default:\n                            \"managed\")\n  --scope-id <scopeId>      Scope entity ID (required for base/space/app/cuppyclaw; app defaults to\n                            TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)\n  --base-id <baseId>        Base ID (includes base-scoped skills for user scope)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
           "name": "update",
@@ -3086,7 +3109,11 @@
             {
               "flags": "--is-enabled <bool>",
               "description": "true or false",
-              "required": true
+              "required": true,
+              "choices": [
+                "true",
+                "false"
+              ]
             },
             {
               "flags": "--pretty",
@@ -3103,7 +3130,7 @@
               "description": "Personal access token; falls back to TEABLE_TOKEN env var"
             }
           ],
-          "help": "Usage: teable skill update [options]\n\nOptions:\n  --skill-id <id>        Skill ID (sklXXXX)\n  --is-enabled <bool>    true or false\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
+          "help": "Usage: teable skill update [options]\n\nOptions:\n  --skill-id <id>        Skill ID (sklXXXX)\n  --is-enabled <bool>    true or false (choices: \"true\", \"false\")\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
         }
       ],
       "help": "Usage: teable skill [options] [command]\n\nskill operations (list, import-github, import-file, update)\n\nOptions:\n  -h, --help               display help for command\n\nCommands:\n  list [options]           List installed or available skills by scope\n  import-github [options]  Import a skill from a GitHub repository URL\n  import-file [options]    Import a skill from a local .skill or .zip file\n  update [options]         Update skill icon or enabled state\n  help [command]           display help for command\n\nExamples:\n  teable skill list --scope user\n  teable skill import-github --scope user --url https://github.com/owner/repo/tree/main/skills/my-skill\n  teable skill import-file --scope user --file-path ./my-skill.skill\n  teable skill update --skill-id sklXXXX --is-enabled true\n"
@@ -3201,7 +3228,7 @@
         },
         {
           "name": "delete",
-          "summary": "Delete a table permanently",
+          "summary": "Delete a table (moves it to trash)",
           "description": "Delete a table (moves to trash, can be restored within retention period).\n\nParameters:\n  - tableId (required): The ID of the table to delete\n\n⚠️ Warning: This operation is destructive. Verify tableId before deletion.",
           "options": [
             {
@@ -3304,7 +3331,7 @@
           "help": "Usage: teable table update [options]\n\nUpdate table name or description.\n\nParameters:\n  - tableId (required): The table ID\n  - name (optional): New name for the table\n  - description (optional): New description\n\nAt least one of name or description must be provided.\n\nOptions:\n  --table-id <tableId>         The ID of the table to update\n  --name <name>                New name for the table\n  --description <description>  New description for the table\n  -b, --base-id <baseId>       Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                               base-id <id>`.\n  --token <token>              Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>        Teable API server base URL\n  --pretty                     Indent JSON for human readability (default: false)\n  -h, --help                   display help for command\n"
         }
       ],
-      "help": "Usage: teable table [options] [command]\n\ntable operations (create, get, update, delete)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  create [options]  Create a new table with fields\n  get [options]     Get tables metadata in a base\n  update [options]  Update table name or description\n  delete [options]  Delete a table permanently\n  help [command]    display help for command\n\nExamples:\n  teable table get --table-id tblXXXX\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n  teable table update --table-id tblXXXX --name NewName\n  teable table delete --table-id tblXXXX\n"
+      "help": "Usage: teable table [options] [command]\n\ntable operations (create, get, update, delete)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  create [options]  Create a new table with fields\n  get [options]     Get tables metadata in a base\n  update [options]  Update table name or description\n  delete [options]  Delete a table (moves it to trash)\n  help [command]    display help for command\n\nExamples:\n  teable table get --table-id tblXXXX\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n  teable table update --table-id tblXXXX --name NewName\n  teable table delete --table-id tblXXXX\n"
     },
     {
       "name": "tools",
