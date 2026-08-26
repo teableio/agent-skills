@@ -22,6 +22,9 @@
 #                         default github.token, bot PRs trigger no workflows
 #   TEABLE_EE_READ_TOKEN  (optional) — read access to teableio/teable-ee for
 #                         commit-log context between synced refs
+#   GROUP_WEBHOOK_URL     (optional, secret) — endpoint POSTed a structured JSON
+#                         payload whenever a sync PR is created or updated;
+#                         message formatting is the receiver's job
 
 name: sync-cli-docs
 
@@ -329,6 +332,7 @@ jobs:
           private-key: ${{ secrets.PI_APP_PRIVATE_KEY }}
 
       - name: Create or update PR
+        id: cpr
         if: steps.diff.outputs.changed == 'true' || steps.docs.outputs.drift == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
@@ -344,3 +348,57 @@ jobs:
             skills/**
             .github/teable-cli-manifest.json
             .github/teable-cli-sync.json
+
+      # Fires from inside this workflow (not a pull_request-triggered one) so it
+      # works regardless of which token opened the PR — bot PRs opened with the
+      # default github.token trigger no workflows. Payload is structured data
+      # only; the receiving end owns the message formatting.
+      - name: Notify webhook
+        if: >-
+          (steps.cpr.outputs.pull-request-operation == 'created' ||
+           steps.cpr.outputs.pull-request-operation == 'updated') &&
+          env.GROUP_WEBHOOK_URL != ''
+        continue-on-error: true
+        env:
+          GROUP_WEBHOOK_URL: ${{ secrets.GROUP_WEBHOOK_URL }}
+          VERSION: ${{ steps.version.outputs.version }}
+          OPERATION: ${{ steps.cpr.outputs.pull-request-operation }}
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
+          CHANGED: ${{ steps.diff.outputs.changed }}
+          DRIFT: ${{ steps.docs.outputs.drift }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          # pr-summary.md only exists when pi ran (surface_changed); jq turns
+          # an empty read into summary: null and truncates to 1500 chars.
+          SUMMARY_FILE="$RUNNER_TEMP/pr-summary.md"
+          [ -s "$SUMMARY_FILE" ] || SUMMARY_FILE=/dev/null
+          jq -n \
+            --arg event "sync-cli-docs-pr" \
+            --arg repo "$GITHUB_REPOSITORY" \
+            --arg cli_version "$VERSION" \
+            --arg operation "$OPERATION" \
+            --arg pr_number "$PR_NUMBER" \
+            --arg pr_url "$PR_URL" \
+            --arg changed "$CHANGED" \
+            --arg drift "$DRIFT" \
+            --arg run_url "$RUN_URL" \
+            --rawfile summary "$SUMMARY_FILE" \
+            '{
+              event: $event,
+              repo: $repo,
+              cli_version: $cli_version,
+              pr: {
+                number: ($pr_number | tonumber),
+                url: $pr_url,
+                operation: $operation
+              },
+              surface_changed: ($changed == "true"),
+              docs_drift: ($drift == "true"),
+              summary: ($summary | if . == "" then null else .[0:1500] end),
+              run_url: $run_url
+            }' > "$RUNNER_TEMP/webhook-payload.json"
+          curl -sf -X POST "$GROUP_WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            --data @"$RUNNER_TEMP/webhook-payload.json"
