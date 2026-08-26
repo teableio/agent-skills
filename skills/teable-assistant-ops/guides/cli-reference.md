@@ -11,6 +11,7 @@ Use `teable config show` to check current endpoint, baseId, and token status.
 | `--search "keyword"` scope | Plain string auto-wraps to `{"value":"keyword"}`; for field-scoped: `--search '{"value":"keyword","fieldId":"fldXXX"}'` |
 | `field update --name "X"` | `--name` is a convenience flag; for other properties use `--updates '{"name":"X"}'` |
 | `table create --fields '[{...}]'` object format | Object format auto-converts; canonical shorthand: `--fields '["X:text"]'` |
+| Treating `table delete` as permanent | It moves the table to base trash. Verify the table ID first; restore from trash after an accidental deletion. |
 
 ## Field Type Aliases
 
