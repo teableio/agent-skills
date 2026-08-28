@@ -30,6 +30,12 @@ teable app update \
   --app-id appXXX \
   --prompt "add a filter by date range"
 
+# Redirect work that is currently generating (otherwise updates queue by default)
+teable app update \
+  --app-id appXXX \
+  --prompt "keep the current layout; change the chart to weekly totals" \
+  --send-mode steer
+
 # Read an existing app's source code (to answer questions or ground an update)
 teable app get-code --app-id appXXX
 ```
@@ -46,6 +52,10 @@ teable app get-code --app-id appXXX
 | `--table-ids` | No | JSON array of table IDs for data access |
 | `--attachment-tokens` | No | Screenshots or design reference images |
 | `--folder-id` | No | Place the new app in a folder (`folderId` from the active tab meta); omit for base root |
+
+## Updates While the Builder Is Busy
+
+The default delivery mode is `queue`: use it for a new or independent request that should run as a separate generation after current work finishes. Use `--send-mode steer` only when the prompt corrects, refines, or adds to the generation in progress; if nothing is running, it falls back to queue. The option applies only to `app update`.
 
 ## Key Rules
 

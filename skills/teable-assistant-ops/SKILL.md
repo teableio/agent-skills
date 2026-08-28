@@ -34,7 +34,8 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Fields | Add/change columns and computed fields | `field create/update/delete` | [field.simple.md](api-reference/field.simple.md) |
 | Records | Write row data, attachments, reordering | `record create/update/delete` | [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) |
 | Views | Persistent filtered/sorted/grouped perspectives | `view create/update/delete` | [view.filter.md](api-reference/view.filter.md), [view.sort.md](api-reference/view.sort.md) |
-| Import | CSV/Excel file loading (>50 rows); whole Airtable base migration | `import`, `import-status`, `import-airtable` | [data-import-guide.md](guides/data-import-guide.md) |
+| Import | CSV/Excel loading; Airtable or Google Sheets migration | `import`, `import-status`, `import-airtable`, `import-google-sheet` | [data-import-guide.md](guides/data-import-guide.md) |
+| Artifacts | Durable HTML pages, charts, and Markdown reports | `artifact create/update/get` | [artifact-guide.md](guides/artifact-guide.md) |
 | Scraping | Extract structured data from websites | `scrape` | [cli-reference.md § Scraping](guides/cli-reference.md#scraping) |
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
 | App Builder | Live dashboards, custom web UIs | `app create/update/list/get-code`, `app publish/status/unpublish`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
@@ -57,8 +58,9 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Aggregation (count, sum, avg) | Data Query: `sql-query` with GROUP BY | Fetch all records + compute in code |
 | Read records for subsequent writes | Data Query: `record get` (returns record IDs) | `sql-query` (no record IDs) |
 | Cross-table analytics / JOINs | Data Query: `sql-query` | Multiple `record get` calls |
-| One-time chart from queried data | Visualization: HTML code block | App Builder |
-| Live dashboard / interactive UI | App Builder: `app create` | HTML code block |
+| One-time chart shown only in the conversation | Visualization: HTML code block | App Builder or artifact |
+| Durable report/chart stored in Teable | Artifacts: `artifact create` | App Builder |
+| Live dashboard / data-connected custom UI | App Builder: `app create` | HTML code block or artifact |
 | Bulk data loading (>50 rows) | Import: `import` | `record create` in loop |
 | Relationships between tables | Fields: Link field → Lookup/Rollup | singleSelect simulating categories |
 | Computed/derived values (same row) | Fields: Formula | — |
@@ -94,6 +96,7 @@ For complete syntax, value formats, and all command options, read [cli-reference
 - **App publish**: apps run in preview until `app publish`; if it returns `deploying`, poll `app status`. See [app-builder-guide.md § Publishing](guides/app-builder-guide.md#publishing).
 - **Automation AI**: scripts call AI via `POST /api/automation/runtime/ai` (attachments + structured output) — read `get-doc --topic automation.ai` first. See [automation-guide.md § Script Rules](guides/automation-guide.md#script-rules).
 - **Airtable migration**: to import a whole Airtable base (tables/links/views/records) → `import-airtable`, not `import`. See [data-import-guide.md § Import from Airtable](guides/data-import-guide.md#import-from-airtable).
+- **Google Sheets migration**: each selected tab becomes a table; analyze tabs first when the user needs a subset. See [data-import-guide.md § Import from Google Sheets](guides/data-import-guide.md#import-from-google-sheets).
 
 ## 3. Key Constraints
 
