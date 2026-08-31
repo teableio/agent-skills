@@ -66,10 +66,12 @@ Auth config is saved to `~/.teable/cli/config.json` by default.
 
 ## Configuration
 
-Config is loaded in this order (later overrides earlier):
+Saved config is loaded from the user-level file, then optionally overridden by project-level config:
 
 1. **User-level**: `~/.teable/cli/config.json`
 2. **Project-level** (optional): `teable.config.json` or `.teablerc.json` in current directory
+
+For API commands, endpoint precedence is explicit `--endpoint`, then `TEABLE_ENDPOINT`, then the saved config. Use `TEABLE_ENDPOINT` when switching a whole session without rewriting config.
 
 Example config file:
 

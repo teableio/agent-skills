@@ -6,6 +6,14 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 
 ## Commands that accept --base-id
 
+### Base Management
+
+| Command | Also requires |
+|---------|---------------|
+| `base get/update/delete` | — |
+
+`base list/create` are space-scoped or unscoped and do not use base context. Before `base delete`, verify the ID; deletion moves the base to trash.
+
 ### Data Query
 
 | Command | Also requires |
@@ -88,4 +96,4 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 
 ## Commands that do NOT need --base-id
 
-`auth` / `auth status`, `config`, `artifact update/get`, `upload-attachment`, `import-status`, `integration list/connect/get-token`, `env list/set/update/delete`
+`auth` / `auth status`, `config`, `base list/create`, `artifact update/get`, `upload-attachment`, `import-status`, `integration list/connect/get-token`, `env list/set/update/delete`
