@@ -34,7 +34,8 @@ if teable auth status &> /dev/null; then
   teable auth status
 else
   echo "Starting browser login..."
-  teable auth login
+  # Honor TEABLE_ENDPOINT for non-Cloud instances; otherwise the CLI defaults to Cloud
+  teable auth login ${TEABLE_ENDPOINT:+--endpoint "$TEABLE_ENDPOINT"}
   echo "✓ Authentication complete"
 fi
 
