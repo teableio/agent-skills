@@ -12,16 +12,6 @@ Install globally via npm:
 npm install -g @teable/cli
 ```
 
-## Choosing the endpoint
-
-`https://app.teable.ai` is only the Cloud default. Self-hosted, CN-site, and custom-domain instances authenticate against their own origin. Resolve the endpoint in this order:
-
-1. The origin embedded in the skill install prompt (Teable's in-app prompt includes it) or stated by the user.
-2. An already-configured endpoint — check `teable auth status`.
-3. Otherwise ask the user for their Teable instance URL — never silently fall back to `app.teable.ai`.
-
-Then authenticate explicitly with `--endpoint <origin>`.
-
 ## Authentication
 
 Two ways to authenticate:
