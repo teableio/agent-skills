@@ -47,6 +47,14 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 | `app login-config/ai-enable` | `--app-id` |
 | `app ai-docs` | — |
 
+### Artifacts
+
+| Command | Also requires |
+|---------|---------------|
+| `artifact create` | `--file`, `--name` |
+
+`artifact update/get` target an artifact ID directly and do not accept `--base-id`.
+
 ### Authority
 
 | Command | Also requires |
@@ -75,8 +83,9 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 | `scrape` | `--dataset-id`, `--inputs` |
 | `send-email` | `--subject`, `--body`, `--to`/`--bcc` |
 | `import-airtable` | `--airtable-base-id` + `--space-id`/`--base-name` (new base) — note: `--base-id` here is an **optional import target** (no `-b` short flag), not the usual project base |
+| `import-google-sheet` | `--spreadsheet-id` + `--space-id`/`--base-name` (new base) — `--base-id` is an optional existing import target, not project context |
 | `tools list`, `get-doc` | `--topic` (get-doc only) |
 
 ## Commands that do NOT need --base-id
 
-`auth` / `auth status`, `config`, `upload-attachment`, `import-status`, `integration list/connect/get-token`, `env list/set/update/delete`
+`auth` / `auth status`, `config`, `artifact update/get`, `upload-attachment`, `import-status`, `integration list/connect/get-token`, `env list/set/update/delete`

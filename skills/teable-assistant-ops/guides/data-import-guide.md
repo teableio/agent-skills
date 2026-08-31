@@ -75,6 +75,20 @@ teable import-airtable --base-id bseXXXX --airtable-base-id appXXXX
 | `--import-view-config` | Import view filters/sorts/grouping — **requires** `--share-link` |
 | `--share-link` | Public Airtable shared-base URL (for view config import) |
 
+## Import from Google Sheets
+
+`teable import-google-sheet` uses the native importer; each selected worksheet becomes a table. Import into an existing base when one is already the target, otherwise provide a space and base name to create a new base.
+
+**Credential decision:** publicly shared spreadsheets need none. Otherwise the connected Google Sheets integration is resolved and refreshed automatically. Its `drive.file` scope can read only spreadsheets the user selected in Teable's **Import from Google Sheets** dialog; a 403/404 usually means the user must select that spreadsheet there once. Use an integration ID only to disambiguate connections, and a Google access token only as an explicit override.
+
+**Workflow:**
+
+1. Analyze the spreadsheet first when tab selection matters; retain the numeric sheet IDs from the result.
+2. Import all tabs by default, or pass the chosen IDs as one comma-separated value.
+3. Decide between an existing base and a new base before importing. Structure-only migration is available when records should be skipped.
+
+A spreadsheet ID or its full `docs.google.com/spreadsheets` URL is accepted. This command imports worksheet data and structure; use `import` instead for local CSV/Excel files.
+
 ## Decision Flow
 
 ### Choose mode
@@ -86,6 +100,7 @@ teable import-airtable --base-id bseXXXX --airtable-base-id appXXXX
 | Append to existing table | `import --table-id tblXXX` |
 | Small data already parsed (≤50 records) | `record create` directly |
 | Row filtering/transformation before import | Agent processes the file locally first → `import` the processed file |
+| Google spreadsheet, one table per selected tab | `import-google-sheet` |
 
 ### Resolve file input
 

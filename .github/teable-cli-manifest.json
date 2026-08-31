@@ -1,6 +1,6 @@
 {
   "name": "teable",
-  "version": "0.6.30",
+  "version": "0.6.32",
   "description": "Teable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries, and related app/automation workflows with a safe read-before-write process.",
   "options": [
     {
@@ -12,7 +12,7 @@
       "description": "Show CLI version"
     }
   ],
-  "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                Show CLI version\n  --debug                      Enable debug output (verbose logging to stderr)\n  -h, --help                   display help for command\n\nSetup:\n  auth|init [options]          Manage auth for teable\n  config                       Manage project-level CLI configuration\n\nResources:\n  base                         base operations (create, get, list, update, delete)\n  table                        table operations (create, get, update, delete)\n  field                        field operations (create, get, update, delete)\n  record                       record operations (create, get, update, delete)\n  view                         view operations (create, get, update, delete)\n  app                          app operations (list, get-code, create, update, delete, publish,\n                               status, unpublish, login-config, ai-docs, ai-enable)\n  automation                   automation operations (list, get, update, activate, setup-trigger,\n                               delete, test-node, delete-node, generate-script, generate-flowchart,\n                               get-script-input, get-runs, get-run)\n  authority                    authority operations (get, export, diff, apply, enable, disable,\n                               role-list, role-get, role-delete, role-duplicate)\n  folder                       folder operations (create, update, delete, move)\n  integration                  integration operations (connect, list, get-token)\n  env                          env operations (list, set, update, delete)\n  sandbox                      sandbox operations (tool)\n  skill                        skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]      Get the tree structure of all nodes (tables, automations, apps, etc.)\n                               in a base\n  search-api [options]         Search available APIs by description to find the right endpoint\n  get-doc [options]            Get documentation for a topic\n  tools                        Tool discovery and metadata commands\n  sql-query [options]          Execute SQL query on tables\n  get-collaborators [options]  Get collaborators in the current base with pagination and search\n  get-ai-config [options]      Get AI field configuration documentation with available models\n  import [options]             Import tabular data into Teable (analyzes by default; --table-name\n                               creates, --table-id appends)\n  import-airtable [options]    Import an Airtable base into Teable\n  import-status [options]      Query import job status for a table\n  upload-attachment [options]  Upload a local file as an attachment\n  call-api [options]           Call any Teable API (axios-style: method, url, params, data)\n  trigger-ai-fill [options]    Trigger AI generation for an AI-configured field\n  scrape [options]             Scrape structured data from URLs — supports LinkedIn, Amazon,\n                               Instagram, TikTok, YouTube, X/Twitter, Reddit, and 35+ more platforms\n  send-email [options]         Send an email to one or more recipients (system SMTP by default, or\n                               --smtp for a custom transport)\n\nCommands:\n  help [command]               display help for command\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
+  "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                  Show CLI version\n  --debug                        Enable debug output (verbose logging to stderr)\n  -h, --help                     display help for command\n\nSetup:\n  auth|init [options]            Manage auth for teable\n  config                         Manage project-level CLI configuration\n\nResources:\n  base                           base operations (create, get, list, update, delete)\n  table                          table operations (create, get, update, delete)\n  field                          field operations (create, get, update, delete)\n  record                         record operations (create, get, update, delete)\n  view                           view operations (create, get, update, delete)\n  app                            app operations (list, get-code, create, update, delete, publish,\n                                 status, unpublish, login-config, ai-docs, ai-enable)\n  automation                     automation operations (list, get, update, activate, setup-trigger,\n                                 delete, test-node, delete-node, generate-script,\n                                 generate-flowchart, get-script-input, get-runs, get-run)\n  authority                      authority operations (get, export, diff, apply, enable, disable,\n                                 role-list, role-get, role-delete, role-duplicate)\n  folder                         folder operations (create, update, delete, move)\n  artifact                       artifact operations (create, update, get)\n  integration                    integration operations (connect, list, get-token)\n  env                            env operations (list, set, update, delete)\n  sandbox                        sandbox operations (tool)\n  skill                          skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]        Get the tree structure of all nodes (tables, automations, apps,\n                                 etc.) in a base\n  search-api [options]           Search available APIs by description to find the right endpoint\n  get-doc [options]              Get documentation for a topic\n  tools                          Tool discovery and metadata commands\n  sql-query [options]            Execute SQL query on tables\n  get-collaborators [options]    Get collaborators in the current base with pagination and search\n  get-ai-config [options]        Get AI field configuration documentation with available models\n  import [options]               Import tabular data into Teable (analyzes by default; --table-name\n                                 creates, --table-id appends)\n  import-airtable [options]      Import an Airtable base into Teable\n  import-google-sheet [options]  Import a Google spreadsheet into Teable\n  import-status [options]        Query import job status for a table\n  upload-attachment [options]    Upload a local file as an attachment\n  call-api [options]             Call any Teable API (axios-style: method, url, params, data)\n  trigger-ai-fill [options]      Trigger AI generation for an AI-configured field\n  scrape [options]               Scrape structured data from URLs — supports LinkedIn, Amazon,\n                                 Instagram, TikTok, YouTube, X/Twitter, Reddit, and 35+ more\n                                 platforms\n  send-email [options]           Send an email to one or more recipients (system SMTP by default, or\n                                 --smtp for a custom transport)\n\nCommands:\n  help [command]                 display help for command\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
   "commands": [
     {
       "name": "app",
@@ -77,7 +77,7 @@
         {
           "name": "create",
           "summary": "Create or update an app with AI",
-          "description": "Build or modify a web application with Teable integration.\n\nActions:\n  create: Create a new app\n  update: Modify an existing app\n\nParameters:\n  action: create or update (required)\n  name: App name (optional)\n  prompt: App-building prompt for teable app create/update CLI (required)\n  appId: App ID to update (required for update action)\n  tableIds: Table IDs to include in app context (optional)\n  attachmentTokens: Image tokens for UI reference (optional)\n\nImportant rules for prompt:\n  First complete any requested setup, table inspection, analysis, or data changes.\n  Do not pass setup, analysis, or data-seeding steps to App Builder.\n  Include only the app purpose, UI/workflow, explicit constraints, relevant table IDs, and verified data context.\n  Keep the user intent without adding extra features or details.\n  Do not use markdown formatting in the prompt.\n  Do not specify technology stack unless the user explicitly requests it.\n\nWorkflow:\n  Use get-apps tool first to check existing apps.\n  If a matching app exists, use update action.\n  Otherwise, use create action.",
+          "description": "Build or modify a web application with Teable integration.\n\nActions:\n  create: Create a new app\n  update: Modify an existing app\n\nParameters:\n  action: create or update (required)\n  name: App name (optional)\n  prompt: App-building prompt for teable app create/update CLI (required)\n  appId: App ID to update (required for update action)\n  tableIds: Table IDs to include in app context (optional)\n  attachmentTokens: Image tokens for UI reference (optional)\n  sendMode: queue or steer, update action only (optional)\n\nBusy app builder (update action):\n  Default (queue): a busy app queues the prompt; it runs automatically when the current generation finishes.\n  steer: redirect the in-flight generation with the prompt instead of waiting; use it to adjust work that is already running. Falls back to queue when nothing is running.\n\nImportant rules for prompt:\n  First complete any requested setup, table inspection, analysis, or data changes.\n  Do not pass setup, analysis, or data-seeding steps to App Builder.\n  Include only the app purpose, UI/workflow, explicit constraints, relevant table IDs, and verified data context.\n  Keep the user intent without adding extra features or details.\n  Do not use markdown formatting in the prompt.\n  Do not specify technology stack unless the user explicitly requests it.\n\nWorkflow:\n  Use get-apps tool first to check existing apps.\n  If a matching app exists, use update action.\n  Otherwise, use create action.",
           "options": [
             {
               "flags": "--attachment-tokens <jsonArray>",
@@ -119,7 +119,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable app create [options]\n\nBuild or modify a web application with Teable integration.\n\nActions:\n  create: Create a new app\n  update: Modify an existing app\n\nParameters:\n  action: create or update (required)\n  name: App name (optional)\n  prompt: App-building prompt for teable app create/update CLI (required)\n  appId: App ID to update (required for update action)\n  tableIds: Table IDs to include in app context (optional)\n  attachmentTokens: Image tokens for UI reference (optional)\n\nImportant rules for prompt:\n  First complete any requested setup, table inspection, analysis, or data changes.\n  Do not pass setup, analysis, or data-seeding steps to App Builder.\n  Include only the app purpose, UI/workflow, explicit constraints, relevant table IDs, and verified\ndata context.\n  Keep the user intent without adding extra features or details.\n  Do not use markdown formatting in the prompt.\n  Do not specify technology stack unless the user explicitly requests it.\n\nWorkflow:\n  Use get-apps tool first to check existing apps.\n  If a matching app exists, use update action.\n  Otherwise, use create action.\n\nOptions:\n  --prompt <prompt>                App-building prompt. Include only app goals, constraints, and\n                                   verified data context.\n  --name <name>                    Name for the app\n  --table-ids <jsonArray>          Optional array of table IDs to include in the app context\n  --attachment-tokens <jsonArray>  Optional array of attachment tokens (screenshots, designs, etc.)\n  --folder-id <folderId>           Folder to place the new app in (`folderId` from Active Tab Meta);\n                                   omit for base root.\n  -b, --base-id <baseId>           Target base ID (required, e.g. bseXXXX). Set default: `teable\n                                   config base-id <id>`.\n  --token <token>                  Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>            Teable API server base URL\n  --pretty                         Indent JSON for human readability (default: false)\n  -h, --help                       display help for command\n"
+          "help": "Usage: teable app create [options]\n\nBuild or modify a web application with Teable integration.\n\nActions:\n  create: Create a new app\n  update: Modify an existing app\n\nParameters:\n  action: create or update (required)\n  name: App name (optional)\n  prompt: App-building prompt for teable app create/update CLI (required)\n  appId: App ID to update (required for update action)\n  tableIds: Table IDs to include in app context (optional)\n  attachmentTokens: Image tokens for UI reference (optional)\n  sendMode: queue or steer, update action only (optional)\n\nBusy app builder (update action):\n  Default (queue): a busy app queues the prompt; it runs automatically when the current generation\nfinishes.\n  steer: redirect the in-flight generation with the prompt instead of waiting; use it to adjust work\nthat is already running. Falls back to queue when nothing is running.\n\nImportant rules for prompt:\n  First complete any requested setup, table inspection, analysis, or data changes.\n  Do not pass setup, analysis, or data-seeding steps to App Builder.\n  Include only the app purpose, UI/workflow, explicit constraints, relevant table IDs, and verified\ndata context.\n  Keep the user intent without adding extra features or details.\n  Do not use markdown formatting in the prompt.\n  Do not specify technology stack unless the user explicitly requests it.\n\nWorkflow:\n  Use get-apps tool first to check existing apps.\n  If a matching app exists, use update action.\n  Otherwise, use create action.\n\nOptions:\n  --prompt <prompt>                App-building prompt. Include only app goals, constraints, and\n                                   verified data context.\n  --name <name>                    Name for the app\n  --table-ids <jsonArray>          Optional array of table IDs to include in the app context\n  --attachment-tokens <jsonArray>  Optional array of attachment tokens (screenshots, designs, etc.)\n  --folder-id <folderId>           Folder to place the new app in (`folderId` from Active Tab Meta);\n                                   omit for base root.\n  -b, --base-id <baseId>           Target base ID (required, e.g. bseXXXX). Set default: `teable\n                                   config base-id <id>`.\n  --token <token>                  Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>            Teable API server base URL\n  --pretty                         Indent JSON for human readability (default: false)\n  -h, --help                       display help for command\n"
         },
         {
           "name": "delete",
@@ -345,7 +345,7 @@
         {
           "name": "update",
           "summary": "Create or update an app with AI",
-          "description": "Build or modify a web application with Teable integration.\n\nActions:\n  create: Create a new app\n  update: Modify an existing app\n\nParameters:\n  action: create or update (required)\n  name: App name (optional)\n  prompt: App-building prompt for teable app create/update CLI (required)\n  appId: App ID to update (required for update action)\n  tableIds: Table IDs to include in app context (optional)\n  attachmentTokens: Image tokens for UI reference (optional)\n\nImportant rules for prompt:\n  First complete any requested setup, table inspection, analysis, or data changes.\n  Do not pass setup, analysis, or data-seeding steps to App Builder.\n  Include only the app purpose, UI/workflow, explicit constraints, relevant table IDs, and verified data context.\n  Keep the user intent without adding extra features or details.\n  Do not use markdown formatting in the prompt.\n  Do not specify technology stack unless the user explicitly requests it.\n\nWorkflow:\n  Use get-apps tool first to check existing apps.\n  If a matching app exists, use update action.\n  Otherwise, use create action.",
+          "description": "Build or modify a web application with Teable integration.\n\nActions:\n  create: Create a new app\n  update: Modify an existing app\n\nParameters:\n  action: create or update (required)\n  name: App name (optional)\n  prompt: App-building prompt for teable app create/update CLI (required)\n  appId: App ID to update (required for update action)\n  tableIds: Table IDs to include in app context (optional)\n  attachmentTokens: Image tokens for UI reference (optional)\n  sendMode: queue or steer, update action only (optional)\n\nBusy app builder (update action):\n  Default (queue): a busy app queues the prompt; it runs automatically when the current generation finishes.\n  steer: redirect the in-flight generation with the prompt instead of waiting; use it to adjust work that is already running. Falls back to queue when nothing is running.\n\nImportant rules for prompt:\n  First complete any requested setup, table inspection, analysis, or data changes.\n  Do not pass setup, analysis, or data-seeding steps to App Builder.\n  Include only the app purpose, UI/workflow, explicit constraints, relevant table IDs, and verified data context.\n  Keep the user intent without adding extra features or details.\n  Do not use markdown formatting in the prompt.\n  Do not specify technology stack unless the user explicitly requests it.\n\nWorkflow:\n  Use get-apps tool first to check existing apps.\n  If a matching app exists, use update action.\n  Otherwise, use create action.",
           "options": [
             {
               "flags": "--app-id <appId>",
@@ -379,6 +379,10 @@
               "required": true
             },
             {
+              "flags": "--send-mode <mode>",
+              "description": "Delivery mode when the app builder is already generating (update action only). \"queue\" (default): runs as its own generation after the current one finishes — for new or independent requests. \"steer\": injected into the ongoing generation so the builder takes it into account mid-run — for messages aimed at the work in progress (correcting, refining, or adding to what is being built right now)."
+            },
+            {
               "flags": "--table-ids <jsonArray>",
               "description": "Optional array of table IDs to include in the app context"
             },
@@ -392,10 +396,135 @@
               "required": true
             }
           ],
-          "help": "Usage: teable app update [options]\n\nBuild or modify a web application with Teable integration.\n\nActions:\n  create: Create a new app\n  update: Modify an existing app\n\nParameters:\n  action: create or update (required)\n  name: App name (optional)\n  prompt: App-building prompt for teable app create/update CLI (required)\n  appId: App ID to update (required for update action)\n  tableIds: Table IDs to include in app context (optional)\n  attachmentTokens: Image tokens for UI reference (optional)\n\nImportant rules for prompt:\n  First complete any requested setup, table inspection, analysis, or data changes.\n  Do not pass setup, analysis, or data-seeding steps to App Builder.\n  Include only the app purpose, UI/workflow, explicit constraints, relevant table IDs, and verified\ndata context.\n  Keep the user intent without adding extra features or details.\n  Do not use markdown formatting in the prompt.\n  Do not specify technology stack unless the user explicitly requests it.\n\nWorkflow:\n  Use get-apps tool first to check existing apps.\n  If a matching app exists, use update action.\n  Otherwise, use create action.\n\nOptions:\n  --prompt <prompt>                App-building prompt. Include only app goals, constraints, and\n                                   verified data context.\n  --name <name>                    Name for the app\n  --table-ids <jsonArray>          Optional array of table IDs to include in the app context\n  --attachment-tokens <jsonArray>  Optional array of attachment tokens (screenshots, designs, etc.)\n  --folder-id <folderId>           Folder to place the new app in (`folderId` from Active Tab Meta);\n                                   omit for base root.\n  --app-id <appId>                 App ID to update (required for \"update\" action)\n  -b, --base-id <baseId>           Target base ID (required, e.g. bseXXXX). Set default: `teable\n                                   config base-id <id>`.\n  --token <token>                  Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>            Teable API server base URL\n  --pretty                         Indent JSON for human readability (default: false)\n  -h, --help                       display help for command\n"
+          "help": "Usage: teable app update [options]\n\nBuild or modify a web application with Teable integration.\n\nActions:\n  create: Create a new app\n  update: Modify an existing app\n\nParameters:\n  action: create or update (required)\n  name: App name (optional)\n  prompt: App-building prompt for teable app create/update CLI (required)\n  appId: App ID to update (required for update action)\n  tableIds: Table IDs to include in app context (optional)\n  attachmentTokens: Image tokens for UI reference (optional)\n  sendMode: queue or steer, update action only (optional)\n\nBusy app builder (update action):\n  Default (queue): a busy app queues the prompt; it runs automatically when the current generation\nfinishes.\n  steer: redirect the in-flight generation with the prompt instead of waiting; use it to adjust work\nthat is already running. Falls back to queue when nothing is running.\n\nImportant rules for prompt:\n  First complete any requested setup, table inspection, analysis, or data changes.\n  Do not pass setup, analysis, or data-seeding steps to App Builder.\n  Include only the app purpose, UI/workflow, explicit constraints, relevant table IDs, and verified\ndata context.\n  Keep the user intent without adding extra features or details.\n  Do not use markdown formatting in the prompt.\n  Do not specify technology stack unless the user explicitly requests it.\n\nWorkflow:\n  Use get-apps tool first to check existing apps.\n  If a matching app exists, use update action.\n  Otherwise, use create action.\n\nOptions:\n  --prompt <prompt>                App-building prompt. Include only app goals, constraints, and\n                                   verified data context.\n  --name <name>                    Name for the app\n  --table-ids <jsonArray>          Optional array of table IDs to include in the app context\n  --attachment-tokens <jsonArray>  Optional array of attachment tokens (screenshots, designs, etc.)\n  --folder-id <folderId>           Folder to place the new app in (`folderId` from Active Tab Meta);\n                                   omit for base root.\n  --app-id <appId>                 App ID to update (required for \"update\" action)\n  --send-mode <mode>               Delivery mode when the app builder is already generating (update\n                                   action only). \"queue\" (default): runs as its own generation after\n                                   the current one finishes — for new or independent requests.\n                                   \"steer\": injected into the ongoing generation so the builder\n                                   takes it into account mid-run — for messages aimed at the work in\n                                   progress (correcting, refining, or adding to what is being built\n                                   right now).\n  -b, --base-id <baseId>           Target base ID (required, e.g. bseXXXX). Set default: `teable\n                                   config base-id <id>`.\n  --token <token>                  Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>            Teable API server base URL\n  --pretty                         Indent JSON for human readability (default: false)\n  -h, --help                       display help for command\n"
         }
       ],
       "help": "Usage: teable app [options] [command]\n\napp operations (list, get-code, create, update, delete, publish, status, unpublish, login-config,\nai-docs, ai-enable)\n\nOptions:\n  -h, --help              display help for command\n\nCommands:\n  list [options]          Get all apps in the base\n  get-code [options]      Download app source code as a local read-only context snapshot\n  create [options]        Create or update an app with AI\n  update [options]        Create or update an app with AI\n  delete [options]        Delete an app\n  publish [options]       Publish an app. Returns success/failed when final; if it returns\n                          deploying, poll app status until success/failed\n  status [options]        Check app publish status after publish returns deploying\n  unpublish [options]     Unpublish an app\n  login-config [options]  Configure login/authentication for an app\n  ai-docs [options]       How the app calls AI through Teable proxy (usage + available model keys)\n  ai-enable [options]     Enable AI access for an app (provisions the AI proxy key)\n  help [command]          display help for command\n\nExamples:\n  teable app list\n  teable app get-code --app-id appXXXX\n  teable app create --prompt \"A task tracker with status board\"\n  teable app update --app-id appXXXX --prompt \"Add a dark mode toggle\"\n  teable app delete --app-id appXXXX\n  teable app publish --app-id appXXXX\n  teable app status --app-id appXXXX\n  teable app unpublish --app-id appXXXX\n  teable app login-config --app-id appXXXX --login-config '{\"enabled\":true,\"userTableId\":\"tblXXX\",\"emailFieldId\":\"fldXXX\",\"providers\":[{\"type\":\"email-otp\"}]}'\n  teable app ai-docs\n  teable app ai-enable --app-id appXXXX\n"
+    },
+    {
+      "name": "artifact",
+      "description": "artifact operations (create, update, get)",
+      "subcommands": [
+        {
+          "name": "create",
+          "summary": "Create an artifact (HTML page, chart, or markdown report) from a local file",
+          "description": "Create an artifact from a local file. The content must be self-contained: inline CSS/JS, no external CDN URLs; npm libs via /api/artifact-vendor/<pkg>@<exact-version>/<file> (e.g. echarts@5.5.0/dist/echarts.min.js) or inline SVG.",
+          "options": [
+            {
+              "flags": "--chat-id <chatId>",
+              "description": "Source chat id for provenance (defaults to TEABLE_CHAT_ID)"
+            },
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL"
+            },
+            {
+              "flags": "--file <path>",
+              "description": "Local file with the artifact content",
+              "required": true
+            },
+            {
+              "flags": "--name <name>",
+              "description": "Artifact name shown on the card and viewer",
+              "required": true
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "--type <type>",
+              "description": "Artifact type: html | markdown",
+              "default": "html"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable artifact create [options]\n\nCreate an artifact from a local file. The content must be self-contained: inline CSS/JS, no external\nCDN URLs; npm libs via /api/artifact-vendor/<pkg>@<exact-version>/<file> (e.g.\necharts@5.5.0/dist/echarts.min.js) or inline SVG.\n\nOptions:\n  --file <path>           Local file with the artifact content\n  --name <name>           Artifact name shown on the card and viewer\n  --type <type>           Artifact type: html | markdown (default: \"html\")\n  --chat-id <chatId>      Source chat id for provenance (defaults to TEABLE_CHAT_ID)\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
+        },
+        {
+          "name": "get",
+          "summary": "Download the stored content of an artifact version to a local file",
+          "description": "Download the stored content of an artifact version to a local file. Use it to restore the working file before an update when the sandbox no longer has it — never rebuild an existing artifact from memory.",
+          "options": [
+            {
+              "flags": "--artifact-id <artifactId>",
+              "description": "Artifact id returned by artifact create",
+              "required": true
+            },
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL"
+            },
+            {
+              "flags": "--out <path>",
+              "description": "Output file path (defaults to ./<artifact name>.<ext>)"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "--version <n>",
+              "description": "Version to download (defaults to the current one)"
+            }
+          ],
+          "help": "Usage: teable artifact get [options]\n\nDownload the stored content of an artifact version to a local file. Use it to restore the working\nfile before an update when the sandbox no longer has it — never rebuild an existing artifact from\nmemory.\n\nOptions:\n  --artifact-id <artifactId>  Artifact id returned by artifact create\n  --version <n>               Version to download (defaults to the current one)\n  --out <path>                Output file path (defaults to ./<artifact name>.<ext>)\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
+        },
+        {
+          "name": "update",
+          "summary": "Append a new immutable version to an existing artifact from a local file",
+          "description": "Append a new version to an existing artifact from a local file. Versions are immutable; the previous ones stay restorable.",
+          "options": [
+            {
+              "flags": "--artifact-id <artifactId>",
+              "description": "Artifact id returned by artifact create",
+              "required": true
+            },
+            {
+              "flags": "--chat-id <chatId>",
+              "description": "Source chat id for provenance (defaults to TEABLE_CHAT_ID)"
+            },
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL"
+            },
+            {
+              "flags": "--file <path>",
+              "description": "Local file with the updated artifact content",
+              "required": true
+            },
+            {
+              "flags": "--name <name>",
+              "description": "New name (keeps the current one when omitted)"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            }
+          ],
+          "help": "Usage: teable artifact update [options]\n\nAppend a new version to an existing artifact from a local file. Versions are immutable; the previous\nones stay restorable.\n\nOptions:\n  --artifact-id <artifactId>  Artifact id returned by artifact create\n  --file <path>               Local file with the updated artifact content\n  --name <name>               New name (keeps the current one when omitted)\n  --chat-id <chatId>          Source chat id for provenance (defaults to TEABLE_CHAT_ID)\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
+        }
+      ],
+      "help": "Usage: teable artifact [options] [command]\n\nartifact operations (create, update, get)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  create [options]  Create an artifact (HTML page, chart, or markdown report) from a local file\n  update [options]  Append a new immutable version to an existing artifact from a local file\n  get [options]     Download the stored content of an artifact version to a local file\n  help [command]    display help for command\n\nExamples:\n  teable artifact create --file ./report.html --name \"Q3 Sales Report\" --type html\n  teable artifact update --artifact-id artXXXX --file ./report.html\n  teable artifact get --artifact-id artXXXX --out ./report.html\n"
     },
     {
       "name": "auth",
@@ -2337,6 +2466,64 @@
         }
       ],
       "help": "Usage: teable import-airtable [options]\n\nImport an Airtable base (tables, fields, links, optionally views) into Teable using the native\nimporter. Credential is automatic when Airtable is connected in the connectors menu — the connected\nintegration's token is resolved and refreshed server-side, so no token needs to be pasted. Override\nwith --integration-id <id> or --access-token <pat>.\n\nTypical flow:\n  1. teable import-airtable --analyze                       # list accessible Airtable bases\n  2. teable import-airtable --analyze --airtable-base-id appXXXX   # inspect one base schema\n  3. teable import-airtable --space-id spcXXXX --airtable-base-id appXXXX --base-name \"My Base\"\n\nOptions:\n  --analyze                   List accessible Airtable bases, or summarize one base schema (default:\n                              false)\n  -s, --space-id <spaceId>    Target Teable space for a new base (required unless --base-id is set)\n  --airtable-base-id <appId>  Airtable base id (appXXXX); omit with --analyze to list\n  --base-name <name>          Name for the new Teable base (required unless --base-id is set)\n  --base-id <baseId>          Import into this existing Teable base instead of creating one\n  --folder-id <id>            Place the imported tables under this base-node folder (only with\n                              --base-id)\n  --access-token <pat>        Airtable personal access token — overrides the connected integration\n                              for this run\n  --integration-id <id>       Connected Airtable integration id (auto-detected when omitted; token\n                              resolved server-side)\n  --no-import-records         Import structure only, skip record data\n  --no-import-attachments     Skip downloading/re-uploading attachments\n  --import-view-config        Import view filters/sorts/grouping (requires --share-link) (default:\n                              false)\n  --share-link <url>          Public Airtable shared-base link, for view config import\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
+    },
+    {
+      "name": "import-google-sheet",
+      "summary": "Import a Google spreadsheet into Teable",
+      "description": "Import a Google spreadsheet (each selected tab becomes a table) into Teable using the native importer. Credential is automatic when Google Sheets is connected in the connectors menu — the connected integration's token is resolved and refreshed server-side. Override with --integration-id <id> or --access-token <token>.\n\nThe integration carries only the drive.file scope: the server can read exactly the spreadsheets the user picked in Teable’s \"Import from Google Sheets\" dialog. A 403/404 means the spreadsheet was never picked — ask the user to pick it there once. Publicly shared spreadsheets (\"anyone with the link\") need no credential at all.\n\nTypical flow:\n  1. teable import-google-sheet --analyze --spreadsheet-id <id or URL>   # list the tabs\n  2. teable import-google-sheet --base-id bseXXXX --spreadsheet-id <id>  # import into current base\n  3. teable import-google-sheet --space-id spcXXXX --spreadsheet-id <id> --base-name \"My Sheet\"",
+      "options": [
+        {
+          "flags": "--access-token <token>",
+          "description": "Google OAuth access token with the drive.file scope — overrides the connected integration"
+        },
+        {
+          "flags": "--analyze",
+          "description": "List the tabs (worksheets) of the spreadsheet with grid sizes",
+          "default": false
+        },
+        {
+          "flags": "--base-id <baseId>",
+          "description": "Import into this existing Teable base instead of creating one"
+        },
+        {
+          "flags": "--base-name <name>",
+          "description": "Name for the new Teable base (required unless --base-id is set)"
+        },
+        {
+          "flags": "--endpoint <endpoint>",
+          "description": "Teable API server base URL"
+        },
+        {
+          "flags": "--integration-id <id>",
+          "description": "Connected Google Sheets integration id (auto-detected when omitted; token resolved server-side)"
+        },
+        {
+          "flags": "--no-import-records",
+          "description": "Import structure only, skip record data"
+        },
+        {
+          "flags": "--pretty",
+          "description": "Indent JSON for human readability",
+          "default": false
+        },
+        {
+          "flags": "--sheet-ids <ids>",
+          "description": "Comma-separated numeric tab ids to import (from --analyze); omit to import all tabs"
+        },
+        {
+          "flags": "--spreadsheet-id <idOrUrl>",
+          "description": "Google spreadsheet id, or the full docs.google.com/spreadsheets URL"
+        },
+        {
+          "flags": "--token <token>",
+          "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+        },
+        {
+          "flags": "-s, --space-id <spaceId>",
+          "description": "Target Teable space for a new base (required unless --base-id is set)"
+        }
+      ],
+      "help": "Usage: teable import-google-sheet [options]\n\nImport a Google spreadsheet (each selected tab becomes a table) into Teable using the native\nimporter. Credential is automatic when Google Sheets is connected in the connectors menu — the\nconnected integration's token is resolved and refreshed server-side. Override with --integration-id\n<id> or --access-token <token>.\n\nThe integration carries only the drive.file scope: the server can read exactly the spreadsheets the\nuser picked in Teable’s \"Import from Google Sheets\" dialog. A 403/404 means the spreadsheet was\nnever picked — ask the user to pick it there once. Publicly shared spreadsheets (\"anyone with the\nlink\") need no credential at all.\n\nTypical flow:\n  1. teable import-google-sheet --analyze --spreadsheet-id <id or URL>   # list the tabs\n  2. teable import-google-sheet --base-id bseXXXX --spreadsheet-id <id>  # import into current base\n  3. teable import-google-sheet --space-id spcXXXX --spreadsheet-id <id> --base-name \"My Sheet\"\n\nOptions:\n  --analyze                   List the tabs (worksheets) of the spreadsheet with grid sizes\n                              (default: false)\n  -s, --space-id <spaceId>    Target Teable space for a new base (required unless --base-id is set)\n  --spreadsheet-id <idOrUrl>  Google spreadsheet id, or the full docs.google.com/spreadsheets URL\n  --base-name <name>          Name for the new Teable base (required unless --base-id is set)\n  --base-id <baseId>          Import into this existing Teable base instead of creating one\n  --sheet-ids <ids>           Comma-separated numeric tab ids to import (from --analyze); omit to\n                              import all tabs\n  --access-token <token>      Google OAuth access token with the drive.file scope — overrides the\n                              connected integration\n  --integration-id <id>       Connected Google Sheets integration id (auto-detected when omitted;\n                              token resolved server-side)\n  --no-import-records         Import structure only, skip record data\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
     },
     {
       "name": "import-status",
