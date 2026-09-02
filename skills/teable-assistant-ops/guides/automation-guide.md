@@ -32,7 +32,7 @@ Use automations for event-driven or recurring work — if the user's task fits a
 | React to form submission | `formSubmitted` | `--table-id`, `--form-id` |
 | Run on a schedule (see timing types below) | `scheduledTime` | `--schedule-config` (see trigger reference) |
 | User clicks a button field | `buttonClick` | `--table-id`, `--field-id` |
-| External system sends HTTP request | `webhook` | optional `--webhook-authorization` |
+| External system sends HTTP request | `webhook` | optional `--webhook-config` for authorization and synchronous response |
 | Email received via connected mailbox | `emailReceived` | `--email-received-config` |
 
 **Schedule timing types** (for `scheduledTime` trigger):

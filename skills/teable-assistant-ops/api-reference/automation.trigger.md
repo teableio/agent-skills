@@ -163,14 +163,16 @@ Triggers when a button field is clicked.
 - `user` - User who clicked the button
 
 ### 7. webhook - When Webhook Received
-Triggers when an external HTTP request is sent to the webhook endpoint.
+Triggers when an external HTTP request is sent to the webhook endpoint. All of its settings go under `webhookConfig`:
 
 ```json
 {
-  "type": "webhook",
-  "config": {
-    "authorization": {
-      "type": "none"                     // Or "bearer" for token auth
+  "triggerType": "webhook",
+  "webhookConfig": {
+    "authorization": { "type": "none" },
+    "response": {
+      "mode": "custom",
+      "body": "{\"challenge\":\"{{body.challenge}}\"}"
     }
   }
 }
@@ -179,7 +181,17 @@ Triggers when an external HTTP request is sent to the webhook endpoint.
 **Output Variables:**
 - `body` - The parsed JSON body of the incoming request
 
-**Security:** Use bearer token authorization for production webhooks. The Setup Automation Trigger tool can auto-generate tokens.
+**Security:** Use bearer token authorization for production webhooks. Set `authorization.type` to `"bearer"` and the tool generates the token for you.
+
+**Synchronous Response:** Optional - without it the endpoint returns a fixed acknowledgement. Slack and Feishu / Lark verify a subscription URL by posting a `challenge` that must be echoed back verbatim, or the URL cannot be saved on their side.
+
+`response.body` is a template: `{{body.challenge}}` reads the same path the trigger's output variables use, so anything visible in a test run can be inserted.
+
+Notes:
+- `response.statusCode` defaults to 200; `response.contentType` defaults to `application/json` - use `text/plain` to reply with raw text.
+- On an update, omitting `response` leaves a stored one untouched; pass `"response": { "mode": "default" }` to go back to the fixed acknowledgement.
+- Do not combine a handshake response with bearer authorization - neither platform can send an `Authorization` header.
+- The handshake request still runs the workflow. Add a condition on `body.type == "url_verification"` if later steps should skip it.
 
 ### 8. emailReceived - When Email Received
 Triggers when a new email is received. Supports IMAP connection.
