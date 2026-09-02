@@ -1,11 +1,11 @@
 {
-  "version": "1.4.1",
+  "version": "1.5.0",
   "organization": "teable",
   "authors": ["teable"],
   "tags": ["database", "teable", "no-code", "automation", "app-builder", "ai-tools"],
   "abstract": "AI assistant skill for operating Teable databases — manage bases, tables, fields, views, records, automations, and app workflows with a safe read-before-write process.",
   "engines": {
-    "teableCli": ">=0.6.33"
+    "teableCli": ">=0.6.35"
   },
   "references": [
     {

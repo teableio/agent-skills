@@ -5,9 +5,10 @@ Use artifacts for durable HTML pages, charts, or Markdown reports that should re
 ## Workflow
 
 1. Build and inspect the content in a local file.
-2. `artifact create` once, and retain the returned artifact ID.
-3. For later revisions, restore the current source with `artifact get` if the local working file is unavailable; edit that file rather than recreating the artifact from memory.
-4. `artifact update` the same artifact instead of creating a duplicate. Each update appends an immutable version, so earlier versions remain restorable.
+2. Run `artifact list` first, scoped by base and/or name search when useful. If the same deliverable already exists, update it instead of creating a duplicate.
+3. If no match exists, `artifact create` once and retain the returned artifact ID.
+4. For later revisions, restore the current source with `artifact get` if the local working file is unavailable; edit that file rather than recreating the artifact from memory.
+5. `artifact update` the same artifact. Each update appends an immutable version, so earlier versions remain restorable.
 
 ## Content Rules
 

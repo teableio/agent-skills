@@ -59,9 +59,10 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 
 | Command | Also requires |
 |---------|---------------|
+| `artifact list` | — |
 | `artifact create` | `--file`, `--name` |
 
-`artifact update/get` target an artifact ID directly and do not accept `--base-id`.
+`artifact list` accepts optional base context; omit it to search across all bases. `artifact update/get` target an artifact ID directly and do not accept `--base-id`.
 
 ### Authority
 
