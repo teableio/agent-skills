@@ -110,39 +110,6 @@ See [view.filter.md](../api-reference/view.filter.md), [view.sort.md](../api-ref
 
 **User fields**: use `get-collaborators --search "name"` to find users, then pass user ID or `--typecast` with display name.
 
-## Scraping
-
-> **Reference**: [scrape.datasets.md](../api-reference/scrape.datasets.md) — full 44+ platform index and input formats
-
-Use `teable scrape` to extract structured data from websites. Requires `--dataset-id` (scraping template) and `--inputs` (JSON array with URL objects).
-
-**Quick URL → dataset-id routing** (common platforms):
-
-| URL pattern | dataset-id |
-|------------|-----------|
-| linkedin.com/in/... | `linkedin_person_profile` |
-| linkedin.com/company/... | `linkedin_company_profile` |
-| linkedin.com/jobs/... | `linkedin_job_listings` |
-| amazon.com/dp/... | `amazon_product` |
-| amazon.com/dp/.../reviews | `amazon_product_reviews` |
-| instagram.com/&lt;user&gt; | `instagram_profiles` |
-| youtube.com/watch... | `youtube_videos` |
-| x.com/status/... | `x_posts` |
-
-For all 44+ platforms: read [scrape.datasets.md](../api-reference/scrape.datasets.md)
-
-```bash
-# Scrape a single URL
-teable scrape --dataset-id "linkedin_person_profile" --inputs '[{"url": "https://linkedin.com/in/example"}]'
-# Batch scrape multiple URLs
-teable scrape --dataset-id "amazon_product" --inputs '[{"url": "https://amazon.com/dp/XXX"}, {"url": "https://amazon.com/dp/YYY"}]'
-# Polling mode — for long-running scrapes, first call returns snapshot-id; poll with:
-# Pass ONLY --snapshot-id when polling (adding --dataset-id or --inputs starts a new scrape)
-teable scrape --snapshot-id <snapshot-id-from-above>
-```
-
-For all platforms and input formats, read [scrape.datasets.md](../api-reference/scrape.datasets.md).
-
 ## Sending Email
 
 `teable send-email` sends an email **directly** via the Teable mail sender (system SMTP by default). This is a one-off send — for event-driven emails *inside a workflow*, use the automation SendEmail action instead (see [automation.send-email.md](../api-reference/automation.send-email.md)).

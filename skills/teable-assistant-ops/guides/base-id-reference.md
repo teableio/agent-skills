@@ -89,7 +89,9 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 | `search-api` | `--query` |
 | `call-api` | `--method`, `--url` |
 | `import` | `--file` or `--attachment-token` + mode flag |
-| `scrape` | `--dataset-id`, `--inputs` |
+| `scrape search` | `--query` |
+| `scrape run` | `--dataset-id`, `--inputs` |
+| `scrape status` | `--snapshot-id` |
 | `send-email` | `--subject`, `--body`, `--to`/`--bcc` |
 | `import-airtable` | `--airtable-base-id` + `--space-id`/`--base-name` (new base) — note: `--base-id` here is an **optional import target** (no `-b` short flag), not the usual project base |
 | `import-google-sheet` | `--spreadsheet-id` + `--space-id`/`--base-name` (new base) — `--base-id` is an optional existing import target, not project context |

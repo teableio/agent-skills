@@ -1,6 +1,8 @@
 # Scrape Tool — Dataset Reference
 
-Fetch structured data from 44+ web platforms. Each dataset requires a `datasetId` identifier and an `inputs` object with the required fields.
+Fetch structured data from 1,600+ web platforms. Each dataset requires a `datasetId` identifier and an `inputs` array of objects with the required fields.
+
+The tables below are the curated datasets with known inputs. For any other platform (Glassdoor, Indeed, Trustpilot, ...), call `scrape-search` with `query: "<platform> <data type>"` to get a raw `gd_...` id and its inferred inputs, then call `scrape` with that id as datasetId. A pending result is resumed with `scrape-status` and its snapshotId, never by running `scrape` again.
 
 ## Usage
 
@@ -68,7 +70,7 @@ inputs: [
 |---|---|---|
 | `facebook_posts` | Facebook post data. | `url` |
 | `facebook_marketplace_listings` | Facebook marketplace listing data. | `url` |
-| `facebook_company_reviews` | Facebook company reviews. | `url`, `num_of_reviews` |
+| `facebook_company_reviews` | Facebook company reviews. Default `num_of_reviews`: 10. | `url`, `num_of_reviews` |
 | `facebook_events` | Facebook events data. | `url` |
 
 ## TikTok
@@ -144,6 +146,7 @@ inputs: [
 | Dataset ID | Description | Required Inputs |
 |---|---|---|
 | `reddit_posts` | Reddit post data. | `url` |
+| `reddit_comments` | Reddit comments on a post or thread. Optional `days_back` limits by recency. | `url`, `days_back` |
 
 ---
 
