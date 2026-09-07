@@ -1,6 +1,6 @@
 {
   "name": "teable",
-  "version": "0.6.35",
+  "version": "0.6.36",
   "description": "Teable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries, and related app/automation workflows with a safe read-before-write process.",
   "options": [
     {
@@ -12,7 +12,7 @@
       "description": "Show CLI version"
     }
   ],
-  "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                  Show CLI version\n  --debug                        Enable debug output (verbose logging to stderr)\n  -h, --help                     display help for command\n\nSetup:\n  auth|init [options]            Manage auth for teable\n  config                         Manage project-level CLI configuration\n\nResources:\n  base                           base operations (create, get, list, update, delete)\n  table                          table operations (create, get, update, delete)\n  field                          field operations (create, get, update, delete)\n  record                         record operations (create, get, update, delete)\n  view                           view operations (create, get, update, delete)\n  app                            app operations (list, get-code, create, update, delete, publish,\n                                 status, unpublish, login-config, ai-docs, ai-enable)\n  automation                     automation operations (list, get, update, activate, setup-trigger,\n                                 delete, test-node, delete-node, generate-script,\n                                 generate-flowchart, get-script-input, get-runs, get-run)\n  authority                      authority operations (get, export, diff, apply, enable, disable,\n                                 role-list, role-get, role-delete, role-duplicate)\n  folder                         folder operations (create, update, delete, move)\n  artifact                       artifact operations (list, create, update, get)\n  integration                    integration operations (connect, list, get-token)\n  env                            env operations (list, set, update, delete)\n  sandbox                        sandbox operations (tool)\n  skill                          skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]        Get the tree structure of all nodes (tables, automations, apps,\n                                 etc.) in a base\n  search-api [options]           Search available APIs by description to find the right endpoint\n  get-doc [options]              Get documentation for a topic\n  tools                          Tool discovery and metadata commands\n  sql-query [options]            Execute SQL query on tables\n  get-collaborators [options]    Get collaborators in the current base with pagination and search\n  get-ai-config [options]        Get AI field configuration documentation with available models\n  import [options]               Import tabular data into Teable (analyzes by default; --table-name\n                                 creates, --table-id appends)\n  import-airtable [options]      Import an Airtable base into Teable\n  import-google-sheet [options]  Import a Google spreadsheet into Teable\n  import-status [options]        Query import job status for a table\n  upload-attachment [options]    Upload a local file as an attachment\n  call-api [options]             Call any Teable API (axios-style: method, url, params, data)\n  trigger-ai-fill [options]      Trigger AI generation for an AI-configured field\n  scrape [options]               Scrape structured data from URLs — supports LinkedIn, Amazon,\n                                 Instagram, TikTok, YouTube, X/Twitter, Reddit, and 35+ more\n                                 platforms\n  send-email [options]           Send an email to one or more recipients (system SMTP by default, or\n                                 --smtp for a custom transport)\n\nCommands:\n  help [command]                 display help for command\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
+  "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                  Show CLI version\n  --debug                        Enable debug output (verbose logging to stderr)\n  -h, --help                     display help for command\n\nSetup:\n  auth|init [options]            Manage auth for teable\n  config                         Manage project-level CLI configuration\n\nResources:\n  base                           base operations (create, get, list, update, delete)\n  table                          table operations (create, get, update, delete)\n  field                          field operations (create, get, update, delete)\n  record                         record operations (create, get, update, delete)\n  view                           view operations (create, get, update, delete)\n  app                            app operations (list, get-code, create, update, delete, publish,\n                                 status, unpublish, login-config, ai-docs, ai-enable)\n  automation                     automation operations (list, get, update, activate, setup-trigger,\n                                 delete, test-node, delete-node, generate-script,\n                                 generate-flowchart, get-script-input, get-runs, get-run)\n  authority                      authority operations (get, export, diff, apply, enable, disable,\n                                 role-list, role-get, role-delete, role-duplicate)\n  folder                         folder operations (create, update, delete, move)\n  artifact                       artifact operations (list, create, update, get)\n  scrape                         scrape operations (search, run, status)\n  integration                    integration operations (connect, list, get-token)\n  env                            env operations (list, set, update, delete)\n  sandbox                        sandbox operations (tool)\n  skill                          skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]        Get the tree structure of all nodes (tables, automations, apps,\n                                 etc.) in a base\n  search-api [options]           Search available APIs by description to find the right endpoint\n  get-doc [options]              Get documentation for a topic\n  tools                          Tool discovery and metadata commands\n  sql-query [options]            Execute SQL query on tables\n  get-collaborators [options]    Get collaborators in the current base with pagination and search\n  get-ai-config [options]        Get AI field configuration documentation with available models\n  import [options]               Import tabular data into Teable (analyzes by default; --table-name\n                                 creates, --table-id appends)\n  import-airtable [options]      Import an Airtable base into Teable\n  import-google-sheet [options]  Import a Google spreadsheet into Teable\n  import-status [options]        Query import job status for a table\n  upload-attachment [options]    Upload a local file as an attachment\n  call-api [options]             Call any Teable API (axios-style: method, url, params, data)\n  trigger-ai-fill [options]      Trigger AI generation for an AI-configured field\n  send-email [options]           Send an email to one or more recipients (system SMTP by default, or\n                                 --smtp for a custom transport)\n\nCommands:\n  help [command]                 display help for command\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
   "commands": [
     {
       "name": "app",
@@ -3026,41 +3026,104 @@
     },
     {
       "name": "scrape",
-      "summary": "Scrape structured data from URLs — supports LinkedIn, Amazon, Instagram, TikTok, YouTube, X/Twitter, Reddit, and 35+ more platforms",
-      "description": "Scrape structured data from 44+ web platforms. Two modes:\n  (1) TRIGGER: pass datasetId + inputs to start a new scrape\n  (2) POLL: pass only snapshotId to check status of a pending scrape\n\nMatch URL to datasetId:\nlinkedin.com: /in/→linkedin_person_profile, /company/→linkedin_company_profile, /jobs/→linkedin_job_listings, /pulse/|/posts/→linkedin_posts\namazon.*: /dp/→amazon_product, /dp/(reviews)→amazon_product_reviews, (search)→amazon_product_search(needs keyword+url)\ninstagram.com: /<user>→instagram_profiles, /p/→instagram_posts, /reel/→instagram_reels\nx.com|twitter.com: /status/→x_posts, /<user>→x_profile_posts\nyoutube.com: /watch→youtube_videos, /@channel→youtube_profiles, (comments)→youtube_comments\ntiktok.com: /@user→tiktok_profiles, /@user/video/→tiktok_posts\nOthers: reddit_posts, google_maps_reviews(needs days_limit), facebook_posts|facebook_marketplace_listings|facebook_company_reviews, github_repository_file, zillow_properties_listing, walmart_product, booking_hotel_listings\n\nMost datasets need only [{ \"url\": \"...\" }]. For full 44+ list: get-doc topic \"scrape.datasets\".\nBatch same-datasetId URLs in one call: inputs: [{ \"url\": \"url1\" }, { \"url\": \"url2\" }].\n\nPolling: If result has { pending: true, snapshotId }, call wait(seconds: 10) then call scrape again WITH that snapshotId (POLL mode). Never omit snapshotId (that triggers a new scrape). Repeat until data or error.",
-      "options": [
+      "description": "scrape operations (search, run, status)",
+      "subcommands": [
         {
-          "flags": "--dataset-id <datasetId>",
-          "description": "TRIGGER mode only (required). Dataset ID from the URL-pattern list above. Use get-doc topic \"scrape.datasets\" if URL doesn't match any pattern. Do NOT pass when polling."
+          "name": "run",
+          "summary": "Extract structured data from a supported platform page — LinkedIn, Amazon, Instagram, TikTok, YouTube, X/Twitter, Reddit and 1,600+ more platforms via scrape-search",
+          "description": "Extract structured data from a page of a supported platform through its dataset and wait up to 180s for the result. Not a generic page fetcher: the platform must be in the list below or found by scrape-search; otherwise fetch the page directly.\n\nMatch URL to datasetId:\nlinkedin.com: /in/→linkedin_person_profile, /company/→linkedin_company_profile, /jobs/→linkedin_job_listings, /pulse/|/posts/→linkedin_posts\namazon.*: /dp/→amazon_product, /dp/(reviews)→amazon_product_reviews, (search)→amazon_product_search(needs keyword+url)\ninstagram.com: /<user>→instagram_profiles, /p/→instagram_posts, /reel/→instagram_reels\nx.com|twitter.com: /status/→x_posts, /<user>→x_profile_posts\nyoutube.com: /watch→youtube_videos, /@channel→youtube_profiles, (comments)→youtube_comments\ntiktok.com: /@user→tiktok_profiles, /@user/video/→tiktok_posts\nreddit.com: /comments/<id>/→reddit_posts, (comments)→reddit_comments(optional days_back)\nOthers: google_maps_reviews(needs days_limit), facebook_posts|facebook_marketplace_listings|facebook_company_reviews(num_of_reviews defaults to 10), github_repository_file, zillow_properties_listing, walmart_product, booking_hotel_listings\n\nMost datasets need only [{ \"url\": \"...\" }]. For the full curated list: get-doc topic \"scrape.datasets\". If the target platform is not curated, call scrape-search to get a gd_ datasetId before falling back to fetching the page.\nBatch same-datasetId URLs in one call: inputs: [{ \"url\": \"url1\" }, { \"url\": \"url2\" }].\n\nIf the result is { pending: true, snapshotId }, do NOT call scrape again (that starts and bills a new scrape): call wait(seconds: 10) then scrape-status with that snapshotId, repeating until data or error.",
+          "options": [
+            {
+              "flags": "--dataset-id <datasetId>",
+              "description": "Curated dataset ID from the URL-pattern list above, or a raw gd_ id returned by scrape-search. Use get-doc topic \"scrape.datasets\" if URL doesn't match any pattern."
+            },
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--inputs <jsonArray>",
+              "description": "Array of input objects (a single object is accepted too). Most datasets need only [{ \"url\": \"https://...\" }]. Pass multiple objects to batch scrape: [{ \"url\": \"...\" }, { \"url\": \"...\" }]. Exceptions: amazon_product_search needs \"keyword\"+\"url\", linkedin_people_search needs \"url\"+\"first_name\"+\"last_name\". Pass exactly the inputs scrape-search returns and keep the JSON type each expects (numbers as numbers, lists as arrays)."
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable scrape run [options]\n\nExtract structured data from a page of a supported platform through its dataset and wait up to 180s\nfor the result. Not a generic page fetcher: the platform must be in the list below or found by\nscrape-search; otherwise fetch the page directly.\n\nMatch URL to datasetId:\nlinkedin.com: /in/→linkedin_person_profile, /company/→linkedin_company_profile,\n/jobs/→linkedin_job_listings, /pulse/|/posts/→linkedin_posts\namazon.*: /dp/→amazon_product, /dp/(reviews)→amazon_product_reviews,\n(search)→amazon_product_search(needs keyword+url)\ninstagram.com: /<user>→instagram_profiles, /p/→instagram_posts, /reel/→instagram_reels\nx.com|twitter.com: /status/→x_posts, /<user>→x_profile_posts\nyoutube.com: /watch→youtube_videos, /@channel→youtube_profiles, (comments)→youtube_comments\ntiktok.com: /@user→tiktok_profiles, /@user/video/→tiktok_posts\nreddit.com: /comments/<id>/→reddit_posts, (comments)→reddit_comments(optional days_back)\nOthers: google_maps_reviews(needs days_limit),\nfacebook_posts|facebook_marketplace_listings|facebook_company_reviews(num_of_reviews defaults to\n10), github_repository_file, zillow_properties_listing, walmart_product, booking_hotel_listings\n\nMost datasets need only [{ \"url\": \"...\" }]. For the full curated list: get-doc topic\n\"scrape.datasets\". If the target platform is not curated, call scrape-search to get a gd_ datasetId\nbefore falling back to fetching the page.\nBatch same-datasetId URLs in one call: inputs: [{ \"url\": \"url1\" }, { \"url\": \"url2\" }].\n\nIf the result is { pending: true, snapshotId }, do NOT call scrape again (that starts and bills a\nnew scrape): call wait(seconds: 10) then scrape-status with that snapshotId, repeating until data or\nerror.\n\nOptions:\n  --dataset-id <datasetId>  Curated dataset ID from the URL-pattern list above, or a raw gd_ id\n                            returned by scrape-search. Use get-doc topic \"scrape.datasets\" if URL\n                            doesn't match any pattern.\n  --inputs <jsonArray>      Array of input objects (a single object is accepted too). Most datasets\n                            need only [{ \"url\": \"https://...\" }]. Pass multiple objects to batch\n                            scrape: [{ \"url\": \"...\" }, { \"url\": \"...\" }]. Exceptions:\n                            amazon_product_search needs \"keyword\"+\"url\", linkedin_people_search\n                            needs \"url\"+\"first_name\"+\"last_name\". Pass exactly the inputs\n                            scrape-search returns and keep the JSON type each expects (numbers as\n                            numbers, lists as arrays).\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
-          "flags": "--endpoint <endpoint>",
-          "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+          "name": "search",
+          "summary": "Find a scraper for platforms outside the curated scrape list — searches 1,600+ scrapers by name and returns the datasetId to use",
+          "description": "Search the full scraper catalog (1,600+ platforms) by platform name and data type, for targets the curated scrape datasets do not cover.\nEach match returns a raw gd_ id usable as the scrape tool's datasetId, plus input fields inferred from its metadata.\nThen call scrape with that id: pass exactly the returned inputs; when inputs are absent, most scrapers take [{ \"url\": \"...\" }]. A trigger error lists the fields the scraper actually expects.\nTry the curated list first (scrape tool description / get-doc \"scrape.datasets\"); use this only when nothing there matches.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--query <text>",
+              "description": "Platform name and data type, e.g. \"glassdoor company reviews\" or \"indeed jobs\""
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable scrape search [options]\n\nSearch the full scraper catalog (1,600+ platforms) by platform name and data type, for targets the\ncurated scrape datasets do not cover.\nEach match returns a raw gd_ id usable as the scrape tool's datasetId, plus input fields inferred\nfrom its metadata.\nThen call scrape with that id: pass exactly the returned inputs; when inputs are absent, most\nscrapers take [{ \"url\": \"...\" }]. A trigger error lists the fields the scraper actually expects.\nTry the curated list first (scrape tool description / get-doc \"scrape.datasets\"); use this only when\nnothing there matches.\n\nOptions:\n  --query <text>          Platform name and data type, e.g. \"glassdoor company reviews\" or \"indeed\n                          jobs\"\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
         },
         {
-          "flags": "--inputs <jsonArray>",
-          "description": "TRIGGER mode only (required). Array of input objects. Most datasets need only [{ \"url\": \"https://...\" }]. Pass multiple objects to batch scrape: [{ \"url\": \"...\" }, { \"url\": \"...\" }]. Exceptions: amazon_product_search needs \"keyword\"+\"url\", linkedin_people_search needs \"url\"+\"first_name\"+\"last_name\". Do NOT pass when polling."
-        },
-        {
-          "flags": "--pretty",
-          "description": "Indent JSON for human readability",
-          "default": false
-        },
-        {
-          "flags": "--snapshot-id <snapshotId>",
-          "description": "POLL mode only. Pass the snapshotId from a previous pending result to check its status. When provided, do NOT pass datasetId or inputs."
-        },
-        {
-          "flags": "--token <token>",
-          "description": "Personal access token; falls back to TEABLE_TOKEN env var"
-        },
-        {
-          "flags": "-b, --base-id <baseId>",
-          "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
-          "required": true
+          "name": "status",
+          "summary": "Check a pending scrape by snapshotId and fetch its data once ready",
+          "description": "Check a pending scrape by snapshotId and wait up to 180s for it; returns the data once ready.\nUse only with a snapshotId from an earlier scrape result. If still pending, call wait(seconds: 10) and check again; never re-run scrape for the same inputs.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--snapshot-id <snapshotId>",
+              "description": "snapshotId from a pending scrape result"
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable scrape status [options]\n\nCheck a pending scrape by snapshotId and wait up to 180s for it; returns the data once ready.\nUse only with a snapshotId from an earlier scrape result. If still pending, call wait(seconds: 10)\nand check again; never re-run scrape for the same inputs.\n\nOptions:\n  --snapshot-id <snapshotId>  snapshotId from a pending scrape result\n  -b, --base-id <baseId>      Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                              base-id <id>`.\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                              then saved config\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
         }
       ],
-      "help": "Usage: teable scrape [options]\n\nScrape structured data from 44+ web platforms. Two modes:\n  (1) TRIGGER: pass datasetId + inputs to start a new scrape\n  (2) POLL: pass only snapshotId to check status of a pending scrape\n\nMatch URL to datasetId:\nlinkedin.com: /in/→linkedin_person_profile, /company/→linkedin_company_profile,\n/jobs/→linkedin_job_listings, /pulse/|/posts/→linkedin_posts\namazon.*: /dp/→amazon_product, /dp/(reviews)→amazon_product_reviews,\n(search)→amazon_product_search(needs keyword+url)\ninstagram.com: /<user>→instagram_profiles, /p/→instagram_posts, /reel/→instagram_reels\nx.com|twitter.com: /status/→x_posts, /<user>→x_profile_posts\nyoutube.com: /watch→youtube_videos, /@channel→youtube_profiles, (comments)→youtube_comments\ntiktok.com: /@user→tiktok_profiles, /@user/video/→tiktok_posts\nOthers: reddit_posts, google_maps_reviews(needs days_limit),\nfacebook_posts|facebook_marketplace_listings|facebook_company_reviews, github_repository_file,\nzillow_properties_listing, walmart_product, booking_hotel_listings\n\nMost datasets need only [{ \"url\": \"...\" }]. For full 44+ list: get-doc topic \"scrape.datasets\".\nBatch same-datasetId URLs in one call: inputs: [{ \"url\": \"url1\" }, { \"url\": \"url2\" }].\n\nPolling: If result has { pending: true, snapshotId }, call wait(seconds: 10) then call scrape again\nWITH that snapshotId (POLL mode). Never omit snapshotId (that triggers a new scrape). Repeat until\ndata or error.\n\nOptions:\n  --dataset-id <datasetId>    TRIGGER mode only (required). Dataset ID from the URL-pattern list\n                              above. Use get-doc topic \"scrape.datasets\" if URL doesn't match any\n                              pattern. Do NOT pass when polling.\n  --inputs <jsonArray>        TRIGGER mode only (required). Array of input objects. Most datasets\n                              need only [{ \"url\": \"https://...\" }]. Pass multiple objects to batch\n                              scrape: [{ \"url\": \"...\" }, { \"url\": \"...\" }]. Exceptions:\n                              amazon_product_search needs \"keyword\"+\"url\", linkedin_people_search\n                              needs \"url\"+\"first_name\"+\"last_name\". Do NOT pass when polling.\n  --snapshot-id <snapshotId>  POLL mode only. Pass the snapshotId from a previous pending result to\n                              check its status. When provided, do NOT pass datasetId or inputs.\n  -b, --base-id <baseId>      Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                              base-id <id>`.\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                              then saved config\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
+      "help": "Usage: teable scrape [options] [command]\n\nscrape operations (search, run, status)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  search [options]  Find a scraper for platforms outside the curated scrape list — searches 1,600+\n                    scrapers by name and returns the datasetId to use\n  run [options]     Extract structured data from a supported platform page — LinkedIn, Amazon,\n                    Instagram, TikTok, YouTube, X/Twitter, Reddit and 1,600+ more platforms via\n                    scrape-search\n  status [options]  Check a pending scrape by snapshotId and fetch its data once ready\n  help [command]    display help for command\n\nExamples:\n  teable scrape search --query \"glassdoor company reviews\"\n  teable scrape run --dataset-id linkedin_person_profile --inputs '[{\"url\":\"https://www.linkedin.com/in/someone\"}]'\n  teable scrape status --snapshot-id s_XXXX\n"
     },
     {
       "name": "search-api",

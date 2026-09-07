@@ -37,7 +37,7 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Views | Persistent filtered/sorted/grouped perspectives | `view create/update/delete` | [view.filter.md](api-reference/view.filter.md), [view.sort.md](api-reference/view.sort.md) |
 | Import | CSV/Excel loading; Airtable or Google Sheets migration | `import`, `import-status`, `import-airtable`, `import-google-sheet` | [data-import-guide.md](guides/data-import-guide.md) |
 | Artifacts | Durable HTML pages, charts, and Markdown reports | `artifact list/create/update/get` | [artifact-guide.md](guides/artifact-guide.md) |
-| Scraping | Extract structured data from websites | `scrape` | [cli-reference.md § Scraping](guides/cli-reference.md#scraping) |
+| Scraping | Extract structured data from supported platform pages | `scrape search/run/status` | [scrape-guide.md](guides/scrape-guide.md) |
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
 | App Builder | Live dashboards, custom web UIs | `app create/update/list/get-code`, `app publish/status/unpublish`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
 | Authority | Per-table/row/field permissions for collaborators | `authority get/export/diff/apply`, `authority enable/disable`, `authority role-*` | [authority-guide.md](guides/authority-guide.md) |
