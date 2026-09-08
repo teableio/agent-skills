@@ -41,7 +41,8 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
 | App Builder | Live dashboards, custom web UIs | `app create/update/list/get-code`, `app publish/status/unpublish`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
 | Authority | Per-table/row/field permissions for collaborators | `authority get/export/diff/apply`, `authority enable/disable`, `authority role-*` | [authority-guide.md](guides/authority-guide.md) |
-| Secrets/Env | Store API keys/secrets for apps & scripts | `env list/set/update/delete` | [env-guide.md](guides/env-guide.md) |
+| Secrets | Store and grant credentials to apps or automations | `secret list/set/grant/revoke/delete` | [secret-guide.md](guides/secret-guide.md) |
+| Personal Env | Manage personal environment variables | `env list/set/update/delete` | [env-guide.md](guides/env-guide.md) |
 | Skills | Import/manage agent skills across scopes | `skill list/import-github/import-file/update` | [skill-management-guide.md](guides/skill-management-guide.md) |
 | Email | Send an email directly (one-off) | `send-email` | [cli-reference.md § Sending Email](guides/cli-reference.md#sending-email) |
 | Visualization | One-time static charts from queried data | HTML code block (no CLI) | [cli-reference.md § Visualization](guides/cli-reference.md#one-time-data-visualization) |
@@ -92,6 +93,7 @@ For complete syntax, value formats, and all command options, read [cli-reference
 - **Multi-table**: plan relationships before creating tables. Read [cli-reference.md § Multi-Table](guides/cli-reference.md#multi-table-relationship-design).
 - **AI fields**: `field create --ai-config '{"type":"...","sourceFieldName":"..."}' + trigger-ai-fill`. Check `get-doc --topic field.ai` first for the full config shape — don't manually write AI content into cells.
 - **Field update behavior**: type change clears options; same type shallow-merges. Lookup/rollup require an existing link field.
+- **App secrets**: grant personal secrets or OAuth connections to the app; do not use personal env variables for resource credentials. See [secret-guide.md](guides/secret-guide.md).
 - **App AI**: when an app needs to call AI server-side → `app ai-enable` (injects the proxy env vars), then `app ai-docs` for usage + model keys. See [app-builder-guide.md § AI in apps](guides/app-builder-guide.md#ai-in-apps).
 - **App login**: to require end-user auth for a generated app → `app login-config`. See [app-builder-guide.md § App login](guides/app-builder-guide.md#app-login--authentication).
 - **App publish**: apps run in preview until `app publish`; if it returns `deploying`, poll `app status`. See [app-builder-guide.md § Publishing](guides/app-builder-guide.md#publishing).

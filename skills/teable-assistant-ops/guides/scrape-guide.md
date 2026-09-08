@@ -1,28 +1,28 @@
 # Scraping Guide
 
-Use scraping for structured data from a supported platform page, not as a generic page fetcher. Fetch ordinary or unsupported pages directly.
+Use scraping for structured records from supported platforms, not as a generic page fetcher. Fetch ordinary or unsupported pages directly.
 
 > **Reference**: [scrape.datasets.md](../api-reference/scrape.datasets.md) — curated datasets and exact input shapes
 
-## Dataset Selection
+## Dataset and mode selection
 
-1. Match the target URL against the curated reference and use its stable dataset ID.
-2. If no curated dataset matches, use `scrape search` with the platform name plus data type, then use the returned raw `gd_` dataset ID.
-3. Preserve every returned input field and JSON type. Most datasets accept URL-only objects, but some require extra strings, numbers, or arrays.
+1. Consult the curated reference. For a specific page, choose the stable URL-collector dataset; for search results, feeds, profile posts, categories, or hashtags, choose the matching `*_by_*` discovery dataset.
+2. If no curated choice supports the requested mode, use `scrape search` with the platform plus data type. Its raw `gd_` result includes collector inputs and discovery modes.
+3. For a raw `gd_` discovery mode, pass its `discoverBy` value and exactly that mode's input fields. Preserve field names and JSON types; similar datasets often use different names such as `keyword`, `keywords`, or `search_keyword`.
 
-Batch URLs only when they use the same dataset ID. This avoids separate billed runs and keeps each input shape consistent.
+Batch inputs only when they share a dataset ID and mode. Keep the default result limit unless the user asks for more: feeds, searches, and comment lists bill per returned record, while a single-page collector still yields one record.
 
 ```bash
 teable scrape search --query "glassdoor company reviews"
-teable scrape run --dataset-id gd_XXXX --inputs '[{"url":"https://example.com/company"}]'
+teable scrape run --dataset-id gd_XXXX --discover-by keyword --inputs '[{"keyword":"database engineer","location":"Berlin"}]' --limit 20
 ```
 
-## Pending Results
+## Asynchronous results
 
-A run waits up to 180 seconds. If it returns `{ "pending": true, "snapshotId": "..." }`, retain that ID, wait about 10 seconds, then check it with `scrape status`. Repeat until data or an error is returned.
+`teable scrape run` starts the job and immediately returns a snapshot ID. Retain it and fetch the result with status polling; a wait of up to 120 seconds can reduce repeated calls.
 
 ```bash
-teable scrape status --snapshot-id s_XXXX
+teable scrape status --snapshot-id s_XXXX --wait 60
 ```
 
-**Never rerun `scrape run` for the same pending inputs**: that starts and bills a new scrape rather than resuming the existing one.
+If the status remains pending, repeat **status** with the same snapshot ID. Never rerun `scrape run` for the same inputs: that starts and bills a second job rather than resuming the first.

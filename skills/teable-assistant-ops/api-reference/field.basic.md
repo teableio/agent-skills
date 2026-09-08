@@ -13,7 +13,7 @@ Basic field types for storing text, numbers, dates, and other primitive data. Mo
   }
 }
 ```
-singleLineText can use `showAs` to display as URL, email, or phone (see `field.show-as` topic).
+URLs inside text values are detected and rendered as clickable links automatically. For email or phone columns add `showAs: { type: "email" | "phone" }` (see `field.show-as` topic).
 
 ---
 

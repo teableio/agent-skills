@@ -55,15 +55,16 @@ For single-line text fields. Creates clickable elements for common actions.
   type: "singleLineText",
   options: {
     showAs: {
-      type: "url"  // "url" | "email" | "phone"
+      type: "email"  // "email" | "phone"
     }
   }
 }
 ```
 
-**url:** Opens link in new tab (value should be valid URL)
 **email:** Opens mail client with mailto: link
 **phone:** Initiates call with tel: protocol
+
+URLs inside text values are detected and rendered as clickable links automatically, so a URL column needs no show-as at all. The legacy `{ type: "url" }` show-as is deprecated and renders as plain text.
 
 ## Color Options
 
@@ -108,15 +109,6 @@ For available colors, see `field.colors` topic.
   options: {
     expression: "values",
     showAs: { type: "line", color: "cyan" }
-  }
-}
-
-// Clickable URL
-{
-  name: "Website",
-  type: "singleLineText",
-  options: {
-    showAs: { type: "url" }
   }
 }
 ```
