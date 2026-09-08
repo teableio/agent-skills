@@ -24,7 +24,9 @@
 #                         commit-log context between synced refs
 #   GROUP_WEBHOOK_URL     (optional, secret) — endpoint POSTed a structured JSON
 #                         payload whenever a sync PR is created or updated;
-#                         message formatting is the receiver's job
+#                         message formatting is the receiver's job. The
+#                         notify-sync-merged workflow POSTs to the same endpoint
+#                         once the PR is merged.
 
 name: sync-cli-docs
 
