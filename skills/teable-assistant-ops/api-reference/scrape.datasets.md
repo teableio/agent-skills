@@ -2,191 +2,181 @@
 
 Fetch structured data from 1,600+ web platforms. Each dataset requires a `datasetId` identifier and an `inputs` array of objects with the required fields.
 
-The tables below are the curated datasets with known inputs. For any other platform (Glassdoor, Indeed, Trustpilot, ...), call `scrape-search` with `query: "<platform> <data type>"` to get a raw `gd_...` id and its inferred inputs, then call `scrape` with that id as datasetId. A pending result is resumed with `scrape-status` and its snapshotId, never by running `scrape` again.
+The tables below are the curated datasets with known inputs. For any other platform (Glassdoor, Indeed, Trustpilot, ...), call `scrape-search` with `query: "<platform> <data type>"`: each match gives a raw `gd_...` id, the inputs it needs to collect URLs, and its `modes` (discover by keyword, profile, category...) with their own inputs. The same search also covers a curated platform when no curated id fits the request (Amazon by UPC, YouTube by search filters, X posts of several profiles at once): pick the mode from `modes` and pass it as `discoverBy`.
+
+A pending result is resumed with `scrape-status` and its snapshotId, never by running `scrape` again.
+
+Plain datasets scrape the pages you pass; `*_by_*` datasets take a keyword, hashtag, profile, category or shop URL and find the records themselves. Each input yields **at most 10 records**; raise `limit` (max 50) only when the user asks for more, since every record is billed.
 
 ## Usage
 
 ```
 datasetId: "<datasetId>"
-inputs: [{ "url": "https://...", ... }]
+inputs: [{ "url": "https://..." }, { "url": "https://..." }]   // one object per item; batch same-dataset items in one call
 ```
 
-### Batch scrape (multiple URLs in one call)
+### Long-tail dataset in a discover mode (from scrape-search)
 ```
-datasetId: "<datasetId>"
-inputs: [
-  { "url": "https://example.com/page1" },
-  { "url": "https://example.com/page2" },
-  { "url": "https://example.com/page3" }
-]
+datasetId: "gd_..."            // id from scrape-search
+discoverBy: "keyword"          // one of its modes[].discoverBy
+inputs: [{ "keyword": "...", "location": "..." }]   // that mode's inputs
+limit: 20                      // optional, only when the user asks for more than 10
 ```
 
 ---
 
 ## E-Commerce
 
-| Dataset ID | Description | Required Inputs |
+| Dataset ID | Inputs (required first) | Notes |
 |---|---|---|
-| `amazon_product` | Amazon product data. URL must contain `/dp/`. | `url` |
-| `amazon_product_reviews` | Amazon product reviews. URL must contain `/dp/`. | `url` |
-| `amazon_product_search` | Amazon product search results. | `keyword`, `url` (Amazon domain) |
-| `walmart_product` | Walmart product data. URL must contain `/ip/`. | `url` |
-| `walmart_seller` | Walmart seller data. | `url` |
-| `ebay_product` | eBay product data. | `url` |
-| `homedepot_products` | HomeDepot product data. | `url` |
-| `zara_products` | Zara product data. | `url` |
-| `etsy_products` | Etsy product data. | `url` |
-| `bestbuy_products` | BestBuy product data. | `url` |
+| `amazon_product` | `url` | URL must contain `/dp/`. |
+| `amazon_product_reviews` | `url` | URL must contain `/dp/`. |
+| `amazon_product_search` | `keyword`, `url` (Amazon domain) |  |
+| `amazon_seller` | `url` |  |
+| `walmart_product` | `url` | URL must contain `/ip/`. |
+| `walmart_seller` | `url` |  |
+| `walmart_reviews` | `url` | URL must contain `/ip/`. Optional `sort_by`. |
+| `ebay_product` | `url` |  |
+| `homedepot_products` | `url` |  |
+| `zara_products` | `url` |  |
+| `etsy_products` | `url` |  |
+| `bestbuy_products` | `url` |  |
+| `amazon_product_by_category` | `url` | Pass the category URL. Optional `sort_by`, `zipcode`. |
+| `amazon_best_sellers` | `category_url` | Pass the best sellers URL. Optional `zipcode`. |
+| `walmart_product_by_keyword` | `keyword` | Default `domain`: https://www.walmart.com. |
+| `walmart_product_by_category` | `category_url` | Pass the category URL. |
+| `ebay_product_by_keyword` | `keywords` |  |
+| `ebay_product_by_shop` | `url` | Pass the store URL. |
+| `ebay_product_by_category` | `url` | Pass the category URL. |
+| `etsy_products_by_keyword` | `keywords` |  |
+| `etsy_products_by_shop` | `url` | Pass the shop URL. |
+| `bestbuy_products_by_keyword` | `keywords` |  |
+| `homedepot_products_by_keyword` | `keyword` |  |
+| `homedepot_products_by_category` | `url` | Pass the category URL. Optional `zipcode`, `max_product`. |
+| `zara_products_by_category` | `url` | Pass the category URL. |
 
 ## LinkedIn
 
-| Dataset ID | Description | Required Inputs |
+| Dataset ID | Inputs (required first) | Notes |
 |---|---|---|
-| `linkedin_person_profile` | LinkedIn person profile data. | `url` |
-| `linkedin_company_profile` | LinkedIn company profile data. | `url` |
-| `linkedin_job_listings` | LinkedIn job listings. | `url` |
-| `linkedin_posts` | LinkedIn post data. URL must be a pulse or posts URL. | `url` |
-| `linkedin_people_search` | LinkedIn people search. | `url`, `first_name`, `last_name` |
+| `linkedin_person_profile` | `url` |  |
+| `linkedin_company_profile` | `url` |  |
+| `linkedin_job_listings` | `url` |  |
+| `linkedin_posts` | `url` | URL must be a pulse or posts URL. |
+| `linkedin_people_search` | `url`, `first_name`, `last_name` |  |
+| `linkedin_job_listings_by_keyword` | `location` | Optional `keyword`, `country`, `time_range`, `job_type`, `experience_level`, `remote`. |
+| `linkedin_posts_by_profile` | `url` | Pass a `/in/` profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
+| `linkedin_posts_by_company` | `url` | Pass a `/company/` URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
 
 ## Business Intelligence
 
-| Dataset ID | Description | Required Inputs |
+| Dataset ID | Inputs (required first) | Notes |
 |---|---|---|
-| `crunchbase_company` | Crunchbase company data. | `url` |
-| `zoominfo_company_profile` | ZoomInfo company profile data. | `url` |
+| `crunchbase_company` | `url` |  |
+| `crunchbase_person` | `url` | Pass a `/person/` URL. |
+| `zoominfo_company_profile` | `url` |  |
+| `crunchbase_company_by_keyword` | `keyword` |  |
 
 ## Instagram
 
-| Dataset ID | Description | Required Inputs |
+| Dataset ID | Inputs (required first) | Notes |
 |---|---|---|
-| `instagram_profiles` | Instagram profile data. | `url` |
-| `instagram_posts` | Instagram post data. | `url` |
-| `instagram_reels` | Instagram reel data. | `url` |
-| `instagram_comments` | Instagram comments data. | `url` |
+| `instagram_profiles` | `url` |  |
+| `instagram_posts` | `url` |  |
+| `instagram_reels` | `url` |  |
+| `instagram_comments` | `url` |  |
+| `instagram_posts_by_profile` | `url` | Pass the profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD), `post_type`. |
+| `instagram_reels_by_profile` | `url` | Pass the profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
 
 ## Facebook
 
-| Dataset ID | Description | Required Inputs |
+| Dataset ID | Inputs (required first) | Notes |
 |---|---|---|
-| `facebook_posts` | Facebook post data. | `url` |
-| `facebook_marketplace_listings` | Facebook marketplace listing data. | `url` |
-| `facebook_company_reviews` | Facebook company reviews. Default `num_of_reviews`: 10. | `url`, `num_of_reviews` |
-| `facebook_events` | Facebook events data. | `url` |
+| `facebook_posts` | `url` |  |
+| `facebook_marketplace_listings` | `url` |  |
+| `facebook_company_reviews` | `url`, `num_of_reviews` | Default `num_of_reviews`: 10. |
+| `facebook_events` | `url` |  |
+| `facebook_page_profile` | `url` |  |
+| `facebook_page_posts` | `url` | Pass the page or profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
+| `facebook_group_posts` | `url` | Pass the `/groups/` URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
+| `facebook_reels` | `url` | Pass the profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
+| `facebook_comments` | `url` | Pass the post URL. Optional `comments_sort`. |
+| `facebook_marketplace_by_keyword` | `keyword`, `city` | Optional `date_listed`. |
 
 ## TikTok
 
-| Dataset ID | Description | Required Inputs |
+| Dataset ID | Inputs (required first) | Notes |
 |---|---|---|
-| `tiktok_profiles` | TikTok profile data. | `url` |
-| `tiktok_posts` | TikTok post data. | `url` |
-| `tiktok_shop` | TikTok shop product data. | `url` |
-| `tiktok_comments` | TikTok comments data. | `url` |
-
-## Google
-
-| Dataset ID | Description | Required Inputs |
-|---|---|---|
-| `google_maps_reviews` | Google Maps reviews. Default `days_limit`: 3. | `url`, `days_limit` |
-| `google_shopping` | Google Shopping product data. | `url` |
-| `google_play_store` | Google Play Store app data. | `url` |
-
-## App Stores
-
-| Dataset ID | Description | Required Inputs |
-|---|---|---|
-| `apple_app_store` | Apple App Store app data. | `url` |
+| `tiktok_profiles` | `url` |  |
+| `tiktok_posts` | `url` |  |
+| `tiktok_shop` | `url` |  |
+| `tiktok_comments` | `url` |  |
+| `tiktok_posts_by_keyword` | `search_keyword` | Optional `country`. |
+| `tiktok_posts_by_profile` | `url` | Pass the profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD), `post_type`, `sort_by`. |
+| `tiktok_shop_by_keyword` | `keyword` |  |
+| `tiktok_shop_by_category` | `category_url` | Pass the category URL. |
+| `tiktok_shop_by_shop` | `url` | Pass the shop URL. |
 
 ## X (Twitter)
 
-| Dataset ID | Description | Required Inputs |
+| Dataset ID | Inputs (required first) | Notes |
 |---|---|---|
-| `x_posts` | X/Twitter post data. | `url` |
-| `x_profile_posts` | X/Twitter posts from a profile. Optional date filtering. | `url`, `start_date`, `end_date` |
+| `x_posts` | `url` |  |
+| `x_profiles` | `url` |  |
+| `x_profile_posts` | `url`, `start_date`, `end_date` | Optional `start_date`, `end_date` (YYYY-MM-DD). |
 
 ## YouTube
 
-| Dataset ID | Description | Required Inputs |
+| Dataset ID | Inputs (required first) | Notes |
 |---|---|---|
-| `youtube_profiles` | YouTube profile data. | `url` |
-| `youtube_comments` | YouTube comments. Default `num_of_comments`: 10. | `url`, `num_of_comments` |
-| `youtube_videos` | YouTube video data. | `url` |
-
-## News & Media
-
-| Dataset ID | Description | Required Inputs |
-|---|---|---|
-| `reuter_news` | Reuters news article data. | `url` |
-
-## Developer
-
-| Dataset ID | Description | Required Inputs |
-|---|---|---|
-| `github_repository_file` | GitHub repository file data. | `url` |
-
-## Finance
-
-| Dataset ID | Description | Required Inputs |
-|---|---|---|
-| `yahoo_finance_business` | Yahoo Finance business data. | `url` |
-
-## Real Estate
-
-| Dataset ID | Description | Required Inputs |
-|---|---|---|
-| `zillow_properties_listing` | Zillow properties listing data. | `url` |
-
-## Travel
-
-| Dataset ID | Description | Required Inputs |
-|---|---|---|
-| `booking_hotel_listings` | Booking.com hotel listings data. | `url` |
+| `youtube_profiles` | `url` |  |
+| `youtube_comments` | `url`, `num_of_comments` | Default `num_of_comments`: 10. |
+| `youtube_videos` | `url` |  |
+| `youtube_videos_by_keyword` | `keyword` | Optional `start_date`, `end_date` (YYYY-MM-DD), `country`. |
+| `youtube_videos_by_hashtag` | `hashtag` | Discover YouTube videos tagged with a hashtag (without `#`). Optional `start_date`, `end_date` (YYYY-MM-DD), `country`. |
+| `youtube_videos_by_channel` | `url` | Pass the channel or playlist URL. Optional `start_date`, `end_date` (YYYY-MM-DD), `order_by`. |
+| `youtube_profiles_by_keyword` | `keyword` |  |
 
 ## Reddit
 
-| Dataset ID | Description | Required Inputs |
+| Dataset ID | Inputs (required first) | Notes |
 |---|---|---|
-| `reddit_posts` | Reddit post data. | `url` |
-| `reddit_comments` | Reddit comments on a post or thread. Optional `days_back` limits by recency. | `url`, `days_back` |
+| `reddit_posts` | `url` |  |
+| `reddit_comments` | `url`, `days_back` | Optional `days_back` limits by recency. |
+| `reddit_posts_by_keyword` | `keyword` | Default `date`: All time (also Past hour/day/week/month/year). Optional `sort_by`. |
+| `reddit_posts_by_subreddit` | `url` | Pass the subreddit URL. Optional `sort_by` (new/top/hot), `keyword`, `start_date`. |
+| `reddit_posts_by_author` | `url` | Pass the user URL. Optional `sort_by`. |
+
+## Other platforms
+
+| Dataset ID | Inputs (required first) | Notes |
+|---|---|---|
+| `google_maps_reviews` | `url`, `days_limit` | Default `days_limit`: 3. |
+| `google_shopping` | `url` |  |
+| `google_play_store` | `url` |  |
+| `apple_app_store` | `url` |  |
+| `reuter_news` | `url` |  |
+| `github_repository_file` | `url` |  |
+| `yahoo_finance_business` | `url` |  |
+| `yahoo_finance_by_keyword` | `keyword` |  |
+| `zillow_properties_listing` | `url` |  |
+| `booking_hotel_listings` | `url` |  |
 
 ---
 
 ## Examples
 
-### Scrape a LinkedIn profile
-```
-datasetId: "linkedin_person_profile"
-inputs: [{ "url": "https://www.linkedin.com/in/satyanadella/" }]
-```
-
-### Scrape an Amazon product
 ```
 datasetId: "amazon_product"
 inputs: [{ "url": "https://www.amazon.com/dp/B0CFLD1MQ1" }]
 ```
 
-### Search Amazon products
 ```
-datasetId: "amazon_product_search"
-inputs: [{ "keyword": "wireless headphones", "url": "https://www.amazon.com" }]
-```
-
-### Scrape Instagram profile
-```
-datasetId: "instagram_profiles"
-inputs: [{ "url": "https://www.instagram.com/natgeo/" }]
+datasetId: "tiktok_posts_by_keyword"        // field name is search_keyword for this dataset
+inputs: [{ "search_keyword": "home espresso" }]
 ```
 
-### Scrape X/Twitter profile posts with date range
 ```
-datasetId: "x_profile_posts"
-inputs: [{ "url": "https://x.com/elonmusk", "start_date": "2024-01-01", "end_date": "2024-01-31" }]
-```
-
-### Batch scrape multiple LinkedIn profiles
-```
-datasetId: "linkedin_person_profile"
-inputs: [
-  { "url": "https://www.linkedin.com/in/satyanadella/" },
-  { "url": "https://www.linkedin.com/in/williamhgates/" }
-]
+datasetId: "linkedin_job_listings_by_keyword"
+inputs: [{ "keyword": "data engineer", "location": "Berlin" }]
 ```

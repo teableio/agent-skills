@@ -99,4 +99,4 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 
 ## Commands that do NOT need --base-id
 
-`auth` / `auth status`, `config`, `base list/create`, `artifact update/get`, `upload-attachment`, `import-status`, `integration list/connect/get-token`, `env list/set/update/delete`
+`auth` / `auth status`, `config`, `base list/create`, `artifact update/get`, `upload-attachment`, `import-status`, `integration list/connect/get-token`, `env list/set/update/delete`, `secret list/set/grant/revoke/delete`

@@ -1,6 +1,6 @@
 {
   "name": "teable",
-  "version": "0.6.36",
+  "version": "0.6.37",
   "description": "Teable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries, and related app/automation workflows with a safe read-before-write process.",
   "options": [
     {
@@ -12,7 +12,7 @@
       "description": "Show CLI version"
     }
   ],
-  "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                  Show CLI version\n  --debug                        Enable debug output (verbose logging to stderr)\n  -h, --help                     display help for command\n\nSetup:\n  auth|init [options]            Manage auth for teable\n  config                         Manage project-level CLI configuration\n\nResources:\n  base                           base operations (create, get, list, update, delete)\n  table                          table operations (create, get, update, delete)\n  field                          field operations (create, get, update, delete)\n  record                         record operations (create, get, update, delete)\n  view                           view operations (create, get, update, delete)\n  app                            app operations (list, get-code, create, update, delete, publish,\n                                 status, unpublish, login-config, ai-docs, ai-enable)\n  automation                     automation operations (list, get, update, activate, setup-trigger,\n                                 delete, test-node, delete-node, generate-script,\n                                 generate-flowchart, get-script-input, get-runs, get-run)\n  authority                      authority operations (get, export, diff, apply, enable, disable,\n                                 role-list, role-get, role-delete, role-duplicate)\n  folder                         folder operations (create, update, delete, move)\n  artifact                       artifact operations (list, create, update, get)\n  scrape                         scrape operations (search, run, status)\n  integration                    integration operations (connect, list, get-token)\n  env                            env operations (list, set, update, delete)\n  sandbox                        sandbox operations (tool)\n  skill                          skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]        Get the tree structure of all nodes (tables, automations, apps,\n                                 etc.) in a base\n  search-api [options]           Search available APIs by description to find the right endpoint\n  get-doc [options]              Get documentation for a topic\n  tools                          Tool discovery and metadata commands\n  sql-query [options]            Execute SQL query on tables\n  get-collaborators [options]    Get collaborators in the current base with pagination and search\n  get-ai-config [options]        Get AI field configuration documentation with available models\n  import [options]               Import tabular data into Teable (analyzes by default; --table-name\n                                 creates, --table-id appends)\n  import-airtable [options]      Import an Airtable base into Teable\n  import-google-sheet [options]  Import a Google spreadsheet into Teable\n  import-status [options]        Query import job status for a table\n  upload-attachment [options]    Upload a local file as an attachment\n  call-api [options]             Call any Teable API (axios-style: method, url, params, data)\n  trigger-ai-fill [options]      Trigger AI generation for an AI-configured field\n  send-email [options]           Send an email to one or more recipients (system SMTP by default, or\n                                 --smtp for a custom transport)\n\nCommands:\n  help [command]                 display help for command\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
+  "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                  Show CLI version\n  --debug                        Enable debug output (verbose logging to stderr)\n  -h, --help                     display help for command\n\nSetup:\n  auth|init [options]            Manage auth for teable\n  config                         Manage project-level CLI configuration\n\nResources:\n  base                           base operations (create, get, list, update, delete)\n  table                          table operations (create, get, update, delete)\n  field                          field operations (create, get, update, delete)\n  record                         record operations (create, get, update, delete)\n  view                           view operations (create, get, update, delete)\n  app                            app operations (list, get-code, create, update, delete, publish,\n                                 status, unpublish, login-config, ai-docs, ai-enable)\n  automation                     automation operations (list, get, update, activate, setup-trigger,\n                                 delete, test-node, delete-node, generate-script,\n                                 generate-flowchart, get-script-input, get-runs, get-run)\n  authority                      authority operations (get, export, diff, apply, enable, disable,\n                                 role-list, role-get, role-delete, role-duplicate)\n  folder                         folder operations (create, update, delete, move)\n  artifact                       artifact operations (list, create, update, get)\n  scrape                         scrape operations (search, run, status)\n  integration                    integration operations (connect, list, get-token)\n  env                            env operations (list, set, update, delete)\n  secret                         secret operations (list, set, grant, revoke, delete)\n  sandbox                        sandbox operations (tool)\n  skill                          skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]        Get the tree structure of all nodes (tables, automations, apps,\n                                 etc.) in a base\n  search-api [options]           Search available APIs by description to find the right endpoint\n  get-doc [options]              Get documentation for a topic\n  tools                          Tool discovery and metadata commands\n  sql-query [options]            Execute SQL query on tables\n  get-collaborators [options]    Get collaborators in the current base with pagination and search\n  get-ai-config [options]        Get AI field configuration documentation with available models\n  import [options]               Import tabular data into Teable (analyzes by default; --table-name\n                                 creates, --table-id appends)\n  import-airtable [options]      Import an Airtable base into Teable\n  import-google-sheet [options]  Import a Google spreadsheet into Teable\n  import-status [options]        Query import job status for a table\n  upload-attachment [options]    Upload a local file as an attachment\n  call-api [options]             Call any Teable API (axios-style: method, url, params, data)\n  trigger-ai-fill [options]      Trigger AI generation for an AI-configured field\n  send-email [options]           Send an email to one or more recipients (system SMTP by default, or\n                                 --smtp for a custom transport)\n\nCommands:\n  help [command]                 display help for command\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
   "commands": [
     {
       "name": "app",
@@ -1770,7 +1770,7 @@
         {
           "name": "list",
           "summary": "List env variables in a namespace",
-          "description": "List env variables for USER / APP / AUTOMATION namespace.",
+          "description": "List my user-scope env variables (the chat sandbox env). App / automation values are secrets granted to the resource: see `teable secret list --resource`.",
           "options": [
             {
               "flags": "--endpoint <endpoint>",
@@ -1782,10 +1782,6 @@
               "default": false
             },
             {
-              "flags": "--scope-id <scopeId>",
-              "description": "App id (appXXXX) for --scope app, or workflow id (wflXXXX) for --scope automation"
-            },
-            {
               "flags": "--scope-type <scope>",
               "description": "Alias for --scope"
             },
@@ -1795,16 +1791,16 @@
             },
             {
               "flags": "-S, --scope <scope>",
-              "description": "One of: user, app, automation",
-              "required": true
+              "description": "One of: user",
+              "default": "user"
             }
           ],
-          "help": "Usage: teable env list [options]\n\nList env variables for USER / APP / AUTOMATION namespace.\n\nOptions:\n  -S, --scope <scope>    One of: user, app, automation\n  --scope-type <scope>   Alias for --scope\n  --scope-id <scopeId>   App id (appXXXX) for --scope app, or workflow id (wflXXXX) for --scope\n                         automation\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
+          "help": "Usage: teable env list [options]\n\nList my user-scope env variables (the chat sandbox env). App / automation values are secrets granted\nto the resource: see `teable secret list --resource`.\n\nOptions:\n  -S, --scope <scope>    One of: user (default: \"user\")\n  --scope-type <scope>   Alias for --scope\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
         },
         {
           "name": "set",
           "summary": "Create or update an env variable (upsert by key)",
-          "description": "Create the env if it does not exist, otherwise replace its value.",
+          "description": "Create or replace one of my personal env variables (used by chat sandboxes as process.env.KEY). For an app / automation use `teable secret set --key <KEY> --value <V> --grant <type:id>` instead.",
           "options": [
             {
               "flags": "--endpoint <endpoint>",
@@ -1816,10 +1812,6 @@
               "default": false
             },
             {
-              "flags": "--scope-id <scopeId>",
-              "description": "App id for --scope app, or workflow id for --scope automation"
-            },
-            {
               "flags": "--scope-type <scope>",
               "description": "Alias for --scope"
             },
@@ -1829,8 +1821,8 @@
             },
             {
               "flags": "-S, --scope <scope>",
-              "description": "One of: user, app, automation",
-              "required": true
+              "description": "One of: user",
+              "default": "user"
             },
             {
               "flags": "-d, --description <text>",
@@ -1847,7 +1839,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable env set [options]\n\nCreate the env if it does not exist, otherwise replace its value.\n\nOptions:\n  -S, --scope <scope>       One of: user, app, automation\n  --scope-type <scope>      Alias for --scope\n  --scope-id <scopeId>      App id for --scope app, or workflow id for --scope automation\n  -k, --key <key>           Env KEY, ^[A-Z][A-Z0-9_]{0,63}$\n  -v, --value <value>       Env value (plaintext)\n  -d, --description <text>  Optional description\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+          "help": "Usage: teable env set [options]\n\nCreate or replace one of my personal env variables (used by chat sandboxes as process.env.KEY). For\nan app / automation use `teable secret set --key <KEY> --value <V> --grant <type:id>` instead.\n\nOptions:\n  -S, --scope <scope>       One of: user (default: \"user\")\n  --scope-type <scope>      Alias for --scope\n  -k, --key <key>           Env KEY, ^[A-Z][A-Z0-9_]{0,63}$\n  -v, --value <value>       Env value (plaintext)\n  -d, --description <text>  Optional description\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
           "name": "update",
@@ -1883,7 +1875,7 @@
           "help": "Usage: teable env update [options]\n\nOptions:\n  --id <id>                 Env variable id (evvXXXX)\n  -v, --value <value>       Replace value (plaintext)\n  -d, --description <text>  Replace description\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         }
       ],
-      "help": "Usage: teable env [options] [command]\n\nenv operations (list, set, update, delete)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  list [options]    List env variables in a namespace\n  set [options]     Create or update an env variable (upsert by key)\n  update [options]  Update env variable value / description by id\n  delete [options]  Delete env variable by id\n  help [command]    display help for command\n\nExamples:\n  teable env list --scope user\n  teable env list --scope app --scope-id appXXXX\n  teable env set --scope user --key OPENAI_KEY --value sk-xxx\n  teable env set --scope automation --scope-id wflXXXX --key STRIPE_KEY --value sk_test_...\n  teable env update --id evvXXXX --value new-value\n  teable env delete --id evvXXXX\n"
+      "help": "Usage: teable env [options] [command]\n\nenv operations (list, set, update, delete)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  list [options]    List env variables in a namespace\n  set [options]     Create or update an env variable (upsert by key)\n  update [options]  Update env variable value / description by id\n  delete [options]  Delete env variable by id\n  help [command]    display help for command\n\nExamples:\n  teable env list --scope user\n  teable env set --scope user --key OPENAI_KEY --value sk-xxx\n  teable env update --id evvXXXX --value new-value\n  teable env delete --id evvXXXX\n"
     },
     {
       "name": "field",
@@ -3031,11 +3023,15 @@
         {
           "name": "run",
           "summary": "Extract structured data from a supported platform page — LinkedIn, Amazon, Instagram, TikTok, YouTube, X/Twitter, Reddit and 1,600+ more platforms via scrape-search",
-          "description": "Extract structured data from a page of a supported platform through its dataset and wait up to 180s for the result. Not a generic page fetcher: the platform must be in the list below or found by scrape-search; otherwise fetch the page directly.\n\nMatch URL to datasetId:\nlinkedin.com: /in/→linkedin_person_profile, /company/→linkedin_company_profile, /jobs/→linkedin_job_listings, /pulse/|/posts/→linkedin_posts\namazon.*: /dp/→amazon_product, /dp/(reviews)→amazon_product_reviews, (search)→amazon_product_search(needs keyword+url)\ninstagram.com: /<user>→instagram_profiles, /p/→instagram_posts, /reel/→instagram_reels\nx.com|twitter.com: /status/→x_posts, /<user>→x_profile_posts\nyoutube.com: /watch→youtube_videos, /@channel→youtube_profiles, (comments)→youtube_comments\ntiktok.com: /@user→tiktok_profiles, /@user/video/→tiktok_posts\nreddit.com: /comments/<id>/→reddit_posts, (comments)→reddit_comments(optional days_back)\nOthers: google_maps_reviews(needs days_limit), facebook_posts|facebook_marketplace_listings|facebook_company_reviews(num_of_reviews defaults to 10), github_repository_file, zillow_properties_listing, walmart_product, booking_hotel_listings\n\nMost datasets need only [{ \"url\": \"...\" }]. For the full curated list: get-doc topic \"scrape.datasets\". If the target platform is not curated, call scrape-search to get a gd_ datasetId before falling back to fetching the page.\nBatch same-datasetId URLs in one call: inputs: [{ \"url\": \"url1\" }, { \"url\": \"url2\" }].\n\nIf the result is { pending: true, snapshotId }, do NOT call scrape again (that starts and bills a new scrape): call wait(seconds: 10) then scrape-status with that snapshotId, repeating until data or error.",
+          "description": "Start a scrape and return its snapshotId at once; the job keeps running.\nFetch the result with `teable scrape status --snapshot-id <id> --wait 60`. Never run this again for the same inputs: that starts and bills a second job.\n\nNot a generic page fetcher: the platform must be in the list below or found by scrape-search; otherwise fetch the page directly.\n\nMatch URL to datasetId:\nlinkedin.com: /in/→linkedin_person_profile, /company/→linkedin_company_profile, /jobs/→linkedin_job_listings, /pulse/|/posts/→linkedin_posts\namazon.*: /dp/→amazon_product, /dp/(reviews)→amazon_product_reviews, (search)→amazon_product_search(needs keyword+url), /sp?seller=|/s?me=→amazon_seller\ninstagram.com: /<user>→instagram_profiles, /p/→instagram_posts, /reel/→instagram_reels\nx.com|twitter.com: /status/→x_posts, /<user>→x_profiles(profile data) or x_profile_posts(their posts)\nyoutube.com: /watch→youtube_videos, /@channel→youtube_profiles, (comments)→youtube_comments\ntiktok.com: /@user→tiktok_profiles, /@user/video/→tiktok_posts\nreddit.com: /comments/<id>/→reddit_posts, (comments)→reddit_comments(optional days_back)\nfacebook.com: /groups/→facebook_group_posts, page|profile URL→facebook_page_profile(profile data) or facebook_page_posts(their posts), post URL→facebook_posts or facebook_comments, /marketplace/item/→facebook_marketplace_listings, (reviews)→facebook_company_reviews(num_of_reviews defaults to 10), /events/→facebook_events\nwalmart.com: /ip/→walmart_product, /reviews/→walmart_reviews\ncrunchbase.com: /organization/→crunchbase_company, /person/→crunchbase_person\nOthers: google_maps_reviews(needs days_limit), github_repository_file, zillow_properties_listing, booking_hotel_listings\nKeyword, hashtag or feed requests (search results, posts of a profile, products of a category...) use the *_by_* datasets, which discover records instead of collecting a page; get-doc topic \"scrape.datasets\" lists them with their exact field names.\n\nMost datasets need only [{ \"url\": \"...\" }]. For the full curated list: get-doc topic \"scrape.datasets\". If the target platform is not curated, call scrape-search to get a gd_ datasetId before falling back to fetching the page.\nBatch same-datasetId URLs in one call: inputs: [{ \"url\": \"url1\" }, { \"url\": \"url2\" }].\nA gd_ id from scrape-search can also search instead of collecting: pass discoverBy (one of its modes) with that mode's inputs. Use that route for a curated platform too when no curated id fits (Amazon by UPC, X posts of several profiles).",
           "options": [
             {
               "flags": "--dataset-id <datasetId>",
               "description": "Curated dataset ID from the URL-pattern list above, or a raw gd_ id returned by scrape-search. Use get-doc topic \"scrape.datasets\" if URL doesn't match any pattern."
+            },
+            {
+              "flags": "--discover-by <mode>",
+              "description": "Only with a gd_ id from scrape-search: one of its modes[].discoverBy. Records are then found from that mode's inputs (keyword, profile URL...) instead of collected from URLs."
             },
             {
               "flags": "--endpoint <endpoint>",
@@ -3043,7 +3039,11 @@
             },
             {
               "flags": "--inputs <jsonArray>",
-              "description": "Array of input objects (a single object is accepted too). Most datasets need only [{ \"url\": \"https://...\" }]. Pass multiple objects to batch scrape: [{ \"url\": \"...\" }, { \"url\": \"...\" }]. Exceptions: amazon_product_search needs \"keyword\"+\"url\", linkedin_people_search needs \"url\"+\"first_name\"+\"last_name\". Pass exactly the inputs scrape-search returns and keep the JSON type each expects (numbers as numbers, lists as arrays)."
+              "description": "Array of input objects (a single object is accepted too). Most datasets need only [{ \"url\": \"https://...\" }]. Pass multiple objects to batch scrape: [{ \"url\": \"...\" }, { \"url\": \"...\" }]. Field names differ per dataset (keyword, keywords, search_keyword, hashtag, location...): take them from get-doc \"scrape.datasets\". Pass exactly the inputs scrape-search returns and keep the JSON type each expects (numbers as numbers, lists as arrays)."
+            },
+            {
+              "flags": "--limit <count>",
+              "description": "Records returned per input for feeds, searches and comment lists (default 10, max 50); a single page still yields one record. Raise it only when the user asks for more results; every record is billed."
             },
             {
               "flags": "--pretty",
@@ -3060,12 +3060,12 @@
               "required": true
             }
           ],
-          "help": "Usage: teable scrape run [options]\n\nExtract structured data from a page of a supported platform through its dataset and wait up to 180s\nfor the result. Not a generic page fetcher: the platform must be in the list below or found by\nscrape-search; otherwise fetch the page directly.\n\nMatch URL to datasetId:\nlinkedin.com: /in/→linkedin_person_profile, /company/→linkedin_company_profile,\n/jobs/→linkedin_job_listings, /pulse/|/posts/→linkedin_posts\namazon.*: /dp/→amazon_product, /dp/(reviews)→amazon_product_reviews,\n(search)→amazon_product_search(needs keyword+url)\ninstagram.com: /<user>→instagram_profiles, /p/→instagram_posts, /reel/→instagram_reels\nx.com|twitter.com: /status/→x_posts, /<user>→x_profile_posts\nyoutube.com: /watch→youtube_videos, /@channel→youtube_profiles, (comments)→youtube_comments\ntiktok.com: /@user→tiktok_profiles, /@user/video/→tiktok_posts\nreddit.com: /comments/<id>/→reddit_posts, (comments)→reddit_comments(optional days_back)\nOthers: google_maps_reviews(needs days_limit),\nfacebook_posts|facebook_marketplace_listings|facebook_company_reviews(num_of_reviews defaults to\n10), github_repository_file, zillow_properties_listing, walmart_product, booking_hotel_listings\n\nMost datasets need only [{ \"url\": \"...\" }]. For the full curated list: get-doc topic\n\"scrape.datasets\". If the target platform is not curated, call scrape-search to get a gd_ datasetId\nbefore falling back to fetching the page.\nBatch same-datasetId URLs in one call: inputs: [{ \"url\": \"url1\" }, { \"url\": \"url2\" }].\n\nIf the result is { pending: true, snapshotId }, do NOT call scrape again (that starts and bills a\nnew scrape): call wait(seconds: 10) then scrape-status with that snapshotId, repeating until data or\nerror.\n\nOptions:\n  --dataset-id <datasetId>  Curated dataset ID from the URL-pattern list above, or a raw gd_ id\n                            returned by scrape-search. Use get-doc topic \"scrape.datasets\" if URL\n                            doesn't match any pattern.\n  --inputs <jsonArray>      Array of input objects (a single object is accepted too). Most datasets\n                            need only [{ \"url\": \"https://...\" }]. Pass multiple objects to batch\n                            scrape: [{ \"url\": \"...\" }, { \"url\": \"...\" }]. Exceptions:\n                            amazon_product_search needs \"keyword\"+\"url\", linkedin_people_search\n                            needs \"url\"+\"first_name\"+\"last_name\". Pass exactly the inputs\n                            scrape-search returns and keep the JSON type each expects (numbers as\n                            numbers, lists as arrays).\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+          "help": "Usage: teable scrape run [options]\n\nStart a scrape and return its snapshotId at once; the job keeps running.\nFetch the result with `teable scrape status --snapshot-id <id> --wait 60`. Never run this again for\nthe same inputs: that starts and bills a second job.\n\nNot a generic page fetcher: the platform must be in the list below or found by scrape-search;\notherwise fetch the page directly.\n\nMatch URL to datasetId:\nlinkedin.com: /in/→linkedin_person_profile, /company/→linkedin_company_profile,\n/jobs/→linkedin_job_listings, /pulse/|/posts/→linkedin_posts\namazon.*: /dp/→amazon_product, /dp/(reviews)→amazon_product_reviews,\n(search)→amazon_product_search(needs keyword+url), /sp?seller=|/s?me=→amazon_seller\ninstagram.com: /<user>→instagram_profiles, /p/→instagram_posts, /reel/→instagram_reels\nx.com|twitter.com: /status/→x_posts, /<user>→x_profiles(profile data) or x_profile_posts(their\nposts)\nyoutube.com: /watch→youtube_videos, /@channel→youtube_profiles, (comments)→youtube_comments\ntiktok.com: /@user→tiktok_profiles, /@user/video/→tiktok_posts\nreddit.com: /comments/<id>/→reddit_posts, (comments)→reddit_comments(optional days_back)\nfacebook.com: /groups/→facebook_group_posts, page|profile URL→facebook_page_profile(profile data) or\nfacebook_page_posts(their posts), post URL→facebook_posts or facebook_comments,\n/marketplace/item/→facebook_marketplace_listings, (reviews)→facebook_company_reviews(num_of_reviews\ndefaults to 10), /events/→facebook_events\nwalmart.com: /ip/→walmart_product, /reviews/→walmart_reviews\ncrunchbase.com: /organization/→crunchbase_company, /person/→crunchbase_person\nOthers: google_maps_reviews(needs days_limit), github_repository_file, zillow_properties_listing,\nbooking_hotel_listings\nKeyword, hashtag or feed requests (search results, posts of a profile, products of a category...)\nuse the *_by_* datasets, which discover records instead of collecting a page; get-doc topic\n\"scrape.datasets\" lists them with their exact field names.\n\nMost datasets need only [{ \"url\": \"...\" }]. For the full curated list: get-doc topic\n\"scrape.datasets\". If the target platform is not curated, call scrape-search to get a gd_ datasetId\nbefore falling back to fetching the page.\nBatch same-datasetId URLs in one call: inputs: [{ \"url\": \"url1\" }, { \"url\": \"url2\" }].\nA gd_ id from scrape-search can also search instead of collecting: pass discoverBy (one of its\nmodes) with that mode's inputs. Use that route for a curated platform too when no curated id fits\n(Amazon by UPC, X posts of several profiles).\n\nOptions:\n  --dataset-id <datasetId>  Curated dataset ID from the URL-pattern list above, or a raw gd_ id\n                            returned by scrape-search. Use get-doc topic \"scrape.datasets\" if URL\n                            doesn't match any pattern.\n  --inputs <jsonArray>      Array of input objects (a single object is accepted too). Most datasets\n                            need only [{ \"url\": \"https://...\" }]. Pass multiple objects to batch\n                            scrape: [{ \"url\": \"...\" }, { \"url\": \"...\" }]. Field names differ per\n                            dataset (keyword, keywords, search_keyword, hashtag, location...): take\n                            them from get-doc \"scrape.datasets\". Pass exactly the inputs\n                            scrape-search returns and keep the JSON type each expects (numbers as\n                            numbers, lists as arrays).\n  --discover-by <mode>      Only with a gd_ id from scrape-search: one of its modes[].discoverBy.\n                            Records are then found from that mode's inputs (keyword, profile URL...)\n                            instead of collected from URLs.\n  --limit <count>           Records returned per input for feeds, searches and comment lists\n                            (default 10, max 50); a single page still yields one record. Raise it\n                            only when the user asks for more results; every record is billed.\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
           "name": "search",
           "summary": "Find a scraper for platforms outside the curated scrape list — searches 1,600+ scrapers by name and returns the datasetId to use",
-          "description": "Search the full scraper catalog (1,600+ platforms) by platform name and data type, for targets the curated scrape datasets do not cover.\nEach match returns a raw gd_ id usable as the scrape tool's datasetId, plus input fields inferred from its metadata.\nThen call scrape with that id: pass exactly the returned inputs; when inputs are absent, most scrapers take [{ \"url\": \"...\" }]. A trigger error lists the fields the scraper actually expects.\nTry the curated list first (scrape tool description / get-doc \"scrape.datasets\"); use this only when nothing there matches.",
+          "description": "Search the full scraper catalog (1,600+ platforms) by platform name and data type, for targets the curated scrape datasets do not cover.\nEach match returns a raw gd_ id usable as the scrape tool's datasetId, the input fields it requires to collect given URLs, and its discover modes (search by keyword, profile, category...) with their own inputs.\nThen call scrape with that id: pass exactly the returned inputs; when inputs are absent, most scrapers take [{ \"url\": \"...\" }]. To search instead of collecting, pass discoverBy from modes and that mode's inputs. A trigger error lists the fields the scraper actually expects.\nTry the curated list first (scrape tool description / get-doc \"scrape.datasets\"); use this when nothing there matches, or when a curated platform lacks the mode the user asks for.",
           "options": [
             {
               "flags": "--endpoint <endpoint>",
@@ -3090,12 +3090,12 @@
               "required": true
             }
           ],
-          "help": "Usage: teable scrape search [options]\n\nSearch the full scraper catalog (1,600+ platforms) by platform name and data type, for targets the\ncurated scrape datasets do not cover.\nEach match returns a raw gd_ id usable as the scrape tool's datasetId, plus input fields inferred\nfrom its metadata.\nThen call scrape with that id: pass exactly the returned inputs; when inputs are absent, most\nscrapers take [{ \"url\": \"...\" }]. A trigger error lists the fields the scraper actually expects.\nTry the curated list first (scrape tool description / get-doc \"scrape.datasets\"); use this only when\nnothing there matches.\n\nOptions:\n  --query <text>          Platform name and data type, e.g. \"glassdoor company reviews\" or \"indeed\n                          jobs\"\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
+          "help": "Usage: teable scrape search [options]\n\nSearch the full scraper catalog (1,600+ platforms) by platform name and data type, for targets the\ncurated scrape datasets do not cover.\nEach match returns a raw gd_ id usable as the scrape tool's datasetId, the input fields it requires\nto collect given URLs, and its discover modes (search by keyword, profile, category...) with their\nown inputs.\nThen call scrape with that id: pass exactly the returned inputs; when inputs are absent, most\nscrapers take [{ \"url\": \"...\" }]. To search instead of collecting, pass discoverBy from modes and\nthat mode's inputs. A trigger error lists the fields the scraper actually expects.\nTry the curated list first (scrape tool description / get-doc \"scrape.datasets\"); use this when\nnothing there matches, or when a curated platform lacks the mode the user asks for.\n\nOptions:\n  --query <text>          Platform name and data type, e.g. \"glassdoor company reviews\" or \"indeed\n                          jobs\"\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
         },
         {
           "name": "status",
           "summary": "Check a pending scrape by snapshotId and fetch its data once ready",
-          "description": "Check a pending scrape by snapshotId and wait up to 180s for it; returns the data once ready.\nUse only with a snapshotId from an earlier scrape result. If still pending, call wait(seconds: 10) and check again; never re-run scrape for the same inputs.",
+          "description": "Check a scrape started by `teable scrape run` and print its data once ready.\nWith --wait it keeps polling for up to that many seconds (max 120); repeat the command while the result is still pending. Never re-run scrape run for the same inputs.",
           "options": [
             {
               "flags": "--endpoint <endpoint>",
@@ -3115,15 +3115,19 @@
               "description": "Personal access token; falls back to TEABLE_TOKEN env var"
             },
             {
+              "flags": "--wait <seconds>",
+              "description": "Seconds to keep polling before giving up (0-120, default 0)"
+            },
+            {
               "flags": "-b, --base-id <baseId>",
               "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
               "required": true
             }
           ],
-          "help": "Usage: teable scrape status [options]\n\nCheck a pending scrape by snapshotId and wait up to 180s for it; returns the data once ready.\nUse only with a snapshotId from an earlier scrape result. If still pending, call wait(seconds: 10)\nand check again; never re-run scrape for the same inputs.\n\nOptions:\n  --snapshot-id <snapshotId>  snapshotId from a pending scrape result\n  -b, --base-id <baseId>      Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                              base-id <id>`.\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                              then saved config\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
+          "help": "Usage: teable scrape status [options]\n\nCheck a scrape started by `teable scrape run` and print its data once ready.\nWith --wait it keeps polling for up to that many seconds (max 120); repeat the command while the\nresult is still pending. Never re-run scrape run for the same inputs.\n\nOptions:\n  --snapshot-id <snapshotId>  snapshotId from a pending scrape result\n  --wait <seconds>            Seconds to keep polling before giving up (0-120, default 0)\n  -b, --base-id <baseId>      Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                              base-id <id>`.\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                              then saved config\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
         }
       ],
-      "help": "Usage: teable scrape [options] [command]\n\nscrape operations (search, run, status)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  search [options]  Find a scraper for platforms outside the curated scrape list — searches 1,600+\n                    scrapers by name and returns the datasetId to use\n  run [options]     Extract structured data from a supported platform page — LinkedIn, Amazon,\n                    Instagram, TikTok, YouTube, X/Twitter, Reddit and 1,600+ more platforms via\n                    scrape-search\n  status [options]  Check a pending scrape by snapshotId and fetch its data once ready\n  help [command]    display help for command\n\nExamples:\n  teable scrape search --query \"glassdoor company reviews\"\n  teable scrape run --dataset-id linkedin_person_profile --inputs '[{\"url\":\"https://www.linkedin.com/in/someone\"}]'\n  teable scrape status --snapshot-id s_XXXX\n"
+      "help": "Usage: teable scrape [options] [command]\n\nscrape operations (search, run, status)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  search [options]  Find a scraper for platforms outside the curated scrape list — searches 1,600+\n                    scrapers by name and returns the datasetId to use\n  run [options]     Extract structured data from a supported platform page — LinkedIn, Amazon,\n                    Instagram, TikTok, YouTube, X/Twitter, Reddit and 1,600+ more platforms via\n                    scrape-search\n  status [options]  Check a pending scrape by snapshotId and fetch its data once ready\n  help [command]    display help for command\n\nExamples:\n  teable scrape search --query \"glassdoor company reviews\"\n  teable scrape run --dataset-id linkedin_person_profile --inputs '[{\"url\":\"https://www.linkedin.com/in/someone\"}]'\n  teable scrape status --snapshot-id s_XXXX --wait 60\n"
     },
     {
       "name": "search-api",
@@ -3175,6 +3179,191 @@
         }
       ],
       "help": "Usage: teable search-api [options]\n\nSearch available Teable APIs by keyword or description.\n\nReturns APIs matching your permission level. Use with call-api to execute.\n\nParameters:\n  - query (required): Search keywords in any language\n  - tags: Filter by API category (e.g., [\"record\", \"field\"])\n  - limit: Max results (default: 5, max: 10)\n\nReturns API details including:\n  - method, url: Pass directly to call-api\n  - summary, description\n  - parameters: Required and optional params with descriptions\n  - requestBody: Body schema for POST/PUT/PATCH endpoints\n\nExample: search-api({ query: \"update records\" })\n  → { method: \"PATCH\", url: \"/table/{tableId}/record\", parameters: [...], requestBody: {...} }\n  → call-api({ method: \"PATCH\", url: \"/table/{tableId}/record\", params: { tableId: \"tblXXX\" }, data:\n{ ... } })\n\nOptions:\n  --query <query>         Search keywords (e.g., \"duplicate record\", \"get fields\", \"create\n                          automation\")\n  --search <query>        Alias for --query\n  --keyword <query>       Alias for --query\n  --tags <jsonArray>      Optional tag filter to narrow search (e.g., [\"record\", \"field\"])\n  --limit <number>        Maximum number of results to return (default: 5, max: 10)\n  --max-results <number>  Alias for --limit\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
+    },
+    {
+      "name": "secret",
+      "description": "secret operations (list, set, grant, revoke, delete)",
+      "subcommands": [
+        {
+          "name": "delete",
+          "summary": "Delete one of my secrets by id",
+          "description": "Removes the secret and every grant on it; resources using it lose the value. To change the value instead, run `teable secret set --key <KEY> --value <new> --rotate`.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--id <secretId>",
+              "description": "Secret id (from `teable secret list`)",
+              "required": true
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            }
+          ],
+          "help": "Usage: teable secret delete [options]\n\nRemoves the secret and every grant on it; resources using it lose the value. To change the value\ninstead, run `teable secret set --key <KEY> --value <new> --rotate`.\n\nOptions:\n  --id <secretId>        Secret id (from `teable secret list`)\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
+        },
+        {
+          "name": "grant",
+          "summary": "Grant one of my credentials to an app / automation",
+          "description": "Bind a secret or OAuth connection I own to a resource under an alias. Only the owner can grant, and only to resources they can edit. An alias already bound on the resource is replaced only with --replace.",
+          "options": [
+            {
+              "flags": "--alias <ALIAS>",
+              "description": "Name the resource sees the credential under, ^[A-Z][A-Z0-9_]{0,63}$ (process.env.ALIAS for a secret); defaults to the secret key / upper-cased provider"
+            },
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--id <credentialId>",
+              "description": "Secret id or connection id (both from `teable secret list`)",
+              "required": true
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--replace",
+              "description": "Rebind an alias already bound on the resource"
+            },
+            {
+              "flags": "--resource <type:id>",
+              "description": "app:appXXXX or automation:wflXXXX",
+              "required": true
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "--type <type>",
+              "description": "One of: secret, connection",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable secret grant [options]\n\nBind a secret or OAuth connection I own to a resource under an alias. Only the owner can grant, and\nonly to resources they can edit. An alias already bound on the resource is replaced only with\n--replace.\n\nOptions:\n  --type <type>          One of: secret, connection\n  --id <credentialId>    Secret id or connection id (both from `teable secret list`)\n  --resource <type:id>   app:appXXXX or automation:wflXXXX\n  --alias <ALIAS>        Name the resource sees the credential under, ^[A-Z][A-Z0-9_]{0,63}$\n                         (process.env.ALIAS for a secret); defaults to the secret key / upper-cased\n                         provider\n  --replace              Rebind an alias already bound on the resource\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n",
+          "availability": "managed-sandbox-disabled"
+        },
+        {
+          "name": "list",
+          "summary": "List my secrets and connections, or the credentials bound to a resource",
+          "description": "Without --resource: the secrets and OAuth connections I own, each with the resources it is granted to. With --resource: the grants bound to that app / automation (owner, alias, whether the credential still exists) and its unbound placeholders (slots: names the code expects but nobody has granted yet). Values are never returned.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--resource <type:id>",
+              "description": "Show bindings on a resource instead: app:appXXXX or automation:wflXXXX"
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            }
+          ],
+          "help": "Usage: teable secret list [options]\n\nWithout --resource: the secrets and OAuth connections I own, each with the resources it is granted\nto. With --resource: the grants bound to that app / automation (owner, alias, whether the credential\nstill exists) and its unbound placeholders (slots: names the code expects but nobody has granted\nyet). Values are never returned.\n\nOptions:\n  --resource <type:id>   Show bindings on a resource instead: app:appXXXX or automation:wflXXXX\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
+        },
+        {
+          "name": "revoke",
+          "summary": "Revoke a grant (unbind a credential from a resource)",
+          "description": "The credential itself is kept. Allowed for the credential owner and for anyone who can edit the resource.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--grant-id <grantId>",
+              "description": "Grant id (from `teable secret list`)",
+              "required": true
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            }
+          ],
+          "help": "Usage: teable secret revoke [options]\n\nThe credential itself is kept. Allowed for the credential owner and for anyone who can edit the\nresource.\n\nOptions:\n  --grant-id <grantId>   Grant id (from `teable secret list`)\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n",
+          "availability": "managed-sandbox-disabled"
+        },
+        {
+          "name": "set",
+          "summary": "Create a personal secret, optionally granting it to an app / automation",
+          "description": "Store a write-only secret owned by me. With --grant the resource sees it as process.env.<ALIAS> in the same call (a later grant goes through the request_credential card). If I already own a secret with this key the server answers 409 unless --rotate says to overwrite its value — pick another key otherwise.",
+          "options": [
+            {
+              "flags": "--alias <ALIAS>",
+              "description": "Name the resource sees the credential under, ^[A-Z][A-Z0-9_]{0,63}$ (process.env.ALIAS for a secret); defaults to the key. Requires --grant"
+            },
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--grant <type:id>",
+              "description": "Also grant the secret to a resource: app:appXXXX or automation:wflXXXX"
+            },
+            {
+              "flags": "--on-conflict <mode>",
+              "description": "When I already own a secret with this key: error | rotate (default: error → 409)"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--replace",
+              "description": "Rebind an alias already bound on the resource. Requires --grant"
+            },
+            {
+              "flags": "--rotate",
+              "description": "Shorthand for --on-conflict rotate: overwrite the existing secret value; every grant sees the new value"
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-d, --description <text>",
+              "description": "Optional description"
+            },
+            {
+              "flags": "-k, --key <key>",
+              "description": "Secret KEY, ^[A-Z][A-Z0-9_]{0,63}$",
+              "required": true
+            },
+            {
+              "flags": "-v, --value <value>",
+              "description": "Secret value (plaintext; never returned afterwards)",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable secret set [options]\n\nStore a write-only secret owned by me. With --grant the resource sees it as process.env.<ALIAS> in\nthe same call (a later grant goes through the request_credential card). If I already own a secret\nwith this key the server answers 409 unless --rotate says to overwrite its value — pick another key\notherwise.\n\nOptions:\n  -k, --key <key>           Secret KEY, ^[A-Z][A-Z0-9_]{0,63}$\n  -v, --value <value>       Secret value (plaintext; never returned afterwards)\n  -d, --description <text>  Optional description\n  --grant <type:id>         Also grant the secret to a resource: app:appXXXX or automation:wflXXXX\n  --alias <ALIAS>           Name the resource sees the credential under, ^[A-Z][A-Z0-9_]{0,63}$\n                            (process.env.ALIAS for a secret); defaults to the key. Requires --grant\n  --replace                 Rebind an alias already bound on the resource. Requires --grant\n  --on-conflict <mode>      When I already own a secret with this key: error | rotate (default:\n                            error → 409)\n  --rotate                  Shorthand for --on-conflict rotate: overwrite the existing secret value;\n                            every grant sees the new value\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+        }
+      ],
+      "help": "Usage: teable secret [options] [command]\n\nsecret operations (list, set, grant, revoke, delete)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  list [options]    List my secrets and connections, or the credentials bound to a resource\n  set [options]     Create a personal secret, optionally granting it to an app / automation\n  grant [options]   Grant one of my credentials to an app / automation\n  revoke [options]  Revoke a grant (unbind a credential from a resource)\n  delete [options]  Delete one of my secrets by id\n  help [command]    display help for command\n\nExamples:\n  teable secret list\n  teable secret list --resource app:appXXXX\n  teable secret set --key STRIPE_KEY --value sk_live_... --grant automation:wflXXXX\n  teable secret set --key OPENAI_KEY --value sk-... --rotate   # same key already owned: overwrite value\n  teable secret grant --type connection --id <connectionId> --resource app:appXXXX --alias SLACK\n  teable secret revoke --grant-id <grantId>\n"
     },
     {
       "name": "send-email",
