@@ -97,6 +97,14 @@ When `@teable/cli` is published (dist-tag `latest`), teable-enterprise's
    on the fixed branch `bot/sync-cli-docs` (a newer release supersedes an
    unmerged sync PR). **Sync PRs are always human-reviewed before merge.**
 
+When `GROUP_WEBHOOK_URL` is set, two notifications are POSTed to it as
+structured JSON (the receiver — a Teable automation — renders the message):
+`sync-cli-docs-pr` from inside the sync workflow when the PR is created or
+updated, and `sync-cli-docs-merged` from the `notify-sync-merged` workflow once
+a `bot/sync-cli-docs` PR is merged into main. Skills are installed straight
+from main, so the merged event is the "skill released for CLI vX" signal; its
+payload carries the CLI version and skill version read from the merge commit.
+
 `validate-skill-docs` CI checks every documented `teable` invocation (fenced
 shell blocks and inline `` `teable ...` `` spans) against the manifest snapshot
 via `scripts/validate-cli-docs.mjs`, so hallucinated commands or flags cannot
@@ -113,6 +121,7 @@ Configuration (repo secrets/variables):
 | `PI_APP_ID` (variable) + `PI_APP_PRIVATE_KEY` (secret) | recommended | teable-pi-agent GitHub App (Contents + Pull requests + Issues R/W, installed on this repo). Bot PRs, `/pi` pushes, and replies act as `<app>[bot]` and trigger CI. Takes precedence over `SYNC_GITHUB_TOKEN`. |
 | `SYNC_GITHUB_TOKEN` | fallback | PAT used when the app is not configured, so CI still runs on bot PRs (default `github.token` PRs trigger no workflows) |
 | `TEABLE_EE_READ_TOKEN` | optional | Read access to teable-ee for commit-log context |
+| `GROUP_WEBHOOK_URL` | optional (secret) | Endpoint POSTed the `sync-cli-docs-pr` / `sync-cli-docs-merged` JSON payloads; unset skips both notifications |
 
 Bootstrap: until the first manifest-capable CLI (≥0.6.29) is published there is
 no snapshot; the first sync run treats that as a full diff and opens a
