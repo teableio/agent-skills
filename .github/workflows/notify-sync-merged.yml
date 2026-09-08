@@ -1,0 +1,113 @@
+# Webhook notification when a docs sync PR lands on main.
+#
+# Counterpart of the "Notify webhook" step in sync-cli-docs: that step announces
+# that a sync PR was opened/updated; this workflow announces that it was merged,
+# i.e. the teable-assistant-ops skill on main now documents the new CLI version.
+# Skills are installed straight from main (`npx skills add …`), so merge is the
+# release. Same GROUP_WEBHOOK_URL receiver as the PR notification, distinct
+# `event` value so the receiver can render a different message.
+#
+# Notes:
+# - Fires on pull_request/closed for PRs from the fixed bot/sync-cli-docs
+#   branch only, and only when they were actually merged (not just closed).
+#   The merge is performed by a human, so the event runs workflows regardless
+#   of which token opened the PR.
+# - Versions are read from the merge commit itself (sync metadata and skill
+#   metadata.json), not from the PR title, so the payload reflects what is on
+#   main.
+# - Payload is structured data only; the receiving end owns the formatting.
+
+name: notify-sync-merged
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    if: >-
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.ref == 'bot/sync-cli-docs'
+    runs-on: ubuntu-latest
+    env:
+      GROUP_WEBHOOK_URL: ${{ secrets.GROUP_WEBHOOK_URL }}
+      SYNC_META: .github/teable-cli-sync.json
+      SKILL_META: skills/teable-assistant-ops/metadata.json
+    steps:
+      - name: Webhook not configured
+        if: env.GROUP_WEBHOOK_URL == ''
+        run: echo "GROUP_WEBHOOK_URL is not set — skipping merge notification."
+
+      - uses: actions/checkout@v4
+        if: env.GROUP_WEBHOOK_URL != ''
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          sparse-checkout: |
+            .github/teable-cli-sync.json
+            skills/teable-assistant-ops/metadata.json
+          sparse-checkout-cone-mode: false
+
+      - name: Notify webhook
+        if: env.GROUP_WEBHOOK_URL != ''
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          MERGED_BY: ${{ github.event.pull_request.merged_by.login }}
+          MERGED_AT: ${{ github.event.pull_request.merged_at }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.event.pull_request.merge_commit_sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          CLI_VERSION="$(jq -r '.version // empty' "$SYNC_META")"
+          if [ -z "$CLI_VERSION" ]; then
+            echo "::error::no CLI version in $SYNC_META at $MERGE_SHA"
+            exit 1
+          fi
+          SKILL_VERSION="$(jq -r '.version // empty' "$SKILL_META")"
+          SKILL_MIN_CLI="$(jq -r '.engines.teableCli // empty' "$SKILL_META")"
+          jq -n \
+            --arg event "sync-cli-docs-merged" \
+            --arg repo "$GITHUB_REPOSITORY" \
+            --arg cli_version "$CLI_VERSION" \
+            --arg skill_version "$SKILL_VERSION" \
+            --arg skill_min_cli "$SKILL_MIN_CLI" \
+            --arg pr_number "$PR_NUMBER" \
+            --arg pr_url "$PR_URL" \
+            --arg pr_title "$PR_TITLE" \
+            --arg merged_by "$MERGED_BY" \
+            --arg merged_at "$MERGED_AT" \
+            --arg merge_sha "$MERGE_SHA" \
+            --arg commit_url "$COMMIT_URL" \
+            --arg run_url "$RUN_URL" \
+            '{
+              event: $event,
+              repo: $repo,
+              cli_version: $cli_version,
+              skill: {
+                name: "teable-assistant-ops",
+                version: ($skill_version | if . == "" then null else . end),
+                min_cli: ($skill_min_cli | if . == "" then null else . end)
+              },
+              pr: {
+                number: ($pr_number | tonumber),
+                url: $pr_url,
+                title: $pr_title,
+                merged_by: $merged_by,
+                merged_at: $merged_at
+              },
+              commit: {
+                sha: $merge_sha,
+                url: $commit_url
+              },
+              run_url: $run_url
+            }' > "$RUNNER_TEMP/webhook-payload.json"
+          cat "$RUNNER_TEMP/webhook-payload.json"
+          curl -sf -X POST "$GROUP_WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            --data @"$RUNNER_TEMP/webhook-payload.json"
