@@ -1,6 +1,6 @@
 # Automation Guide
 
-Use automations for event-driven or recurring work — if the user's task fits a supported trigger, prefer automation over a manual script or polling loop.
+Use automations for event-driven work and deterministic trigger/action workflows. For scheduled work expressed as a self-contained agent prompt, use a [routine](routine-guide.md) instead; keep `scheduledTime` automation triggers for scripted action graphs.
 
 ## Available Commands
 
@@ -32,8 +32,8 @@ Use automations for event-driven or recurring work — if the user's task fits a
 | React to form submission | `formSubmitted` | `--table-id`, `--form-id` |
 | Run on a schedule (see timing types below) | `scheduledTime` | `--schedule-config` (see trigger reference) |
 | User clicks a button field | `buttonClick` | `--table-id`, `--field-id` |
-| External system sends HTTP request | `webhook` | optional `--webhook-config` for authorization and synchronous response |
-| Email received via connected mailbox | `emailReceived` | `--email-received-config` |
+| External system sends HTTP request | `webhook` | optional `--webhook-config` for authorization and synchronous response; retain returned `webhook.url` and token |
+| Email received via connected mailbox | `emailReceived` | `--email-received-config`; bind the password as `{ "alias": "..." }`, never plaintext |
 
 **Schedule timing types** (for `scheduledTime` trigger):
 

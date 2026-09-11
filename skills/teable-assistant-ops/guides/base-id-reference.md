@@ -82,6 +82,14 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 | `automation activate/test-node/delete-node` | `--workflow-id`, `--node-id` (except activate) |
 | `automation generate-script/generate-flowchart/get-script-input` | `--workflow-id`, `--action-id` |
 
+### Routines
+
+| Command | Also requires |
+|---------|---------------|
+| `routine create/list` | — |
+| `routine get/update/activate/deactivate/delete/run-now/get-runs` | `--routine-id` |
+| `routine get-run` | `--routine-id`, `--run-id` |
+
 ### Advanced
 
 | Command | Also requires |

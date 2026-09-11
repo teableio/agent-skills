@@ -2,7 +2,7 @@
 name: teable-assistant-ops
 description: >-
   Operate Teable bases — tables, fields, views, records, SQL queries, automations,
-  apps, and web scraping. Trigger when user mentions Cuppy, Teable, teable CLI, or
+  scheduled routines, apps, and web scraping. Trigger when user mentions Cuppy, Teable, teable CLI, or
   Teable-style IDs (bseXXX, tblXXX, fldXXX, recXXX, viwXXX), or wants to manage
   tables/fields/records, build dashboards/apps, generate charts, create automations,
   import/export data, trigger AI fill, or scrape websites (LinkedIn, Amazon, YouTube,
@@ -17,7 +17,7 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 ## 1. Prerequisites & Constraints
 
 - All operations use `teable` CLI. Only check auth (`auth status`) if a command fails.
-- **CLI scope**: manages Bases and their tables, fields, records, views, automations, and apps. It cannot create Spaces (direct the user to Teable web UI).
+- **CLI scope**: manages Bases and their tables, fields, records, views, automations, routines, and apps. It cannot create Spaces (direct the user to Teable web UI).
 - **Install**: if `teable` not found → run the install script at `scripts/install.sh` relative to this skill's directory. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
 - **`--base-id`**: omit by default; ask user only if a command fails. See [guides/base-id-reference.md](guides/base-id-reference.md).
 - **Endpoint selection**: for API commands, an explicit `--endpoint` overrides `TEABLE_ENDPOINT`, which overrides the saved endpoint. Prefer the environment variable for a temporary session-wide override.
@@ -39,6 +39,7 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Artifacts | Durable HTML pages, charts, and Markdown reports | `artifact list/create/update/get` | [artifact-guide.md](guides/artifact-guide.md) |
 | Scraping | Extract structured data from supported platform pages | `scrape search/run/status` | [scrape-guide.md](guides/scrape-guide.md) |
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
+| Routines | Scheduled headless agent tasks | `routine *` | [routine-guide.md](guides/routine-guide.md) |
 | App Builder | Live dashboards, custom web UIs | `app create/update/list/get-code`, `app publish/status/unpublish`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
 | Authority | Per-table/row/field permissions for collaborators | `authority get/export/diff/apply`, `authority enable/disable`, `authority role-*` | [authority-guide.md](guides/authority-guide.md) |
 | Secrets | Store and grant credentials to apps or automations | `secret list/set/grant/revoke/delete` | [secret-guide.md](guides/secret-guide.md) |
@@ -71,6 +72,8 @@ Cuppy is a friendly, professional AI assistant for Teable. Respond in the user's
 | Modify/update an existing app | App Builder: `app list` → `app update` | Creating a duplicate app |
 | Export records as file | Data Query: `record get` / `sql-query` → agent formats output | `import` (wrong direction) |
 | Restrict collaborators to specific tables/rows/fields | Authority: `authority export` → edit → `diff` → `apply` | Editing roles via raw `call-api` |
+| Scheduled task expressible as a self-contained agent prompt | Routines: dry-run → draft → preview run → activate | Building an automation script |
+| Event-driven or deterministic trigger/action workflow | Automation | Using a routine as an event listener |
 
 ### 2.3 Quick Syntax
 
@@ -98,6 +101,7 @@ For complete syntax, value formats, and all command options, read [cli-reference
 - **App login**: to require end-user auth for a generated app → `app login-config`. See [app-builder-guide.md § App login](guides/app-builder-guide.md#app-login--authentication).
 - **App publish**: apps run in preview until `app publish`; if it returns `deploying`, poll `app status`. See [app-builder-guide.md § Publishing](guides/app-builder-guide.md#publishing).
 - **Automation AI**: scripts call AI via `POST /api/automation/runtime/ai` (attachments + structured output) — read `get-doc --topic automation.ai` first. See [automation-guide.md § Script Rules](guides/automation-guide.md#script-rules).
+- **Scheduled agent work**: use a routine when a self-contained prompt should run on an RRULE; validate and preview before activation. See [routine-guide.md](guides/routine-guide.md).
 - **Airtable migration**: to import a whole Airtable base (tables/links/views/records) → `import-airtable`, not `import`. See [data-import-guide.md § Import from Airtable](guides/data-import-guide.md#import-from-airtable).
 - **Google Sheets migration**: each selected tab becomes a table; analyze tabs first when the user needs a subset. See [data-import-guide.md § Import from Google Sheets](guides/data-import-guide.md#import-from-google-sheets).
 

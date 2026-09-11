@@ -178,6 +178,12 @@ Triggers when an external HTTP request is sent to the webhook endpoint. All of i
 }
 ```
 
+**Endpoint:** The tool returns `webhook.url` (plus `webhook.token` for bearer auth), and `teable automation get` returns the same. External services POST JSON to that URL, with the bearer in the `Authorization` header:
+
+```
+curl -X POST <webhook.url> -H 'Authorization: Bearer <webhook.token>' -H 'Content-Type: application/json' -d '{"hello":"world"}'
+```
+
 **Output Variables:**
 - `body` - The parsed JSON body of the incoming request
 
@@ -206,12 +212,19 @@ Triggers when a new email is received. Supports IMAP connection.
     "port": 993,
     "secure": true,
     "user": "user@example.com",
-    "password": "password",
+    "password": { "alias": "IMAP_PASSWORD" },
     "mailbox": "INBOX",
     "pollIntervalMinutes": 10
   }
 }
 ```
+`password` is a binding to a secret granted to the workflow, never the password itself - a plaintext password in the config is rejected.
+
+Setup flow:
+1. `teable automation setup-trigger --trigger-type emailReceived --email-received-config '{...,"password":{"alias":"IMAP_PASSWORD"}}'` -> returns `workflowId`.
+2. Grant the alias to that workflow. When the user pasted the password in chat: `teable secret set --key IMAP_PASSWORD --value <password> --grant automation:<workflowId>`. Otherwise use `request_credential` (credentialType `secret`, resourceType `automation`, resourceId `<workflowId>`, alias `IMAP_PASSWORD`); if it returns a different alias, rerun setup-trigger with `--workflow-id <workflowId>` and that alias (config merges).
+3. `teable automation test-node` - a `Secret <ALIAS> is not granted` error means step 2 was skipped.
+
 Required: `emailReceivedConfig.connectionType`, `emailReceivedConfig.host`, `emailReceivedConfig.user`
 
 **Output Variables:**
