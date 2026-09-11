@@ -1,6 +1,6 @@
 {
   "name": "teable",
-  "version": "0.6.39",
+  "version": "0.6.40",
   "description": "Teable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries, and related app/automation workflows with a safe read-before-write process.",
   "options": [
     {
@@ -2912,8 +2912,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable routine activate [options]\n\nStart the schedule of a draft / paused / ended routine. Rejected without a saved config or a future\noccurrence (e.g. a spent COUNT); fix via update-routine first.\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n",
-          "availability": "routine-sandbox-disabled"
+          "help": "Usage: teable routine activate [options]\n\nStart the schedule of a draft / paused / ended routine. Rejected without a saved config or a future\noccurrence (e.g. a spent COUNT); fix via update-routine first.\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
           "name": "create",
@@ -3020,8 +3019,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable routine deactivate [options]\n\nPause an active routine. Missed occurrences are not made up (at most the latest one on re-activate).\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n",
-          "availability": "routine-sandbox-disabled"
+          "help": "Usage: teable routine deactivate [options]\n\nPause an active routine. Missed occurrences are not made up (at most the latest one on re-activate).\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
           "name": "delete",
@@ -3089,7 +3087,7 @@
         {
           "name": "get-run",
           "summary": "One run's outcome (poll after run-routine-now)",
-          "description": "One run's status, duration and failure reason; the conversation and per-message credit are in the run's chat. Poll it after run-routine-now.",
+          "description": "One run's status, duration, failure reason and the agent's closing text; the full conversation and per-message credit are in the run's chat. Poll it after run-routine-now.",
           "options": [
             {
               "flags": "--endpoint <endpoint>",
@@ -3120,7 +3118,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable routine get-run [options]\n\nOne run's status, duration and failure reason; the conversation and per-message credit are in the\nrun's chat. Poll it after run-routine-now.\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  --run-id <runId>          The run id (rrn...), e.g. from run-routine-now\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+          "help": "Usage: teable routine get-run [options]\n\nOne run's status, duration, failure reason and the agent's closing text; the full conversation and\nper-message credit are in the run's chat. Poll it after run-routine-now.\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  --run-id <runId>          The run id (rrn...), e.g. from run-routine-now\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
           "name": "get-runs",
@@ -3228,8 +3226,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable routine run-now [options]\n\nRun once now, drafts included (how a user previews before enabling). Needs a saved config; rejected\nwhile another run is in flight. Returns runId; poll get-routine-run.\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n",
-          "availability": "routine-sandbox-disabled"
+          "help": "Usage: teable routine run-now [options]\n\nRun once now, drafts included (how a user previews before enabling). Needs a saved config; rejected\nwhile another run is in flight. Returns runId; poll get-routine-run.\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
           "name": "update",
@@ -3300,8 +3297,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable routine update [options]\n\nUpdate a routine (name, prompt, schedule, chat mode); omitted fields keep their value. dryRun first\nto validate and preview the next run times.\n\nOptions:\n  --routine-id <routineId>     The routine id (rtn...)\n  --name <name>                New display name\n  --prompt <prompt>            New prompt\n  --rrule <rrule>              New RRULE (same dialect as create-routine)\n  --timezone <timezone>        New IANA timezone\n  --starting <starting>        New schedule start (ISO datetime)\n  --ending <ending>            New ending (ISO datetime)\n  --clear-ending               Remove the ending\n  --max-run-minutes <minutes>  New per-run limit in minutes (5-120, default 30)\n  --chat-mode <mode>           new: a fresh chat per run; continue: each run continues the previous\n                               run's chat\n  --dry-run                    Validate the merged config and return the next run times; saves\n                               nothing\n  -b, --base-id <baseId>       Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                               base-id <id>`.\n  --token <token>              Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>        Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                               then saved config\n  --pretty                     Indent JSON for human readability (default: false)\n  -h, --help                   display help for command\n",
-          "availability": "routine-sandbox-disabled"
+          "help": "Usage: teable routine update [options]\n\nUpdate a routine (name, prompt, schedule, chat mode); omitted fields keep their value. dryRun first\nto validate and preview the next run times.\n\nOptions:\n  --routine-id <routineId>     The routine id (rtn...)\n  --name <name>                New display name\n  --prompt <prompt>            New prompt\n  --rrule <rrule>              New RRULE (same dialect as create-routine)\n  --timezone <timezone>        New IANA timezone\n  --starting <starting>        New schedule start (ISO datetime)\n  --ending <ending>            New ending (ISO datetime)\n  --clear-ending               Remove the ending\n  --max-run-minutes <minutes>  New per-run limit in minutes (5-120, default 30)\n  --chat-mode <mode>           new: a fresh chat per run; continue: each run continues the previous\n                               run's chat\n  --dry-run                    Validate the merged config and return the next run times; saves\n                               nothing\n  -b, --base-id <baseId>       Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                               base-id <id>`.\n  --token <token>              Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>        Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                               then saved config\n  --pretty                     Indent JSON for human readability (default: false)\n  -h, --help                   display help for command\n"
         }
       ],
       "help": "Usage: teable routine [options] [command]\n\nroutine operations (create, list, get, update, activate, deactivate, delete, run-now, get-runs,\nget-run)\n\nOptions:\n  -h, --help            display help for command\n\nCommands:\n  create [options]      Create a scheduled routine (dry-run to preview, then draft/run/activate)\n  list [options]        List the routines of this base\n  get [options]         One routine's configuration, status and next run\n  update [options]      Rename a routine or change its prompt / schedule (dry-run supported)\n  activate [options]    Start a routine's schedule\n  deactivate [options]  Pause an active routine's schedule\n  delete [options]      Soft-delete a routine into the base trash\n  run-now [options]     Start one run of a routine immediately\n  get-runs [options]    A routine's run history with outcomes\n  get-run [options]     One run's outcome (poll after run-routine-now)\n  help [command]        display help for command\n\nExamples:\n  teable routine create --dry-run --name \"Daily digest\" --prompt \"Summarize new feedback rows\" --rrule \"FREQ=DAILY;BYHOUR=9;BYMINUTE=0\" --timezone Asia/Shanghai\n  teable routine create --name \"Daily digest\" --prompt \"...\" --rrule \"FREQ=WEEKLY;BYDAY=MO;BYHOUR=9;BYMINUTE=0\" --timezone Asia/Shanghai --action run\n  teable routine list\n  teable routine get-runs --routine-id rtnXXXX\n  teable routine update --routine-id rtnXXXX --rrule \"FREQ=DAILY;BYHOUR=10;BYMINUTE=0\" --dry-run\n  teable routine deactivate --routine-id rtnXXXX\n"
