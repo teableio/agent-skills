@@ -1,6 +1,6 @@
 {
   "name": "teable",
-  "version": "0.6.37",
+  "version": "0.6.39",
   "description": "Teable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries, and related app/automation workflows with a safe read-before-write process.",
   "options": [
     {
@@ -12,7 +12,7 @@
       "description": "Show CLI version"
     }
   ],
-  "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                  Show CLI version\n  --debug                        Enable debug output (verbose logging to stderr)\n  -h, --help                     display help for command\n\nSetup:\n  auth|init [options]            Manage auth for teable\n  config                         Manage project-level CLI configuration\n\nResources:\n  base                           base operations (create, get, list, update, delete)\n  table                          table operations (create, get, update, delete)\n  field                          field operations (create, get, update, delete)\n  record                         record operations (create, get, update, delete)\n  view                           view operations (create, get, update, delete)\n  app                            app operations (list, get-code, create, update, delete, publish,\n                                 status, unpublish, login-config, ai-docs, ai-enable)\n  automation                     automation operations (list, get, update, activate, setup-trigger,\n                                 delete, test-node, delete-node, generate-script,\n                                 generate-flowchart, get-script-input, get-runs, get-run)\n  authority                      authority operations (get, export, diff, apply, enable, disable,\n                                 role-list, role-get, role-delete, role-duplicate)\n  folder                         folder operations (create, update, delete, move)\n  artifact                       artifact operations (list, create, update, get)\n  scrape                         scrape operations (search, run, status)\n  integration                    integration operations (connect, list, get-token)\n  env                            env operations (list, set, update, delete)\n  secret                         secret operations (list, set, grant, revoke, delete)\n  sandbox                        sandbox operations (tool)\n  skill                          skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]        Get the tree structure of all nodes (tables, automations, apps,\n                                 etc.) in a base\n  search-api [options]           Search available APIs by description to find the right endpoint\n  get-doc [options]              Get documentation for a topic\n  tools                          Tool discovery and metadata commands\n  sql-query [options]            Execute SQL query on tables\n  get-collaborators [options]    Get collaborators in the current base with pagination and search\n  get-ai-config [options]        Get AI field configuration documentation with available models\n  import [options]               Import tabular data into Teable (analyzes by default; --table-name\n                                 creates, --table-id appends)\n  import-airtable [options]      Import an Airtable base into Teable\n  import-google-sheet [options]  Import a Google spreadsheet into Teable\n  import-status [options]        Query import job status for a table\n  upload-attachment [options]    Upload a local file as an attachment\n  call-api [options]             Call any Teable API (axios-style: method, url, params, data)\n  trigger-ai-fill [options]      Trigger AI generation for an AI-configured field\n  send-email [options]           Send an email to one or more recipients (system SMTP by default, or\n                                 --smtp for a custom transport)\n\nCommands:\n  help [command]                 display help for command\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
+  "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable bases, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                  Show CLI version\n  --debug                        Enable debug output (verbose logging to stderr)\n  -h, --help                     display help for command\n\nSetup:\n  auth|init [options]            Manage auth for teable\n  config                         Manage project-level CLI configuration\n\nResources:\n  base                           base operations (create, get, list, update, delete)\n  table                          table operations (create, get, update, delete)\n  field                          field operations (create, get, update, delete)\n  record                         record operations (create, get, update, delete)\n  view                           view operations (create, get, update, delete)\n  app                            app operations (list, get-code, create, update, delete, publish,\n                                 status, unpublish, login-config, ai-docs, ai-enable)\n  automation                     automation operations (list, get, update, activate, setup-trigger,\n                                 delete, test-node, delete-node, generate-script,\n                                 generate-flowchart, get-script-input, get-runs, get-run)\n  routine                        routine operations (create, list, get, update, activate,\n                                 deactivate, delete, run-now, get-runs, get-run)\n  authority                      authority operations (get, export, diff, apply, enable, disable,\n                                 role-list, role-get, role-delete, role-duplicate)\n  folder                         folder operations (create, update, delete, move)\n  artifact                       artifact operations (list, create, update, get)\n  scrape                         scrape operations (search, run, status)\n  integration                    integration operations (connect, list, get-token)\n  env                            env operations (list, set, update, delete)\n  secret                         secret operations (list, set, grant, revoke, delete)\n  sandbox                        sandbox operations (tool)\n  skill                          skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]        Get the tree structure of all nodes (tables, automations, apps,\n                                 etc.) in a base\n  search-api [options]           Search available APIs by description to find the right endpoint\n  get-doc [options]              Get documentation for a topic\n  tools                          Tool discovery and metadata commands\n  sql-query [options]            Execute SQL query on tables\n  get-collaborators [options]    Get collaborators in the current base with pagination and search\n  get-ai-config [options]        Get AI field configuration documentation with available models\n  import [options]               Import tabular data into Teable (analyzes by default; --table-name\n                                 creates, --table-id appends)\n  import-airtable [options]      Import an Airtable base into Teable\n  import-google-sheet [options]  Import a Google spreadsheet into Teable\n  import-status [options]        Query import job status for a table\n  upload-attachment [options]    Upload a local file as an attachment\n  call-api [options]             Call any Teable API (axios-style: method, url, params, data)\n  trigger-ai-fill [options]      Trigger AI generation for an AI-configured field\n  send-email [options]           Send an email to one or more recipients (system SMTP by default, or\n                                 --smtp for a custom transport)\n\nCommands:\n  help [command]                 display help for command\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
   "commands": [
     {
       "name": "app",
@@ -1335,7 +1335,7 @@
         {
           "name": "setup-trigger",
           "summary": "Setup automation trigger configuration triggers: recordCreated, recordUpdated, recordMatchesConditions, buttonClick, formSubmitted, scheduledTime, webhook, emailReceived",
-          "description": "Create or update an automation workflow with its trigger.\n\n⚠️ REQUIRED: Before using this tool, you MUST read documentation first:\n   get-doc topic=\"automation.trigger\" - Trigger configuration details\n   get-doc topic=\"automation.api\" - REST API reference for scripts\n\n🎯 Build an automation:\n1. Read docs with get-doc (REQUIRED)\n2. Call this tool (new: creates trigger + script action; existing: updates only the trigger)\n3. Use generate-script-action with the returned actionId to add code (updates return no actionId — target an existing action or set createScriptAction: true)\n4. Test with test-automation-node\n5. Activate with activate-automation\n\n📋 Trigger Types:\n• recordCreated - When record created (requires tableId)\n• recordUpdated - When record updated (requires tableId)\n• recordMatchesConditions - When record matches filter conditions on create/update (requires tableId + filter)\n• formSubmitted - When form submitted (requires tableId + formId)\n• scheduledTime - At scheduled time (requires scheduleConfig)\n• buttonClick - When button clicked (requires tableId + fieldId)\n• webhook - When webhook request is received (optional bearer token auth)\n• emailReceived - When email received (requires emailReceivedConfig.connectionType: imap)\n\n📤 Returns:\n• workflowId, triggerId, actionId\n• inputSchema - Available variables for your script\n• scriptUsage - Example code for accessing trigger data",
+          "description": "Create or update an automation workflow with its trigger.\n\n⚠️ REQUIRED: Before using this tool, you MUST read documentation first:\n   get-doc topic=\"automation.trigger\" - Trigger configuration details\n   get-doc topic=\"automation.api\" - REST API reference for scripts\n\n🎯 Build an automation:\n1. Read docs with get-doc (REQUIRED)\n2. Call this tool (new: creates trigger + script action; existing: updates only the trigger)\n3. Use generate-script-action with the returned actionId to add code (updates return no actionId — target an existing action or set createScriptAction: true)\n4. Test with test-automation-node\n5. Activate with activate-automation\n\n📋 Trigger Types:\n• recordCreated - When record created (requires tableId)\n• recordUpdated - When record updated (requires tableId)\n• recordMatchesConditions - When record matches filter conditions on create/update (requires tableId + filter)\n• formSubmitted - When form submitted (requires tableId + formId)\n• scheduledTime - At scheduled time (requires scheduleConfig)\n• buttonClick - When button clicked (requires tableId + fieldId)\n• webhook - When webhook request is received (optional bearer token auth)\n• emailReceived - When email received (requires emailReceivedConfig.connectionType: imap; password is a secret binding { alias })\n\n📤 Returns:\n• workflowId, triggerId, actionId\n• inputSchema - Available variables for your script\n• scriptUsage - Example code for accessing trigger data\n• webhook - { url, token } for webhook triggers",
           "options": [
             {
               "flags": "--create-script-action",
@@ -1427,7 +1427,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable automation setup-trigger [options]\n\nCreate or update an automation workflow with its trigger.\n\n⚠️ REQUIRED: Before using this tool, you MUST read documentation first:\n   get-doc topic=\"automation.trigger\" - Trigger configuration details\n   get-doc topic=\"automation.api\" - REST API reference for scripts\n\n🎯 Build an automation:\n1. Read docs with get-doc (REQUIRED)\n2. Call this tool (new: creates trigger + script action; existing: updates only the trigger)\n3. Use generate-script-action with the returned actionId to add code (updates return no actionId —\ntarget an existing action or set createScriptAction: true)\n4. Test with test-automation-node\n5. Activate with activate-automation\n\n📋 Trigger Types:\n• recordCreated - When record created (requires tableId)\n• recordUpdated - When record updated (requires tableId)\n• recordMatchesConditions - When record matches filter conditions on create/update (requires tableId\n+ filter)\n• formSubmitted - When form submitted (requires tableId + formId)\n• scheduledTime - At scheduled time (requires scheduleConfig)\n• buttonClick - When button clicked (requires tableId + fieldId)\n• webhook - When webhook request is received (optional bearer token auth)\n• emailReceived - When email received (requires emailReceivedConfig.connectionType: imap)\n\n📤 Returns:\n• workflowId, triggerId, actionId\n• inputSchema - Available variables for your script\n• scriptUsage - Example code for accessing trigger data\n\nOptions:\n  --trigger-type <triggerType>          Type of trigger (choices: \"recordCreated\", \"recordUpdated\",\n                                        \"recordMatchesConditions\", \"formSubmitted\", \"scheduledTime\",\n                                        \"buttonClick\", \"webhook\", \"emailReceived\")\n  --workflow-id <workflowId>            Existing workflow ID to update. If not provided, creates a\n                                        new workflow\n  --name <name>                         Name for the workflow\n  --description <description>           Description of what this automation does\n  --table-id <tableId>                  Table ID (required for record/form/button triggers)\n  --view-id <viewId>                    View ID (optional for record triggers)\n  --form-id <formId>                    Form ID (required for formSubmitted trigger)\n  --watch-field-ids <jsonArray>         Field IDs to watch for changes (for recordUpdated)\n  --field-id <fieldId>                  Button field ID (for buttonClick trigger)\n  --filter <jsonObject>                 Filter conditions. REQUIRED for recordMatchesConditions,\n                                        optional for recordCreated/recordUpdated. For detailed\n                                        filter syntax, see `view.filter` topic\n  --schedule-config <jsonObject>        Schedule configuration (for scheduledTime)\n  --webhook-config <jsonObject>         Webhook settings - authorization and synchronous response\n                                        (for webhook trigger)\n  --email-received-config <jsonObject>  Email configuration (for emailReceived trigger)\n  --create-script-action                Add an empty script action after the trigger. Default: true\n                                        for new workflows, false when updating (pass true to add a\n                                        node to an existing workflow).\n  --folder-id <folderId>                Folder to place the new workflow in (`folderId` from Active\n                                        Tab Meta); omit for base root.\n  -b, --base-id <baseId>                Target base ID (required, e.g. bseXXXX). Set default:\n                                        `teable config base-id <id>`.\n  --token <token>                       Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>                 Teable API server base URL; falls back to TEABLE_ENDPOINT\n                                        env var, then saved config\n  --pretty                              Indent JSON for human readability (default: false)\n  -h, --help                            display help for command\n"
+          "help": "Usage: teable automation setup-trigger [options]\n\nCreate or update an automation workflow with its trigger.\n\n⚠️ REQUIRED: Before using this tool, you MUST read documentation first:\n   get-doc topic=\"automation.trigger\" - Trigger configuration details\n   get-doc topic=\"automation.api\" - REST API reference for scripts\n\n🎯 Build an automation:\n1. Read docs with get-doc (REQUIRED)\n2. Call this tool (new: creates trigger + script action; existing: updates only the trigger)\n3. Use generate-script-action with the returned actionId to add code (updates return no actionId —\ntarget an existing action or set createScriptAction: true)\n4. Test with test-automation-node\n5. Activate with activate-automation\n\n📋 Trigger Types:\n• recordCreated - When record created (requires tableId)\n• recordUpdated - When record updated (requires tableId)\n• recordMatchesConditions - When record matches filter conditions on create/update (requires tableId\n+ filter)\n• formSubmitted - When form submitted (requires tableId + formId)\n• scheduledTime - At scheduled time (requires scheduleConfig)\n• buttonClick - When button clicked (requires tableId + fieldId)\n• webhook - When webhook request is received (optional bearer token auth)\n• emailReceived - When email received (requires emailReceivedConfig.connectionType: imap; password\nis a secret binding { alias })\n\n📤 Returns:\n• workflowId, triggerId, actionId\n• inputSchema - Available variables for your script\n• scriptUsage - Example code for accessing trigger data\n• webhook - { url, token } for webhook triggers\n\nOptions:\n  --trigger-type <triggerType>          Type of trigger (choices: \"recordCreated\", \"recordUpdated\",\n                                        \"recordMatchesConditions\", \"formSubmitted\", \"scheduledTime\",\n                                        \"buttonClick\", \"webhook\", \"emailReceived\")\n  --workflow-id <workflowId>            Existing workflow ID to update. If not provided, creates a\n                                        new workflow\n  --name <name>                         Name for the workflow\n  --description <description>           Description of what this automation does\n  --table-id <tableId>                  Table ID (required for record/form/button triggers)\n  --view-id <viewId>                    View ID (optional for record triggers)\n  --form-id <formId>                    Form ID (required for formSubmitted trigger)\n  --watch-field-ids <jsonArray>         Field IDs to watch for changes (for recordUpdated)\n  --field-id <fieldId>                  Button field ID (for buttonClick trigger)\n  --filter <jsonObject>                 Filter conditions. REQUIRED for recordMatchesConditions,\n                                        optional for recordCreated/recordUpdated. For detailed\n                                        filter syntax, see `view.filter` topic\n  --schedule-config <jsonObject>        Schedule configuration (for scheduledTime)\n  --webhook-config <jsonObject>         Webhook settings - authorization and synchronous response\n                                        (for webhook trigger)\n  --email-received-config <jsonObject>  Email configuration (for emailReceived trigger)\n  --create-script-action                Add an empty script action after the trigger. Default: true\n                                        for new workflows, false when updating (pass true to add a\n                                        node to an existing workflow).\n  --folder-id <folderId>                Folder to place the new workflow in (`folderId` from Active\n                                        Tab Meta); omit for base root.\n  -b, --base-id <baseId>                Target base ID (required, e.g. bseXXXX). Set default:\n                                        `teable config base-id <id>`.\n  --token <token>                       Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>                 Teable API server base URL; falls back to TEABLE_ENDPOINT\n                                        env var, then saved config\n  --pretty                              Indent JSON for human readability (default: false)\n  -h, --help                            display help for command\n"
         },
         {
           "name": "test-node",
@@ -2880,6 +2880,433 @@
       "help": "Usage: teable record [options] [command]\n\nrecord operations (create, get, update, delete)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  create [options]  Create new records in a table\n  get [options]     Query records (--view-id applies filter/sort/group, --search for fuzzy match,\n                    --record-id for single record)\n  update [options]  Update existing records in a table\n  delete [options]  Delete records from a table\n  help [command]    display help for command\n\nExamples:\n  teable record get --table-id tblXXXX\n  teable record get --table-id tblXXXX --view-id viwXXXX\n  teable record create --table-id tblXXXX --records '[{\"fields\":{\"Name\":\"Alice\"}}]'\n  teable record delete --table-id tblXXXX --record-ids rec001,rec002\n"
     },
     {
+      "name": "routine",
+      "description": "routine operations (create, list, get, update, activate, deactivate, delete, run-now, get-runs, get-run)",
+      "subcommands": [
+        {
+          "name": "activate",
+          "summary": "Start a routine's schedule",
+          "description": "Start the schedule of a draft / paused / ended routine. Rejected without a saved config or a future occurrence (e.g. a spent COUNT); fix via update-routine first.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--routine-id <routineId>",
+              "description": "The routine id (rtn...)",
+              "required": true
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable routine activate [options]\n\nStart the schedule of a draft / paused / ended routine. Rejected without a saved config or a future\noccurrence (e.g. a spent COUNT); fix via update-routine first.\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n",
+          "availability": "routine-sandbox-disabled"
+        },
+        {
+          "name": "create",
+          "summary": "Create a scheduled routine (dry-run to preview, then draft/run/activate)",
+          "description": "Create a routine: a scheduled headless agent task run by a dedicated bot (e.g. \"summarize new feedback rows every morning at 9\").\ndryRun first (validates, returns next run times); create only after the user confirmed the plan.\nRRULE examples (wall clock in timezone): every morning at 9 → FREQ=DAILY;BYHOUR=9;BYMINUTE=0 · weekdays 18:30 → FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYHOUR=18;BYMINUTE=30 · every other Monday → FREQ=WEEKLY;INTERVAL=2;BYDAY=MO;BYHOUR=9;BYMINUTE=0 (starting sets the week) · one-shot → FREQ=DAILY;COUNT=1;BYHOUR=15;BYMINUTE=0 (starting sets the day).",
+          "options": [
+            {
+              "flags": "--action <action>",
+              "description": "draft (default): save only · run: create and run once now · activate: create and start the schedule",
+              "choices": [
+                "draft",
+                "run",
+                "activate"
+              ]
+            },
+            {
+              "flags": "--chat-mode <mode>",
+              "description": "new (default): a fresh chat per run; continue: each run continues the previous run's chat"
+            },
+            {
+              "flags": "--dry-run",
+              "description": "Validate and return the next run times; creates nothing"
+            },
+            {
+              "flags": "--ending <ending>",
+              "description": "ISO datetime after which nothing runs"
+            },
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--max-run-minutes <minutes>",
+              "description": "Per-run wall-clock limit in minutes (5-120, default 30); past it the run is aborted as failed(timeout)"
+            },
+            {
+              "flags": "--name <name>",
+              "description": "Display name (base sidebar)",
+              "required": true
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--prompt <prompt>",
+              "description": "What each run does; self-contained, since runs are headless and never see this conversation",
+              "required": true
+            },
+            {
+              "flags": "--rrule <rrule>",
+              "description": "RFC 5545 RRULE parts on the routine's wall clock, e.g. FREQ=DAILY;BYHOUR=9;BYMINUTE=0. Allowed: FREQ HOURLY|DAILY|WEEKLY|MONTHLY|YEARLY, one BYMINUTE, BYHOUR (unless HOURLY), INTERVAL, COUNT (at most 1000), BYDAY, BYMONTHDAY, BYMONTH; any other part is rejected. Zone and bounds live in timezone / starting / ending: no TZID / DTSTART / UNTIL; no BYSECOND",
+              "required": true
+            },
+            {
+              "flags": "--starting <starting>",
+              "description": "ISO datetime the schedule starts from (default: now); INTERVAL / COUNT count from it"
+            },
+            {
+              "flags": "--timezone <timezone>",
+              "description": "IANA timezone of the schedule, e.g. 'Asia/Shanghai'",
+              "required": true
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable routine create [options]\n\nCreate a routine: a scheduled headless agent task run by a dedicated bot (e.g. \"summarize new\nfeedback rows every morning at 9\").\ndryRun first (validates, returns next run times); create only after the user confirmed the plan.\nRRULE examples (wall clock in timezone): every morning at 9 → FREQ=DAILY;BYHOUR=9;BYMINUTE=0 ·\nweekdays 18:30 → FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYHOUR=18;BYMINUTE=30 · every other Monday →\nFREQ=WEEKLY;INTERVAL=2;BYDAY=MO;BYHOUR=9;BYMINUTE=0 (starting sets the week) · one-shot →\nFREQ=DAILY;COUNT=1;BYHOUR=15;BYMINUTE=0 (starting sets the day).\n\nOptions:\n  --name <name>                Display name (base sidebar)\n  --prompt <prompt>            What each run does; self-contained, since runs are headless and never\n                               see this conversation\n  --rrule <rrule>              RFC 5545 RRULE parts on the routine's wall clock, e.g.\n                               FREQ=DAILY;BYHOUR=9;BYMINUTE=0. Allowed: FREQ\n                               HOURLY|DAILY|WEEKLY|MONTHLY|YEARLY, one BYMINUTE, BYHOUR (unless\n                               HOURLY), INTERVAL, COUNT (at most 1000), BYDAY, BYMONTHDAY, BYMONTH;\n                               any other part is rejected. Zone and bounds live in timezone /\n                               starting / ending: no TZID / DTSTART / UNTIL; no BYSECOND\n  --timezone <timezone>        IANA timezone of the schedule, e.g. 'Asia/Shanghai'\n  --starting <starting>        ISO datetime the schedule starts from (default: now); INTERVAL /\n                               COUNT count from it\n  --ending <ending>            ISO datetime after which nothing runs\n  --max-run-minutes <minutes>  Per-run wall-clock limit in minutes (5-120, default 30); past it the\n                               run is aborted as failed(timeout)\n  --chat-mode <mode>           new (default): a fresh chat per run; continue: each run continues the\n                               previous run's chat\n  --action <action>            draft (default): save only · run: create and run once now · activate:\n                               create and start the schedule (choices: \"draft\", \"run\", \"activate\")\n  --dry-run                    Validate and return the next run times; creates nothing\n  -b, --base-id <baseId>       Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                               base-id <id>`.\n  --token <token>              Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>        Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                               then saved config\n  --pretty                     Indent JSON for human readability (default: false)\n  -h, --help                   display help for command\n",
+          "availability": "routine-sandbox-disabled"
+        },
+        {
+          "name": "deactivate",
+          "summary": "Pause an active routine's schedule",
+          "description": "Pause an active routine. Missed occurrences are not made up (at most the latest one on re-activate).",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--routine-id <routineId>",
+              "description": "The routine id (rtn...)",
+              "required": true
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable routine deactivate [options]\n\nPause an active routine. Missed occurrences are not made up (at most the latest one on re-activate).\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n",
+          "availability": "routine-sandbox-disabled"
+        },
+        {
+          "name": "delete",
+          "summary": "Soft-delete a routine into the base trash",
+          "description": "Soft delete: scheduling stops, the routine goes to the base trash, runs and chats stay readable. Restore lands paused.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--routine-id <routineId>",
+              "description": "The routine id (rtn...)",
+              "required": true
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable routine delete [options]\n\nSoft delete: scheduling stops, the routine goes to the base trash, runs and chats stay readable.\nRestore lands paused.\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n",
+          "availability": "routine-sandbox-disabled"
+        },
+        {
+          "name": "get",
+          "summary": "One routine's configuration, status and next run",
+          "description": "A routine's config and state: prompt, schedule (RRULE, timezone, bounds), status, next run, alert contact. hasDraft means the config is an unpublished draft while the next run follows the published one.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--routine-id <routineId>",
+              "description": "The routine id (rtn...)",
+              "required": true
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable routine get [options]\n\nA routine's config and state: prompt, schedule (RRULE, timezone, bounds), status, next run, alert\ncontact. hasDraft means the config is an unpublished draft while the next run follows the published\none.\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+        },
+        {
+          "name": "get-run",
+          "summary": "One run's outcome (poll after run-routine-now)",
+          "description": "One run's status, duration and failure reason; the conversation and per-message credit are in the run's chat. Poll it after run-routine-now.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--routine-id <routineId>",
+              "description": "The routine id (rtn...)",
+              "required": true
+            },
+            {
+              "flags": "--run-id <runId>",
+              "description": "The run id (rrn...), e.g. from run-routine-now",
+              "required": true
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable routine get-run [options]\n\nOne run's status, duration and failure reason; the conversation and per-message credit are in the\nrun's chat. Poll it after run-routine-now.\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  --run-id <runId>          The run id (rrn...), e.g. from run-routine-now\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+        },
+        {
+          "name": "get-runs",
+          "summary": "A routine's run history with outcomes",
+          "description": "Run history, newest first. status: pending | running | success | failed | canceled; errorMsg.reason: runFail | timeout (the run executed) | creditExceed | overlap | queueTimeout (it never started).",
+          "options": [
+            {
+              "flags": "--created-time-end <createdTimeEnd>",
+              "description": "Only runs created at or before (ISO datetime)"
+            },
+            {
+              "flags": "--created-time-start <createdTimeStart>",
+              "description": "Only runs created at or after (ISO datetime)"
+            },
+            {
+              "flags": "--cursor <cursor>",
+              "description": "nextCursor from the previous page"
+            },
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--routine-id <routineId>",
+              "description": "The routine id (rtn...)",
+              "required": true
+            },
+            {
+              "flags": "--status <status>",
+              "description": "Only runs in this status"
+            },
+            {
+              "flags": "--take <take>",
+              "description": "Page size (default 20)"
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable routine get-runs [options]\n\nRun history, newest first. status: pending | running | success | failed | canceled; errorMsg.reason:\nrunFail | timeout (the run executed) | creditExceed | overlap | queueTimeout (it never started).\n\nOptions:\n  --routine-id <routineId>                 The routine id (rtn...)\n  --status <status>                        Only runs in this status\n  --created-time-start <createdTimeStart>  Only runs created at or after (ISO datetime)\n  --created-time-end <createdTimeEnd>      Only runs created at or before (ISO datetime)\n  --take <take>                            Page size (default 20)\n  --cursor <cursor>                        nextCursor from the previous page\n  -b, --base-id <baseId>                   Target base ID (required, e.g. bseXXXX). Set default:\n                                           `teable config base-id <id>`.\n  --token <token>                          Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>                    Teable API server base URL; falls back to TEABLE_ENDPOINT\n                                           env var, then saved config\n  --pretty                                 Indent JSON for human readability (default: false)\n  -h, --help                               display help for command\n"
+        },
+        {
+          "name": "list",
+          "summary": "List the routines of this base",
+          "description": "Routines of this base: id, name, status (draft | active | inactive), schedule, next run, hasDraft (the schedule shown is an unpublished draft; next run follows the published one). Look a routine up here before get / update / activate / deactivate / delete / run-now.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable routine list [options]\n\nRoutines of this base: id, name, status (draft | active | inactive), schedule, next run, hasDraft\n(the schedule shown is an unpublished draft; next run follows the published one). Look a routine up\nhere before get / update / activate / deactivate / delete / run-now.\n\nOptions:\n  -b, --base-id <baseId>  Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
+        },
+        {
+          "name": "run-now",
+          "summary": "Start one run of a routine immediately",
+          "description": "Run once now, drafts included (how a user previews before enabling). Needs a saved config; rejected while another run is in flight. Returns runId; poll get-routine-run.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--routine-id <routineId>",
+              "description": "The routine id (rtn...)",
+              "required": true
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable routine run-now [options]\n\nRun once now, drafts included (how a user previews before enabling). Needs a saved config; rejected\nwhile another run is in flight. Returns runId; poll get-routine-run.\n\nOptions:\n  --routine-id <routineId>  The routine id (rtn...)\n  -b, --base-id <baseId>    Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n",
+          "availability": "routine-sandbox-disabled"
+        },
+        {
+          "name": "update",
+          "summary": "Rename a routine or change its prompt / schedule (dry-run supported)",
+          "description": "Update a routine (name, prompt, schedule, chat mode); omitted fields keep their value. dryRun first to validate and preview the next run times.",
+          "options": [
+            {
+              "flags": "--chat-mode <mode>",
+              "description": "new: a fresh chat per run; continue: each run continues the previous run's chat"
+            },
+            {
+              "flags": "--clear-ending",
+              "description": "Remove the ending"
+            },
+            {
+              "flags": "--dry-run",
+              "description": "Validate the merged config and return the next run times; saves nothing"
+            },
+            {
+              "flags": "--ending <ending>",
+              "description": "New ending (ISO datetime)"
+            },
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--max-run-minutes <minutes>",
+              "description": "New per-run limit in minutes (5-120, default 30)"
+            },
+            {
+              "flags": "--name <name>",
+              "description": "New display name"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--prompt <prompt>",
+              "description": "New prompt"
+            },
+            {
+              "flags": "--routine-id <routineId>",
+              "description": "The routine id (rtn...)",
+              "required": true
+            },
+            {
+              "flags": "--rrule <rrule>",
+              "description": "New RRULE (same dialect as create-routine)"
+            },
+            {
+              "flags": "--starting <starting>",
+              "description": "New schedule start (ISO datetime)"
+            },
+            {
+              "flags": "--timezone <timezone>",
+              "description": "New IANA timezone"
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target base ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable routine update [options]\n\nUpdate a routine (name, prompt, schedule, chat mode); omitted fields keep their value. dryRun first\nto validate and preview the next run times.\n\nOptions:\n  --routine-id <routineId>     The routine id (rtn...)\n  --name <name>                New display name\n  --prompt <prompt>            New prompt\n  --rrule <rrule>              New RRULE (same dialect as create-routine)\n  --timezone <timezone>        New IANA timezone\n  --starting <starting>        New schedule start (ISO datetime)\n  --ending <ending>            New ending (ISO datetime)\n  --clear-ending               Remove the ending\n  --max-run-minutes <minutes>  New per-run limit in minutes (5-120, default 30)\n  --chat-mode <mode>           new: a fresh chat per run; continue: each run continues the previous\n                               run's chat\n  --dry-run                    Validate the merged config and return the next run times; saves\n                               nothing\n  -b, --base-id <baseId>       Target base ID (required, e.g. bseXXXX). Set default: `teable config\n                               base-id <id>`.\n  --token <token>              Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>        Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                               then saved config\n  --pretty                     Indent JSON for human readability (default: false)\n  -h, --help                   display help for command\n",
+          "availability": "routine-sandbox-disabled"
+        }
+      ],
+      "help": "Usage: teable routine [options] [command]\n\nroutine operations (create, list, get, update, activate, deactivate, delete, run-now, get-runs,\nget-run)\n\nOptions:\n  -h, --help            display help for command\n\nCommands:\n  create [options]      Create a scheduled routine (dry-run to preview, then draft/run/activate)\n  list [options]        List the routines of this base\n  get [options]         One routine's configuration, status and next run\n  update [options]      Rename a routine or change its prompt / schedule (dry-run supported)\n  activate [options]    Start a routine's schedule\n  deactivate [options]  Pause an active routine's schedule\n  delete [options]      Soft-delete a routine into the base trash\n  run-now [options]     Start one run of a routine immediately\n  get-runs [options]    A routine's run history with outcomes\n  get-run [options]     One run's outcome (poll after run-routine-now)\n  help [command]        display help for command\n\nExamples:\n  teable routine create --dry-run --name \"Daily digest\" --prompt \"Summarize new feedback rows\" --rrule \"FREQ=DAILY;BYHOUR=9;BYMINUTE=0\" --timezone Asia/Shanghai\n  teable routine create --name \"Daily digest\" --prompt \"...\" --rrule \"FREQ=WEEKLY;BYDAY=MO;BYHOUR=9;BYMINUTE=0\" --timezone Asia/Shanghai --action run\n  teable routine list\n  teable routine get-runs --routine-id rtnXXXX\n  teable routine update --routine-id rtnXXXX --rrule \"FREQ=DAILY;BYHOUR=10;BYMINUTE=0\" --dry-run\n  teable routine deactivate --routine-id rtnXXXX\n"
+    },
+    {
       "name": "sandbox",
       "description": "sandbox operations (tool)",
       "subcommands": [
@@ -3450,11 +3877,11 @@
             },
             {
               "flags": "--scope-id <scopeId>",
-              "description": "Scope entity ID (required for base/space/app/cuppyclaw; app defaults to TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)"
+              "description": "Scope entity ID (required for base/space/app/cuppyclaw/routine; app defaults to TEABLE_APP_ID, cuppyclaw defaults to TEABLE_BOT_ID, routine defaults to TEABLE_ROUTINE_ID)"
             },
             {
               "flags": "--scope-type <scopeType>",
-              "description": "One of: user, base, space, system, app, cuppyclaw",
+              "description": "One of: user, base, space, system, app, cuppyclaw, routine",
               "required": true
             },
             {
@@ -3467,7 +3894,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable skill import-file [options]\n\nImport a skill from a .skill or .zip file on disk. Both extensions are accepted; the file content\nmust be a valid ZIP archive (a .skill file is a renamed .zip).\n\nOptions:\n  --scope-type <scopeType>  One of: user, base, space, system, app, cuppyclaw\n  --scope <scopeType>       Alias for --scope-type\n  -f, --file-path <path>    Path to the .skill or .zip file (content must be a valid ZIP archive)\n  --scope-id <scopeId>      Scope entity ID (required for base/space/app/cuppyclaw; app defaults to\n                            TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+          "help": "Usage: teable skill import-file [options]\n\nImport a skill from a .skill or .zip file on disk. Both extensions are accepted; the file content\nmust be a valid ZIP archive (a .skill file is a renamed .zip).\n\nOptions:\n  --scope-type <scopeType>  One of: user, base, space, system, app, cuppyclaw, routine\n  --scope <scopeType>       Alias for --scope-type\n  --scope-id <scopeId>      Scope entity ID (required for base/space/app/cuppyclaw/routine; app\n                            defaults to TEABLE_APP_ID, cuppyclaw defaults to TEABLE_BOT_ID, routine\n                            defaults to TEABLE_ROUTINE_ID)\n  -f, --file-path <path>    Path to the .skill or .zip file (content must be a valid ZIP archive)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
           "name": "import-github",
@@ -3489,11 +3916,11 @@
             },
             {
               "flags": "--scope-id <scopeId>",
-              "description": "Scope entity ID (required for base/space/app/cuppyclaw; app defaults to TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)"
+              "description": "Scope entity ID (required for base/space/app/cuppyclaw/routine; app defaults to TEABLE_APP_ID, cuppyclaw defaults to TEABLE_BOT_ID, routine defaults to TEABLE_ROUTINE_ID)"
             },
             {
               "flags": "--scope-type <scopeType>",
-              "description": "One of: user, base, space, system, app, cuppyclaw",
+              "description": "One of: user, base, space, system, app, cuppyclaw, routine",
               "required": true
             },
             {
@@ -3506,7 +3933,7 @@
               "required": true
             }
           ],
-          "help": "Usage: teable skill import-github [options]\n\nImport a skill from a GitHub URL pointing to a skill folder via /tree/<ref>/<path> or\n/blob/<ref>/<path>. Plain repo URLs are rejected.\n\nOptions:\n  --scope-type <scopeType>  One of: user, base, space, system, app, cuppyclaw\n  --scope <scopeType>       Alias for --scope-type\n  -u, --url <url>           GitHub URL to a skill folder (must include /tree/<ref>/<path> or\n                            /blob/<ref>/<path>), e.g.\n                            https://github.com/owner/repo/tree/main/skills/my-skill\n  --scope-id <scopeId>      Scope entity ID (required for base/space/app/cuppyclaw; app defaults to\n                            TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+          "help": "Usage: teable skill import-github [options]\n\nImport a skill from a GitHub URL pointing to a skill folder via /tree/<ref>/<path> or\n/blob/<ref>/<path>. Plain repo URLs are rejected.\n\nOptions:\n  --scope-type <scopeType>  One of: user, base, space, system, app, cuppyclaw, routine\n  --scope <scopeType>       Alias for --scope-type\n  --scope-id <scopeId>      Scope entity ID (required for base/space/app/cuppyclaw/routine; app\n                            defaults to TEABLE_APP_ID, cuppyclaw defaults to TEABLE_BOT_ID, routine\n                            defaults to TEABLE_ROUTINE_ID)\n  -u, --url <url>           GitHub URL to a skill folder (must include /tree/<ref>/<path> or\n                            /blob/<ref>/<path>), e.g.\n                            https://github.com/owner/repo/tree/main/skills/my-skill\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
           "name": "list",
@@ -3541,11 +3968,11 @@
             },
             {
               "flags": "--scope-id <scopeId>",
-              "description": "Scope entity ID (required for base/space/app/cuppyclaw; app defaults to TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)"
+              "description": "Scope entity ID (required for base/space/app/cuppyclaw/routine; app defaults to TEABLE_APP_ID, cuppyclaw defaults to TEABLE_BOT_ID, routine defaults to TEABLE_ROUTINE_ID)"
             },
             {
               "flags": "--scope-type <scopeType>",
-              "description": "One of: user, base, space, system, app, cuppyclaw",
+              "description": "One of: user, base, space, system, app, cuppyclaw, routine",
               "required": true
             },
             {
@@ -3553,7 +3980,7 @@
               "description": "Personal access token; falls back to TEABLE_TOKEN env var"
             }
           ],
-          "help": "Usage: teable skill list [options]\n\nList managed skills (full detail) or available skills (for chat slash-commands).\n\nOptions:\n  --scope-type <scopeType>  One of: user, base, space, system, app, cuppyclaw\n  --scope <scopeType>       Alias for --scope-type\n  --list-type <type>        managed or available (choices: \"managed\", \"available\", default:\n                            \"managed\")\n  --scope-id <scopeId>      Scope entity ID (required for base/space/app/cuppyclaw; app defaults to\n                            TEABLE_APP_ID, cuppyclaw to TEABLE_BOT_ID)\n  --base-id <baseId>        Base ID (includes base-scoped skills for user scope)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
+          "help": "Usage: teable skill list [options]\n\nList managed skills (full detail) or available skills (for chat slash-commands).\n\nOptions:\n  --scope-type <scopeType>  One of: user, base, space, system, app, cuppyclaw, routine\n  --scope <scopeType>       Alias for --scope-type\n  --scope-id <scopeId>      Scope entity ID (required for base/space/app/cuppyclaw/routine; app\n                            defaults to TEABLE_APP_ID, cuppyclaw defaults to TEABLE_BOT_ID, routine\n                            defaults to TEABLE_ROUTINE_ID)\n  --list-type <type>        managed or available (choices: \"managed\", \"available\", default:\n                            \"managed\")\n  --base-id <baseId>        Base ID (includes base-scoped skills for user scope)\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -h, --help                display help for command\n"
         },
         {
           "name": "update",
