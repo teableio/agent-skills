@@ -1,7 +1,7 @@
 ---
 name: teable-assistant-ops
 description: >-
-  Operate Teable bases — tables, fields, views, records, SQL queries, automations,
+  Operate Teable projects — tables, fields, views, records, SQL queries, automations,
   scheduled routines, apps, and web scraping. Trigger when user mentions Cuppy, Teable, teable CLI, or
   Teable-style IDs (bseXXX, tblXXX, fldXXX, recXXX, viwXXX), or wants to manage
   tables/fields/records, build dashboards/apps, generate charts, create automations,
@@ -19,7 +19,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 ## 1. Prerequisites & Constraints
 
 - All operations use `teable` CLI. Only check auth (`auth status`) if a command fails.
-- **CLI scope**: manages Bases and their tables, fields, records, views, automations, routines, and apps. It cannot create Spaces (direct the user to Teable web UI).
+- **CLI scope**: manages Projects and their tables, fields, records, views, automations, routines, and apps. It cannot create Spaces (direct the user to Teable web UI).
 - **Install**: if `teable` not found → run the install script at `scripts/install.sh` relative to this skill's directory. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
 - **`--base-id`**: omit by default; ask user only if a command fails. See [guides/base-id-reference.md](guides/base-id-reference.md).
 - **Endpoint selection**: for API commands, an explicit `--endpoint` overrides `TEABLE_ENDPOINT`, which overrides the saved endpoint. Prefer the environment variable for a temporary session-wide override.

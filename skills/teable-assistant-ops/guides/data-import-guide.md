@@ -54,7 +54,7 @@ teable import-airtable --analyze
 teable import-airtable --analyze --airtable-base-id appXXXX
 
 # 3. Run the import into a NEW project
-teable import-airtable --space-id spcXXXX --airtable-base-id appXXXX --base-name "My Base"
+teable import-airtable --space-id spcXXXX --airtable-base-id appXXXX --base-name "My Project"
 
 # 3b. Or import into an EXISTING project (no --space-id / --base-name needed)
 teable import-airtable --base-id bseXXXX --airtable-base-id appXXXX
