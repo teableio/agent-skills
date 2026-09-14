@@ -1,18 +1,18 @@
 # Authority Matrix Guide (Advanced Permissions)
 
-Per-table / per-view / per-row / per-field access control for base collaborators. All `authority` commands require base Owner/Creator permission — reads included.
+Per-table / per-view / per-row / per-field access control for project collaborators. All `authority` commands require project Owner/Creator permission — reads included.
 
 ## When to Use
 
 - Restrict collaborators to specific tables, views, rows, or fields
-- Different teams see different slices of the same base (e.g. Sales sees only their region's rows)
+- Different teams see different slices of the same project (e.g. Sales sees only their region's rows)
 - Read-only or comment-only access to selected tables
 
 ## Concepts
 
 - A role grants access **table by table** — a table without a grant is completely **invisible** to the role's members.
 - Inside a granted table the ceiling is platform **Editor** level: matrix roles can never create/delete tables or fields, or share views.
-- Once enabled, the matrix applies to **every collaborator except the base Owner and matrix admin users**.
+- Once enabled, the matrix applies to **every collaborator except the project Owner and matrix admin users**.
 - A user in multiple roles gets the **union** of their grants (most permissive wins).
 - `defaultRole` is the fallback for collaborators not assigned to any role.
 

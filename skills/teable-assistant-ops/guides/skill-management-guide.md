@@ -22,4 +22,4 @@ GitHub imports require a URL to the skill directory, not the repository root. Th
 teable skill import-github --scope-type base --scope-id bseXXXX --url https://github.com/owner/repo/tree/main/skills/my-skill
 ```
 
-For local imports, both `.skill` and `.zip` filenames are accepted, but the content must be a valid ZIP archive. Importing does not infer a target from the configured base; scope must be chosen explicitly.
+For local imports, both `.skill` and `.zip` filenames are accepted, but the content must be a valid ZIP archive. Importing does not infer a target from the configured project; scope must be chosen explicitly.

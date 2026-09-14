@@ -1,18 +1,20 @@
 # --base-id Reference
 
-`--base-id` can be pre-configured via `teable config`. When the user explicitly provides a base ID, pass it with `-b` / `--base-id` to the commands below.
+`--base-id` selects a Teable Project (API resource `base`, ID prefix `bse`) and can be pre-configured via `teable config`. When the user explicitly provides a project ID, pass it with `-b` / `--base-id` to the commands below.
 
 Commands that accept it show `-b, --base-id <baseId>` in their options. The tables below list all commands.
 
 ## Commands that accept --base-id
 
-### Base Management
+<a id="base-management"></a>
+
+### Project Management
 
 | Command | Also requires |
 |---------|---------------|
 | `base get/update/delete` | — |
 
-`base list/create` are space-scoped or unscoped and do not use base context. Before `base delete`, verify the ID; deletion moves the base to trash.
+`base list/create` are space-scoped or unscoped and do not use project context. Before `base delete`, verify the ID; deletion moves the project to trash.
 
 ### Data Query
 
@@ -62,7 +64,7 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 | `artifact list` | — |
 | `artifact create` | `--file`, `--name` |
 
-`artifact list` accepts optional base context; omit it to search across all bases. `artifact update/get` target an artifact ID directly and do not accept `--base-id`.
+`artifact list` accepts optional project context; omit it to search across all projects. `artifact update/get` target an artifact ID directly and do not accept `--base-id`.
 
 ### Authority
 
@@ -101,8 +103,8 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 | `scrape run` | `--dataset-id`, `--inputs` |
 | `scrape status` | `--snapshot-id` |
 | `send-email` | `--subject`, `--body`, `--to`/`--bcc` |
-| `import-airtable` | `--airtable-base-id` + `--space-id`/`--base-name` (new base) — note: `--base-id` here is an **optional import target** (no `-b` short flag), not the usual project base |
-| `import-google-sheet` | `--spreadsheet-id` + `--space-id`/`--base-name` (new base) — `--base-id` is an optional existing import target, not project context |
+| `import-airtable` | `--airtable-base-id` + `--space-id`/`--base-name` (new project) — note: `--base-id` here is an **optional import target** (no `-b` short flag), not the usual configured Teable project |
+| `import-google-sheet` | `--spreadsheet-id` + `--space-id`/`--base-name` (new project) — `--base-id` is an optional existing import target, not project context |
 | `tools list`, `get-doc` | `--topic` (get-doc only) |
 
 ## Commands that do NOT need --base-id

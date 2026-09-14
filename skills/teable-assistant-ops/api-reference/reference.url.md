@@ -2,6 +2,8 @@
 
 Parse a Teable URL into its resource type + IDs, or build a URL to a resource.
 
+A Project is the API `base`, identified by a `bse`-prefixed ID. Keep `baseId` and `/base/` in URLs and API calls.
+
 Paths are relative — workspace links under `/base/{baseId}/...`, public shares under
 `/share/{shareId}/...`; for an absolute URL, prefix the workspace origin (`PUBLIC_ORIGIN` /
 `TEABLE_ENDPOINT`).
@@ -13,12 +15,12 @@ every ID against its prefix.
 
 | Resource | Path | IDs (prefix) |
 |----------|------|--------------|
-| Table | `/base/{baseId}/table/{tableId}[/{viewId}]` | base `bse`, table `tbl`, view `viw` |
+| Table | `/base/{baseId}/table/{tableId}[/{viewId}]` | project `bse`, table `tbl`, view `viw` |
 | Record | `/base/{baseId}/table/{tableId}[/{viewId}]?recordId={recordId}` | record `rec` — query param, never a path segment |
 | Automation | `/base/{baseId}/automation/{workflowId}` | workflow `wfl` |
 | App | `/base/{baseId}/app/{appId}` | app `app` — in-platform editor, NOT the live/published app (see Caveats) |
 | Shared view | `/share/{shareId}/view` | share `shr` |
-| Shared base | `/share/{shareId}/base/{baseId}/table/{tableId}/{viewId}` | share `shr` |
+| Shared project | `/share/{shareId}/base/{baseId}/table/{tableId}/{viewId}` | share `shr` |
 
 ## Parsing
 
@@ -28,7 +30,7 @@ is malformed or legacy — e.g. legacy `/base/{baseId}/{tableId}/{viewId}` (no `
 redirects to the `/table/...` form.
 
 Example: `https://{origin}/base/bseAbc/table/tblXyz/viwQrs?recordId=rec123`
-→ base `bseAbc`, table `tblXyz`, view `viwQrs`, record `rec123`.
+→ project `bseAbc`, table `tblXyz`, view `viwQrs`, record `rec123`.
 
 ## Caveats
 

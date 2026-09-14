@@ -51,7 +51,7 @@ teable app get-code --app-id appXXX
 | `--app-id` | Update only | Target app ID |
 | `--table-ids` | No | JSON array of table IDs for data access |
 | `--attachment-tokens` | No | Screenshots or design reference images |
-| `--folder-id` | No | Place the new app in a folder (`folderId` from the active tab meta); omit for base root |
+| `--folder-id` | No | Place the new app in a folder (`folderId` from the active tab meta); omit for project root |
 
 ## Updates While the Builder Is Busy
 
@@ -62,7 +62,7 @@ The default delivery mode is `queue`: use it for a new or independent request th
 - **Pass user requirements verbatim** to `--prompt` — do not interpret, expand, or add features
 - Do not use markdown formatting in the prompt text
 - Do not specify tech stack unless the user explicitly requests it
-- Before `app delete`, verify the app ID. Deletion moves the app to the base trash rather than permanently erasing it, so restore it there if deletion was accidental.
+- Before `app delete`, verify the app ID. Deletion moves the app to the project trash rather than permanently erasing it, so restore it there if deletion was accidental.
 
 ## Publishing
 
@@ -89,7 +89,7 @@ teable app ai-enable --app-id appXXX
 - The proxy is **Anthropic-compatible** and **server-side only** — never expose `TEABLE_AI_API_KEY` to the browser. The key value is never printed.
 - System-model usage consumes credits; BYOK models run on the space's own key.
 
-For usage patterns and the **available model keys for the current base** (resolved dynamically), read the docs — do not hardcode model names:
+For usage patterns and the **available model keys for the current project** (resolved dynamically), read the docs — do not hardcode model names:
 
 ```bash
 teable app ai-docs            # equivalent to: teable get-doc --topic app.ai

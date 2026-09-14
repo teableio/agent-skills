@@ -6,7 +6,7 @@ A collection of agent skills for AI coding assistants. Skills extend agent capab
 
 | Skill | Description |
 | ----- | ----------- |
-| [teable-assistant-ops](skills/teable-assistant-ops) | Operate Teable bases, tables, fields, views, records, SQL queries, and automations with a safe read-before-write process. |
+| [teable-assistant-ops](skills/teable-assistant-ops) | Operate Teable projects, tables, fields, views, records, SQL queries, and automations with a safe read-before-write process. |
 
 ## Quick Start (AI Agent)
 
