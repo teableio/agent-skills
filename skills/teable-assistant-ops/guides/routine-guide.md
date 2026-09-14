@@ -7,7 +7,7 @@ Use routines for scheduled, headless agent work that can be expressed as a self-
 1. Write a prompt containing all context each run needs; routines do not see the current conversation.
 2. Preview creation with `routine create --dry-run`. Confirm the interpreted schedule, timezone, bounds, and upcoming occurrences with the user.
 3. Create as a draft. Use `routine run-now` to preview real behavior, retain its run ID, and poll `routine get-run` until terminal.
-4. Inspect the run conversation when output detail or credit use matters. Fix the prompt or schedule with `routine update --dry-run`, then save and preview again.
+4. Read the agent's closing text from the run; inspect the full conversation only when more detail or per-message credit use matters. Fix the prompt or schedule with `routine update --dry-run`, then save and preview again.
 5. Activate only after the user approves both schedule and behavior.
 
 ## Scheduling decisions
