@@ -91,6 +91,6 @@ teable --version
 # Check auth
 teable auth status
 
-# List tables in a base
+# List tables in a project
 teable table get
 ```

@@ -24,4 +24,4 @@ Use routines for scheduled, headless agent work that can be expressed as a self-
 - Activation fails when the configuration has no future occurrence, such as an exhausted `COUNT`; update and preview the schedule first.
 - `routine run-now` also works for drafts but rejects overlapping in-flight runs.
 - Use `routine get-runs` for newest-first history and cursor pagination. A failed run may have executed (`runFail`, `timeout`) or never started (`creditExceed`, `overlap`, `queueTimeout`); distinguish these before retrying.
-- Deletion stops scheduling and moves the routine to base trash. Runs and chats remain readable, and restoration returns the routine paused.
+- Deletion stops scheduling and moves the routine to project trash. Runs and chats remain readable, and restoration returns the routine paused.

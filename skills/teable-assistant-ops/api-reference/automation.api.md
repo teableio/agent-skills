@@ -204,7 +204,7 @@ Content-Type: application/json
 - `contentType`: Mime type of the file (e.g. `image/png`)
 - `contentLength`: File size in bytes
 - `type`: Upload type (e.g. `1` for table attachments)
-- `baseId` (optional): Base ID, when relevant to the upload type
+- `baseId` (optional): Project ID, when relevant to the upload type
 
 **Response:**
 

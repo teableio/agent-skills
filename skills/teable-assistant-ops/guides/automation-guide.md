@@ -6,10 +6,10 @@ Use automations for event-driven work and deterministic trigger/action workflows
 
 | Command | Purpose |
 |---------|---------|
-| `automation list` | List all automations in the base |
+| `automation list` | List all automations in the project |
 | `automation get` | Get detailed workflow (trigger, actions, script code, edges) |
 | `automation update` | Rename/describe a workflow — applies **immediately**, bypasses the draft system |
-| `automation delete` | Deactivate a workflow and move it to base trash (restorable — not permanent) |
+| `automation delete` | Deactivate a workflow and move it to project trash (restorable — not permanent) |
 | `automation setup-trigger` | Create or update workflow + trigger |
 | `automation generate-script` | Add/update script code for an action |
 | `automation generate-flowchart` | Generate flowchart for a script action |
@@ -101,7 +101,7 @@ Script actions are Turing-complete: CRUD, AI generation, email, HTTP requests, S
 - `console.log` is debug-only — never use it to notify users
 - Notifications: default to **Email API** when no channel is specified (read `api-reference/automation.send-email.md` first); Slack/Teams/webhook via HTTP requests in script
 
-**AI in scripts**: call `POST ${PUBLIC_ORIGIN}/api/automation/runtime/ai` with `{ prompt, attachments?, modelKey?, temperature?, outputType? }` — supports up to 10 file attachments (images, PDFs, Office docs; each ≤20MB) and `outputType: "object"` for parsed JSON output. The base comes from the automation context — do NOT put a baseId in the URL. Read `teable get-doc --topic automation.ai` first for the full request shape, attachment field mapping, and available model keys. Prefer one request with several attachments over one request per attachment; on 429 (AI concurrency saturated) retry later, don't loop immediately.
+**AI in scripts**: call `POST ${PUBLIC_ORIGIN}/api/automation/runtime/ai` with `{ prompt, attachments?, modelKey?, temperature?, outputType? }` — supports up to 10 file attachments (images, PDFs, Office docs; each ≤20MB) and `outputType: "object"` for parsed JSON output. The project comes from the automation context — do NOT put a baseId in the URL. Read `teable get-doc --topic automation.ai` first for the full request shape, attachment field mapping, and available model keys. Prefer one request with several attachments over one request per attachment; on 429 (AI concurrency saturated) retry later, don't loop immediately.
 
 **Common script patterns** (runtime variables + fetch):
 ```javascript

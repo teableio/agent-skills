@@ -11,7 +11,7 @@ Use `teable config show` to check current endpoint, baseId, and token status.
 | `--search "keyword"` scope | Plain string auto-wraps to `{"value":"keyword"}`; for field-scoped: `--search '{"value":"keyword","fieldId":"fldXXX"}'` |
 | `field update --name "X"` | `--name` is a convenience flag; for other properties use `--updates '{"name":"X"}'` |
 | `table create --fields '[{...}]'` object format | Object format auto-converts; canonical shorthand: `--fields '["X:text"]'` |
-| Treating `table delete` as permanent | It moves the table to base trash. Verify the table ID first; restore from trash after an accidental deletion. |
+| Treating `table delete` as permanent | It moves the table to project trash. Verify the table ID first; restore from trash after an accidental deletion. |
 
 ## Field Type Aliases
 
@@ -134,7 +134,7 @@ teable send-email \
 
 ## Node & Folder Management
 
-Organize nodes (tables, folders, dashboards, etc.) in a base: `get-node-tree`, `folder create`, `folder update` (rename), `folder delete`, `folder move`.
+Organize nodes (tables, folders, dashboards, etc.) in a project: `get-node-tree`, `folder create`, `folder update` (rename), `folder delete`, `folder move`.
 
 Always `get-node-tree` first to see current structure. Reorder with: `folder move --node-id <nodeId> --parent-id <parentId> --anchor-id <siblingId> --position before|after`.
 
@@ -142,7 +142,7 @@ To create a table directly inside a folder, pass `--folder-id` to `table create`
 
 ## Authority Matrix (Advanced Permissions)
 
-Per-table / per-view / per-row / per-field access control for base collaborators via the `authority` command group. All config changes go through export → edit → diff → apply. Read [authority-guide.md](authority-guide.md) before running any `authority` command.
+Per-table / per-view / per-row / per-field access control for project collaborators via the `authority` command group. All config changes go through export → edit → diff → apply. Read [authority-guide.md](authority-guide.md) before running any `authority` command.
 
 ## Multi-Table Relationship Design
 
@@ -203,4 +203,4 @@ When a command fails, follow this procedure:
 1. `teable config show` — check current endpoint, baseId, and token status
 2. `teable auth status` — confirms connection and permissions
 3. Verify IDs exist: `table get` (for table IDs) or `field get` (for field IDs)
-4. Check common errors: **field type mismatch** (passing text to number field), **ID not found** (deleted or from different base), **permission denied** (user lacks write access)
+4. Check common errors: **field type mismatch** (passing text to number field), **ID not found** (deleted or from different project), **permission denied** (user lacks write access)

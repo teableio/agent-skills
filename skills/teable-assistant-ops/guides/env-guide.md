@@ -2,7 +2,7 @@
 
 Use `teable env` only for personal environment variables used by chat sessions. For credentials needed by an app or automation, use [secret-guide.md](secret-guide.md) to grant a write-only secret or OAuth connection to that resource.
 
-The scope defaults to `user`; app and automation scopes are not supported. Env commands do not use base context.
+The scope defaults to `user`; app and automation scopes are not supported. Env commands do not use project context.
 
 ## Workflow and safety
 

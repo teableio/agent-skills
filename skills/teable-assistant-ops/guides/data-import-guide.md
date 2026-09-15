@@ -28,7 +28,7 @@ cat data.csv | teable import --table-name "Sales"
 # 7. Raw CSV without header row
 teable import --file data.csv --table-name "Sales" --no-header
 
-# 8. Create the new table inside a base-node folder (only with --table-name)
+# 8. Create the new table inside a project folder (only with --table-name)
 teable import --file data.csv --table-name "Sales" --folder-id <folderNodeId>
 ```
 
@@ -40,7 +40,7 @@ teable import --file data.csv --table-name "Sales" --folder-id <folderNodeId>
 
 ## Import from Airtable
 
-`teable import-airtable` migrates a **whole Airtable base** — tables, fields, links, views, records, and attachments — via the native importer. Unlike the row-level [`import`](#quick-start) command (which loads tabular files into a table), this creates a **new base** by default (or targets an existing one with `--base-id`).
+`teable import-airtable` migrates a **whole Airtable base** — tables, fields, links, views, records, and attachments — via the native importer. Unlike the row-level [`import`](#quick-start) command (which loads tabular files into a table), this creates a **new project** by default (or targets an existing one with `--base-id`).
 
 **Credential**: automatic when the user has connected Airtable via the connectors UI — the connected integration's token is auto-detected and refreshed server-side, so nothing needs to be pasted. Override with `--integration-id <id>`, `--access-token <pat>`, or the `AIRTABLE_TOKEN` env var. (`integration connect` cannot connect Airtable — its `--provider` only accepts `slack`.)
 
@@ -53,10 +53,10 @@ teable import-airtable --analyze
 # 2. Inspect one base's schema
 teable import-airtable --analyze --airtable-base-id appXXXX
 
-# 3. Run the import into a NEW base
-teable import-airtable --space-id spcXXXX --airtable-base-id appXXXX --base-name "My Base"
+# 3. Run the import into a NEW project
+teable import-airtable --space-id spcXXXX --airtable-base-id appXXXX --base-name "My Project"
 
-# 3b. Or import into an EXISTING base (no --space-id / --base-name needed)
+# 3b. Or import into an EXISTING project (no --space-id / --base-name needed)
 teable import-airtable --base-id bseXXXX --airtable-base-id appXXXX
 ```
 
@@ -65,11 +65,11 @@ teable import-airtable --base-id bseXXXX --airtable-base-id appXXXX
 | Flag | Notes |
 |------|-------|
 | `--analyze` | List bases (alone) or summarize one base's schema (with `--airtable-base-id`) |
-| `--space-id` | Target space for the new base (required unless `--base-id` is set) |
+| `--space-id` | Target space for the new project (required unless `--base-id` is set) |
 | `--airtable-base-id` | Airtable base id (`appXXXX`) — required for import |
-| `--base-name` | Name for the new base (required unless `--base-id` is set) |
-| `--base-id` | Import into this existing base instead of creating one |
-| `--folder-id` | Place the imported tables under this base-node folder (only with `--base-id`) |
+| `--base-name` | Name for the new project (required unless `--base-id` is set) |
+| `--base-id` | Import into this existing project instead of creating one |
+| `--folder-id` | Place the imported tables under this project folder (only with `--base-id`) |
 | `--no-import-records` | Import structure only, skip record data |
 | `--no-import-attachments` | Skip downloading/re-uploading attachments |
 | `--import-view-config` | Import view filters/sorts/grouping — **requires** `--share-link` |
@@ -77,7 +77,7 @@ teable import-airtable --base-id bseXXXX --airtable-base-id appXXXX
 
 ## Import from Google Sheets
 
-`teable import-google-sheet` uses the native importer; each selected worksheet becomes a table. Import into an existing base when one is already the target, otherwise provide a space and base name to create a new base.
+`teable import-google-sheet` uses the native importer; each selected worksheet becomes a table. Import into an existing project when one is already the target, otherwise provide a space and project name to create a new project.
 
 **Credential decision:** publicly shared spreadsheets need none. Otherwise the connected Google Sheets integration is resolved and refreshed automatically. Its `drive.file` scope can read only spreadsheets the user selected in Teable's **Import from Google Sheets** dialog; a 403/404 usually means the user must select that spreadsheet there once. Use an integration ID only to disambiguate connections, and a Google access token only as an explicit override.
 
@@ -85,7 +85,7 @@ teable import-airtable --base-id bseXXXX --airtable-base-id appXXXX
 
 1. Analyze the spreadsheet first when tab selection matters; retain the numeric sheet IDs from the result.
 2. Import all tabs by default, or pass the chosen IDs as one comma-separated value.
-3. Decide between an existing base and a new base before importing. Structure-only migration is available when records should be skipped.
+3. Decide between an existing project and a new project before importing. Structure-only migration is available when records should be skipped.
 
 A spreadsheet ID or its full `docs.google.com/spreadsheets` URL is accepted. This command imports worksheet data and structure; use `import` instead for local CSV/Excel files.
 
