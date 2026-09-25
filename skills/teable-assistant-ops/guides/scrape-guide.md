@@ -10,11 +10,11 @@ Use scraping for structured records from supported platforms, not as a generic p
 2. If no curated choice supports the requested mode, use `scrape search` with the platform plus data type. Its raw `gd_` result includes collector inputs and discovery modes.
 3. For a raw `gd_` discovery mode, pass its `discoverBy` value and exactly that mode's input fields. Preserve field names and JSON types; similar datasets often use different names such as `keyword`, `keywords`, or `search_keyword`.
 
-Batch inputs only when they share a dataset ID and mode. Keep the default result limit unless the user asks for more: feeds, searches, and comment lists bill per returned record, while a single-page collector still yields one record.
+Batch inputs only when they share a dataset ID and mode. Keep the default `--limit-per-input` (10) unless the user asks for more: every returned record is billed. Credits for inputs × limit are held while the scrape runs, so pass `--limit-per-input 1` when each input is a single page (a profile, product page, single post, or video). One call may not exceed 1000 records (inputs × limit); split larger jobs.
 
 ```bash
 teable scrape search --query "glassdoor company reviews"
-teable scrape run --dataset-id gd_XXXX --discover-by keyword --inputs '[{"keyword":"database engineer","location":"Berlin"}]' --limit 20
+teable scrape run --dataset-id gd_XXXX --discover-by keyword --inputs '[{"keyword":"database engineer","location":"Berlin"}]' --limit-per-input 20
 ```
 
 ## Asynchronous results
