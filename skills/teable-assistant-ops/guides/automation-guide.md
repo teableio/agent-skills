@@ -34,6 +34,9 @@ Use automations for event-driven work and deterministic trigger/action workflows
 | User clicks a button field | `buttonClick` | `--table-id`, `--field-id` |
 | External system sends HTTP request | `webhook` | optional `--webhook-config` for authorization and synchronous response; retain returned `webhook.url` and token |
 | Email received via connected mailbox | `emailReceived` | `--email-received-config`; bind the password as `{ "alias": "..." }`, never plaintext |
+| Connected app emits an event | `connectorEvent` | `--connector-event-config`; discover the toolkit/event type, then bind the user's connection alias |
+
+For `connectorEvent`, follow the trigger reference's credential flow: create the trigger without an account, request the connection for the returned workflow ID, then update the trigger with the returned alias. Testing waits for the next real event when no sample exists, and activation creates the subscription. A `disconnected` event source requires reconnecting or rebinding an account.
 
 **Schedule timing types** (for `scheduledTime` trigger):
 

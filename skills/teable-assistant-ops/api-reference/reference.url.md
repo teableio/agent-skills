@@ -18,6 +18,9 @@ every ID against its prefix.
 | Table | `/base/{baseId}/table/{tableId}[/{viewId}]` | project `bse`, table `tbl`, view `viw` |
 | Record | `/base/{baseId}/table/{tableId}[/{viewId}]?recordId={recordId}` | record `rec` — query param, never a path segment |
 | Automation | `/base/{baseId}/automation/{workflowId}` | workflow `wfl` |
+| Automation run | `/base/{baseId}/automation/{workflowId}?runId={runId}` | run — cuid, no prefix |
+| Routine | `/base/{baseId}/routine/{routineId}` | routine `rtn` |
+| Routine run | `/base/{baseId}/routine/{routineId}?runId={runId}` | run `rrn` |
 | App | `/base/{baseId}/app/{appId}` | app `app` — in-platform editor, NOT the live/published app (see Caveats) |
 | Shared view | `/share/{shareId}/view` | share `shr` |
 | Shared project | `/share/{shareId}/base/{baseId}/table/{tableId}/{viewId}` | share `shr` |

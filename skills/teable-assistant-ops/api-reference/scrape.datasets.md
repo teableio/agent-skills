@@ -6,7 +6,7 @@ The tables below are the curated datasets with known inputs. For any other platf
 
 A pending result is resumed with `scrape-status` and its snapshotId, never by running `scrape` again.
 
-Plain datasets scrape the pages you pass; `*_by_*` datasets take a keyword, hashtag, profile, category or shop URL and find the records themselves. Each input yields **at most 10 records**; raise `limit` (max 50) only when the user asks for more, since every record is billed.
+Plain datasets scrape the pages you pass; `*_by_*` datasets take a keyword, hashtag, profile, category or shop URL and find the records themselves. Each input yields **at most 10 records**; raise `limitPerInput` (max 50) only when the user asks for more, since every record is billed. It caps the records per input for every dataset, and dataset fields such as `num_of_comments` cannot exceed it. One call is capped at inputs × limitPerInput = 1000 records. Credits for inputs × limitPerInput are held while the scrape runs, so when each input is a single page (a profile, product page, single post or video) pass `limitPerInput: 1`; one call can then carry up to 1000 URLs. Split a larger job into several calls.
 
 ## Usage
 
@@ -20,7 +20,7 @@ inputs: [{ "url": "https://..." }, { "url": "https://..." }]   // one object per
 datasetId: "gd_..."            // id from scrape-search
 discoverBy: "keyword"          // one of its modes[].discoverBy
 inputs: [{ "keyword": "...", "location": "..." }]   // that mode's inputs
-limit: 20                      // optional, only when the user asks for more than 10
+limitPerInput: 20              // optional, only when the user asks for more than 10
 ```
 
 ---

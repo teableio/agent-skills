@@ -66,6 +66,13 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 
 `artifact list` accepts optional project context; omit it to search across all projects. `artifact update/get` target an artifact ID directly and do not accept `--base-id`.
 
+### Media
+
+| Command | Also requires |
+|---------|---------------|
+| `media generate` | `--prompt` or `--input` |
+| `media get/cancel` | `--id` |
+
 ### Authority
 
 | Command | Also requires |

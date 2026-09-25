@@ -246,3 +246,45 @@ Each entry in `emails[]`:
 - `attachments[]` - `{ filename, contentType, size, fileUrl }`
 
 ⚠️ **`fileUrl` is a short-lived signed URL** (lifetime varies by storage provider — minutes to hours). Download any attachments you need within the same script run; do not cache `fileUrl` for later use.
+
+### 9. connectorEvent - When Connector Event Received
+Triggers when a connected third-party app (GitHub, Gmail, Slack...) reports an event. The subscription runs on the user's own connection to that app, bound to the workflow as a credential grant.
+
+**Five-step flow:**
+1. `composio_search_events` with no `toolkit` → the apps that publish events, each with `connected` telling whether the user has already connected it.
+2. Call it with `toolkit` to see the event types and their parameters; add `eventType` to get that event's `payloadFields` (the fields of `event`).
+3. `setup-automation-trigger` with `triggerType: "connectorEvent"` and `connectorEventConfig`, without an account. Then `request_credential` (credentialType `connection`, provider = the toolkit slug, resourceType `automation`, resourceId = that workflow) puts a card in front of the user, and `setup-automation-trigger` is called again with `connectorEventConfig.alias` set to the `alias` it returns. Until then the workflow cannot listen or be activated.
+4. Optional: if the user can trigger the event now, `test-automation-node` on the trigger listens for the next event (up to 30 minutes), which becomes its test result by itself (needed to test later nodes); once it has one, testing runs on it. Otherwise write the script from `payloadFields` (`const { event } = input['<triggerId>']`).
+5. `activate-automation` with `method: "activate"` to publish. The subscription is created on activation; `get-automation` reports it as `trigger.eventSource.status` (`pending` → `active`, or `disconnected`).
+
+`disconnected` means the account is lost: ask the user to reconnect the app in Settings → Integrations, or bind another connection with `request_credential` and write back `connectorEventConfig.alias`.
+
+```json
+{
+  "triggerType": "connectorEvent",
+  "connectorEventConfig": {
+    "toolkit": "github",
+    "eventType": "GITHUB_ISSUE_ADDED_EVENT",
+    "alias": "github_connection",
+    "eventConfig": { "owner": "teableio", "repo": "teable" }
+  }
+}
+```
+
+Required: `toolkit`, `eventType`. The account is `alias`, a connection already granted to this workflow — what `request_credential` returned, or one `get-automation` reports as the stored binding; omit it to save the trigger first and bind later.
+
+**`eventConfig`:** its keys are not fixed. They come from the event type's own `config` JSON schema, which `composio_search_events` returns as `params` (name, type, description, enum) with the mandatory ones listed in `requiredParams`. A missing required parameter is rejected before anything is created. On an update `eventConfig` is merged into the stored one key by key, so a partial change keeps the rest.
+
+**`kind`:**
+- `webhook` — the app pushes the event, so it arrives within seconds.
+- `poll` — Teable asks the app on a schedule, so the event can arrive **minutes late**. Do not build anything time-critical on a poll event type.
+
+⚠️ **`highVolume`:** an event type that takes no required parameter fires for *everything* on the connected account (every repository, every channel). Warn the user before setting one up, and prefer an event type that can be narrowed with `eventConfig`.
+
+**Output Variables:**
+- `event` - The event payload exactly as the app sent it
+- `eventType` - The event type slug that fired
+- `account` - The connected account the event came from
+- `occurredAt` - ISO timestamp of the event as Composio recorded it: close to the source for `webhook`, up to one poll interval late for `poll`. Events can arrive out of order; when order matters, compare it with the last event time stored on the record and skip older events.
+- `receivedAt` - ISO timestamp of when Teable received it
+- `eventId` - Provider event id, useful for de-duplication
