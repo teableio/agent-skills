@@ -2,9 +2,9 @@
 name: teable-assistant-ops
 description: >-
   Operate Teable projects — tables, fields, views, records, SQL queries, automations,
-  scheduled routines, apps, and web scraping. Trigger when user mentions Cuppy, Teable, teable CLI, or
+  headless routines, apps, image generation, and web scraping. Trigger when user mentions Cuppy, Teable, teable CLI, or
   Teable-style IDs (bseXXX, tblXXX, fldXXX, recXXX, viwXXX), or wants to manage
-  tables/fields/records, build dashboards/apps, generate charts, create automations,
+  tables/fields/records, build dashboards/apps, generate images or charts, create automations,
   import/export data, trigger AI fill, or scrape websites (LinkedIn, Amazon, YouTube,
   etc.) — even if they don't explicitly say "Teable" but are clearly working with a
   Teable project (called base in the API).
@@ -19,7 +19,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 ## 1. Prerequisites & Constraints
 
 - All operations use `teable` CLI. Only check auth (`auth status`) if a command fails.
-- **CLI scope**: manages Projects and their tables, fields, records, views, automations, routines, and apps. It cannot create Spaces (direct the user to Teable web UI).
+- **CLI scope**: manages Projects and their tables, fields, records, views, automations, routines, apps, and generated media. It cannot create Spaces (direct the user to Teable web UI).
 - **Install**: if `teable` not found → run the install script at `scripts/install.sh` relative to this skill's directory. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
 - **`--base-id`**: omit by default; ask user only if a command fails. See [guides/base-id-reference.md](guides/base-id-reference.md).
 - **Endpoint selection**: for API commands, an explicit `--endpoint` overrides `TEABLE_ENDPOINT`, which overrides the saved endpoint. Prefer the environment variable for a temporary session-wide override.
@@ -39,9 +39,10 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | Views | Persistent filtered/sorted/grouped perspectives | `view create/update/delete` | [view.filter.md](api-reference/view.filter.md), [view.sort.md](api-reference/view.sort.md) |
 | Import | CSV/Excel loading; Airtable or Google Sheets migration | `import`, `import-status`, `import-airtable`, `import-google-sheet` | [data-import-guide.md](guides/data-import-guide.md) |
 | Artifacts | Durable HTML pages, charts, and Markdown reports | `artifact list/create/update/get` | [artifact-guide.md](guides/artifact-guide.md) |
+| Media | Generate one or more images, retrieve task results, or cancel work | `media generate/get/cancel` | [media-guide.md](guides/media-guide.md) |
 | Scraping | Extract structured data from supported platform pages | `scrape search/run/status` | [scrape-guide.md](guides/scrape-guide.md) |
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
-| Routines | Scheduled headless agent tasks | `routine *` | [routine-guide.md](guides/routine-guide.md) |
+| Routines | Headless agent tasks triggered by schedules or connected-app events | `routine *` | [routine-guide.md](guides/routine-guide.md) |
 | App Builder | Live dashboards, custom web UIs | `app create/update/list/get-code`, `app publish/status/unpublish`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
 | Authority | Per-table/row/field permissions for collaborators | `authority get/export/diff/apply`, `authority enable/disable`, `authority role-*` | [authority-guide.md](guides/authority-guide.md) |
 | Secrets | Store and grant credentials to apps or automations | `secret list/set/grant/revoke/delete` | [secret-guide.md](guides/secret-guide.md) |
@@ -66,6 +67,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | One-time chart shown only in the conversation | Visualization: HTML code block | App Builder or artifact |
 | Durable report/chart stored in Teable | Artifacts: `artifact list` → `artifact update` or `artifact create` | App Builder |
 | Live dashboard / data-connected custom UI | App Builder: `app create` | HTML code block or artifact |
+| Standalone generated image(s) | Media: `media generate` | App Builder or artifact |
 | Bulk data loading (>50 rows) | Import: `import` | `record create` in loop |
 | Relationships between tables | Fields: Link field → Lookup/Rollup | singleSelect simulating categories |
 | Computed/derived values (same row) | Fields: Formula | — |
@@ -75,7 +77,9 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | Export records as file | Data Query: `record get` / `sql-query` → agent formats output | `import` (wrong direction) |
 | Restrict collaborators to specific tables/rows/fields | Authority: `authority export` → edit → `diff` → `apply` | Editing roles via raw `call-api` |
 | Scheduled task expressible as a self-contained agent prompt | Routines: dry-run → draft → preview run → activate | Building an automation script |
-| Event-driven or deterministic trigger/action workflow | Automation | Using a routine as an event listener |
+| Connected-app event handled by a self-contained agent prompt | Routines: `connectorEvent` → bind account → preview event → activate | Building an automation script |
+| Deterministic trigger/action workflow | Automation | Using an agent routine for fixed steps |
+| Third-party app event feeding a scripted workflow | Automation: `connectorEvent` trigger | Polling the external app from a schedule |
 
 ### 2.3 Quick Syntax
 
@@ -103,7 +107,7 @@ For complete syntax, value formats, and all command options, read [cli-reference
 - **App login**: to require end-user auth for a generated app → `app login-config`. See [app-builder-guide.md § App login](guides/app-builder-guide.md#app-login--authentication).
 - **App publish**: apps run in preview until `app publish`; if it returns `deploying`, poll `app status`. See [app-builder-guide.md § Publishing](guides/app-builder-guide.md#publishing).
 - **Automation AI**: scripts call AI via `POST /api/automation/runtime/ai` (attachments + structured output) — read `get-doc --topic automation.ai` first. See [automation-guide.md § Script Rules](guides/automation-guide.md#script-rules).
-- **Scheduled agent work**: use a routine when a self-contained prompt should run on an RRULE; validate and preview before activation. See [routine-guide.md](guides/routine-guide.md).
+- **Headless agent work**: use a routine when a self-contained prompt should run on an RRULE or a connected-app event; validate and preview before activation. See [routine-guide.md](guides/routine-guide.md).
 - **Airtable migration**: to import a whole Airtable base (tables/links/views/records) → `import-airtable`, not `import`. See [data-import-guide.md § Import from Airtable](guides/data-import-guide.md#import-from-airtable).
 - **Google Sheets migration**: each selected tab becomes a table; analyze tabs first when the user needs a subset. See [data-import-guide.md § Import from Google Sheets](guides/data-import-guide.md#import-from-google-sheets).
 
