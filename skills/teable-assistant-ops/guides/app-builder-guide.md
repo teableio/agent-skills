@@ -99,6 +99,8 @@ teable app ai-docs            # equivalent to: teable get-doc --topic app.ai
 
 By default a generated app is open. To require end-users to authenticate before accessing it, set a login config:
 
+App login controls who can enter the app. It does not automatically make server-side data requests run with each visitor's table/row/field permissions. When users must see different records, require a verified server-side data access policy; see [query permissions and parameters](data-query-guide.md#permissions-and-parameters).
+
 ```bash
 teable app login-config --app-id appXXX --login-config '{
   "enabled": true,
