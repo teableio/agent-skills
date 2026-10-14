@@ -42,6 +42,13 @@ teable app get-code --app-id appXXX
 
 `app get-code` writes a **read-only snapshot** to `~/.teable/refs/<appId>/` (`.env*` files excluded; requires app update permission). `app list --search <keyword>` filters by name.
 
+### Versioned named queries
+
+If the generated workspace contains `teable/queries.yaml`, reads belong in that manifest and are called through generated server-only `queries.getTodos(...)`-style functions. The builder must generate and live-check the candidate using the App's own credentials before saving; pages and query files share the existing App version. Do not move definitions back into page components or bypass a failed gate with SQL. See [Data Query Guide](data-query-guide.md#named-query-apps-when-available) for commands, `getTodoById`, permissions and failure handling.
+
+Feature availability is host-controlled and defaults off. Existing SQL apps are not silently migrated. `app get-code` remains a read-only inspection snapshot, not the live editable workspace.
+
+
 ## Key Parameters
 
 | Parameter | Required | Description |
