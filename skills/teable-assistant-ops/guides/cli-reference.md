@@ -39,7 +39,7 @@ Advanced types (link, lookup, rollup, formula, AI) require `field create` with o
 
 ## Data Queries
 
-For choosing an entry, inline versus saved-query reuse, permissions and feature availability, read [Data Query Guide](data-query-guide.md). The entries below describe the released CLI surface; they do not activate an optional structured-query endpoint.
+For choosing a read entry, inline execution, permissions and feature availability, read [Data Query Guide](data-query-guide.md). The entries below describe the released CLI surface; they do not activate an experimental structured-query endpoint.
 
 **`record get` vs `sql-query`** — if you'll write back to the same records, use `record get` (returns record IDs); for analytics or cross-table reads, use `sql-query`.
 

@@ -32,7 +32,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 
 | Module | What it solves | Entry commands | Guide to read |
 |--------|---------------|----------------|---------------|
-| Data Query | Read records, analytics, query reuse and access boundaries | `record get`, `sql-query`; discover other installed capabilities before use | [data-query-guide.md](guides/data-query-guide.md), [CLI reference](guides/cli-reference.md#data-queries) |
+| Data Query | Read records, analytics and access boundaries | `record get`, `sql-query`; discover other installed capabilities before use | [data-query-guide.md](guides/data-query-guide.md), [CLI reference](guides/cli-reference.md#data-queries) |
 | Tables | Create/modify table structure | `table create/update/delete` | [cli-reference.md § Field Type Aliases](guides/cli-reference.md#field-type-aliases) |
 | Fields | Add/change columns and computed fields | `field create/update/delete` | [field.simple.md](api-reference/field.simple.md) |
 | Records | Write row data, attachments, reordering | `record create/update/delete` | [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) |
@@ -64,7 +64,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | Aggregation (count, sum, avg) | Data Query: `sql-query` with GROUP BY | Fetch all records + compute in code |
 | Read records for subsequent writes | Data Query: `record get` (returns record IDs) | `sql-query` (no record IDs) |
 | Cross-table analytics / JOINs | Data Query: `sql-query` | Multiple `record get` calls |
-| Reusable or structured data reads | Data Query: check installed CLI and target-host support in [data-query-guide.md](guides/data-query-guide.md) | Assume an internal v2 implementation is a released command or active endpoint |
+| Structured data reads | Data Query: check installed CLI and explicit host enablement in [data-query-guide.md](guides/data-query-guide.md) | Assume an internal v2 implementation is a released command or active endpoint |
 | One-time chart shown only in the conversation | Visualization: HTML code block | App Builder or artifact |
 | Durable report/chart stored in Teable | Artifacts: `artifact list` → `artifact update` or `artifact create` | App Builder |
 | Live dashboard / data-connected custom UI | App Builder: `app create` | HTML code block or artifact |
