@@ -8,7 +8,7 @@ Use this guide to choose a data-read path or diagnose a query failure. Query exe
 |------|--------|
 | Record identities for later writes, view-relative reads, simple search | `record get` |
 | Cross-table joins or SQL-specific analysis | `sql-query`, following [SQL critical rules](cli-reference.md#sql-critical-rules) |
-| One-off structured read | Inline definition, only when the installed CLI and host expose structured execution |
+| One-off structured read during App development | `teable query inline`, only when the installed CLI and host expose structured execution |
 | Reusable reads in a named-query App | Versioned `teable/queries.yaml` and generated server-only functions; see the workflow below |
 
 For an unfamiliar capability, discover the installed command surface with `teable --help` or `teable tools list --search query`, then read the selected command's help. Backend implementation, a source PR, and a CLI version number alone do not prove that a target host has enabled a route. This skill follows the released CLI manifest; do not invent command names, query IDs, or URLs for an unavailable feature. Keep using the supported entry that fits the requested operation.
@@ -20,7 +20,35 @@ For an unfamiliar capability, discover the installed command surface with `teabl
 - The Nest endpoint is experimental and defaults off behind `V2_DATA_QUERY_ENABLED`. A disabled host does not advertise it in public OpenAPI. Explicit host enablement and a CLI release containing the command are separate prerequisites.
 - Use stable table/field IDs and declared output aliases for structured reads. Keep database names confined to the raw SQL entry. Support for arbitrary SQL or joins in one entry does not imply support in another.
 
-## Named-query Apps, when available
+### Temporary inline reads during App development
+
+Use the ephemeral records command when the AI needs to inspect live data before deciding what
+belongs in the App. It builds the same canonical `definition` sent by `teable query execute` and
+does not write `queries.yaml`, `lib/queries.ts`, or an App version:
+
+```bash
+teable query inline \
+  --table-id tblXXX \
+  --select '[{"fieldId":"fldXXX","alias":"title"}]' \
+  --filter '{"fieldId":"fldYYY","operator":"isGreaterEqual","value":10}' \
+  --limit 100
+```
+
+Use `--sort`, `--offset`, `--record-id`, `--parameter-definitions`, `--parameters`, and
+`--query-id` as needed. The default/maximum limit is 100/1000. It is a development inspection
+entry only; it must not be copied into page runtime code. `teable query execute --request @file`
+remains the escape hatch for the full canonical request, including aggregate definitions.
+
+In an App that has `teable/queries.yaml`, runtime reads use generated `lib/queries.ts`. Do not
+import or call `sqlQuery` from `@/lib/teable` as a fallback. Keep `sql-query` for legacy Apps and
+one-off cross-table or SQL-specific analysis. A failed inline/named query is an explicit error,
+not permission to silently retry through SQL.
+
+The standalone managed tool does not require an installed `teable` binary. The installed CLI may
+also expose `query schema`, `query execute`, `query inline`, `query validate`, and `query generate`;
+discover the actual command surface with `teable --help` before using it. CLI live validation runs
+with its configured credential; an editor's successful PAT check does not prove the App can read the
+same fields.
 
 Check the actual App source first. Opted-in fresh Apps provide `teable/queries.yaml`, a generated JSON Schema, `lib/queries.ts`, and managed `teable/query-tool.mjs`. Keep existing apps on their current read path unless the user explicitly adopts named queries; restoring an app does not migrate SQL automatically.
 
