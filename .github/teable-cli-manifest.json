@@ -15,6 +15,74 @@
   "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable projects, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                  Show CLI version\n  --debug                        Enable debug output (verbose logging to stderr)\n  -h, --help                     display help for command\n\nSetup:\n  auth|init [options]            Manage auth for teable\n  config                         Manage project-level CLI configuration\n\nResources:\n  media                          media operations (generate, get, cancel)\n  base                           project operations (create, get, list, update, delete)\n  table                          table operations (create, get, update, delete)\n  field                          field operations (create, get, update, delete)\n  record                         record operations (create, get, update, delete)\n  view                           view operations (create, get, update, delete)\n  app                            app operations (list, get-code, create, update, delete, publish,\n                                 status, unpublish, login-config, ai-docs, ai-enable)\n  automation                     automation operations (list, get, update, activate, setup-trigger,\n                                 delete, test-node, delete-node, generate-script,\n                                 generate-flowchart, get-script-input, get-runs, get-run)\n  routine                        routine operations (create, list, get, update, activate,\n                                 deactivate, delete, run-now, get-runs, get-run)\n  authority                      authority operations (get, export, diff, apply, enable, disable,\n                                 role-list, role-get, role-delete, role-duplicate)\n  folder                         folder operations (create, update, delete, move)\n  artifact                       artifact operations (list, create, update, get)\n  scrape                         scrape operations (search, run, status)\n  integration                    integration operations (connect, list, get-token)\n  env                            env operations (list, set, update, delete)\n  secret                         secret operations (list, set, grant, revoke, delete)\n  sandbox                        sandbox operations (tool)\n  skill                          skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]        Get the tree structure of all nodes (tables, automations, apps,\n                                 etc.) in a project\n  search-api [options]           Search available APIs by description to find the right endpoint\n  get-doc [options]              Get documentation for a topic\n  tools                          Tool discovery and metadata commands\n  sql-query [options]            Execute SQL query on tables\n  get-collaborators [options]    Get collaborators in the current project with pagination and search\n  get-ai-config [options]        Get AI field configuration documentation with available models\n  import [options]               Import tabular data into Teable (analyzes by default; --table-name\n                                 creates, --table-id appends)\n  import-airtable [options]      Import an Airtable base into Teable\n  import-google-sheet [options]  Import a Google spreadsheet into Teable\n  import-status [options]        Query import job status for a table\n  upload-attachment [options]    Upload a local file as an attachment\n  call-api [options]             Call any Teable API (axios-style: method, url, params, data)\n  trigger-ai-fill [options]      Trigger AI generation for an AI-configured field\n  send-email [options]           Send an email to one or more recipients (system SMTP by default, or\n                                 --smtp for a custom transport)\n\nCommands:\n  help [command]                 display help for command\n\nProject = API base (bse-prefixed ID). Commands use teable base and --base-id.\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
   "commands": [
     {
+      "name": "query",
+      "description": "query operations (schema, execute, inline, manifest-schema, validate, generate)",
+      "subcommands": [
+        {
+          "name": "schema",
+          "summary": "Print the canonical inline query request JSON Schema offline",
+          "options": [{ "flags": "--pretty", "description": "Indent JSON for human readability" }]
+        },
+        {
+          "name": "execute",
+          "summary": "Execute one inline query on a V2_DATA_QUERY_ENABLED host (default off)",
+          "options": [
+            { "flags": "--request <json|@file>", "description": "Canonical request JSON literal or @path/to/request.json", "required": true },
+            { "flags": "--endpoint <endpoint>", "description": "Teable API server base URL" },
+            { "flags": "--token <token>", "description": "Personal access token" },
+            { "flags": "--pretty", "description": "Indent JSON for human readability" }
+          ]
+        },
+        {
+          "name": "inline",
+          "summary": "Run one temporary records query without writing App query files",
+          "options": [
+            { "flags": "--table-id <tableId>", "description": "Stable table ID", "required": true },
+            { "flags": "--select <json|@file>", "description": "JSON array of projections", "required": true },
+            { "flags": "--filter <json|@file>", "description": "JSON filter expression" },
+            { "flags": "--sort <json|@file>", "description": "JSON array of sort expressions" },
+            { "flags": "--parameter-definitions <json|@file>", "description": "JSON map of declared parameter types" },
+            { "flags": "--parameters <json|@file>", "description": "JSON map of runtime parameter values" },
+            { "flags": "--limit <limit>", "description": "Maximum rows (default: 100; max: 1000)" },
+            { "flags": "--offset <offset>", "description": "Rows to skip" },
+            { "flags": "--record-id <recordId>", "description": "Optional controlled record identity" },
+            { "flags": "--query-id <queryId>", "description": "Optional observability name" },
+            { "flags": "--endpoint <endpoint>", "description": "Teable API server base URL" },
+            { "flags": "--token <token>", "description": "Personal access token" },
+            { "flags": "--pretty", "description": "Indent JSON for human readability" }
+          ]
+        },
+        {
+          "name": "manifest-schema",
+          "summary": "Print the canonical app-local query manifest JSON Schema offline",
+          "options": [{ "flags": "--pretty", "description": "Indent JSON for human readability" }]
+        },
+        {
+          "name": "validate",
+          "summary": "Validate a YAML/JSON query manifest, optionally against the live host",
+          "options": [
+            { "flags": "--file <path>", "description": "App-local YAML or JSON query manifest", "required": true },
+            { "flags": "--live", "description": "Validate schema compatibility and permissions" },
+            { "flags": "--endpoint <endpoint>", "description": "Teable API server base URL" },
+            { "flags": "--token <token>", "description": "Personal access token" },
+            { "flags": "--pretty", "description": "Indent JSON for human readability" }
+          ]
+        },
+        {
+          "name": "generate",
+          "summary": "Validate a query manifest and atomically generate a typed server module",
+          "options": [
+            { "flags": "--file <path>", "description": "App-local YAML or JSON query manifest", "required": true },
+            { "flags": "--out <path>", "description": "Generated server-only TypeScript module", "required": true },
+            { "flags": "--live", "description": "Validate schema compatibility and permissions" },
+            { "flags": "--endpoint <endpoint>", "description": "Teable API server base URL" },
+            { "flags": "--token <token>", "description": "Personal access token" },
+            { "flags": "--pretty", "description": "Indent JSON for human readability" }
+          ]
+        }
+      ]
+    },
+    {
       "name": "app",
       "description": "app operations (list, get-code, create, update, delete, publish, status, unpublish, login-config, ai-docs, ai-enable)",
       "subcommands": [
