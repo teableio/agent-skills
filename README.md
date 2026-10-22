@@ -1,6 +1,6 @@
 # Agent Skills
 
-A collection of agent skills for AI coding assistants. Skills extend agent capabilities with specialized knowledge, workflows, and tool integrations.
+Agent skills for [Teable](https://teable.ai), an AI spreadsheet for business. These skills help AI assistants manage structured data, build apps, and automate workflows with the Teable CLI.
 
 ## Skills
 
