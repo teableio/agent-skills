@@ -39,6 +39,8 @@ Advanced types (link, lookup, rollup, formula, AI) require `field create` with o
 
 ## Data Queries
 
+For choosing a read entry, inline execution, versioned App-local named queries, permissions and feature availability, read [Data Query Guide](data-query-guide.md). The entries below describe the released CLI surface; they do not activate an experimental structured-query endpoint. Discover manifest commands in the installed CLI before using them; scaffolded Apps can instead use their supplied standalone `teable/query-tool.mjs`.
+
 **`record get` vs `sql-query`** — if you'll write back to the same records, use `record get` (returns record IDs); for analytics or cross-table reads, use `sql-query`.
 
 - **record get** — record IDs for subsequent writes, `--search` for fuzzy search, simple pagination. Returns compact tabular output with an `id` column per row.
