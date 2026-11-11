@@ -2,7 +2,9 @@
 
 `--base-id` selects a Teable Project (API resource `base`, ID prefix `bse`) and can be pre-configured via `teable config`. When the user explicitly provides a project ID, pass it with `-b` / `--base-id` to the commands below.
 
-Commands that accept it show `-b, --base-id <baseId>` in their options. The tables below list all commands.
+Commands that accept it show `-b, --base-id <baseId>` in their options. The tables below summarize project-scoped entries; use installed help for exact requirements.
+
+Use `teable link bseXXXX` to bind a working directory. Without an ID, `teable link` lists accessible projects, newest activity first; narrow candidates with search. Resolution is explicit flag → directory/parent binding → user config. App init/clone checkouts carry their own binding in `.teable/app.json`; do not bind a directory to an arbitrary project just to silence an error.
 
 ## Commands that accept --base-id
 
@@ -14,7 +16,7 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 |---------|---------------|
 | `base get/update/delete` | — |
 
-`base list/create` are space-scoped or unscoped and do not use project context. Before `base delete`, verify the ID; deletion moves the project to trash.
+`base list/create` are space-scoped or unscoped and do not use project context. `base list` returns one page: follow `nextOffset` while `hasMore` is true; use name/ID search before concluding a project is absent (default 50, maximum 100 per page). Before `base delete`, verify the ID; deletion moves the project to trash.
 
 ### Data Query
 
@@ -53,7 +55,12 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 |---------|---------------|
 | `trigger-ai-fill` | `--table-id`, `--field-id` |
 | `app list/create/update` | — |
-| `app get-code/delete/publish/status/unpublish` | `--app-id` |
+| `app get-code/delete/status/unpublish` | `--app-id` |
+| `app init` | `--name` |
+| `app clone` | `--app-id` |
+| `app pull/push` | local checkout |
+| `app publish/versions` | app ID or enclosing checkout |
+| `app rollback` | target version and app ID or enclosing checkout |
 | `app login-config/ai-enable` | `--app-id` |
 | `app ai-docs` | — |
 
@@ -106,9 +113,13 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 | `search-api` | `--query` |
 | `call-api` | `--method`, `--url` |
 | `import` | `--file` or `--attachment-token` + mode flag |
-| `scrape search` | `--query` |
-| `scrape run` | `--dataset-id`, `--inputs` |
-| `scrape status` | `--snapshot-id` |
+| `scrape search` | platform or relevance search inputs |
+| `scrape inspect` | `--endpoint-id` |
+| `scrape run` | `--endpoint-id`, `--input` |
+| `scrape status` | `--job-id` |
+| `query repairs` | optional app/repair ID |
+| `query repair-apply/repair-dismiss` | `--repair-id` |
+| `template install/status/submit` | see [Template Guide](template-guide.md) |
 | `send-email` | `--subject`, `--body`, `--to`/`--bcc` |
 | `import-airtable` | `--airtable-base-id` + `--space-id`/`--base-name` (new project) — note: `--base-id` here is an **optional import target** (no `-b` short flag), not the usual configured Teable project |
 | `import-google-sheet` | `--spreadsheet-id` + `--space-id`/`--base-name` (new project) — `--base-id` is an optional existing import target, not project context |
@@ -116,4 +127,4 @@ Commands that accept it show `-b, --base-id <baseId>` in their options. The tabl
 
 ## Commands that do NOT need --base-id
 
-`auth` / `auth status`, `config`, `base list/create`, `artifact update/get`, `upload-attachment`, `import-status`, `integration list/connect/get-token`, `env list/set/update/delete`, `secret list/set/grant/revoke/delete`
+`auth` / `auth status`, `config`, `base list/create`, `artifact update/get`, `upload-attachment`, `import-status`, `integration list/search/connect/get-token`, `link`, `operation capabilities/preview`, `template search`, `query execute/inline/explain`, offline `query schema/manifest-schema/validate/generate/lint/deps/coverage`, `env list/set/update/delete`, `secret list/set/grant/revoke/delete`

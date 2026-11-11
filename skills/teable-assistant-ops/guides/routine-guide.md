@@ -4,7 +4,7 @@ Use routines for headless agent work that can be expressed as a self-contained p
 
 ## Safe workflow
 
-1. Write a prompt containing all context each run needs; routines do not see the current conversation.
+1. Check `routine list` for an existing routine doing the task; update it rather than duplicating it for additional times. Write a prompt containing all context each run needs; routines do not see the current conversation.
 2. Preview creation with `routine create --dry-run`. For schedules, confirm timezone, bounds, and upcoming occurrences. For connector events, confirm the toolkit, event type, and event parameters.
 3. Create as a draft. For a connector event, create without an account, request the connection for the returned routine ID, then update the routine with the returned alias.
 4. Use `routine run-now` to preview real behavior, retain its run ID, and poll `routine get-run` until terminal. An inactive connector-event routine waits up to 30 minutes for the next real event, so ask the user to trigger it in the connected app.
@@ -19,6 +19,7 @@ Use routines for headless agent work that can be expressed as a self-contained p
 
 ## Scheduling decisions
 
+- One task, one routine: put multiple schedules in `scheduleConfig.rrules`; the routine runs whenever any rule fires. Group hours only when they share minutes to avoid an accidental hour/minute cross-product. For 08:00, 10:30 and 12:15 use `{"rrules":["FREQ=DAILY;BYHOUR=8;BYMINUTE=0","FREQ=DAILY;BYHOUR=10;BYMINUTE=30","FREQ=DAILY;BYHOUR=12;BYMINUTE=15"]}`.
 - RRULE times are wall-clock values in the specified IANA timezone. Keep timezone separate; do not put `TZID`, `DTSTART`, or `UNTIL` in the RRULE.
 - Use `starting` to anchor intervals and one-shot dates; use `ending` for a time boundary and `COUNT` for a bounded number of occurrences.
 - Prefer fresh chats for independent runs. Continue the previous chat only when later runs intentionally depend on accumulated conversational state.

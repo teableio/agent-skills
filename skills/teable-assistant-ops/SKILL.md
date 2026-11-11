@@ -21,7 +21,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 - All operations use `teable` CLI. Only check auth (`auth status`) if a command fails.
 - **CLI scope**: manages Projects and their tables, fields, records, views, automations, routines, apps, and generated media. It cannot create Spaces (direct the user to Teable web UI).
 - **Install**: if `teable` not found → run the install script at `scripts/install.sh` relative to this skill's directory. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
-- **`--base-id`**: omit by default; ask user only if a command fails. See [guides/base-id-reference.md](guides/base-id-reference.md).
+- **Project context**: use the supplied project ID; otherwise reuse the directory binding/default. Use `teable link` to discover/bind a project, and ask only if the target remains ambiguous. Explicit `--base-id` overrides the nearest directory/parent binding, then user config. See [guides/base-id-reference.md](guides/base-id-reference.md).
 - **Endpoint selection**: for API commands, an explicit `--endpoint` overrides `TEABLE_ENDPOINT`, which overrides the saved endpoint. Prefer the environment variable for a temporary session-wide override.
 - **Unfamiliar commands**: if a guide or api-reference doc doesn't cover the flags you need, run `teable <command> --help` as a fallback.
 - **Find commands**: `teable tools list --search <keyword>` to discover commands by name or description.
@@ -32,7 +32,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 
 | Module | What it solves | Entry commands | Guide to read |
 |--------|---------------|----------------|---------------|
-| Data Query | Read records, analytics and access boundaries | `record get`, `sql-query`; discover other installed capabilities before use | [data-query-guide.md](guides/data-query-guide.md), [CLI reference](guides/cli-reference.md#data-queries) |
+| Data Query | Read records, analytics, named-query diagnostics and repairs | `record get`, `sql-query`, `query *` | [data-query-guide.md](guides/data-query-guide.md), [CLI reference](guides/cli-reference.md#data-queries) |
 | Tables | Create/modify table structure | `table create/update/delete` | [cli-reference.md § Field Type Aliases](guides/cli-reference.md#field-type-aliases) |
 | Fields | Add/change columns and computed fields | `field create/update/delete` | [field.simple.md](api-reference/field.simple.md) |
 | Records | Write row data, attachments, reordering | `record create/update/delete` | [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) |
@@ -40,10 +40,13 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | Import | CSV/Excel loading; Airtable or Google Sheets migration | `import`, `import-status`, `import-airtable`, `import-google-sheet` | [data-import-guide.md](guides/data-import-guide.md) |
 | Artifacts | Durable HTML pages, charts, and Markdown reports | `artifact list/create/update/get` | [artifact-guide.md](guides/artifact-guide.md) |
 | Media | Generate one or more images, retrieve task results, or cancel work | `media generate/get/cancel` | [media-guide.md](guides/media-guide.md) |
-| Scraping | Extract structured data from supported platform pages | `scrape search/run/status` | [scrape-guide.md](guides/scrape-guide.md) |
+| Scraping | Extract structured data from supported platform pages | `scrape search/inspect/run/status` | [scrape-guide.md](guides/scrape-guide.md) |
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
 | Routines | Headless agent tasks triggered by schedules or connected-app events | `routine *` | [routine-guide.md](guides/routine-guide.md) |
 | App Builder | Live dashboards, custom web UIs | `app create/update/list/get-code`, `app publish/status/unpublish`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
+| Local Apps | Edit app code externally, sync and restore versions | `app init/clone/pull/push/versions/rollback` | [app-development-guide.md](guides/app-development-guide.md) |
+| Templates | Reuse project workflows and review setup health | `template search/install/status/submit` | [template-guide.md](guides/template-guide.md) |
+| Operation Previews | Assess supported write effects before execution | `operation capabilities/preview` | [operation-guide.md](guides/operation-guide.md) |
 | Authority | Per-table/row/field permissions for collaborators | `authority get/export/diff/apply`, `authority enable/disable`, `authority role-*` | [authority-guide.md](guides/authority-guide.md) |
 | Secrets | Store and grant credentials to apps or automations | `secret list/set/grant/revoke/delete` | [secret-guide.md](guides/secret-guide.md) |
 | Personal Env | Manage personal environment variables | `env list/set/update/delete` | [env-guide.md](guides/env-guide.md) |
@@ -51,7 +54,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | Email | Send an email directly (one-off) | `send-email` | [cli-reference.md § Sending Email](guides/cli-reference.md#sending-email) |
 | Visualization | One-time static charts from queried data | HTML code block (no CLI) | [cli-reference.md § Visualization](guides/cli-reference.md#one-time-data-visualization) |
 | Nodes | Organize tables/folders in the project hierarchy | `get-node-tree`, `folder *` | [cli-reference.md § Node & Folder](guides/cli-reference.md#node--folder-management) |
-| Integrations | Slack, OAuth connections for automations | `integration list/connect/get-token` | [automation-guide.md § External](guides/automation-guide.md#external-integrations) |
+| Integrations | Discover connected-account tools and authorize accounts | `integration search/list/connect/get-token` | [integration-guide.md](guides/integration-guide.md) |
 | API Access | Any Teable API not covered by CLI commands | `search-api`, `call-api`, `tools list` | [cli-reference.md § search-api](guides/cli-reference.md#search-api--call-api) |
 
 ### 2.2 Routing Rules
@@ -106,7 +109,7 @@ For complete syntax, value formats, and all command options, read [cli-reference
 - **App secrets**: grant personal secrets or OAuth connections to the app; do not use personal env variables for resource credentials. See [secret-guide.md](guides/secret-guide.md).
 - **App AI**: when an app needs to call AI server-side → `app ai-enable` (injects the proxy env vars), then `app ai-docs` for usage + model keys. See [app-builder-guide.md § AI in apps](guides/app-builder-guide.md#ai-in-apps).
 - **App login**: to require end-user auth for a generated app → `app login-config`. See [app-builder-guide.md § App login](guides/app-builder-guide.md#app-login--authentication).
-- **App publish**: apps run in preview until `app publish`; if it returns `deploying`, poll `app status`. See [app-builder-guide.md § Publishing](guides/app-builder-guide.md#publishing).
+- **App publish**: apps run in preview until `app publish`; prefer `--wait` for a final result, otherwise poll `app status` if it returns `deploying`. See [app-builder-guide.md § Publishing](guides/app-builder-guide.md#publishing).
 - **Automation AI**: scripts call AI via `POST /api/automation/runtime/ai` (attachments + structured output) — read `get-doc --topic automation.ai` first. See [automation-guide.md § Script Rules](guides/automation-guide.md#script-rules).
 - **Headless agent work**: use a routine when a self-contained prompt should run on an RRULE or a connected-app event; validate and preview before activation. See [routine-guide.md](guides/routine-guide.md).
 - **Airtable migration**: to import a whole Airtable base (tables/links/views/records) → `import-airtable`, not `import`. See [data-import-guide.md § Import from Airtable](guides/data-import-guide.md#import-from-airtable).
@@ -128,8 +131,9 @@ For complete syntax, value formats, and all command options, read [cli-reference
 
 1. **Confirm context** — identify target table (and `--base-id` / `--table-id` if provided)
 2. **Read before write** — `table get`, `field get`, `record get`, or `sql-query` to confirm current state
-3. **Execute changes** — create/update/delete as needed
-4. **Verify** — re-read to confirm the result
+3. **Preview supported destructive/non-obvious writes** — discover `operation capabilities`, preview the same input, explain blockers/unknowns and obtain required confirmation; see [operation-guide.md](guides/operation-guide.md)
+4. **Execute changes** — create/update/delete as needed
+5. **Verify** — re-read to confirm the result
 
 ### 4.2 Critical Rules (with reasoning)
 
@@ -153,6 +157,6 @@ Files in `api-reference/`, named `{category}.{subtopic}.md` — read when you ne
 **Records**: `record.value-format.md`
 **Automations**: `automation.trigger.md`, `automation.api.md`, `automation.send-email.md`
 **Integrations**: `integration.slack.md`
-**Scraping**: `scrape.datasets.md`
+**Scraping**: `scrape.guide.md` (endpoint discovery; do not use legacy dataset payloads)
 **Reference**: `reference.url.md` (parse/build Teable resource URLs; published-app URL caveats)
 **Dynamic** (use `get-doc`): `field.ai`, `app.ai`, `automation.ai`
