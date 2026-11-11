@@ -16,8 +16,7 @@ One repository serves every way of installing them:
 | [teable-app-builder](skills/teable-app-builder) | Build, change and publish Teable apps from your machine with the `teable` CLI: `teable app init\|clone` for a local checkout, the dev loop, `teable app push` to record versions, `publish`, versions and rollback. |
 
 Both skills call the [`@teable/cli`](https://www.npmjs.com/package/@teable/cli), which signs
-in through the browser. When the Teable MCP tools are also available, the skills use them to
-find projects and tables and to read and change records.
+in through the browser.
 
 ## Quick Start (AI Agent)
 

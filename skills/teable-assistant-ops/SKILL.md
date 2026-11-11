@@ -18,8 +18,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 
 ## 1. Prerequisites & Constraints
 
-- Operations use the `teable` CLI unless the Teable MCP tools apply (next point). Only check auth (`auth status`) if a command fails.
-- **Teable MCP tools** (`list-bases`, `get-tables-meta`, `get-fields`, `get-records`, `sql-query`, `create-records`, `update-records`, `delete-records`): when they are available in this session, use them for what they cover — finding projects and tables, reading fields, querying and changing records. Use the CLI for everything else in the module map. Do not install the CLI just to do something an available MCP tool already does, and do not switch between the two halfway through one job. The syntax in this skill's guides is CLI syntax; MCP tools take their own arguments.
+- All operations use `teable` CLI. Only check auth (`auth status`) if a command fails.
 - **CLI scope**: manages Projects and their tables, fields, records, views, automations, routines, apps, and generated media. It cannot create Spaces (direct the user to Teable web UI).
 - **Install**: if `teable` not found → run the install script at `scripts/install.sh` relative to this skill's directory. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
 - **Project context**: use the supplied project ID; otherwise reuse the directory binding/default. Use `teable link` to discover/bind a project, and ask only if the target remains ambiguous. Explicit `--base-id` overrides the nearest directory/parent binding, then user config. See [guides/base-id-reference.md](guides/base-id-reference.md).
