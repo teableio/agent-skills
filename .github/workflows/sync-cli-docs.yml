@@ -81,8 +81,9 @@ jobs:
         run: |
           set -euo pipefail
           # The dispatch fires right after `npm publish`; wait out registry propagation.
+          # Up to 15 minutes: new versions have taken about 4 minutes to become visible.
           found=""
-          for attempt in 1 2 3 4 5 6; do
+          for attempt in $(seq 1 30); do
             if npm view "@teable/cli@${VERSION}" version >/dev/null 2>&1; then
               found=1
               break
