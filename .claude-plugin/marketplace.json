@@ -1,0 +1,16 @@
+{
+  "name": "teable",
+  "description": "Official Teable plugin: agent skills plus the Teable MCP server, to work with your Teable projects from Claude.",
+  "owner": {
+    "name": "Teable",
+    "email": "support@teable.ai",
+    "url": "https://teable.ai"
+  },
+  "plugins": [
+    {
+      "name": "teable",
+      "source": "./",
+      "description": "Work with your Teable projects: tables, fields, records, read-only SQL and the Teable API."
+    }
+  ]
+}
