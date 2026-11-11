@@ -26,7 +26,10 @@ never copied per client.
   from the Teable product all resolve that path.
 - The two manifests carry the same `version`; raise both together when a release should
   reach plugin users.
-- `scripts/package-openai.sh` builds the ZIP for the OpenAI plugin portal into `dist/`.
+- `scripts/package-openai.sh` builds the ZIP for the OpenAI plugin portal into `dist/`. It
+  leaves out `teable-assistant-ops`: that package also reaches ChatGPT, which cannot run the
+  CLI. A new skill that needs a shell and triggers broadly belongs in the script's
+  `shell_only_skills` list.
 - `.mcp.json` needs `"type": "http"`; Claude Code drops a remote server without it.
 
 ## Creating a New Skill

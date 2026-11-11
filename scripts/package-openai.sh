@@ -11,7 +11,8 @@
 #   plugin.json  root manifest with $schema; listing, review and publication live under
 #                extensions["com.openai"] (skills are discovered from ./skills, so no field)
 #   mcp.json     each server declares type "streamable-http" and its OAuth settings
-#   skills/      every skill directory, each with a SKILL.md
+#   skills/      the skill directories that work without a shell-only assumption (see below),
+#                each with a SKILL.md
 #   assets/      icons and logos referenced from the manifest
 # The Codex and Claude manifests stay out: with extensions["com.openai"] present the portal
 # ignores .codex-plugin/plugin.json, so shipping both would only invite drift.
@@ -25,6 +26,16 @@ stage="$(mktemp -d)"
 trap 'rm -rf "$stage"' EXIT
 
 cp -R "$plugin/assets" "$plugin/skills" "$plugin/README.md" "$stage/"
+
+# The portal package also reaches ChatGPT, which cannot run shell commands. Skills listed
+# here are written for agents that can, and trigger broadly enough to pull such a client
+# away from the MCP tools, so they stay out of the archive. Codex and Claude Code still get
+# them when the plugin is installed from this repository.
+shell_only_skills=(teable-assistant-ops)
+for skill in "${shell_only_skills[@]}"; do
+  [ -d "$stage/skills/$skill" ] || { echo "skills/$skill not found" >&2; exit 1; }
+  rm -rf "$stage/skills/$skill"
+done
 
 node - "$plugin" "$stage" <<'JS'
 const fs = require("fs");
