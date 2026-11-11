@@ -18,7 +18,8 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 
 ## 1. Prerequisites & Constraints
 
-- All operations use `teable` CLI. Only check auth (`auth status`) if a command fails.
+- Operations use the `teable` CLI unless the Teable MCP tools apply (next point). Only check auth (`auth status`) if a command fails.
+- **Teable MCP tools** (`list-bases`, `get-tables-meta`, `get-fields`, `get-records`, `sql-query`, `create-records`, `update-records`, `delete-records`): when they are available in this session, use them for what they cover — finding projects and tables, reading fields, querying and changing records. Use the CLI for everything else in the module map. Do not install the CLI just to do something an available MCP tool already does, and do not switch between the two halfway through one job. The syntax in this skill's guides is CLI syntax; MCP tools take their own arguments.
 - **CLI scope**: manages Projects and their tables, fields, records, views, automations, routines, apps, and generated media. It cannot create Spaces (direct the user to Teable web UI).
 - **Install**: if `teable` not found → run the install script at `scripts/install.sh` relative to this skill's directory. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
 - **Project context**: use the supplied project ID; otherwise reuse the directory binding/default. Use `teable link` to discover/bind a project, and ask only if the target remains ambiguous. Explicit `--base-id` overrides the nearest directory/parent binding, then user config. See [guides/base-id-reference.md](guides/base-id-reference.md).
@@ -44,7 +45,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
 | Routines | Headless agent tasks triggered by schedules or connected-app events | `routine *` | [routine-guide.md](guides/routine-guide.md) |
 | App Builder | Live dashboards, custom web UIs | `app create/update/list/get-code`, `app publish/status/unpublish`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
-| Local Apps | Edit app code externally, sync and restore versions | `app init/clone/pull/push/versions/rollback` | [app-development-guide.md](guides/app-development-guide.md) |
+| Local Apps | Edit app code externally, sync and restore versions | `app init/clone/pull/push/versions/rollback` | [app-development-guide.md](guides/app-development-guide.md); the `teable-app-builder` skill, when installed, has the full local workflow |
 | Templates | Reuse project workflows and review setup health | `template search/install/status/submit` | [template-guide.md](guides/template-guide.md) |
 | Operation Previews | Assess supported write effects before execution | `operation capabilities/preview` | [operation-guide.md](guides/operation-guide.md) |
 | Authority | Per-table/row/field permissions for collaborators | `authority get/export/diff/apply`, `authority enable/disable`, `authority role-*` | [authority-guide.md](guides/authority-guide.md) |

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "teable": {
+      "type": "http",
+      "url": "https://mcp.teable.ai/mcp"
+    }
+  }
+}

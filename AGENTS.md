@@ -14,6 +14,21 @@ skills/
     └── metadata.json      # Optional: version and metadata
 ```
 
+## Plugin (Claude Code, Codex, ChatGPT)
+
+The repository root is also the Teable plugin: `.claude-plugin/` (marketplace and manifest),
+`.codex-plugin/plugin.json` (Codex / OpenAI manifest with the listing and review metadata),
+`.agents/plugins/marketplace.json` (Codex marketplace), `.mcp.json` (Teable's hosted MCP
+server) and `assets/`. Every installer reads the same `skills/` directory, so a skill is
+never copied per client.
+
+- Keep `skills/<skill-name>/` where it is: the plugin manifests, `npx skills add` and links
+  from the Teable product all resolve that path.
+- The two manifests carry the same `version`; raise both together when a release should
+  reach plugin users.
+- `scripts/package-openai.sh` builds the ZIP for the OpenAI plugin portal into `dist/`.
+- `.mcp.json` needs `"type": "http"`; Claude Code drops a remote server without it.
+
 ## Creating a New Skill
 
 1. Create a new directory under `skills/` with a descriptive kebab-case name

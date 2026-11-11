@@ -1,0 +1,108 @@
+{
+  "name": "teable",
+  "version": "1.0.0",
+  "description": "Work with your Teable projects: browse tables and fields, query, create, update and delete records, run read-only SQL, reach the rest of the Teable API, and build Teable apps locally with the teable CLI.",
+  "author": {
+    "name": "Teable",
+    "email": "support@teable.ai",
+    "url": "https://teable.ai"
+  },
+  "homepage": "https://github.com/teableio/agent-skills",
+  "repository": "https://github.com/teableio/agent-skills",
+  "license": "MIT",
+  "keywords": [
+    "teable",
+    "database",
+    "spreadsheet",
+    "no-code",
+    "records",
+    "sql"
+  ],
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills",
+  "interface": {
+    "displayName": "Teable",
+    "shortDescription": "Your AI spreadsheet database",
+    "longDescription": "Teable is an AI spreadsheet for business: spaces contain projects, projects contain tables, and tables hold fields, views and records. This plugin connects Codex and ChatGPT to your Teable account so they can find your projects and tables, read the field structure, query records, run read-only SQL for aggregates and cross-table questions, and create, update or delete records. Tables, fields, views, automations and other settings are reached through the Teable REST API with separate read and write tools, so every change is confirmed. Every request runs as you, with your own role and the permissions you approve on Teable's sign-in screen; the plugin cannot see spaces or projects you cannot. Works with app.teable.ai accounts; self-hosted Teable deployments can connect the same server through their own URL.",
+    "developerName": "Teable",
+    "category": "Productivity",
+    "capabilities": [
+      "List projects and tables",
+      "Read field definitions",
+      "Query and filter records",
+      "Run read-only SQL queries",
+      "Create, update and delete records",
+      "Manage tables, fields and views through the Teable API"
+    ],
+    "websiteURL": "https://teable.ai",
+    "supportURL": "https://github.com/teableio/agent-skills/issues",
+    "privacyPolicyURL": "https://teable.ai/mcp-terms#privacy",
+    "termsOfServiceURL": "https://teable.ai/mcp-terms#terms",
+    "defaultPrompt": [
+      "List my Teable projects and the tables in each one.",
+      "Summarize the open tasks in my Teable project tracker.",
+      "Add a record to my Teable CRM table for a new lead."
+    ],
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Discover projects and tables",
+              "prompt": "What Teable projects do I have, and which tables are in the Project Tracker project?",
+              "tools_triggered": "list-bases, get-tables-meta",
+              "expected_behavior": "Lists the test account's projects, then the tables of the Project Tracker project with their names."
+            },
+            {
+              "description": "Read and filter records",
+              "prompt": "Show me the tasks in my Project Tracker that are not done yet.",
+              "tools_triggered": "list-bases, get-tables-meta, get-fields, get-records",
+              "expected_behavior": "Returns only the task records whose status is not Done, with their names and statuses, matching the sample data."
+            },
+            {
+              "description": "Aggregate with read-only SQL",
+              "prompt": "How many tasks are in each status in my Project Tracker?",
+              "tools_triggered": "get-tables-meta, get-fields, sql-query",
+              "expected_behavior": "Returns a count per status that matches the sample data, without changing any record."
+            },
+            {
+              "description": "Create a record",
+              "prompt": "Add a task called \"Prepare launch checklist\" with status To do to my Project Tracker.",
+              "tools_triggered": "get-tables-meta, get-fields, create-records",
+              "expected_behavior": "Creates one task record with that name and status, and reports the new record's ID."
+            },
+            {
+              "description": "Update a record",
+              "prompt": "Mark the task \"Prepare launch checklist\" as Done.",
+              "tools_triggered": "get-fields, get-records, update-records",
+              "expected_behavior": "Finds that task and changes only its status to Done."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Payments are out of scope; the plugin should explain it cannot send money.",
+              "prompt": "Pay the invoice in my Teable Invoices table by transferring $500 to the vendor."
+            },
+            {
+              "description": "Data outside the connected account; the plugin should report it has no access rather than guess.",
+              "prompt": "Show me the records in another company's Teable workspace."
+            },
+            {
+              "description": "Requests unrelated to Teable; the plugin should not be used.",
+              "prompt": "What's the weather in Paris tomorrow?"
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This plugin does not sell products or process payments."
+      },
+      "publication": {
+        "release_notes": "Initial release: projects, tables, fields, records, read-only SQL, and the Teable REST API with separate read and write tools."
+      }
+    }
+  }
+}

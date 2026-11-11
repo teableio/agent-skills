@@ -1,0 +1,20 @@
+{
+  "name": "teable",
+  "interface": {
+    "displayName": "Teable"
+  },
+  "plugins": [
+    {
+      "name": "teable",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/teableio/agent-skills.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
