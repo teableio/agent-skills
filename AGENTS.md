@@ -1,6 +1,8 @@
 # Contributor Guide
 
-This repository contains a collection of agent skills. Follow these guidelines when contributing.
+This repository is frozen. Teable's agent skills, their contributor guide and the CLI doc sync
+pipeline moved to [teableio/teable-mcp](https://github.com/teableio/teable-mcp); make changes there. The notes below describe
+the layout of what remains.
 
 ## Repository Structure
 
@@ -80,81 +82,3 @@ existing files so new material lands where a reader would look for it.
 - [ ] All relative links in SKILL.md resolve correctly
 - [ ] Supporting files are well-organized and follow naming conventions
 - [ ] No sensitive data (API keys, tokens, credentials) in any files
-
-## Automated CLI doc sync (teable-assistant-ops)
-
-When `@teable/cli` is published (dist-tag `latest`), teable-enterprise's
-`publish-cli.yaml` sends a `cli-published` repository_dispatch to this repo with
-`{version, source_ref}`. The `sync-cli-docs` workflow then:
-
-1. installs the published CLI and runs the hidden `teable manifest` command
-   (deterministic JSON of the full command surface, teable-ee#3155);
-2. diffs it against the committed snapshot `.github/teable-cli-manifest.json`
-   via `scripts/diff-cli-manifest.mjs` — **an empty diff ends the run** (patch
-   releases with no surface change never open a PR);
-3. on a non-empty diff, runs the [pi coding agent](https://pi.dev) against an
-   OpenAI-compatible endpoint to update the skill docs, then opens/updates a PR
-   on the fixed branch `bot/sync-cli-docs` (a newer release supersedes an
-   unmerged sync PR). **Sync PRs are always human-reviewed before merge.**
-
-When `GROUP_WEBHOOK_URL` is set, two notifications are POSTed to it as
-structured JSON (the receiver — a Teable automation — renders the message):
-`sync-cli-docs-pr` from inside the sync workflow when the PR is created or
-updated, and `sync-cli-docs-merged` from the `notify-sync-merged` workflow once
-a `bot/sync-cli-docs` PR is merged into main. Skills are installed straight
-from main, so the merged event is the "skill released for CLI vX" signal; its
-payload carries the CLI version and skill version read from the merge commit.
-
-`validate-skill-docs` CI checks every documented `teable` invocation (fenced
-shell blocks and inline `` `teable ...` `` spans) against the manifest snapshot
-via `scripts/validate-cli-docs.mjs`, so hallucinated commands or flags cannot
-land. Add `no-validate` to a fence's info string (```` ```bash no-validate ````)
-to exempt a deliberately illustrative block.
-
-Configuration (repo secrets/variables):
-
-| Name | Required | Purpose |
-|------|----------|---------|
-| `PI_BASE_URL` | yes | OpenAI-compatible endpoint base URL (secret or variable) |
-| `PI_API_KEY` | yes (secret) | API key for that endpoint |
-| `PI_MODEL` | yes | Model id at that endpoint (variable or secret) |
-| `PI_APP_ID` (variable) + `PI_APP_PRIVATE_KEY` (secret) | recommended | teable-pi-agent GitHub App (Contents + Pull requests + Issues R/W, installed on this repo). Bot PRs, `/pi` pushes, and replies act as `<app>[bot]` and trigger CI. Takes precedence over `SYNC_GITHUB_TOKEN`. |
-| `SYNC_GITHUB_TOKEN` | fallback | PAT used when the app is not configured, so CI still runs on bot PRs (default `github.token` PRs trigger no workflows) |
-| `TEABLE_EE_READ_TOKEN` | optional | Read access to teable-ee for commit-log context |
-| `GROUP_WEBHOOK_URL` | optional (secret) | Endpoint POSTed the `sync-cli-docs-pr` / `sync-cli-docs-merged` JSON payloads; unset skips both notifications |
-
-Bootstrap: until the first manifest-capable CLI (≥0.6.29) is published there is
-no snapshot; the first sync run treats that as a full diff and opens a
-one-time full-audit PR. The validator skips silently while the snapshot is
-absent. To trigger a sync manually, run the `sync-cli-docs` workflow with a
-version input.
-
-### api-reference mirror layer
-
-The `api-reference/<category>.<subtopic>.md` files (e.g. `field.formula.md`)
-are **verbatim mirrors** of the static documentation embedded in the
-`@teable/cli` bundle (what `teable get-doc --topic <t>` serves). Do not edit
-them by hand — they are regenerated mechanically by
-`scripts/dump-cli-docs.mjs` during each sync run (the script answers get-doc's
-base-context init with a local mock, so no credentials are involved).
-
-- Topics listed in `.github/teable-docs-exclusions.json` (runtime/AI-dependent
-  content such as `app.ai`) are intentionally not mirrored — agents call
-  `teable get-doc` live for those.
-- Files without a matching topic (`field.simple.md`, `view.statistic.md`) are
-  curated by hand and never touched by the regeneration.
-- Improvements to mirror content belong upstream in the CLI's embedded docs;
-  operational guidance belongs in `guides/`.
-- CI runs `dump-cli-docs.mjs --check` to flag drift between the mirrors and
-  the snapshot CLI version.
-
-### Comment-driven fixes (`/pi`)
-
-On any PR, a maintainer (OWNER/MEMBER/COLLABORATOR) can comment
-`/pi <instruction>` — top-level or as an inline review comment (inline carries
-the file/line/diff context to the agent). The `pi-pr-assistant` workflow applies
-the requested change to the PR branch, runs the doc validator (a failing
-validation is reported instead of pushed), pushes, and replies on the PR.
-Comments from other users, fork PRs, and comments not starting with `/pi` are
-ignored. Note: GitHub runs comment-triggered workflows from the default branch,
-so changes to this workflow only take effect after merging to main.

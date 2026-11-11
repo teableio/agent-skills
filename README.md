@@ -1,66 +1,37 @@
 # Agent Skills
 
-Agent skills for [Teable](https://teable.ai), an AI spreadsheet for business. These skills help AI assistants manage structured data, build apps, and automate workflows with the Teable CLI.
+> **This repository has moved.** Teable's agent skills now live in
+> [teableio/teable-mcp](https://github.com/teableio/teable-mcp), next to the Teable plugin and MCP server.
+> The copy here is frozen at Teable CLI 0.6.45 and no longer updated.
 
-## Skills
-
-| Skill | Description |
-| ----- | ----------- |
-| [teable-assistant-ops](skills/teable-assistant-ops) | Operate Teable projects, tables, fields, views, records, SQL queries, and automations with a safe read-before-write process. |
-
-## Quick Start (AI Agent)
-
-> The following steps are for AI agents. Some steps require the user to complete actions in a browser.
-
-### Step 1 — Install skill
+## Install the current skills
 
 ```bash
-npx skills add https://github.com/teableio/agent-skills
+npx skills add https://github.com/teableio/teable-mcp
 ```
 
-### Step 2 — Install Teable CLI and authenticate
+That installs `teable-assistant-ops` (operate Teable projects with the `teable` CLI) and
+`teable-app-builder` (build Teable apps from a local checkout). On Claude Code and Codex you can
+install the Teable plugin instead, which adds the MCP server as well; see the
+[teable-mcp README](https://github.com/teableio/teable-mcp#readme).
 
-> Run this from the installed `teable-assistant-ops` skill directory. The script installs or upgrades `@teable/cli`, then proactively starts CLI browser authentication when no valid login is found. If an authorization URL is printed, extract it and send it to the user.
+## For AI agents
 
-```bash
-bash scripts/install.sh
-```
+If you were asked to read this repository and install the Teable agent skill, follow
+[Setting up the skills from an agent](https://github.com/teableio/teable-mcp#setting-up-the-skills-from-an-agent)
+in the new repository instead: install from there, then run the CLI install script and verify
+sign-in as described.
 
-### Step 3 — Verify
+## If you installed from here before
 
-```bash
-teable --version
-teable auth status
-```
+Run the install command above to switch to the maintained copy, then remove the old
+`teable-assistant-ops` if your agent keeps both.
 
-## Usage
+## What is left here
 
-Install via the skills CLI:
-
-```bash
-npx skills add https://github.com/teableio/agent-skills
-```
-
-## Structure
-
-```
-skills/
-└── <skill-name>/
-    ├── SKILL.md           # Skill definition (entry point for agents)
-    ├── api-reference/     # API documentation (optional)
-    ├── guides/            # Usage guides (optional)
-    ├── rules/             # Rule files compiled into AGENTS.md (optional)
-    └── metadata.json      # Version and metadata (optional)
-```
-
-Each skill follows the [Agent Skills](https://agentskills.io/) format:
-
-- **`SKILL.md`** is the entry point that agents read first. It contains frontmatter (name, description) and instructions.
-- Supporting files (API references, guides, rules) provide detailed knowledge that agents load on demand.
-
-## Contributing
-
-See [AGENTS.md](AGENTS.md) for contributor guidelines.
+`skills/teable-assistant-ops` stays so that existing install commands keep working. It is not
+synced with new CLI releases. Report problems at
+[teableio/teable-mcp issues](https://github.com/teableio/teable-mcp/issues).
 
 ## License
 
