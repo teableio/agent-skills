@@ -23,8 +23,15 @@ Content-Type: application/json
 | bcc | string \| string[] | No (to or bcc required) | BCC recipients |
 | senderName | string | No | Sender display name |
 | replyTo | string | No | Reply-to address |
-| headers | object | No | Custom SMTP headers. `List-Unsubscribe` and `List-Unsubscribe-Post` are managed by Teable. |
+| headers | object | No | Custom SMTP headers. When Teable adds its unsubscribe link (see below), it owns `List-Unsubscribe` and `List-Unsubscribe-Post`. |
 | smtp | object | No | Custom SMTP config |
+| unsubscribe | boolean | No | With `smtp`: set `true` for marketing email (newsletters, announcements, campaigns). See Unsubscribe below. |
+
+## Unsubscribe
+
+- Without `smtp` (Teable's default mail server), every email gets an unsubscribe link and one-click `List-Unsubscribe` headers, and recipients who unsubscribed from this base are skipped.
+- With `smtp`, none of that happens by default, so replies to forms or tickets and other notifications reach the person even after they unsubscribed from marketing. Set `unsubscribe: true` for marketing email to get the link, the headers and the skipping. Gmail and Yahoo require one-click unsubscribe for bulk marketing email.
+- An email with `unsubscribe: true` should go to one recipient per request: the unsubscribe link belongs to the first recipient.
 
 ## Examples
 
@@ -114,7 +121,9 @@ await fetch(process.env.PUBLIC_ORIGIN + '/api/automation/runtime/email', {
       secure: false,
       sender: 'noreply@myapp.com',
       auth: { user: 'apikey', pass: 'sendgrid-api-key' }
-    }
+    },
+    // A newsletter is marketing email: add the unsubscribe link and skip unsubscribed recipients.
+    unsubscribe: true
   })
 });
 ```

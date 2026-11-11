@@ -42,7 +42,7 @@ teable import --file data.csv --table-name "Sales" --folder-id <folderNodeId>
 
 `teable import-airtable` migrates a **whole Airtable base** — tables, fields, links, views, records, and attachments — via the native importer. Unlike the row-level [`import`](#quick-start) command (which loads tabular files into a table), this creates a **new project** by default (or targets an existing one with `--base-id`).
 
-**Credential**: automatic when the user has connected Airtable via the connectors UI — the connected integration's token is auto-detected and refreshed server-side, so nothing needs to be pasted. Override with `--integration-id <id>`, `--access-token <pat>`, or the `AIRTABLE_TOKEN` env var. (`integration connect` cannot connect Airtable — its `--provider` only accepts `slack`.)
+**Credential**: automatic when the user has connected Airtable via the connectors UI — the connected integration's token is auto-detected and refreshed server-side, so nothing needs to be pasted. Override with `--integration-id <id>`, `--access-token <pat>`, or the `AIRTABLE_TOKEN` env var. Connect missing accounts with `integration connect --provider airtable`; see [Integration Guide](integration-guide.md).
 
 **Flow:**
 

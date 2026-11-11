@@ -74,6 +74,8 @@ Formatting controls display without changing stored values. Available for number
 
 Custom formats also supported using YYYY, MM, DD tokens.
 
+The field editor offers Local, Friendly, US, European, Asian, ISO, year/month, month/day, year, month, and day presets. Local and ISO remain separate choices even when their format strings match. Only the format string is saved, not the preset label; reopening the editor selects the first matching preset (Local when equivalent). Non-preset strings display as Custom.
+
 ### Time Formats
 - `HH:mm` - Hour24
 - `hh:mm A` - Hour12

@@ -12,12 +12,15 @@ Rollup fields aggregate data from other tables. There are two types:
 - **Essence**: Aggregates records that are already linked to the current record
 - **Prerequisite**: Must have an existing Link field establishing the relationship
 - **SQL Analogy**: `SELECT SUM(...) FROM linked_records WHERE id IN (current_record.link_ids)`
+- **Editor**: A new rollup starts with no aggregation selected; formatting appears after selecting a function.
 
 ### Conditional Rollup (type: "conditionalRollup")
 - **Essence**: Automatically links to foreign table with dynamic filter conditions and aggregates
 - **Prerequisite**: No Link field needed, directly specify foreign table
 - **SQL Analogy**: `SELECT SUM(...) FROM foreign_table WHERE <dynamic_conditions>`
 - **Key Feature**: Filter can reference current record's field values (dynamic JOIN conditions)
+- **Create API defaults**: Omitting `options.expression` uses `countall({values})`. Explicit invalid expressions are rejected; conversion requests do not receive this creation default.
+- **Create API name**: Omitting `name` produces `<source field> Reference (<foreign table>)`, with the normal duplicate-name suffix when needed. UI-generated names may differ.
 
 ---
 

@@ -101,6 +101,7 @@ Script actions are Turing-complete: CRUD, AI generation, email, HTTP requests, S
 
 **Rules:**
 - Use built-in `fetch()` only — never `node-fetch` or other HTTP libraries
+- For sync/import keyed by a unique value, use `POST /api/table/<tableId>/record/upsert`, never create-then-catch-duplicate. Set `matchField` to one field with `unique=true`; `onConflict: "ignore"` leaves existing rows unchanged, while `"update"` writes only supplied columns.
 - `console.log` is debug-only — never use it to notify users
 - Notifications: default to **Email API** when no channel is specified (read `api-reference/automation.send-email.md` first); Slack/Teams/webhook via HTTP requests in script
 
@@ -145,7 +146,7 @@ await fetch("https://hooks.slack.com/...", {
 
 ## External Integrations
 
-Use `integration list` to check connected services, `integration connect --provider slack` to start OAuth, and `integration get-token --integration-id intXXX` to get access tokens.
+For tool discovery and account authorization, read [Integration Guide](integration-guide.md). Use `integration list` to check connected services, `integration connect --provider slack` to start OAuth, and `integration get-token --integration-id intXXX` to get access tokens.
 
 To use integrations in scripts:
 1. `integration list` — get integration IDs

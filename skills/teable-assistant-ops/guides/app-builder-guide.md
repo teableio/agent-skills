@@ -1,5 +1,7 @@
 # App Builder Guide
 
+For editable local checkouts, sync and version rollback, use [Local App Development](app-development-guide.md); `app get-code` remains an inspection-only snapshot.
+
 ## When to Use
 
 - Dashboards with live data, custom web interfaces, interactive tools, monitoring panels
@@ -81,7 +83,7 @@ teable app status --app-id appXXX      # check publish status
 teable app unpublish --app-id appXXX   # take the published app offline
 ```
 
-If `app publish` returns `deploying`, poll `teable app status --app-id appXXX` until it reports `success` or `failed`.
+Prefer `app publish --wait` when a final deployment result is needed: progress streams to stderr and final JSON reports the URL/error. It can infer the app ID from an enclosing checkout's `.teable/app.json`. Without waiting, if `app publish` returns `deploying`, poll `teable app status --app-id appXXX` until it reports `success` or `failed`.
 
 ## AI in apps
 

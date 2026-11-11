@@ -70,7 +70,7 @@ Applies to: user, createdBy, lastModifiedBy
 
 ### User (Multiple)
 ```typescript
-"hasAnyOf" | "hasAllOf" | "isExactly" | "hasNoneOf" | "isNotExactly" | "isEmpty" | "isNotEmpty"
+"hasAnyOf" | "hasAllOf" | "isExactly" | "isNotExactly" | "hasNoneOf" | "isEmpty" | "isNotEmpty"
 ```
 **When `isMultipleCellValue: true`**
 Note: Uses "has" operators instead of "is" operators

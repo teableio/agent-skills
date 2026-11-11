@@ -1,28 +1,19 @@
 # Scraping Guide
 
-Use scraping for structured records from supported platforms, not as a generic page fetcher. Fetch ordinary or unsupported pages directly.
+Use scraping for public/platform data and live facts outside the project and the user's own accounts. Fetch ordinary public pages directly first; use scraping when blocked or when structured platform data is needed. Connected-account work belongs to [integrations](integration-guide.md).
 
-> **Reference**: [scrape.datasets.md](../api-reference/scrape.datasets.md) — curated datasets and exact input shapes
+> **Reference**: [scrape.guide.md](../api-reference/scrape.guide.md) or `teable get-doc --topic scrape.guide`
 
-## Dataset and mode selection
+## Find → inspect → run
 
-1. Consult the curated reference. For a specific page, choose the stable URL-collector dataset; for search results, feeds, profile posts, categories, or hashtags, choose the matching `*_by_*` discovery dataset.
-2. If no curated choice supports the requested mode, use `scrape search` with the platform plus data type. Its raw `gd_` result includes collector inputs and discovery modes.
-3. For a raw `gd_` discovery mode, pass its `discoverBy` value and exactly that mode's input fields. Preserve field names and JSON types; similar datasets often use different names such as `keyword`, `keywords`, or `search_keyword`.
+1. When a platform is named, use `scrape search` with `--platform` and the requested data `--type` to compare sources by required inputs. Otherwise use `--query` with `--use-case` containing the user's request and subject. Choose the endpoint whose required inputs match what the user supplied; among equally suitable endpoints prefer the cheaper one.
+2. Inspect only the selected endpoint with `scrape inspect`. Build the input exactly from `inputSchema`, preserving JSON types; use `outputSchema` when present to judge whether the needed fields are returned. Inspect another only if the first cannot take the input.
+3. Run once per input object. A specified endpoint skips search, not inspection; a specified source pins the source. Reuse the previous endpoint when appending to a table so columns stay aligned.
 
-Batch inputs only when they share a dataset ID and mode. Keep the default `--limit-per-input` (10) unless the user asks for more: every returned record is billed. Credits for inputs × limit are held while the scrape runs, so pass `--limit-per-input 1` when each input is a single page (a profile, product page, single post, or video). One call may not exceed 1000 records (inputs × limit); split larger jobs.
+The scraper menu's “What to scrape” text is input, not a table name: a URL identifies a page/object, words imply a keyword/name search. Do not ask the user to repeat supplied input or confirm a single run.
 
-```bash
-teable scrape search --query "glassdoor company reviews"
-teable scrape run --dataset-id gd_XXXX --discover-by keyword --inputs '[{"keyword":"database engineer","location":"Berlin"}]' --limit-per-input 20
-```
+Keep endpoint volume fields small unless more results are requested; an endpoint without a limit can return everything it finds. Inspect is free; runs are billed regardless of outcome, with `maxCredits` held while running. If refused for the per-run limit, choose a cheaper endpoint or smaller input. Attribute the source in replies, not prices/credits.
 
-## Asynchronous results
+## Results and safe retries
 
-`teable scrape run` starts the job and immediately returns a snapshot ID. Retain it and fetch the result with status polling; a wait of up to 120 seconds can reduce repeated calls.
-
-```bash
-teable scrape status --snapshot-id s_XXXX --wait 60
-```
-
-If the status remains pending, repeat **status** with the same snapshot ID. Never rerun `scrape run` for the same inputs: that starts and bills a second job rather than resuming the first.
+Sync endpoints return data directly; async endpoints return a `jobId`. Retain it and poll `teable scrape status --job-id scjXXXX --wait 60` (wait is bounded at 120 seconds). If still pending, repeat **status** with the same job ID. Never rerun `scrape run` to resume pending work: it starts and bills a second run.
