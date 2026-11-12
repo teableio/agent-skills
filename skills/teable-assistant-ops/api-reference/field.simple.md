@@ -49,6 +49,8 @@ This guide summarizes all smart features for efficient field creation.
 
 ## ⚡ NAME RESOLUTION (Use Names, Not IDs!)
 
+Names require project context (`--base-id` or a binding/default). Target fields load on demand; unknown names fail before creation. For a lookup, omit `type` with project context to inherit the target field's exact type. Without project context, supply IDs and the exact type explicitly.
+
 ### Link Fields
 ```typescript
 // ✅ PREFERRED: Use table NAME
@@ -96,9 +98,9 @@ When something's wrong, errors include:
 ### Lookup with Name Resolution
 ```typescript
 {
+  baseId: "bseXXX", // project context enables name resolution and type inheritance
   tableId: "tblXXX",
   name: "Project Name",
-  type: "text",
   isLookup: true,
   lookupOptions: {
     linkFieldName: "Project",

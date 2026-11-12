@@ -18,7 +18,8 @@ Content-Type: application/json
 |-------|------|----------|-------------|
 | to | string \| string[] | No (to or bcc required) | Recipient email(s) |
 | subject | string | Yes | Email subject |
-| body | string | Yes | Email body (Markdown or HTML) |
+| body | string | Yes | Email body, read as Markdown unless `bodyType` is `html` |
+| bodyType | `markdown` \| `html` | No (default `markdown`) | `html` sends `body` as-is, without Markdown rendering. Use it for a complete HTML email (tables, inline styles) |
 | cc | string \| string[] | No | CC recipients |
 | bcc | string \| string[] | No (to or bcc required) | BCC recipients |
 | senderName | string | No | Sender display name |
@@ -74,7 +75,8 @@ await fetch(process.env.PUBLIC_ORIGIN + '/api/automation/runtime/email', {
   body: JSON.stringify({
     to: ['user1@example.com', 'user2@example.com'],
     subject: 'Notification',
-    body: '<h1>HTML works too</h1>',
+    body: '<h1>Hello</h1><p style="color: #555;">Sent as HTML.</p>',
+    bodyType: 'html',
     senderName: 'My App',
     smtp: {
       host: 'smtp.gmail.com',
@@ -137,9 +139,13 @@ await fetch(process.env.PUBLIC_ORIGIN + '/api/automation/runtime/email', {
 | Amazon SES | email-smtp.{region}.amazonaws.com | 587 |
 | SendGrid | smtp.sendgrid.net | 587 |
 
+## HTML Body
+
+With `bodyType: 'html'`, `body` is the email HTML: write the markup yourself (`<p>`, `<br>`, `<table>`, inline `style`), since newlines and Markdown syntax are not converted. Prefer it over Markdown when the email is already HTML, for example a generated template.
+
 ## Body Rendering (markdown-it)
 
-The `body` field is rendered using **markdown-it** with:
+With the default `bodyType: 'markdown'`, the `body` field is rendered using **markdown-it** with:
 - `html: true` - Raw HTML allowed
   - Important: `<!-- -->` html comment will break the email rendering, do not use it! 
 - `breaks: true` - \n → `<br>`

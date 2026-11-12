@@ -71,7 +71,7 @@ Use `teable link bseXXXX` to bind a working directory. Without an ID, `teable li
 | `artifact list` | — |
 | `artifact create` | `--file`, `--name` |
 
-`artifact list` accepts optional project context; omit it to search across all projects. `artifact update/get` target an artifact ID directly and do not accept `--base-id`.
+`artifact list` accepts optional project context; omit it to search across all projects. `artifact update/get/share` target an artifact ID directly and do not accept `--base-id`.
 
 ### Media
 
@@ -119,7 +119,7 @@ Use `teable link bseXXXX` to bind a working directory. Without an ID, `teable li
 | `scrape status` | `--job-id` |
 | `query repairs` | optional app/repair ID |
 | `query repair-apply/repair-dismiss` | `--repair-id` |
-| `template install/status/submit` | see [Template Guide](template-guide.md) |
+| `template install/status/submit/guide/guide-save` | see [Template Guide](template-guide.md) |
 | `send-email` | `--subject`, `--body`, `--to`/`--bcc` |
 | `import-airtable` | `--airtable-base-id` + `--space-id`/`--base-name` (new project) — note: `--base-id` here is an **optional import target** (no `-b` short flag), not the usual configured Teable project |
 | `import-google-sheet` | `--spreadsheet-id` + `--space-id`/`--base-name` (new project) — `--base-id` is an optional existing import target, not project context |
@@ -127,4 +127,4 @@ Use `teable link bseXXXX` to bind a working directory. Without an ID, `teable li
 
 ## Commands that do NOT need --base-id
 
-`auth` / `auth status`, `config`, `base list/create`, `artifact update/get`, `upload-attachment`, `import-status`, `integration list/search/connect/get-token`, `link`, `operation capabilities/preview`, `template search`, `query execute/inline/explain`, offline `query schema/manifest-schema/validate/generate/lint/deps/coverage`, `env list/set/update/delete`, `secret list/set/grant/revoke/delete`
+`auth` / `auth status`, `config`, `base list/create`, `artifact update/get/share`, `upload-attachment`, `import-status`, `integration list/search/connect/get-token`, `link`, `operation capabilities/preview`, `template search`, `query execute/inline/explain`, offline `query schema/manifest-schema/validate/generate/lint/deps/coverage`, `env list/set/update/delete`, `secret list/set/grant/revoke/delete`

@@ -126,7 +126,9 @@ teable app login-config --app-id appXXX --login-config '{
 | `enabled` | `true` to require login, `false` to disable |
 | `userTableId` | Table ID that stores user records |
 | `emailFieldId` | Field ID of the email column in the user table |
-| `providers` | Array of `{ "type": ... }`: `"email-otp"`, `"google"`, or `"teable"` |
+| `providers` | Array of `{ "type": ... }`: `"email-otp"`, `"google"`, `"teable"`, or `"oidc"` (SSO through the instance admin's configured identity provider) |
 | `access` (optional) | `{ "mode": "open" \| "domain" \| "existing-only", "domains": [...] }` — `domains` only used in `domain` mode |
+
+`app login-config` replaces the **whole** config, not a patch. Before adding a provider, inspect the current config and resend it with the provider appended, preserving user table, email field, access restrictions and other providers. OIDC requires an instance-admin-configured identity provider; do not invent its configuration in the app payload.
 
 Pass `--login-config null` to disable login entirely.

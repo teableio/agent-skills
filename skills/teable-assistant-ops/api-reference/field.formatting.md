@@ -118,3 +118,7 @@ The field editor offers Local, Friendly, US, European, Asian, ISO, year/month, m
 - Number precision: 0-5 decimal places
 - DateTime always stores as ISO 8601 UTC internally
 - Formatting applies to computed fields based on cellValueType
+- Formula, rollup, and conditionalRollup fields accept number formatting directly on creation; do not add date, time, or timeZone to number formatting
+- For computed fields, options.timeZone controls computation separately from display formatting. An explicit display timezone is preserved; numeric formatting never gains datetime properties
+- CLI/AI formula creation (field create and table create): explicit options.timeZone wins. Otherwise, when referenced date fields have one distinct formatting.timeZone, that timezone is used for computation and missing datetime display timezone
+- If referenced date timezones conflict, or no referenced date timezone is available (including TODAY()/NOW() without date references), formula creation retains the operator-context timezone fallback; without operator context it uses UTC. The returned warnings report the selected timezone and why it was chosen. Specify options.timeZone to resolve ambiguity
