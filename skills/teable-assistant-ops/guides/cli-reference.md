@@ -45,7 +45,7 @@ For choosing a read entry, inline execution, versioned App-local named queries, 
 
 - **record get** — record IDs for subsequent writes, `--search` for fuzzy search, simple pagination. Returns compact tabular output with an `id` column per row.
 - **sql-query** — JOINs across tables, aggregations (COUNT/SUM/AVG/GROUP BY), complex WHERE, subqueries. Returns flat rows without record IDs. Read-only (SELECT only).
-- **Aggregation**: prefer `sql-query` with GROUP BY. Alternatively, `search-api --query "aggregation"` + `call-api` for the dedicated aggregation endpoint.
+- **Counts/statistics**: use `record count` for row totals and `record stats` for whole-table/view/filter field summaries. Use `sql-query` with GROUP BY for groups or buckets; see [count/statistics decisions](data-query-guide.md#counts-and-field-statistics).
 
 ```bash
 # record get defaults to all fields; use --projection to select specific ones
@@ -144,7 +144,7 @@ Before `folder delete`, inspect the tree and preview with `--dry-run`. Deletion 
 
 Always `get-node-tree` first to see current structure. Reorder with: `folder move --node-id <nodeId> --parent-id <parentId> --anchor-id <siblingId> --position before|after`.
 
-To create a table directly inside a folder, pass `--folder-id` to `table create` or `import` (also supported by `import-airtable` with `--base-id`, and `app create`).
+To create a table directly inside a folder, pass `--folder-id` to `table create` or `import file` (also supported by `import airtable` with `--base-id`, and `app create`).
 
 ## Authority Matrix (Advanced Permissions)
 

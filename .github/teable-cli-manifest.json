@@ -1,6 +1,6 @@
 {
   "name": "teable",
-  "version": "0.6.51",
+  "version": "0.6.52",
   "description": "Teable AI Tools CLI for operating Teable projects, tables, fields, views, records, SQL read queries, and related app/automation workflows with a safe read-before-write process.",
   "options": [
     {
@@ -12,7 +12,7 @@
       "description": "Show CLI version"
     }
   ],
-  "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable projects, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                  Show CLI version\n  --debug                        Enable debug output (verbose logging to stderr)\n  -h, --help                     display help for command\n\nSetup:\n  auth|init [options]            Manage auth for teable\n  config                         Manage project-level CLI configuration\n  link [options] [baseId]        Bind this directory to a project so commands here need no --base-id\n\nResources:\n  query                          query operations (schema, execute, inline, explain,\n                                 manifest-schema, validate, generate, lint, deps, coverage, repairs,\n                                 repair-apply, repair-dismiss)\n  operation                      operation operations (capabilities, preview)\n  media                          media operations (generate, get, cancel)\n  base                           project operations (create, get, list, update, delete)\n  template                       template operations (search, install, status, submit, guide,\n                                 guide-save)\n  table                          table operations (create, get, update, delete)\n  field                          field operations (create, get, update, delete)\n  record                         record operations (create, get, update, delete)\n  view                           view operations (create, get, update, delete)\n  app                            app operations (list, get-code, create, update, delete, publish,\n                                 status, unpublish, login-config, ai-docs, ai-enable, init, clone,\n                                 pull, push, versions, rollback)\n  automation                     automation operations (list, get, update, activate, setup-trigger,\n                                 delete, test-node, delete-node, generate-script,\n                                 generate-flowchart, get-script-input, get-runs, get-run)\n  routine                        routine operations (create, list, get, update, activate,\n                                 deactivate, delete, run-now, get-runs, get-run)\n  authority                      authority operations (get, export, diff, apply, enable, disable,\n                                 role-list, role-get, role-delete, role-duplicate)\n  folder                         folder operations (create, update, delete, move)\n  artifact                       artifact operations (list, create, update, get, share)\n  scrape                         scrape operations (search, inspect, run, status)\n  integration                    integration operations (connect, list, get-token, search)\n  env                            env operations (list, set, update, delete)\n  secret                         secret operations (list, set, grant, revoke, delete)\n  sandbox                        sandbox operations (tool)\n  skill                          skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]        Get the tree structure of all nodes (tables, automations, apps,\n                                 etc.) in a project\n  search-api [options]           Search available APIs by description to find the right endpoint\n  get-doc [options]              Get documentation for a topic\n  tools                          Tool discovery and metadata commands\n  sql-query [options]            Execute SQL query on tables\n  get-collaborators [options]    Get collaborators in the current project with pagination and search\n  get-ai-config [options]        Get AI field configuration documentation with available models\n  import [options]               Import tabular data into Teable (analyzes by default; --table-name\n                                 creates, --table-id appends)\n  import-airtable [options]      Import an Airtable base into Teable\n  import-google-sheet [options]  Import a Google spreadsheet into Teable\n  import-status [options]        Query import job status for a table\n  upload-attachment [options]    Upload a local file as an attachment\n  call-api [options]             Call any Teable API (axios-style: method, url, params, data)\n  trigger-ai-fill [options]      Trigger AI generation for an AI-configured field\n  send-email [options]           Send an email to one or more recipients (system SMTP by default, or\n                                 --smtp for a custom transport)\n\nCommands:\n  help [command]                 display help for command\n\nProject = API base (bse-prefixed ID). Commands use teable base and --base-id.\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
+  "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable projects, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                Show CLI version\n  --debug                      Enable debug output (verbose logging to stderr)\n  -h, --help                   display help for command\n\nSetup:\n  auth|init [options]          Manage auth for teable\n  config                       Manage project-level CLI configuration\n  link [options] [baseId]      Bind this directory to a project so commands here need no --base-id\n\nResources:\n  query                        query operations (schema, execute, inline, explain, manifest-schema,\n                               validate, generate, lint, deps, coverage, repairs, repair-apply,\n                               repair-dismiss)\n  operation                    operation operations (capabilities, preview)\n  media                        media operations (generate, get, cancel)\n  base                         project operations (create, get, list, update, delete)\n  template                     template operations (search, install, status, submit, guide,\n                               guide-save)\n  table                        table operations (create, get, update, delete)\n  field                        field operations (create, get, update, delete, ai-docs, ai-fill,\n                               ai-status)\n  record                       record operations (create, get, update, delete, count, stats)\n  import                       import operations (file, airtable, google-sheet, status)\n  view                         view operations (create, get, update, delete)\n  app                          app operations (list, get-code, create, update, delete, publish,\n                               status, unpublish, login-config, ai-docs, ai-enable, init, clone,\n                               pull, push, versions, rollback)\n  automation                   automation operations (list, get, update, activate, setup-trigger,\n                               delete, test-node, delete-node, generate-script, generate-flowchart,\n                               get-script-input, get-runs, get-run)\n  routine                      routine operations (create, list, get, update, activate, deactivate,\n                               delete, run-now, get-runs, get-run)\n  authority                    authority operations (get, export, diff, apply, enable, disable,\n                               role-list, role-get, role-delete, role-duplicate)\n  folder                       folder operations (create, update, delete, move)\n  artifact                     artifact operations (list, create, update, get, share)\n  scrape                       scrape operations (search, inspect, run, status)\n  integration                  integration operations (connect, list, get-token, search)\n  env                          env operations (list, set, update, delete)\n  secret                       secret operations (list, set, grant, revoke, delete)\n  sandbox                      sandbox operations (tool)\n  skill                        skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]      Get the tree structure of all nodes (tables, automations, apps, etc.)\n                               in a project\n  search-api [options]         Search available APIs by description to find the right endpoint\n  get-doc [options]            Get documentation for a topic\n  tools                        Tool discovery and metadata commands\n  sql-query [options]          Execute SQL query on tables\n  get-collaborators [options]  Get collaborators in the current project with pagination and search\n  upload-attachment [options]  Upload a local file as an attachment\n  call-api [options]           Call any Teable API (axios-style: method, url, params, data)\n  send-email [options]         Send an email to one or more recipients (system SMTP by default, or\n                               --smtp for a custom transport)\n\nCommands:\n  help [command]               display help for command\n\nProject = API base (bse-prefixed ID). Commands use teable base and --base-id.\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
   "commands": [
     {
       "name": "app",
@@ -2171,8 +2171,127 @@
     },
     {
       "name": "field",
-      "description": "field operations (create, get, update, delete)",
+      "description": "field operations (create, get, update, delete, ai-docs, ai-fill, ai-status)",
       "subcommands": [
+        {
+          "name": "ai-docs",
+          "summary": "Get AI field configuration documentation with available models",
+          "description": "Shortcut for: get-doc --topic field.ai\n\nReturns the AI-enhanced field configuration documentation with dynamically\nresolved available models for the current project. The doc includes:\n  - Available text models (for text/select/rating/date fields)\n  - Available image models (for attachment fields)\n  - AI field types: customization, extraction, classification, tag,\n    summary, translation, improvement, rating, imageGeneration, etc.\n  - aiConfig schema and usage examples",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target project ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable field ai-docs [options]\n\nShortcut for: get-doc --topic field.ai\n\nReturns the AI-enhanced field configuration documentation with dynamically\nresolved available models for the current project. The doc includes:\n  - Available text models (for text/select/rating/date fields)\n  - Available image models (for attachment fields)\n  - AI field types: customization, extraction, classification, tag,\n    summary, translation, improvement, rating, imageGeneration, etc.\n  - aiConfig schema and usage examples\n\nOptions:\n  -b, --base-id <baseId>  Target project ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
+        },
+        {
+          "name": "ai-fill",
+          "summary": "Trigger AI generation for an AI-configured field",
+          "description": "Trigger AI generation for an AI-configured field.\n\nIMPORTANT: Creating/updating a field with aiConfig does NOT automatically generate content.\nYou MUST call this tool after setting up an AI field to actually run the AI generation.\n\nMODES:\n  - Single cell: provide recordId to fill one specific record\n  - Batch fill: omit recordId to fill multiple records\n\nOPTIONS:\n  - mode: \"all\" (default) overwrites existing values\n  - mode: \"emptyOnly\" only fills cells that are currently empty\n  - viewId: limit to records visible in a specific view\n\nEXAMPLES:\n  1. Fill all records: { tableId, fieldId }\n  2. Fill one record: { tableId, fieldId, recordId: \"recXXX\" }\n  3. Fill empty only: { tableId, fieldId, mode: \"emptyOnly\" }\n\nReturns taskId for background processing. AI generation runs asynchronously.\nSuccess means the background task was accepted, not that generated values are ready.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--field-id <fieldId>",
+              "description": "The ID of the AI field to trigger generation",
+              "required": true
+            },
+            {
+              "flags": "--mode <mode>",
+              "description": "Fill mode: \"all\" overwrites existing values, \"emptyOnly\" only fills empty cells"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--record-id <recordId>",
+              "description": "Optional: specific record ID. If omitted, fills all matching records"
+            },
+            {
+              "flags": "--table-id <tableId>",
+              "description": "The ID of the table containing the AI field",
+              "required": true
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "--view-id <viewId>",
+              "description": "Optional: limit to records visible in this view"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target project ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable field ai-fill [options]\n\nTrigger AI generation for an AI-configured field.\n\nIMPORTANT: Creating/updating a field with aiConfig does NOT automatically generate content.\nYou MUST call this tool after setting up an AI field to actually run the AI generation.\n\nMODES:\n  - Single cell: provide recordId to fill one specific record\n  - Batch fill: omit recordId to fill multiple records\n\nOPTIONS:\n  - mode: \"all\" (default) overwrites existing values\n  - mode: \"emptyOnly\" only fills cells that are currently empty\n  - viewId: limit to records visible in a specific view\n\nEXAMPLES:\n  1. Fill all records: { tableId, fieldId }\n  2. Fill one record: { tableId, fieldId, recordId: \"recXXX\" }\n  3. Fill empty only: { tableId, fieldId, mode: \"emptyOnly\" }\n\nReturns taskId for background processing. AI generation runs asynchronously.\nSuccess means the background task was accepted, not that generated values are ready.\n\nOptions:\n  --table-id <tableId>    The ID of the table containing the AI field\n  --field-id <fieldId>    The ID of the AI field to trigger generation\n  --record-id <recordId>  Optional: specific record ID. If omitted, fills all matching records\n  --mode <mode>           Fill mode: \"all\" overwrites existing values, \"emptyOnly\" only fills empty\n                          cells\n  --view-id <viewId>      Optional: limit to records visible in this view\n  -b, --base-id <baseId>  Target project ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
+        },
+        {
+          "name": "ai-status",
+          "summary": "Show AI generation progress for a table, or --poll until it is done",
+          "description": "Show the AI generation still running in a table, per field.\n\nstatus \"running\" lists each field with its task progress (completedCount/totalCount)\nand the number of cells still generating; \"done\" means nothing is running for the\nselected fields. Finished runs include failed ones, so read the cells back after \"done\".\nRun it once after triggering every field: --poll waits for all of them.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--field-ids <jsonArray>",
+              "description": "Only these fields, e.g. --field-ids fldXXX,fldYYY (default: every field of the table)"
+            },
+            {
+              "flags": "--poll",
+              "description": "Wait until generation is done for the selected fields, or times out",
+              "default": false
+            },
+            {
+              "flags": "--poll-interval <ms>",
+              "description": "Polling interval in milliseconds (minimum 5000)",
+              "default": "5000"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--table-id <tableId>",
+              "description": "The table the AI fields belong to",
+              "required": true
+            },
+            {
+              "flags": "--timeout <ms>",
+              "description": "Give up after this many ms of polling; exits with status \"timeout\"",
+              "default": "600000"
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            }
+          ],
+          "help": "Usage: teable field ai-status [options]\n\nShow the AI generation still running in a table, per field.\n\nstatus \"running\" lists each field with its task progress (completedCount/totalCount)\nand the number of cells still generating; \"done\" means nothing is running for the\nselected fields. Finished runs include failed ones, so read the cells back after \"done\".\nRun it once after triggering every field: --poll waits for all of them.\n\nOptions:\n  --table-id <tableId>     The table the AI fields belong to\n  --field-ids <jsonArray>  Only these fields, e.g. --field-ids fldXXX,fldYYY (default: every field\n                           of the table)\n  --poll                   Wait until generation is done for the selected fields, or times out\n                           (default: false)\n  --poll-interval <ms>     Polling interval in milliseconds (minimum 5000) (default: \"5000\")\n  --timeout <ms>           Give up after this many ms of polling; exits with status \"timeout\"\n                           (default: \"600000\")\n  --token <token>          Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>    Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                           saved config\n  --pretty                 Indent JSON for human readability (default: false)\n  -h, --help               display help for command\n"
+        },
         {
           "name": "create",
           "summary": "Create a new field in a table",
@@ -2357,7 +2476,7 @@
           "help": "Usage: teable field update [options]\n\nUpdate field properties with partial updates or type conversion.\n\n📋 SYNTAX:\n• Partial: { updates: { name: \"New Name\" } }\n• Dot notation: { updates: { \"options.formatting.precision\": 2 } }\n• ShowAs: { updates: { \"options.showAs\": { type: \"ring\", maxValue: 100 } } }\n• Type change: { updates: { type: \"number\", options: {...} } }\n\n✅ Type aliases: \"text\"→singleLineText, \"long\"→longText, \"sel\"→singleSelect, \"multi\"→multipleSelect\n✅ Formula expressions can use field NAMES - auto-converted to IDs!\n✅ Name resolution: linkFieldName, lookupFieldName → auto-resolved\n\n⚠️ FORMATTING:\n• Currency: { type: \"currency\", symbol: \"$\", precision: 2 } (use \"symbol\", NOT \"currency\")\n• Date time: { date: \"YYYY-MM-DD\", time: \"HH:mm\" | \"hh:mm A\" | \"None\" }\n• To remove optional property: omit it from updates (null not supported)\n\nOptions:\n  --table-id <tableId>    The ID of the table containing the field\n  --field-id <fieldId>    The ID of the field to update\n  --updates <jsonObject>  Field properties to update as an object. Can include: name, description,\n                          type, options, isLookup, lookupOptions, etc. Supports nested properties\n                          using dot notation (e.g., {\"options.formatting.type\": \"currency\"})\n  --name <name>           Convenience flag: set field name (shortcut for --updates '{\"name\":\"X\"}')\n  -b, --base-id <baseId>  Target project ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
         }
       ],
-      "help": "Usage: teable field [options] [command]\n\nfield operations (create, get, update, delete)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  create [options]  Create a new field in a table\n  get [options]     Get fields metadata from a table\n  update [options]  Update field properties or type\n  delete [options]  Delete a field permanently\n  help [command]    display help for command\n\nExamples:\n  teable field get --table-id tblXXXX\n  teable field create --table-id tblXXXX --name Email --type email\n  teable field delete --table-id tblXXXX --field-id fldXXXX\n"
+      "help": "Usage: teable field [options] [command]\n\nfield operations (create, get, update, delete, ai-docs, ai-fill, ai-status)\n\nOptions:\n  -h, --help           display help for command\n\nCommands:\n  create [options]     Create a new field in a table\n  get [options]        Get fields metadata from a table\n  update [options]     Update field properties or type\n  delete [options]     Delete a field permanently\n  ai-docs [options]    Get AI field configuration documentation with available models\n  ai-fill [options]    Trigger AI generation for an AI-configured field\n  ai-status [options]  Show AI generation progress for a table, or --poll until it is done\n  help [command]       display help for command\n\nExamples:\n  teable field get --table-id tblXXXX\n  teable field create --table-id tblXXXX --name Email --type email\n  teable field delete --table-id tblXXXX --field-id fldXXXX\n  teable field ai-docs\n  teable field ai-fill --table-id tblXXXX --field-id fldXXXX --mode emptyOnly\n  teable field ai-status --table-id tblXXXX --poll\n"
     },
     {
       "name": "folder",
@@ -2520,32 +2639,6 @@
       "help": "Usage: teable folder [options] [command]\n\nfolder operations (create, update, delete, move)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  create [options]  Create a new folder in a project\n  update [options]  Update a folder in a project\n  delete [options]  Move a folder and its contents to the trash\n  move [options]    Move a node to a different parent or position\n  help [command]    display help for command\n\nExamples:\n  teable folder create --name \"Project Alpha\"\n  teable folder update --folder-id bnfXXXX --name \"Project Beta\"\n  teable folder delete --folder-id bnfXXXX --dry-run\n  teable folder delete --folder-id bnfXXXX --recursive\n"
     },
     {
-      "name": "get-ai-config",
-      "summary": "Get AI field configuration documentation with available models",
-      "description": "Shortcut for: get-doc --topic field.ai\n\nReturns the AI-enhanced field configuration documentation with dynamically\nresolved available models for the current project. The doc includes:\n  - Available text models (for text/select/rating/date fields)\n  - Available image models (for attachment fields)\n  - AI field types: customization, extraction, classification, tag,\n    summary, translation, improvement, rating, imageGeneration, etc.\n  - aiConfig schema and usage examples",
-      "options": [
-        {
-          "flags": "--endpoint <endpoint>",
-          "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
-        },
-        {
-          "flags": "--pretty",
-          "description": "Indent JSON for human readability",
-          "default": false
-        },
-        {
-          "flags": "--token <token>",
-          "description": "Personal access token; falls back to TEABLE_TOKEN env var"
-        },
-        {
-          "flags": "-b, --base-id <baseId>",
-          "description": "Target project ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
-          "required": true
-        }
-      ],
-      "help": "Usage: teable get-ai-config [options]\n\nShortcut for: get-doc --topic field.ai\n\nReturns the AI-enhanced field configuration documentation with dynamically\nresolved available models for the current project. The doc includes:\n  - Available text models (for text/select/rating/date fields)\n  - Available image models (for attachment fields)\n  - AI field types: customization, extraction, classification, tag,\n    summary, translation, improvement, rating, imageGeneration, etc.\n  - aiConfig schema and usage examples\n\nOptions:\n  -b, --base-id <baseId>  Target project ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
-    },
-    {
       "name": "get-collaborators",
       "summary": "Get collaborators in the current project with pagination and search",
       "description": "Get the list of collaborators in the current project with pagination and search.\n\nParameters:\n  - search - Filter by name or email (optional)\n  - skip - Number to skip for pagination (optional)\n  - take - Number to return, default 20, max 100 (optional)\n  - includeSystem - Include system users (optional)\n\nReturns:\n  - users: Array of { id, name, email, avatar }\n  - total: Total number of collaborators matching the query\n\nExamples:\n  All: {}\n  Search: { search: \"john\" }\n  Pagination: { skip: 20, take: 20 }",
@@ -2646,235 +2739,242 @@
     },
     {
       "name": "import",
-      "summary": "Import tabular data into Teable (analyzes by default; --table-name creates, --table-id appends)",
-      "description": "Import tabular data (CSV/Excel/TSV/inline JSON) into Teable.\n\nBehavior — selected by which target flag is set:\n  no --table-name AND no --table-id → analyze: returns sheets, columns, attachmentToken\n  --table-name <name>               → create new table (fields + types inferred from data)\n  --table-id <id>                   → append rows (never updates or upserts)\n\nInput source (at most one explicit flag; otherwise stdin auto-detected):\n  --file <path> | --attachment-token <token> | --data <json|csv>\n\nExamples:\n  # Analyze (no target flag) — returns sheets, columns, attachmentToken\n  teable import --file data.xlsx\n\n  # Create new table from a file\n  teable import --file data.csv --table-name \"Users\"\n\n  # Append via stdin — mapping auto-inferred when headers match fields\n  echo '[{\"Title\":\"Bug 1\"}]' | teable import --table-id tblXXX\n\n  # Explicit mapping when headers do NOT match (keys = field name or fldXXX)\n  teable import --file legacy.csv --table-id tblXXX --mappings '{\"Title\":0,\"Budget\":2}'\n\n  # Reuse attachmentToken from a prior analyze (pick a specific sheet)\n  teable import --attachment-token <t> --table-name \"Data\" --sheet \"Sheet2\"",
-      "options": [
+      "description": "import operations (file, airtable, google-sheet, status)",
+      "subcommands": [
         {
-          "flags": "--attachment-token <token>",
-          "description": "Already-uploaded file token"
+          "name": "airtable",
+          "summary": "Import an Airtable base into Teable",
+          "description": "Import an Airtable base (tables, fields, links, optionally views) into Teable using the native importer. Credential is automatic when Airtable is connected in the connectors menu — the connected integration's token is resolved and refreshed server-side, so no token needs to be pasted. Override with --integration-id <id> or --access-token <pat>.\n\nTypical flow:\n  1. teable import airtable --analyze                       # list accessible Airtable bases\n  2. teable import airtable --analyze --airtable-base-id appXXXX   # inspect one base schema\n  3. teable import airtable --space-id spcXXXX --airtable-base-id appXXXX --base-name \"My Project\"",
+          "options": [
+            {
+              "flags": "--access-token <pat>",
+              "description": "Airtable personal access token — overrides the connected integration for this run"
+            },
+            {
+              "flags": "--airtable-base-id <appId>",
+              "description": "Airtable base id (appXXXX); omit with --analyze to list"
+            },
+            {
+              "flags": "--analyze",
+              "description": "List accessible Airtable bases, or summarize one base schema",
+              "default": false
+            },
+            {
+              "flags": "--base-id <baseId>",
+              "description": "Import into this existing Teable project instead of creating one"
+            },
+            {
+              "flags": "--base-name <name>",
+              "description": "Name for the new Teable project (required unless --base-id is set)"
+            },
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--folder-id <id>",
+              "description": "Place the imported tables under this project-node folder (only with --base-id)"
+            },
+            {
+              "flags": "--import-view-config",
+              "description": "Import view filters/sorts/grouping (requires --share-link)",
+              "default": false
+            },
+            {
+              "flags": "--integration-id <id>",
+              "description": "Connected Airtable integration id (auto-detected when omitted; token resolved server-side)"
+            },
+            {
+              "flags": "--no-import-attachments",
+              "description": "Skip downloading/re-uploading attachments"
+            },
+            {
+              "flags": "--no-import-records",
+              "description": "Import structure only, skip record data"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--share-link <url>",
+              "description": "Public Airtable shared-base link, for view config import"
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-s, --space-id <spaceId>",
+              "description": "Target Teable space for a new project (required unless --base-id is set)"
+            }
+          ],
+          "help": "Usage: teable import airtable [options]\n\nImport an Airtable base (tables, fields, links, optionally views) into Teable using the native\nimporter. Credential is automatic when Airtable is connected in the connectors menu — the connected\nintegration's token is resolved and refreshed server-side, so no token needs to be pasted. Override\nwith --integration-id <id> or --access-token <pat>.\n\nTypical flow:\n  1. teable import airtable --analyze                       # list accessible Airtable bases\n  2. teable import airtable --analyze --airtable-base-id appXXXX   # inspect one base schema\n  3. teable import airtable --space-id spcXXXX --airtable-base-id appXXXX --base-name \"My Project\"\n\nOptions:\n  --analyze                   List accessible Airtable bases, or summarize one base schema (default:\n                              false)\n  -s, --space-id <spaceId>    Target Teable space for a new project (required unless --base-id is\n                              set)\n  --airtable-base-id <appId>  Airtable base id (appXXXX); omit with --analyze to list\n  --base-name <name>          Name for the new Teable project (required unless --base-id is set)\n  --base-id <baseId>          Import into this existing Teable project instead of creating one\n  --folder-id <id>            Place the imported tables under this project-node folder (only with\n                              --base-id)\n  --access-token <pat>        Airtable personal access token — overrides the connected integration\n                              for this run\n  --integration-id <id>       Connected Airtable integration id (auto-detected when omitted; token\n                              resolved server-side)\n  --no-import-records         Import structure only, skip record data\n  --no-import-attachments     Skip downloading/re-uploading attachments\n  --import-view-config        Import view filters/sorts/grouping (requires --share-link) (default:\n                              false)\n  --share-link <url>          Public Airtable shared-base link, for view config import\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                              then saved config\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
         },
         {
-          "flags": "--data <content>",
-          "description": "Inline data: JSON array of objects (auto-converted to CSV) or raw CSV text"
+          "name": "file",
+          "summary": "Import tabular data into Teable (analyzes by default; --table-name creates, --table-id appends)",
+          "description": "Import tabular data (CSV/Excel/TSV/inline JSON) into Teable.\n\nBehavior — selected by which target flag is set:\n  no --table-name AND no --table-id → analyze: returns sheets, columns, attachmentToken\n  --table-name <name>               → create new table (fields + types inferred from data)\n  --table-id <id>                   → append rows (never updates or upserts)\n\nInput source (at most one explicit flag; otherwise stdin auto-detected):\n  --file <path> | --attachment-token <token> | --data <json|csv>\n\nExamples:\n  # Analyze (no target flag) — returns sheets, columns, attachmentToken\n  teable import --file data.xlsx\n\n  # Create new table from a file\n  teable import --file data.csv --table-name \"Users\"\n\n  # Append via stdin — mapping auto-inferred when headers match fields\n  echo '[{\"Title\":\"Bug 1\"}]' | teable import --table-id tblXXX\n\n  # Explicit mapping when headers do NOT match (keys = field name or fldXXX)\n  teable import --file legacy.csv --table-id tblXXX --mappings '{\"Title\":0,\"Budget\":2}'\n\n  # Reuse attachmentToken from a prior analyze (pick a specific sheet)\n  teable import --attachment-token <t> --table-name \"Data\" --sheet \"Sheet2\"",
+          "options": [
+            {
+              "flags": "--attachment-token <token>",
+              "description": "Already-uploaded file token"
+            },
+            {
+              "flags": "--data <content>",
+              "description": "Inline data: JSON array of objects (auto-converted to CSV) or raw CSV text"
+            },
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--file <path>",
+              "description": "Local CSV/Excel/TSV file (auto-uploads)"
+            },
+            {
+              "flags": "--folder-id <id>",
+              "description": "Place the created table under this project-node folder (only with --table-name)"
+            },
+            {
+              "flags": "--mappings <json>",
+              "description": "Column→field mapping. Optional — omit to auto-match when source headers equal target field names (case-insensitive fallback; unambiguous only). New table: [{\"column\":\"<src>\",\"field\":\"<target>\",\"type\":\"<type>\"}, ...]. Existing table: {\"<field name or fldXXX>\": <0-based source column index | null>, ...}. Pass null to skip a field. Field types: text | long | number | checkbox | date | singleSelect | multiSelect | rating"
+            },
+            {
+              "flags": "--no-header",
+              "description": "First row is data, not a header"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--sheet <name>",
+              "description": "Excel worksheet: pass the sheet name (e.g. \"Sheet2\") or the key from a prior analysis call (e.g. \"sheet1\"). Default: first sheet"
+            },
+            {
+              "flags": "--table-id <id>",
+              "description": "Append data to an existing table"
+            },
+            {
+              "flags": "--table-name <name>",
+              "description": "Create a new table with this name"
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Target project ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
+              "required": true
+            }
+          ],
+          "help": "Usage: teable import file [options]\n\nImport tabular data (CSV/Excel/TSV/inline JSON) into Teable.\n\nBehavior — selected by which target flag is set:\n  no --table-name AND no --table-id → analyze: returns sheets, columns, attachmentToken\n  --table-name <name>               → create new table (fields + types inferred from data)\n  --table-id <id>                   → append rows (never updates or upserts)\n\nInput source (at most one explicit flag; otherwise stdin auto-detected):\n  --file <path> | --attachment-token <token> | --data <json|csv>\n\nExamples:\n  # Analyze (no target flag) — returns sheets, columns, attachmentToken\n  teable import --file data.xlsx\n\n  # Create new table from a file\n  teable import --file data.csv --table-name \"Users\"\n\n  # Append via stdin — mapping auto-inferred when headers match fields\n  echo '[{\"Title\":\"Bug 1\"}]' | teable import --table-id tblXXX\n\n  # Explicit mapping when headers do NOT match (keys = field name or fldXXX)\n  teable import --file legacy.csv --table-id tblXXX --mappings '{\"Title\":0,\"Budget\":2}'\n\n  # Reuse attachmentToken from a prior analyze (pick a specific sheet)\n  teable import --attachment-token <t> --table-name \"Data\" --sheet \"Sheet2\"\n\nOptions:\n  --file <path>               Local CSV/Excel/TSV file (auto-uploads)\n  --attachment-token <token>  Already-uploaded file token\n  --data <content>            Inline data: JSON array of objects (auto-converted to CSV) or raw CSV\n                              text\n  --table-name <name>         Create a new table with this name\n  --table-id <id>             Append data to an existing table\n  --folder-id <id>            Place the created table under this project-node folder (only with\n                              --table-name)\n  --sheet <name>              Excel worksheet: pass the sheet name (e.g. \"Sheet2\") or the key from a\n                              prior analysis call (e.g. \"sheet1\"). Default: first sheet\n  --no-header                 First row is data, not a header\n  --mappings <json>           Column→field mapping. Optional — omit to auto-match when source\n                              headers equal target field names (case-insensitive fallback;\n                              unambiguous only). New table:\n                              [{\"column\":\"<src>\",\"field\":\"<target>\",\"type\":\"<type>\"}, ...]. Existing\n                              table: {\"<field name or fldXXX>\": <0-based source column index |\n                              null>, ...}. Pass null to skip a field. Field types: text | long |\n                              number | checkbox | date | singleSelect | multiSelect | rating\n  -b, --base-id <baseId>      Target project ID (required, e.g. bseXXXX). Set default: `teable\n                              config base-id <id>`.\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                              then saved config\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
         },
         {
-          "flags": "--endpoint <endpoint>",
-          "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+          "name": "google-sheet",
+          "summary": "Import a Google spreadsheet into Teable",
+          "description": "Import a Google spreadsheet (each selected tab becomes a table) into Teable using the native importer. Credential is automatic when Google Sheets is connected in the connectors menu — the connected integration's token is resolved and refreshed server-side. Override with --integration-id <id> or --access-token <token>.\n\nThe integration carries only the drive.file scope: the server can read exactly the spreadsheets the user picked in Teable’s \"Import from Google Sheets\" dialog. A 403/404 means the spreadsheet was never picked — ask the user to pick it there once. Publicly shared spreadsheets (\"anyone with the link\") need no credential at all.\n\nTypical flow:\n  1. teable import google-sheet --analyze --spreadsheet-id <id or URL>   # list the tabs\n  2. teable import google-sheet --base-id bseXXXX --spreadsheet-id <id>  # import into current project\n  3. teable import google-sheet --space-id spcXXXX --spreadsheet-id <id> --base-name \"My Sheet\"",
+          "options": [
+            {
+              "flags": "--access-token <token>",
+              "description": "Google OAuth access token with the drive.file scope — overrides the connected integration"
+            },
+            {
+              "flags": "--analyze",
+              "description": "List the tabs (worksheets) of the spreadsheet with grid sizes",
+              "default": false
+            },
+            {
+              "flags": "--base-id <baseId>",
+              "description": "Import into this existing Teable project instead of creating one"
+            },
+            {
+              "flags": "--base-name <name>",
+              "description": "Name for the new Teable project (required unless --base-id is set)"
+            },
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--integration-id <id>",
+              "description": "Connected Google Sheets integration id (auto-detected when omitted; token resolved server-side)"
+            },
+            {
+              "flags": "--no-import-records",
+              "description": "Import structure only, skip record data"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--sheet-ids <ids>",
+              "description": "Comma-separated numeric tab ids to import (from --analyze); omit to import all tabs"
+            },
+            {
+              "flags": "--spreadsheet-id <idOrUrl>",
+              "description": "Google spreadsheet id, or the full docs.google.com/spreadsheets URL"
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "-s, --space-id <spaceId>",
+              "description": "Target Teable space for a new project (required unless --base-id is set)"
+            }
+          ],
+          "help": "Usage: teable import google-sheet [options]\n\nImport a Google spreadsheet (each selected tab becomes a table) into Teable using the native\nimporter. Credential is automatic when Google Sheets is connected in the connectors menu — the\nconnected integration's token is resolved and refreshed server-side. Override with --integration-id\n<id> or --access-token <token>.\n\nThe integration carries only the drive.file scope: the server can read exactly the spreadsheets the\nuser picked in Teable’s \"Import from Google Sheets\" dialog. A 403/404 means the spreadsheet was\nnever picked — ask the user to pick it there once. Publicly shared spreadsheets (\"anyone with the\nlink\") need no credential at all.\n\nTypical flow:\n  1. teable import google-sheet --analyze --spreadsheet-id <id or URL>   # list the tabs\n  2. teable import google-sheet --base-id bseXXXX --spreadsheet-id <id>  # import into current\nproject\n  3. teable import google-sheet --space-id spcXXXX --spreadsheet-id <id> --base-name \"My Sheet\"\n\nOptions:\n  --analyze                   List the tabs (worksheets) of the spreadsheet with grid sizes\n                              (default: false)\n  -s, --space-id <spaceId>    Target Teable space for a new project (required unless --base-id is\n                              set)\n  --spreadsheet-id <idOrUrl>  Google spreadsheet id, or the full docs.google.com/spreadsheets URL\n  --base-name <name>          Name for the new Teable project (required unless --base-id is set)\n  --base-id <baseId>          Import into this existing Teable project instead of creating one\n  --sheet-ids <ids>           Comma-separated numeric tab ids to import (from --analyze); omit to\n                              import all tabs\n  --access-token <token>      Google OAuth access token with the drive.file scope — overrides the\n                              connected integration\n  --integration-id <id>       Connected Google Sheets integration id (auto-detected when omitted;\n                              token resolved server-side)\n  --no-import-records         Import structure only, skip record data\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                              then saved config\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
         },
         {
-          "flags": "--file <path>",
-          "description": "Local CSV/Excel/TSV file (auto-uploads)"
-        },
-        {
-          "flags": "--folder-id <id>",
-          "description": "Place the created table under this project-node folder (only with --table-name)"
-        },
-        {
-          "flags": "--mappings <json>",
-          "description": "Column→field mapping. Optional — omit to auto-match when source headers equal target field names (case-insensitive fallback; unambiguous only). New table: [{\"column\":\"<src>\",\"field\":\"<target>\",\"type\":\"<type>\"}, ...]. Existing table: {\"<field name or fldXXX>\": <0-based source column index | null>, ...}. Pass null to skip a field. Field types: text | long | number | checkbox | date | singleSelect | multiSelect | rating"
-        },
-        {
-          "flags": "--no-header",
-          "description": "First row is data, not a header"
-        },
-        {
-          "flags": "--pretty",
-          "description": "Indent JSON for human readability",
-          "default": false
-        },
-        {
-          "flags": "--sheet <name>",
-          "description": "Excel worksheet: pass the sheet name (e.g. \"Sheet2\") or the key from a prior analysis call (e.g. \"sheet1\"). Default: first sheet"
-        },
-        {
-          "flags": "--table-id <id>",
-          "description": "Append data to an existing table"
-        },
-        {
-          "flags": "--table-name <name>",
-          "description": "Create a new table with this name"
-        },
-        {
-          "flags": "--token <token>",
-          "description": "Personal access token; falls back to TEABLE_TOKEN env var"
-        },
-        {
-          "flags": "-b, --base-id <baseId>",
-          "description": "Target project ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
-          "required": true
+          "name": "status",
+          "summary": "Query import job status for a table",
+          "description": "Query the status of an asynchronous import job for a given table ID.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--poll",
+              "description": "Poll until import completes, fails, or times out",
+              "default": false
+            },
+            {
+              "flags": "--poll-interval <ms>",
+              "description": "Polling interval in milliseconds (minimum 5000)",
+              "default": "5000"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--table-id <tableId>",
+              "description": "The table ID to check import status for",
+              "required": true
+            },
+            {
+              "flags": "--timeout <ms>",
+              "description": "Give up after this many ms of polling; exits with status \"timeout\"",
+              "default": "1800000"
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            }
+          ],
+          "help": "Usage: teable import status [options]\n\nQuery the status of an asynchronous import job for a given table ID.\n\nOptions:\n  --table-id <tableId>   The table ID to check import status for\n  --poll                 Poll until import completes, fails, or times out (default: false)\n  --poll-interval <ms>   Polling interval in milliseconds (minimum 5000) (default: \"5000\")\n  --timeout <ms>         Give up after this many ms of polling; exits with status \"timeout\"\n                         (default: \"1800000\")\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
         }
       ],
-      "help": "Usage: teable import [options]\n\nImport tabular data (CSV/Excel/TSV/inline JSON) into Teable.\n\nBehavior — selected by which target flag is set:\n  no --table-name AND no --table-id → analyze: returns sheets, columns, attachmentToken\n  --table-name <name>               → create new table (fields + types inferred from data)\n  --table-id <id>                   → append rows (never updates or upserts)\n\nInput source (at most one explicit flag; otherwise stdin auto-detected):\n  --file <path> | --attachment-token <token> | --data <json|csv>\n\nExamples:\n  # Analyze (no target flag) — returns sheets, columns, attachmentToken\n  teable import --file data.xlsx\n\n  # Create new table from a file\n  teable import --file data.csv --table-name \"Users\"\n\n  # Append via stdin — mapping auto-inferred when headers match fields\n  echo '[{\"Title\":\"Bug 1\"}]' | teable import --table-id tblXXX\n\n  # Explicit mapping when headers do NOT match (keys = field name or fldXXX)\n  teable import --file legacy.csv --table-id tblXXX --mappings '{\"Title\":0,\"Budget\":2}'\n\n  # Reuse attachmentToken from a prior analyze (pick a specific sheet)\n  teable import --attachment-token <t> --table-name \"Data\" --sheet \"Sheet2\"\n\nOptions:\n  --file <path>               Local CSV/Excel/TSV file (auto-uploads)\n  --attachment-token <token>  Already-uploaded file token\n  --data <content>            Inline data: JSON array of objects (auto-converted to CSV) or raw CSV\n                              text\n  --table-name <name>         Create a new table with this name\n  --table-id <id>             Append data to an existing table\n  --folder-id <id>            Place the created table under this project-node folder (only with\n                              --table-name)\n  --sheet <name>              Excel worksheet: pass the sheet name (e.g. \"Sheet2\") or the key from a\n                              prior analysis call (e.g. \"sheet1\"). Default: first sheet\n  --no-header                 First row is data, not a header\n  --mappings <json>           Column→field mapping. Optional — omit to auto-match when source\n                              headers equal target field names (case-insensitive fallback;\n                              unambiguous only). New table:\n                              [{\"column\":\"<src>\",\"field\":\"<target>\",\"type\":\"<type>\"}, ...]. Existing\n                              table: {\"<field name or fldXXX>\": <0-based source column index |\n                              null>, ...}. Pass null to skip a field. Field types: text | long |\n                              number | checkbox | date | singleSelect | multiSelect | rating\n  -b, --base-id <baseId>      Target project ID (required, e.g. bseXXXX). Set default: `teable\n                              config base-id <id>`.\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                              then saved config\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
-    },
-    {
-      "name": "import-airtable",
-      "summary": "Import an Airtable base into Teable",
-      "description": "Import an Airtable base (tables, fields, links, optionally views) into Teable using the native importer. Credential is automatic when Airtable is connected in the connectors menu — the connected integration's token is resolved and refreshed server-side, so no token needs to be pasted. Override with --integration-id <id> or --access-token <pat>.\n\nTypical flow:\n  1. teable import-airtable --analyze                       # list accessible Airtable bases\n  2. teable import-airtable --analyze --airtable-base-id appXXXX   # inspect one base schema\n  3. teable import-airtable --space-id spcXXXX --airtable-base-id appXXXX --base-name \"My Project\"",
-      "options": [
-        {
-          "flags": "--access-token <pat>",
-          "description": "Airtable personal access token — overrides the connected integration for this run"
-        },
-        {
-          "flags": "--airtable-base-id <appId>",
-          "description": "Airtable base id (appXXXX); omit with --analyze to list"
-        },
-        {
-          "flags": "--analyze",
-          "description": "List accessible Airtable bases, or summarize one base schema",
-          "default": false
-        },
-        {
-          "flags": "--base-id <baseId>",
-          "description": "Import into this existing Teable project instead of creating one"
-        },
-        {
-          "flags": "--base-name <name>",
-          "description": "Name for the new Teable project (required unless --base-id is set)"
-        },
-        {
-          "flags": "--endpoint <endpoint>",
-          "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
-        },
-        {
-          "flags": "--folder-id <id>",
-          "description": "Place the imported tables under this project-node folder (only with --base-id)"
-        },
-        {
-          "flags": "--import-view-config",
-          "description": "Import view filters/sorts/grouping (requires --share-link)",
-          "default": false
-        },
-        {
-          "flags": "--integration-id <id>",
-          "description": "Connected Airtable integration id (auto-detected when omitted; token resolved server-side)"
-        },
-        {
-          "flags": "--no-import-attachments",
-          "description": "Skip downloading/re-uploading attachments"
-        },
-        {
-          "flags": "--no-import-records",
-          "description": "Import structure only, skip record data"
-        },
-        {
-          "flags": "--pretty",
-          "description": "Indent JSON for human readability",
-          "default": false
-        },
-        {
-          "flags": "--share-link <url>",
-          "description": "Public Airtable shared-base link, for view config import"
-        },
-        {
-          "flags": "--token <token>",
-          "description": "Personal access token; falls back to TEABLE_TOKEN env var"
-        },
-        {
-          "flags": "-s, --space-id <spaceId>",
-          "description": "Target Teable space for a new project (required unless --base-id is set)"
-        }
-      ],
-      "help": "Usage: teable import-airtable [options]\n\nImport an Airtable base (tables, fields, links, optionally views) into Teable using the native\nimporter. Credential is automatic when Airtable is connected in the connectors menu — the connected\nintegration's token is resolved and refreshed server-side, so no token needs to be pasted. Override\nwith --integration-id <id> or --access-token <pat>.\n\nTypical flow:\n  1. teable import-airtable --analyze                       # list accessible Airtable bases\n  2. teable import-airtable --analyze --airtable-base-id appXXXX   # inspect one base schema\n  3. teable import-airtable --space-id spcXXXX --airtable-base-id appXXXX --base-name \"My Project\"\n\nOptions:\n  --analyze                   List accessible Airtable bases, or summarize one base schema (default:\n                              false)\n  -s, --space-id <spaceId>    Target Teable space for a new project (required unless --base-id is\n                              set)\n  --airtable-base-id <appId>  Airtable base id (appXXXX); omit with --analyze to list\n  --base-name <name>          Name for the new Teable project (required unless --base-id is set)\n  --base-id <baseId>          Import into this existing Teable project instead of creating one\n  --folder-id <id>            Place the imported tables under this project-node folder (only with\n                              --base-id)\n  --access-token <pat>        Airtable personal access token — overrides the connected integration\n                              for this run\n  --integration-id <id>       Connected Airtable integration id (auto-detected when omitted; token\n                              resolved server-side)\n  --no-import-records         Import structure only, skip record data\n  --no-import-attachments     Skip downloading/re-uploading attachments\n  --import-view-config        Import view filters/sorts/grouping (requires --share-link) (default:\n                              false)\n  --share-link <url>          Public Airtable shared-base link, for view config import\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                              then saved config\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
-    },
-    {
-      "name": "import-google-sheet",
-      "summary": "Import a Google spreadsheet into Teable",
-      "description": "Import a Google spreadsheet (each selected tab becomes a table) into Teable using the native importer. Credential is automatic when Google Sheets is connected in the connectors menu — the connected integration's token is resolved and refreshed server-side. Override with --integration-id <id> or --access-token <token>.\n\nThe integration carries only the drive.file scope: the server can read exactly the spreadsheets the user picked in Teable’s \"Import from Google Sheets\" dialog. A 403/404 means the spreadsheet was never picked — ask the user to pick it there once. Publicly shared spreadsheets (\"anyone with the link\") need no credential at all.\n\nTypical flow:\n  1. teable import-google-sheet --analyze --spreadsheet-id <id or URL>   # list the tabs\n  2. teable import-google-sheet --base-id bseXXXX --spreadsheet-id <id>  # import into current project\n  3. teable import-google-sheet --space-id spcXXXX --spreadsheet-id <id> --base-name \"My Sheet\"",
-      "options": [
-        {
-          "flags": "--access-token <token>",
-          "description": "Google OAuth access token with the drive.file scope — overrides the connected integration"
-        },
-        {
-          "flags": "--analyze",
-          "description": "List the tabs (worksheets) of the spreadsheet with grid sizes",
-          "default": false
-        },
-        {
-          "flags": "--base-id <baseId>",
-          "description": "Import into this existing Teable project instead of creating one"
-        },
-        {
-          "flags": "--base-name <name>",
-          "description": "Name for the new Teable project (required unless --base-id is set)"
-        },
-        {
-          "flags": "--endpoint <endpoint>",
-          "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
-        },
-        {
-          "flags": "--integration-id <id>",
-          "description": "Connected Google Sheets integration id (auto-detected when omitted; token resolved server-side)"
-        },
-        {
-          "flags": "--no-import-records",
-          "description": "Import structure only, skip record data"
-        },
-        {
-          "flags": "--pretty",
-          "description": "Indent JSON for human readability",
-          "default": false
-        },
-        {
-          "flags": "--sheet-ids <ids>",
-          "description": "Comma-separated numeric tab ids to import (from --analyze); omit to import all tabs"
-        },
-        {
-          "flags": "--spreadsheet-id <idOrUrl>",
-          "description": "Google spreadsheet id, or the full docs.google.com/spreadsheets URL"
-        },
-        {
-          "flags": "--token <token>",
-          "description": "Personal access token; falls back to TEABLE_TOKEN env var"
-        },
-        {
-          "flags": "-s, --space-id <spaceId>",
-          "description": "Target Teable space for a new project (required unless --base-id is set)"
-        }
-      ],
-      "help": "Usage: teable import-google-sheet [options]\n\nImport a Google spreadsheet (each selected tab becomes a table) into Teable using the native\nimporter. Credential is automatic when Google Sheets is connected in the connectors menu — the\nconnected integration's token is resolved and refreshed server-side. Override with --integration-id\n<id> or --access-token <token>.\n\nThe integration carries only the drive.file scope: the server can read exactly the spreadsheets the\nuser picked in Teable’s \"Import from Google Sheets\" dialog. A 403/404 means the spreadsheet was\nnever picked — ask the user to pick it there once. Publicly shared spreadsheets (\"anyone with the\nlink\") need no credential at all.\n\nTypical flow:\n  1. teable import-google-sheet --analyze --spreadsheet-id <id or URL>   # list the tabs\n  2. teable import-google-sheet --base-id bseXXXX --spreadsheet-id <id>  # import into current\nproject\n  3. teable import-google-sheet --space-id spcXXXX --spreadsheet-id <id> --base-name \"My Sheet\"\n\nOptions:\n  --analyze                   List the tabs (worksheets) of the spreadsheet with grid sizes\n                              (default: false)\n  -s, --space-id <spaceId>    Target Teable space for a new project (required unless --base-id is\n                              set)\n  --spreadsheet-id <idOrUrl>  Google spreadsheet id, or the full docs.google.com/spreadsheets URL\n  --base-name <name>          Name for the new Teable project (required unless --base-id is set)\n  --base-id <baseId>          Import into this existing Teable project instead of creating one\n  --sheet-ids <ids>           Comma-separated numeric tab ids to import (from --analyze); omit to\n                              import all tabs\n  --access-token <token>      Google OAuth access token with the drive.file scope — overrides the\n                              connected integration\n  --integration-id <id>       Connected Google Sheets integration id (auto-detected when omitted;\n                              token resolved server-side)\n  --no-import-records         Import structure only, skip record data\n  --token <token>             Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>       Teable API server base URL; falls back to TEABLE_ENDPOINT env var,\n                              then saved config\n  --pretty                    Indent JSON for human readability (default: false)\n  -h, --help                  display help for command\n"
-    },
-    {
-      "name": "import-status",
-      "summary": "Query import job status for a table",
-      "description": "Query the status of an asynchronous import job for a given table ID.",
-      "options": [
-        {
-          "flags": "--endpoint <endpoint>",
-          "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
-        },
-        {
-          "flags": "--poll",
-          "description": "Poll until import completes, fails, or times out",
-          "default": false
-        },
-        {
-          "flags": "--poll-interval <ms>",
-          "description": "Polling interval in milliseconds (minimum 5000)",
-          "default": "5000"
-        },
-        {
-          "flags": "--pretty",
-          "description": "Indent JSON for human readability",
-          "default": false
-        },
-        {
-          "flags": "--table-id <tableId>",
-          "description": "The table ID to check import status for",
-          "required": true
-        },
-        {
-          "flags": "--timeout <ms>",
-          "description": "Give up after this many ms of polling; exits with status \"timeout\"",
-          "default": "1800000"
-        },
-        {
-          "flags": "--token <token>",
-          "description": "Personal access token; falls back to TEABLE_TOKEN env var"
-        }
-      ],
-      "help": "Usage: teable import-status [options]\n\nQuery the status of an asynchronous import job for a given table ID.\n\nOptions:\n  --table-id <tableId>   The table ID to check import status for\n  --poll                 Poll until import completes, fails, or times out (default: false)\n  --poll-interval <ms>   Polling interval in milliseconds (minimum 5000) (default: \"5000\")\n  --timeout <ms>         Give up after this many ms of polling; exits with status \"timeout\"\n                         (default: \"1800000\")\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
+      "help": "Usage: teable import [options] [command]\n\nimport operations (file, airtable, google-sheet, status)\n\nOptions:\n  -h, --help              display help for command\n\nCommands:\n  file [options]          Import tabular data into Teable (analyzes by default; --table-name\n                          creates, --table-id appends)\n  airtable [options]      Import an Airtable base into Teable\n  google-sheet [options]  Import a Google spreadsheet into Teable\n  status [options]        Query import job status for a table\n  help [command]          display help for command\n\nExamples:\n  teable import file --file ./data.csv\n  teable import file --file ./data.csv --table-name Contacts\n  teable import airtable --analyze\n  teable import google-sheet --spreadsheet-id https://docs.google.com/spreadsheets/d/XXXX --analyze\n  teable import status --table-id tblXXXX --poll\n  # `teable import --file …` runs `import file`.\n"
     },
     {
       "name": "integration",
@@ -3733,8 +3833,42 @@
     },
     {
       "name": "record",
-      "description": "record operations (create, get, update, delete)",
+      "description": "record operations (create, get, update, delete, count, stats)",
       "subcommands": [
+        {
+          "name": "count",
+          "summary": "Count the records of a table, a view or a filter",
+          "description": "Count the records of a table: all of them, those of a view, or those matching a filter.\nNeeds only read access, and counts what the caller is allowed to see.\n\nReturns: {\"rowCount\": 42}",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--filter <jsonObject>",
+              "description": "Only records matching this filter, in the view filter shape (see `teable get-doc --topic view.filter`), e.g. '{\"conjunction\":\"and\",\"filterSet\":[{\"fieldId\":\"fldXXX\",\"operator\":\"is\",\"value\":\"Done\"}]}'"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--table-id <tableId>",
+              "description": "The table to count",
+              "required": true
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "--view-id <viewId>",
+              "description": "Count the view's records (its filter applies)"
+            }
+          ],
+          "help": "Usage: teable record count [options]\n\nCount the records of a table: all of them, those of a view, or those matching a filter.\nNeeds only read access, and counts what the caller is allowed to see.\n\nReturns: {\"rowCount\": 42}\n\nOptions:\n  --table-id <tableId>   The table to count\n  --view-id <viewId>     Count the view's records (its filter applies)\n  --filter <jsonObject>  Only records matching this filter, in the view filter shape (see `teable\n                         get-doc --topic view.filter`), e.g.\n                         '{\"conjunction\":\"and\",\"filterSet\":[{\"fieldId\":\"fldXXX\",\"operator\":\"is\",\"value\":\"Done\"}]}'\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
+        },
         {
           "name": "create",
           "summary": "Create new records in a table",
@@ -3881,6 +4015,45 @@
           "help": "Usage: teable record get [options]\n\nRetrieve records from a table in compact tabular format.\n\nOptions:\n  --table-id <id>       (required) Table to query\n  --view-id <id>        Apply the view's filter, sort, and group\n  --take <n>            Records to return (default 100, max 1000)\n  --skip <n>            Offset for pagination\n  --projection <value>  Field IDs/names as JSON array, or all, e.g. '[\"Name\",\"Status\"]'\n  --search <json>       Fuzzy search: '{\"value\":\"keyword\"}' or\n'{\"value\":\"keyword\",\"fieldId\":\"Name\"}'\n  --record-id <id>      Fetch a single record by ID (ignores search/take/skip)\n\nNotes:\n  Default: data queries and bulk operations.\n  With --view-id: returns rows exactly as the UI shows them, group headers excluded.\n  Use --view-id for view-relative operations (\"the 3rd row\", \"row 5\").\n  Response is tabular: { header: [\"id\",\"Name\"], rows: [[\"rec001\",\"Task A\"]] }\n\nExamples:\n  teable record get --table-id tblXXX\n  teable record get --table-id tblXXX --view-id viwXXX --take 50\n  teable record get --table-id tblXXX --search '{\"value\":\"keyword\"}'\n  teable record get --table-id tblXXX --record-id recXXX\n\nOptions:\n  --table-id <tableId>       The ID of the table to query records from\n  --view-id <viewId>         View ID to use for filtering (optional)\n  --take <number>            Number of records to return (default: 100, max: 1000)\n  --limit <number>           Alias for --take\n  --skip <number>            Number of records to skip for pagination\n  --projection <projection>  Projection of field ids to return, pass \"all\" to return all fields (max\n                             50) (default: [\"all\"])\n  --search <json>            Search filter. Pass { value: \"keyword\" } for global search, or { value:\n                             \"keyword\", fieldId: \"Name\" } to search a specific field\n  --record-id <id>           Record ID to fetch a specific record directly. When provided,\n                             search/take/skip are ignored.\n  -b, --base-id <baseId>     Target project ID (required, e.g. bseXXXX). Set default: `teable config\n                             base-id <id>`.\n  --token <token>            Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>      Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                             saved config\n  --pretty                   Indent JSON for human readability (default: false)\n  -h, --help                 display help for command\n"
         },
         {
+          "name": "stats",
+          "summary": "Whole-table field statistics (sum, average, unique, …) of a table, a view or a filter",
+          "description": "Whole-table statistics of fields, like the statistics bar under a grid view:\none value per field and function, over all records, a view, or a filter.\nNeeds only read access, and covers what the caller is allowed to see.\nFor grouping or buckets use a query instead.\n\nReturns one entry per field and function asked for:\n  [{\"fieldId\":\"fldXXX\",\"func\":\"sum\",\"value\":1234}, ...]\nA field hidden in --view-id is not computed: its entry has value null and a note.",
+          "options": [
+            {
+              "flags": "--endpoint <endpoint>",
+              "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
+            },
+            {
+              "flags": "--fields <jsonObject>",
+              "description": "Statistic function → field IDs, e.g. '{\"sum\":[\"fldXXX\"],\"unique\":[\"fldYYY\"]}'. Functions: count, empty, filled, unique, max, min, sum, average, checked, unChecked, percentEmpty, percentFilled, percentUnique, percentChecked, percentUnChecked, earliestDate, latestDate, dateRangeOfDays, dateRangeOfMonths, totalAttachmentSize",
+              "required": true
+            },
+            {
+              "flags": "--filter <jsonObject>",
+              "description": "Only records matching this filter, in the view filter shape (see `teable get-doc --topic view.filter`), e.g. '{\"conjunction\":\"and\",\"filterSet\":[{\"fieldId\":\"fldXXX\",\"operator\":\"is\",\"value\":\"Done\"}]}'"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Indent JSON for human readability",
+              "default": false
+            },
+            {
+              "flags": "--table-id <tableId>",
+              "description": "The table the fields belong to",
+              "required": true
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Personal access token; falls back to TEABLE_TOKEN env var"
+            },
+            {
+              "flags": "--view-id <viewId>",
+              "description": "Only the view's records (its filter applies)"
+            }
+          ],
+          "help": "Usage: teable record stats [options]\n\nWhole-table statistics of fields, like the statistics bar under a grid view:\none value per field and function, over all records, a view, or a filter.\nNeeds only read access, and covers what the caller is allowed to see.\nFor grouping or buckets use a query instead.\n\nReturns one entry per field and function asked for:\n  [{\"fieldId\":\"fldXXX\",\"func\":\"sum\",\"value\":1234}, ...]\nA field hidden in --view-id is not computed: its entry has value null and a note.\n\nOptions:\n  --table-id <tableId>   The table the fields belong to\n  --fields <jsonObject>  Statistic function → field IDs, e.g.\n                         '{\"sum\":[\"fldXXX\"],\"unique\":[\"fldYYY\"]}'. Functions: count, empty, filled,\n                         unique, max, min, sum, average, checked, unChecked, percentEmpty,\n                         percentFilled, percentUnique, percentChecked, percentUnChecked,\n                         earliestDate, latestDate, dateRangeOfDays, dateRangeOfMonths,\n                         totalAttachmentSize\n  --view-id <viewId>     Only the view's records (its filter applies)\n  --filter <jsonObject>  Only records matching this filter, in the view filter shape (see `teable\n                         get-doc --topic view.filter`), e.g.\n                         '{\"conjunction\":\"and\",\"filterSet\":[{\"fieldId\":\"fldXXX\",\"operator\":\"is\",\"value\":\"Done\"}]}'\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
+        },
+        {
           "name": "update",
           "summary": "Update records by condition (filter + fields) or fixed IDs (header + records)",
           "description": "Update records in exactly one mode: shared filter+fields or compact header+records.\nROUTING: When the same values apply to all matching records, use filter+fields directly; do not read or enumerate record IDs first. Use header+records for explicit IDs, different values per row, or reordering.\nCONDITIONAL FORMAT: {\"tableId\":\"tblXXX\",\"filter\":{\"fieldId\":\"fldStatus\",\"operator\":\"is\",\"value\":\"Todo\"},\"fields\":{\"Status\":\"Done\"},\"typecast\":true}\nResolve filter field IDs from table metadata. Canonical filters support a condition, {conjunction:\"and\"|\"or\",items:[...]}, the filterSet alias, and {not:...}. Empty/malformed filters and empty fields are rejected.\nConditional fields accept names or IDs. null clears; empty string is a value. Returns the actual updatedCount, including 0 for no changes. Unsupported relation/junction updates fail; use records mode with explicit IDs instead.\n\nRECORDS FORMAT:\n{\n  \"tableId\": \"tblXXX\",\n  \"header\": [\"recordId\", \"Name\", \"Status\"],\n  \"records\": [\n    [\"recAAA\", \"Updated Name A\", \"Done\"],\n    [\"recBBB\", \"Updated Name B\", \"Pending\"]\n  ]\n}\n\nRULES:\n- header: First element MUST be \"recordId\"\n- records: First value in each row is the record ID to update\n- Empty string \"\": Skip field (no change) in records mode only\n- null: Clear the cell\n\nVALUE TYPES: Same as create-records\n\nREORDER (records mode only, optional):\n  \"order\": { \"viewId\": \"viwXXX\", \"anchorId\": \"recYYY\", \"position\": \"before\"|\"after\" }\n  Moves record(s) before/after the anchor in the given view.\n  Swap rows A↔B: call twice with different anchors.",
@@ -3940,7 +4113,7 @@
           "help": "Usage: teable record update [options]\n\nUpdate records in exactly one mode: shared filter+fields or compact header+records.\nROUTING: When the same values apply to all matching records, use filter+fields directly; do not read\nor enumerate record IDs first. Use header+records for explicit IDs, different values per row, or\nreordering.\nCONDITIONAL FORMAT:\n{\"tableId\":\"tblXXX\",\"filter\":{\"fieldId\":\"fldStatus\",\"operator\":\"is\",\"value\":\"Todo\"},\"fields\":{\"Status\":\"Done\"},\"typecast\":true}\nResolve filter field IDs from table metadata. Canonical filters support a condition,\n{conjunction:\"and\"|\"or\",items:[...]}, the filterSet alias, and {not:...}. Empty/malformed filters\nand empty fields are rejected.\nConditional fields accept names or IDs. null clears; empty string is a value. Returns the actual\nupdatedCount, including 0 for no changes. Unsupported relation/junction updates fail; use records\nmode with explicit IDs instead.\n\nRECORDS FORMAT:\n{\n  \"tableId\": \"tblXXX\",\n  \"header\": [\"recordId\", \"Name\", \"Status\"],\n  \"records\": [\n    [\"recAAA\", \"Updated Name A\", \"Done\"],\n    [\"recBBB\", \"Updated Name B\", \"Pending\"]\n  ]\n}\n\nRULES:\n- header: First element MUST be \"recordId\"\n- records: First value in each row is the record ID to update\n- Empty string \"\": Skip field (no change) in records mode only\n- null: Clear the cell\n\nVALUE TYPES: Same as create-records\n\nREORDER (records mode only, optional):\n  \"order\": { \"viewId\": \"viwXXX\", \"anchorId\": \"recYYY\", \"position\": \"before\"|\"after\" }\n  Moves record(s) before/after the anchor in the given view.\n  Swap rows A↔B: call twice with different anchors.\n\nOptions:\n  --table-id <tableId>    The ID of the table containing the records\n  --header <jsonArray>    Records mode only: field names or IDs, starting with \"recordId\"\n  --records <jsonArray>   Records mode only: rows starting with record ID; use for different values\n                          per row\n  --filter <jsonObject>   Conditional mode: nonempty canonical filter using resolved field IDs;\n                          supports condition, conjunction with items/filterSet, and not\n  --fields <jsonObject>   Conditional mode: shared values keyed by field name or ID; null clears,\n                          empty string is a value\n  --typecast              Automatically convert field values to proper types\n  --no-typecast           Require exact field value types instead of automatic conversion\n  --order <jsonObject>    Records mode only: reorder record(s) relative to anchor. For swapping,\n                          call twice.\n  -b, --base-id <baseId>  Target project ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
         }
       ],
-      "help": "Usage: teable record [options] [command]\n\nrecord operations (create, get, update, delete)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  create [options]  Create new records in a table\n  get [options]     Query records (--view-id applies filter/sort/group, --search for fuzzy match,\n                    --record-id for single record)\n  update [options]  Update records by condition (filter + fields) or fixed IDs (header + records)\n  delete [options]  Delete matching records by filter or a fixed selection of IDs\n  help [command]    display help for command\n\nExamples:\n  teable record get --table-id tblXXXX\n  teable record get --table-id tblXXXX --view-id viwXXXX\n  teable record create --table-id tblXXXX --records '[{\"fields\":{\"Name\":\"Alice\"}}]'\n  teable record delete --table-id tblXXXX --record-ids rec001,rec002\n  teable record delete --table-id tblXXXX --filter '{\"fieldId\":\"fldStatus\",\"operator\":\"is\",\"value\":\"Archived\"}'\n"
+      "help": "Usage: teable record [options] [command]\n\nrecord operations (create, get, update, delete, count, stats)\n\nOptions:\n  -h, --help        display help for command\n\nCommands:\n  create [options]  Create new records in a table\n  get [options]     Query records (--view-id applies filter/sort/group, --search for fuzzy match,\n                    --record-id for single record)\n  update [options]  Update records by condition (filter + fields) or fixed IDs (header + records)\n  delete [options]  Delete matching records by filter or a fixed selection of IDs\n  count [options]   Count the records of a table, a view or a filter\n  stats [options]   Whole-table field statistics (sum, average, unique, …) of a table, a view or a\n                    filter\n  help [command]    display help for command\n\nExamples:\n  teable record get --table-id tblXXXX\n  teable record get --table-id tblXXXX --view-id viwXXXX\n  teable record create --table-id tblXXXX --records '[{\"fields\":{\"Name\":\"Alice\"}}]'\n  teable record delete --table-id tblXXXX --record-ids rec001,rec002\n  teable record delete --table-id tblXXXX --filter '{\"fieldId\":\"fldStatus\",\"operator\":\"is\",\"value\":\"Archived\"}'\n  teable record count --table-id tblXXXX --view-id viwXXXX\n  teable record stats --table-id tblXXXX --fields '{\"sum\":[\"fldAmount\"],\"unique\":[\"fldCustomer\"]}'\n"
     },
     {
       "name": "routine",
@@ -5581,54 +5754,6 @@
         }
       ],
       "help": "Usage: teable tools [options] [command]\n\nTool discovery and metadata commands\n\nOptions:\n  -h, --help      display help for command\n\nCommands:\n  list [options]  List tools available for current project and permission level\n  help [command]  display help for command\n"
-    },
-    {
-      "name": "trigger-ai-fill",
-      "summary": "Trigger AI generation for an AI-configured field",
-      "description": "Trigger AI generation for an AI-configured field.\n\nIMPORTANT: Creating/updating a field with aiConfig does NOT automatically generate content.\nYou MUST call this tool after setting up an AI field to actually run the AI generation.\n\nMODES:\n  - Single cell: provide recordId to fill one specific record\n  - Batch fill: omit recordId to fill multiple records\n\nOPTIONS:\n  - mode: \"all\" (default) overwrites existing values\n  - mode: \"emptyOnly\" only fills cells that are currently empty\n  - viewId: limit to records visible in a specific view\n\nEXAMPLES:\n  1. Fill all records: { tableId, fieldId }\n  2. Fill one record: { tableId, fieldId, recordId: \"recXXX\" }\n  3. Fill empty only: { tableId, fieldId, mode: \"emptyOnly\" }\n\nReturns taskId for background processing. AI generation runs asynchronously.\nSuccess means the background task was accepted, not that generated values are ready.",
-      "options": [
-        {
-          "flags": "--endpoint <endpoint>",
-          "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
-        },
-        {
-          "flags": "--field-id <fieldId>",
-          "description": "The ID of the AI field to trigger generation",
-          "required": true
-        },
-        {
-          "flags": "--mode <mode>",
-          "description": "Fill mode: \"all\" overwrites existing values, \"emptyOnly\" only fills empty cells"
-        },
-        {
-          "flags": "--pretty",
-          "description": "Indent JSON for human readability",
-          "default": false
-        },
-        {
-          "flags": "--record-id <recordId>",
-          "description": "Optional: specific record ID. If omitted, fills all matching records"
-        },
-        {
-          "flags": "--table-id <tableId>",
-          "description": "The ID of the table containing the AI field",
-          "required": true
-        },
-        {
-          "flags": "--token <token>",
-          "description": "Personal access token; falls back to TEABLE_TOKEN env var"
-        },
-        {
-          "flags": "--view-id <viewId>",
-          "description": "Optional: limit to records visible in this view"
-        },
-        {
-          "flags": "-b, --base-id <baseId>",
-          "description": "Target project ID (required, e.g. bseXXXX). Set default: `teable config base-id <id>`.",
-          "required": true
-        }
-      ],
-      "help": "Usage: teable trigger-ai-fill [options]\n\nTrigger AI generation for an AI-configured field.\n\nIMPORTANT: Creating/updating a field with aiConfig does NOT automatically generate content.\nYou MUST call this tool after setting up an AI field to actually run the AI generation.\n\nMODES:\n  - Single cell: provide recordId to fill one specific record\n  - Batch fill: omit recordId to fill multiple records\n\nOPTIONS:\n  - mode: \"all\" (default) overwrites existing values\n  - mode: \"emptyOnly\" only fills cells that are currently empty\n  - viewId: limit to records visible in a specific view\n\nEXAMPLES:\n  1. Fill all records: { tableId, fieldId }\n  2. Fill one record: { tableId, fieldId, recordId: \"recXXX\" }\n  3. Fill empty only: { tableId, fieldId, mode: \"emptyOnly\" }\n\nReturns taskId for background processing. AI generation runs asynchronously.\nSuccess means the background task was accepted, not that generated values are ready.\n\nOptions:\n  --table-id <tableId>    The ID of the table containing the AI field\n  --field-id <fieldId>    The ID of the AI field to trigger generation\n  --record-id <recordId>  Optional: specific record ID. If omitted, fills all matching records\n  --mode <mode>           Fill mode: \"all\" overwrites existing values, \"emptyOnly\" only fills empty\n                          cells\n  --view-id <viewId>      Optional: limit to records visible in this view\n  -b, --base-id <baseId>  Target project ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
     },
     {
       "name": "upload-attachment",

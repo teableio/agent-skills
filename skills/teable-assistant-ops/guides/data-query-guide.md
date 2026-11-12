@@ -7,12 +7,26 @@ Use this guide to choose a data-read path or diagnose a query failure. Query exe
 | Need | Choose |
 |------|--------|
 | Record identities for later writes, view-relative reads, simple search | `record get` |
+| Row total for a table, view, or filter | `record count` |
+| Whole-table/view/filter field summaries (sum, average, unique, etc.) | `record stats` |
 | Cross-table joins or SQL-specific analysis | `sql-query`, following [SQL critical rules](cli-reference.md#sql-critical-rules) |
 | One-off structured read during App development | `teable query inline` on an explicitly enabled host |
 | Diagnose admission/routing without reading rows | `teable query explain` on an explicitly enabled host |
 | Reusable reads in a named-query App | Versioned `teable/queries.yaml` and generated server-only functions; see the workflow below |
 
 For an unfamiliar capability, discover the installed command surface with `teable --help` or `teable tools list --search query`, then read the selected command's help. Backend implementation, a source PR, and a CLI version number alone do not prove that a target host has enabled a route. This skill follows the released CLI manifest; do not invent command names, query IDs, or URLs for an unavailable feature. Keep using the supported entry that fits the requested operation.
+
+## Counts and field statistics
+
+Prefer `record count` / `record stats` over downloading rows or using raw API discovery for ungrouped summaries. Both need only read access and cover only records the caller may see; do not present the result as an unrestricted project total. Resolve field IDs from metadata first and use the [view filter shape](../api-reference/view.filter.md) for custom scopes.
+
+`record count` returns `rowCount`; `record stats` returns one entry per requested field/function. Its mapping is function → field IDs, not field → function:
+
+```bash
+teable record stats --table-id tblXXX --fields '{"sum":["fldAmount"],"unique":["fldCustomer"]}'
+```
+
+With a view scope, a hidden field yields `value: null` plus a note, not zero. Check notes before interpreting missing statistics; choose functions compatible with the field type (see [statistics reference](../api-reference/view.statistic.md)). For groups, time buckets, or cross-table summaries, use a query instead. A count before a condition write is advisory, not a locked target set or the eventual changed-row count.
 
 ## Structured execution, when available
 

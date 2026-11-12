@@ -34,12 +34,12 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 
 | Module | What it solves | Entry commands | Guide to read |
 |--------|---------------|----------------|---------------|
-| Data Query | Read records, analytics, named-query diagnostics and repairs | `record get`, `sql-query`, `query *` | [data-query-guide.md](guides/data-query-guide.md), [CLI reference](guides/cli-reference.md#data-queries) |
+| Data Query | Read records, counts/statistics, analytics, named-query diagnostics and repairs | `record get/count/stats`, `sql-query`, `query *` | [data-query-guide.md](guides/data-query-guide.md), [CLI reference](guides/cli-reference.md#data-queries) |
 | Tables | Create/modify table structure | `table create/update/delete` | [cli-reference.md § Field Type Aliases](guides/cli-reference.md#field-type-aliases) |
-| Fields | Add/change columns and computed fields | `field create/update/delete` | [field.simple.md](api-reference/field.simple.md) |
+| Fields | Add/change columns, computed fields, and per-row AI | `field create/update/delete`, `field ai-docs/ai-fill/ai-status` | [field.simple.md](api-reference/field.simple.md), [AI field guide](guides/ai-field-guide.md) |
 | Records | Write row data, attachments, reordering | `record create/update/delete` | [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) |
 | Views | Persistent filtered/sorted/grouped perspectives | `view create/update/delete` | [view.filter.md](api-reference/view.filter.md), [view.sort.md](api-reference/view.sort.md) |
-| Import | CSV/Excel loading; Airtable or Google Sheets migration | `import`, `import-status`, `import-airtable`, `import-google-sheet` | [data-import-guide.md](guides/data-import-guide.md) |
+| Import | CSV/Excel loading; Airtable or Google Sheets migration | `import file/airtable/google-sheet/status` | [data-import-guide.md](guides/data-import-guide.md) |
 | Artifacts | Durable HTML pages, charts, and Markdown reports | `artifact list/create/update/get/share` | [artifact-guide.md](guides/artifact-guide.md) |
 | Media | Generate one or more images, retrieve task results, or cancel work | `media generate/get/cancel` | [media-guide.md](guides/media-guide.md) |
 | Scraping | Extract structured data from supported platform pages | `scrape search/inspect/run/status` | [scrape-guide.md](guides/scrape-guide.md) |
@@ -65,8 +65,9 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 
 | User intent | Correct module | Do NOT do this |
 |-------------|---------------|----------------|
-| Per-row AI (sentiment, tagging, translation) | Fields: AI field (`--ai-config`) + `trigger-ai-fill` | Manually read/analyze/write each row |
-| Aggregation (count, sum, avg) | Data Query: `sql-query` with GROUP BY | Fetch all records + compute in code |
+| Per-row AI (sentiment, tagging, translation) | Fields: AI field (`--ai-config`) → `field ai-fill` → `field ai-status` | Manually read/analyze/write each row |
+| Count / whole-table statistics | Data Query: `record count` / `record stats` (table, view, or filter) | Fetch all records + compute in code |
+| Grouped aggregation / buckets | Data Query: `sql-query` with GROUP BY | Fetch all records + compute in code |
 | Same change to all matching rows / delete by condition | Records: resolve field metadata → pass filter directly; see [bulk writes](api-reference/record.bulk-update.md) | Enumerate matching record IDs first |
 | Fixed record selection or different values per row | Data Query: `record get` when IDs are needed, then Records | `sql-query` (no record IDs) |
 | Cross-table analytics / JOINs | Data Query: `sql-query` | Multiple `record get` calls |
@@ -75,7 +76,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | Durable report/chart stored in Teable | Artifacts: `artifact list` → `artifact update` or `artifact create` | App Builder |
 | Live dashboard / data-connected custom UI | App Builder: `app create` | HTML code block or artifact |
 | Standalone generated image(s) | Media: `media generate` | App Builder or artifact |
-| Bulk data loading (>50 rows) | Import: `import` | `record create` in loop |
+| Bulk data loading (>50 rows) | Import: `import file` | `record create` in loop |
 | Relationships between tables | Fields: Link field → Lookup/Rollup | singleSelect simulating categories |
 | Computed/derived values (same row) | Fields: Formula | — |
 | Display value from linked record | Fields: Lookup (`--is-conditional-lookup` without link) | — |
@@ -107,7 +108,7 @@ For complete syntax, value formats, and all command options, read [cli-reference
 - **`search-api` + `call-api`**: for any REST API not covered by dedicated commands. `call-api` can execute any method.
 - **Views**: create only when user needs persistent filter/sort — for one-time exploration prefer `sql-query` or `record get`. Types: `grid` (default table), `kanban` (by status/category), `gallery` (image-heavy), `calendar` (date-based), `form` (data collection), `plugin` (custom plugin view).
 - **Multi-table**: plan relationships before creating tables. Read [cli-reference.md § Multi-Table](guides/cli-reference.md#multi-table-relationship-design).
-- **AI fields**: `field create --ai-config '{"type":"...","sourceFieldName":"..."}' + trigger-ai-fill`. Check `get-doc --topic field.ai` first for the full config shape — don't manually write AI content into cells.
+- **AI fields**: read `field ai-docs` for current models/config, configure the field, then `field ai-fill` → `field ai-status --poll` → read cells to verify. See [ai-field-guide.md](guides/ai-field-guide.md); don't manually write AI content into cells.
 - **Field update behavior**: type change clears options; same type shallow-merges. Lookup/rollup require an existing link field.
 - **App secrets**: grant personal secrets or OAuth connections to the app; do not use personal env variables for resource credentials. See [secret-guide.md](guides/secret-guide.md).
 - **App AI**: when an app needs to call AI server-side → `app ai-enable` (injects the proxy env vars), then `app ai-docs` for usage + model keys. See [app-builder-guide.md § AI in apps](guides/app-builder-guide.md#ai-in-apps).
@@ -115,7 +116,7 @@ For complete syntax, value formats, and all command options, read [cli-reference
 - **App publish**: apps run in preview until `app publish`; prefer `--wait` for a final result, otherwise poll `app status` if it returns `deploying`. See [app-builder-guide.md § Publishing](guides/app-builder-guide.md#publishing).
 - **Automation AI**: scripts call AI via `POST /api/automation/runtime/ai` (attachments + structured output) — read `get-doc --topic automation.ai` first. See [automation-guide.md § Script Rules](guides/automation-guide.md#script-rules).
 - **Headless agent work**: use a routine when a self-contained prompt should run on an RRULE or a connected-app event; validate and preview before activation. See [routine-guide.md](guides/routine-guide.md).
-- **Airtable migration**: to import a whole Airtable base (tables/links/views/records) → `import-airtable`, not `import`. See [data-import-guide.md § Import from Airtable](guides/data-import-guide.md#import-from-airtable).
+- **Airtable migration**: to import a whole Airtable base (tables/links/views/records) → `import airtable`, not `import file`. See [data-import-guide.md § Import from Airtable](guides/data-import-guide.md#import-from-airtable).
 - **Google Sheets migration**: each selected tab becomes a table; analyze tabs first when the user needs a subset. See [data-import-guide.md § Import from Google Sheets](guides/data-import-guide.md#import-from-google-sheets).
 
 ## 3. Key Constraints
@@ -142,7 +143,7 @@ For complete syntax, value formats, and all command options, read [cli-reference
 
 1. **Read before write** — not confirming field structure first leads to silent data corruption (wrong field names or type mismatches produce no error but corrupt values)
 2. **Read [field.simple.md](api-reference/field.simple.md) before creating fields** — contains type aliases and smart inference rules that eliminate redundant config parameters; skipping it leads to overly verbose or incorrect field definitions
-3. **Per-row AI → AI field + `trigger-ai-fill`** — manual row-by-row processing is orders of magnitude slower and wastes tokens; AI fields execute server-side in parallel
+3. **Per-row AI → AI field + `field ai-fill`** — manual row-by-row processing is orders of magnitude slower and wastes tokens; AI fields execute server-side in parallel
 4. **Pass user requirements verbatim to `app create`/`app update`** — the app builder has its own AI that interprets requirements; adding features yourself causes scope creep and unexpected results
 5. **Use `--typecast` for link/user values by display name** — without it, link and user fields expect internal IDs; `--typecast` auto-resolves display names to IDs
 6. **Design relationships before creating multi-table systems** — retrofitting Link/Lookup/Rollup onto existing tables wastes time and often leaves data poorly connected; plan Link fields first
