@@ -143,6 +143,9 @@ skills/
     ├── references/        # Detail loaded on demand (optional)
     └── metadata.json      # Version and metadata (optional)
 scripts/package-openai.sh           Builds the ZIP uploaded to the OpenAI plugin portal
+scripts/package-workbuddy.sh        Builds the connector ZIP for the WorkBuddy Open Platform
+scripts/package-workbuddy-expert.sh Builds the expert (plugin) ZIP for the WorkBuddy Open Platform
+workbuddy/                          WorkBuddy connector and expert metadata
 ```
 
 Each skill follows the [Agent Skills](https://agentskills.io/) format:

@@ -1,0 +1,46 @@
+{
+  "name": "teable",
+  "description": "Works with your Teable projects: queries and analyzes records, creates, updates and deletes them, manages tables and fields, and builds Teable apps locally with the teable CLI.",
+  "author": {
+    "name": "Teable",
+    "email": "support@teable.ai"
+  },
+  "homepage": "https://teable.ai",
+  "license": "MIT",
+  "keywords": ["teable", "database", "spreadsheet", "no-code", "records", "sql"],
+  "agents": ["./agents/teable-assistant.md"],
+  "expertType": "agent",
+  "agentName": "teable-assistant",
+  "displayName": {
+    "en": "Teable Assistant",
+    "zh": "Teable 助手"
+  },
+  "profession": {
+    "en": "Spreadsheet Database Specialist",
+    "zh": "多维表格数据专家"
+  },
+  "displayDescription": {
+    "en": "Connects to your Teable account to query and analyze data, create, update and delete records, manage tables and fields, and build and publish Teable apps from your machine.",
+    "zh": "连接 Teable 多维表格，查询分析数据，增删改记录，管理表和字段，并在本地搭建发布应用。"
+  },
+  "avatar": "avatars/expert.png",
+  "categoryId": "04-DataAI",
+  "defaultInitPrompt": {
+    "zh": "列出我的 Teable 项目和每个项目里的表",
+    "en": "List my Teable projects and the tables in each one"
+  },
+  "plugin": "teable",
+  "tags": [
+    { "en": "Spreadsheet Database", "zh": "多维表格" },
+    { "en": "Data Analysis", "zh": "数据分析" },
+    { "en": "App Building", "zh": "应用搭建" }
+  ],
+  "quickPrompts": [
+    { "en": "List my Teable projects and the tables in each one", "zh": "列出我的 Teable 项目和每个项目里的表" },
+    { "en": "Summarize the open tasks in my project tracker by owner", "zh": "按负责人汇总项目表里未完成的任务" },
+    { "en": "Add a record to my CRM table for a new lead", "zh": "在客户表里新增一条线索记录" }
+  ],
+  "dependencies": {
+    "mcpServers": "./.mcp.json"
+  }
+}
