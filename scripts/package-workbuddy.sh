@@ -7,8 +7,13 @@
 #   mcp.json             exactly one server, type "streamableHttp"
 #   icon.png             64x64, kept in workbuddy/
 #   skills/              the same skill directories the plugin ships
-# auth_mode is left out: the server follows the MCP authorization spec (resource metadata,
-# dynamic client registration, PKCE), so the WorkBuddy client signs in on its own.
+# Authentication, chosen with AUTH:
+#   client (default)  auth_mode is left out. The server follows the MCP authorization spec
+#                     (resource metadata, dynamic client registration, PKCE), so the
+#                     WorkBuddy client signs in on its own.
+#   server-side       the WorkBuddy cloud runs the same OAuth flow and keeps the token
+#                     (auth_mode "server-side", auth_type "mcp_oauth"). The portal can then
+#                     test the sign-in itself. Needs WorkBuddy 4.24.0 or later.
 #
 # The server address is the one in .mcp.json, the same server every other client uses.
 #   TEABLE_MCP_URL  use another MCP server address, e.g. https://mcp.teable.cn/mcp
@@ -16,9 +21,11 @@
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
+auth="${AUTH:-client}"
 url="${TEABLE_MCP_URL:-$(node -p "Object.values(require('$root/.mcp.json').mcpServers)[0].url")}"
 version="$(node -p "require('$root/.claude-plugin/plugin.json').version")"
-out="$root/dist/teable-workbuddy-$version.zip"
+suffix=""; [ "$auth" = "client" ] || suffix="-$auth"
+out="$root/dist/teable-workbuddy-$version$suffix.zip"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 stage="$tmp/teable"
@@ -27,10 +34,10 @@ mkdir -p "$stage"
 cp -R "$root/skills" "$stage/"
 cp "$root/workbuddy/icon.png" "$stage/"
 
-node - "$root" "$stage" "$version" "$url" <<'JS'
+node - "$root" "$stage" "$version" "$url" "$auth" <<'JS'
 const fs = require("fs");
 const path = require("path");
-const [root, stage, version, url] = process.argv.slice(2);
+const [root, stage, version, url, auth] = process.argv.slice(2);
 const write = (p, v) => fs.writeFileSync(path.join(stage, p), JSON.stringify(v, null, 2) + "\n");
 const fail = (m) => { throw new Error(m); };
 
@@ -51,6 +58,14 @@ for (const key of ["examples_zh", "examples_en"]) {
 }
 for (const key of ["name_en", "description"]) meta[key] || fail(`${key} is required`);
 url.startsWith("https://") || fail("the MCP server address must use HTTPS");
+
+if (auth === "server-side") {
+  meta.auth_mode = "server-side";
+  meta.server_auth = { auth_type: "mcp_oauth", data: { mcp_oauth: { server_url: url } } };
+  meta.minWorkbuddyVersion = "4.24.0";
+} else if (auth !== "client") {
+  fail(`AUTH must be client or server-side, got ${auth}`);
+}
 
 write("connector-meta.json", meta);
 write("mcp.json", { mcpServers: { [meta.source]: { type: "streamableHttp", url } } });
