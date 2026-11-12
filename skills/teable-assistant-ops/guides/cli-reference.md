@@ -7,7 +7,7 @@ Use `teable config show` to check current endpoint, baseId, and token status.
 | Pitfall | Fix |
 |---------|-----|
 | `record get` defaults to all fields | Use `--projection '["fldXXX","fldYYY"]'` to select specific fields |
-| `record create/update` with `{"fields":{...}}` object format | Object format auto-converts; canonical form: `--header '[...]' --records '[[...]]'` |
+| Enumerating IDs for the same change to all matching rows | Use `record update` with filter + shared fields; compact header + records is for fixed IDs, per-row values, or reordering |
 | `--search "keyword"` scope | Plain string auto-wraps to `{"value":"keyword"}`; for field-scoped: `--search '{"value":"keyword","fieldId":"fldXXX"}'` |
 | `field update --name "X"` | `--name` is a convenience flag; for other properties use `--updates '{"name":"X"}'` |
 | `table create --fields '[{...}]'` object format | Object format auto-converts; canonical shorthand: `--fields '["X:text"]'` |
@@ -35,13 +35,13 @@ When creating tables or fields, use these shorthand type aliases:
 
 Advanced types (link, lookup, rollup, formula, AI) require `field create` with options — see [field.simple.md](../api-reference/field.simple.md).
 
-**Name resolution**: `field create` accepts table/field names in place of IDs (e.g., `foreignTableName: "Projects"` instead of `foreignTableId: "tblXXX"`). This reduces the need to look up IDs before creating link/lookup/rollup fields.
+**Name resolution**: `field create` accepts table/field names in place of IDs (e.g., `foreignTableName: "Projects"` instead of `foreignTableId: "tblXXX"`). Names require project context (`--base-id` or a binding/default); unknown names fail before creation. For lookups, omit type with project context to inherit the target's exact type; without it, supply IDs and an explicit exact type.
 
 ## Data Queries
 
 For choosing a read entry, inline execution, versioned App-local named queries, permissions and feature availability, read [Data Query Guide](data-query-guide.md). The entries below describe the released CLI surface; they do not activate an experimental structured-query endpoint. Use `query schema` / `query manifest-schema` offline for contracts; use `query explain` for enabled-host diagnostics without reading rows. See the guide for lint, dependencies and repair workflows; scaffolded Apps may also supply standalone `teable/query-tool.mjs`.
 
-**`record get` vs `sql-query`** — if you'll write back to the same records, use `record get` (returns record IDs); for analytics or cross-table reads, use `sql-query`.
+**`record get` vs `sql-query`** — for fixed-ID writes, use `record get` when identities are needed; for analytics or cross-table reads, use `sql-query`. Condition writes need field metadata, not a record-ID read.
 
 - **record get** — record IDs for subsequent writes, `--search` for fuzzy search, simple pagination. Returns compact tabular output with an `id` column per row.
 - **sql-query** — JOINs across tables, aggregations (COUNT/SUM/AVG/GROUP BY), complex WHERE, subqueries. Returns flat rows without record IDs. Read-only (SELECT only).
@@ -80,13 +80,15 @@ See [view.filter.md](../api-reference/view.filter.md), [view.sort.md](../api-ref
 
 ## Record Operations
 
-> **Tip**: for exact value formats without typecast, see [record.value-format.md](../api-reference/record.value-format.md)
+> **Required for updates/deletes**: [record.bulk-update.md](../api-reference/record.bulk-update.md) for condition vs fixed-ID routing, counts and permission safeguards. For exact values without typecast, see [record.value-format.md](../api-reference/record.value-format.md).
+
+Use filter + shared fields when every matching row receives the same update; use compact header + records for fixed identities, per-row values or reordering. Delete with exactly one selector: a nonempty filter or captured IDs. Resolve readable filter field IDs with `field get`; never enumerate IDs or switch selectors to bypass a conditional/permission failure. Conditions run at write time, so earlier counts do not lock the target set. Report actual `updatedCount` / `deletedCount`, including 0.
 
 **Single record**: `record get --table-id tblXXX --record-id recXXX` fetches one record by ID, ignoring `--search`/`--take`/`--skip`.
 
-**Value semantics**: `""` = skip field (no change), `null` = clear cell; checkbox: `true` = checked, `null` = unchecked
+**Value semantics**: compact records use `""` to skip; conditional fields treat it as a value (omit the key to leave unchanged). `null` clears; checkbox: `true` = checked, `null` = unchecked
 
-**`--typecast`**: auto-converts human-readable values (user name/email → user ID, record name → link record ID). See value types table below.
+**Typecasting**: auto-converts human-readable values (user name/email → user ID, record name → link record ID). Updates enable it by default in both modes; use `--no-typecast` when exact field value types are intended. See value types table below.
 
 **Value types in compact array format:**
 
@@ -102,7 +104,7 @@ See [view.filter.md](../api-reference/view.filter.md), [view.sort.md](../api-ref
 | User | `"name"` or `"email"` | With `--typecast`; without: `{"id":"usrXXX","title":"Name"}` |
 | Attachment | `[{"name":"f.png","token":"xxx"}]` | Always array of objects; update **replaces all** |
 
-**Batch limits**: `record create`/`update` max 2000 per call; `record delete` max 1000 IDs per call. `--take` (alias `--limit`) max 1000 per `record get`. For larger datasets, split into multiple calls.
+**Batch limits**: `record create`/records-mode `update` max 2000 rows per call; fixed-ID `record delete` max 1000 IDs per call. `--take` (alias `--limit`) max 1000 per `record get`. Split larger fixed selections; do not split condition writes by enumerating IDs.
 
 **Attachment handling**: Get tokens via `upload-attachment --file-path /path/to/file`. On update, passing attachments **replaces** all existing — not appends.
 
@@ -137,6 +139,8 @@ teable send-email \
 ## Node & Folder Management
 
 Organize nodes (tables, folders, dashboards, etc.) in a project: `get-node-tree`, `folder create`, `folder update` (rename), `folder delete`, `folder move`.
+
+Before `folder delete`, inspect the tree and preview with `--dry-run`. Deletion moves the folder and its contents to trash, preserving structure for restore; it does **not** move children to the parent. Nonempty folders require `--recursive`: confirm the previewed contents before using it. Target the stable folder ID (`bnf...`, retained across trash/restore) or node ID (`bno...`), never a field ID (`fld...`).
 
 Always `get-node-tree` first to see current structure. Reorder with: `folder move --node-id <nodeId> --parent-id <parentId> --anchor-id <siblingId> --position before|after`.
 

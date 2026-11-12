@@ -40,14 +40,14 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | Records | Write row data, attachments, reordering | `record create/update/delete` | [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) |
 | Views | Persistent filtered/sorted/grouped perspectives | `view create/update/delete` | [view.filter.md](api-reference/view.filter.md), [view.sort.md](api-reference/view.sort.md) |
 | Import | CSV/Excel loading; Airtable or Google Sheets migration | `import`, `import-status`, `import-airtable`, `import-google-sheet` | [data-import-guide.md](guides/data-import-guide.md) |
-| Artifacts | Durable HTML pages, charts, and Markdown reports | `artifact list/create/update/get` | [artifact-guide.md](guides/artifact-guide.md) |
+| Artifacts | Durable HTML pages, charts, and Markdown reports | `artifact list/create/update/get/share` | [artifact-guide.md](guides/artifact-guide.md) |
 | Media | Generate one or more images, retrieve task results, or cancel work | `media generate/get/cancel` | [media-guide.md](guides/media-guide.md) |
 | Scraping | Extract structured data from supported platform pages | `scrape search/inspect/run/status` | [scrape-guide.md](guides/scrape-guide.md) |
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
 | Routines | Headless agent tasks triggered by schedules or connected-app events | `routine *` | [routine-guide.md](guides/routine-guide.md) |
 | App Builder | Live dashboards, custom web UIs | `app create/update/list/get-code`, `app publish/status/unpublish`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
 | Local Apps | Edit app code externally, sync and restore versions | `app init/clone/pull/push/versions/rollback` | [app-development-guide.md](guides/app-development-guide.md); the `teable-app-builder` skill, when installed, has the full local workflow |
-| Templates | Reuse project workflows and review setup health | `template search/install/status/submit` | [template-guide.md](guides/template-guide.md) |
+| Templates | Reuse project workflows and review setup health | `template search/install/status/submit/guide/guide-save` | [template-guide.md](guides/template-guide.md) |
 | Operation Previews | Assess supported write effects before execution | `operation capabilities/preview` | [operation-guide.md](guides/operation-guide.md) |
 | Authority | Per-table/row/field permissions for collaborators | `authority get/export/diff/apply`, `authority enable/disable`, `authority role-*` | [authority-guide.md](guides/authority-guide.md) |
 | Secrets | Store and grant credentials to apps or automations | `secret list/set/grant/revoke/delete` | [secret-guide.md](guides/secret-guide.md) |
@@ -67,7 +67,8 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 |-------------|---------------|----------------|
 | Per-row AI (sentiment, tagging, translation) | Fields: AI field (`--ai-config`) + `trigger-ai-fill` | Manually read/analyze/write each row |
 | Aggregation (count, sum, avg) | Data Query: `sql-query` with GROUP BY | Fetch all records + compute in code |
-| Read records for subsequent writes | Data Query: `record get` (returns record IDs) | `sql-query` (no record IDs) |
+| Same change to all matching rows / delete by condition | Records: resolve field metadata → pass filter directly; see [bulk writes](api-reference/record.bulk-update.md) | Enumerate matching record IDs first |
+| Fixed record selection or different values per row | Data Query: `record get` when IDs are needed, then Records | `sql-query` (no record IDs) |
 | Cross-table analytics / JOINs | Data Query: `sql-query` | Multiple `record get` calls |
 | Structured data reads | Data Query: check installed CLI and explicit host enablement in [data-query-guide.md](guides/data-query-guide.md) | Assume an internal v2 implementation is a released command or active endpoint |
 | One-time chart shown only in the conversation | Visualization: HTML code block | App Builder or artifact |
@@ -96,7 +97,7 @@ teable table create --table-name "Tasks" --fields '["Title:text","Status:sel:Tod
 teable sql-query --sql 'SELECT "name","status" FROM "bseXXX"."dbTableName" LIMIT 100'
 # Create records — header + compact array format
 teable record create --table-id tblXXX --header '["Name","Status"]' --records '[["Task A","Done"],["Task B","Pending"]]'
-# Update records — first header element MUST be "recordId"
+# Update a fixed selection — first header element MUST be "recordId"
 teable record update --table-id tblXXX --header '["recordId","Status"]' --records '[["recXXX","Done"]]'
 ```
 
@@ -122,9 +123,9 @@ For complete syntax, value formats, and all command options, read [cli-reference
 - Primary field must be: text, long text, number, or auto-number
 - New tables default to 3 empty fields + 3 empty records; safely delete empties
 - `record get` without `--projection` defaults to all fields — use `--projection '["fldXXX","fldYYY"]'` to select specific fields
-- Batch limits: max 1000 per `record get`, max 2000 per `record create`/`update` — see [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) for pagination and delete limits
+- Batch limits: max 1000 per `record get`, max 2000 per `record create`/records-mode `update` — see [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) for pagination and delete limits
 - SQL uses `dbTableName`/`dbFieldName` (from `table get`/`field get`), double-quote all identifiers, add `LIMIT 100` to non-aggregate queries
-- Value semantics: `""` = skip field, `null` = clear cell — see [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) for full value type table
+- Value semantics: compact records use `""` to skip; conditional updates treat it as a value. `null` clears — see [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) for full value type table
 - Formula uses field names: `{Budget} - {Actual}` (auto-converted to field IDs)
 
 ## 4. Execution Rules
@@ -132,7 +133,7 @@ For complete syntax, value formats, and all command options, read [cli-reference
 ### 4.1 Standard Order
 
 1. **Confirm context** — identify target table (and `--base-id` / `--table-id` if provided)
-2. **Read before write** — `table get`, `field get`, `record get`, or `sql-query` to confirm current state
+2. **Read before write** — confirm schema with `table get` / `field get`; read records when fixed identities or current cell values are needed. For condition writes, pass the resolved filter directly without enumerating IDs
 3. **Preview supported destructive/non-obvious writes** — discover `operation capabilities`, preview the same input, explain blockers/unknowns and obtain required confirmation; see [operation-guide.md](guides/operation-guide.md)
 4. **Execute changes** — create/update/delete as needed
 5. **Verify** — re-read to confirm the result
@@ -156,7 +157,7 @@ Files in `api-reference/`, named `{category}.{subtopic}.md` — read when you ne
 
 **Fields**: `field.simple.md` (type guide), `field.basic.md`, `field.select.md`, `field.link.md`, `field.lookup.md`, `field.rollup.md`, `field.formula.md`, `field.formatting.md`, `field.show-as.md`, `field.colors.md`
 **Views**: `view.filter.md`, `view.sort.md`, `view.group.md`, `view.column.md`, `view.statistic.md`
-**Records**: `record.value-format.md`
+**Records**: `record.bulk-update.md` (condition vs fixed-ID writes, counts and permission safeguards), `record.value-format.md`
 **Automations**: `automation.trigger.md`, `automation.api.md`, `automation.send-email.md`
 **Integrations**: `integration.slack.md`
 **Scraping**: `scrape.guide.md` (endpoint discovery; do not use legacy dataset payloads)

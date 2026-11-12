@@ -18,7 +18,7 @@ For an unfamiliar capability, discover the installed command surface with `teabl
 
 - Use `teable query schema` (offline, no credentials/project/network) and help as the request authority. HTTP clients and CLI callers should use that same request/response contract, not separate hand-maintained schemas.
 - The transport accepts `definition`, optional public `parameters`, and optional `queryId` for observability. The full definition is always required; a name does not grant access or refer to a server-side query library. The server validates current fields, authorization and parameter types before compiling parameterized SQL.
-- The Nest endpoint is experimental and defaults off behind `V2_DATA_QUERY_ENABLED`. A disabled host does not advertise it in public OpenAPI. Explicit host enablement and a CLI release containing the command are separate prerequisites.
+- Structured execute/inline/explain require the host to enable `V2_DATA_QUERY_ENABLED` or `V2_DATA_QUERY_EXECUTE_ENABLED` (both default off). A disabled host does not advertise it in public OpenAPI. Explicit host enablement and a CLI release containing the command are separate prerequisites.
 - Use stable table/field IDs and declared output aliases for structured reads. Keep database names confined to the raw SQL entry. Support for arbitrary SQL or joins in one entry does not imply support in another.
 
 ### Temporary inline reads during App development
@@ -35,12 +35,25 @@ teable query inline \
   --limit 100
 ```
 
-The default/maximum limit is 100/1000. For relation-aware reads, `--relations` takes a JSON map of aliases to `{ linkFieldId, tableId, filter? }` and switches to version 2; use stable IDs and the canonical schema rather than SQL join syntax. This is a development inspection entry only; do not copy it into page runtime code. `teable query execute --request @file` accepts the full canonical request, including aggregate definitions, without a duplicate project ID. Neither execution entry falls back to SQL.
+The default/maximum limit is 100/1000. For relation-aware reads, `--relations` takes a JSON map of aliases to `{ linkFieldId, tableId, filter? }` and infers version 2 unless formula projections or filters require version 3; use stable IDs and the canonical schema rather than SQL join syntax. This is a development inspection entry only; do not copy it into page runtime code. `teable query execute --request @file` accepts the full canonical request, including aggregate definitions, without a duplicate project ID. Neither execution entry falls back to SQL.
 
 In an App that has `teable/queries.yaml`, runtime reads use generated `lib/queries.ts`. Do not
 import or call `sqlQuery` from `@/lib/teable` as a fallback. Keep `sql-query` for legacy Apps and
 one-off cross-table or SQL-specific analysis. A failed inline/named query is an explicit error,
 not permission to silently retry through SQL.
+
+### Formula projections and filters
+
+For computed one-off reads, inline and explain accept Teable formulas, not SQL. Formula projections use `expr`; boolean formulas are filter leaves. Each `{alias}` resolves only through that formula's explicit `references` map (field/system/parameter); field display names are not resolved implicitly here. Bind runtime values as declared parameters, never interpolate them into formula text.
+
+```bash
+teable query inline --table-id tblXXX \
+  --select '[{"expr":{"type":"formula","formula":"UPPER({title})","references":{"title":{"type":"field","fieldId":"fldTitle"}}},"alias":"title"}]' \
+  --filter '{"type":"formula","formula":"{amount} >= {minimum}","references":{"amount":{"type":"field","fieldId":"fldAmount"},"minimum":{"type":"parameter","name":"minimum"}}}' \
+  --parameter-definitions '{"minimum":{"type":"number"}}' --parameters '{"minimum":100}'
+```
+
+Formula projections/boolean filters infer definition version 3; legacy inputs retain version 1/2 inference. For an explicit version or aggregates, use the canonical request with `query execute` (or `query explain` for diagnostics) and consult `query schema`. Combine formula leaves with legacy field filters through `conjunction`/`items` or `not`; standalone operands, comparison nodes and null-test nodes are unsupported. Inline `LAST_MODIFIED_TIME({field})` is unsupported: reference a stored formula field instead; zero-argument `LAST_MODIFIED_TIME()` still works.
 
 ### Named-query Apps, when available
 

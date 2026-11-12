@@ -3,6 +3,10 @@
 Lookup fields display values from other tables.
 
 ⚠️ **Critical:** Lookup does NOT have its own FieldType. Use the **exact type** of the foreign field and set `isLookup: true`.
+When using the create-field tool or CLI with baseId (--base-id), type can be omitted:
+the target field is loaded on demand and its exact type is inherited. Without baseId,
+provide IDs and the exact type explicitly. Unknown field names are rejected before creation.
+
 
 ## Core Differences
 
@@ -303,7 +307,7 @@ LIMIT 50
 - ✅ Always set: `isLookup: true`
 
 ❌ **Type mismatch with foreign field**
-- ✅ Use: **Exact same type** as foreign field
+- ✅ Omit type with baseId to inherit it, or supply the **exact same type** as the foreign field.
 
 ❌ **Missing `foreignTableId` in lookupOptions**
 - ✅ Always include: `foreignTableId`
@@ -322,7 +326,7 @@ LIMIT 50
 ### Basic Lookup
 1. **Link field required**: Must have existing Link field
 2. **Configure linkFieldId**: Points to the Link field in current table
-3. **Type must match**: Foreign field's type exactly
+3. **Type must match**: Inherited when omitted with baseId; otherwise specify the foreign field's exact type.
 4. **Read-only**: Synced from linked records
 
 ### Conditional Lookup
