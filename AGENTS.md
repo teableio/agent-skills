@@ -31,6 +31,10 @@ never copied per client.
   into `dist/`. Its listing metadata and 64x64 icon live in `workbuddy/`; the version comes
   from the plugin manifest and the MCP server address from `.mcp.json`. An update there is
   a new ZIP with a higher version, submitted for review again.
+- `scripts/package-workbuddy-expert.sh` builds the WorkBuddy **expert** ZIP, which is what
+  WorkBuddy calls a plugin: an agent (`workbuddy/expert/agents/`) with a listing
+  (`workbuddy/expert/plugin.json`), the plugin's skills and its MCP server. The agent prompt
+  only says how to approach the work; CLI usage stays in the skills.
 - The plugin also reaches clients that cannot run commands (ChatGPT on the web gets the same
   package as Codex). A skill that depends on the CLI says so in two places: its `description`
   ("Requires an environment that can run shell commands"), so such a client does not pick
