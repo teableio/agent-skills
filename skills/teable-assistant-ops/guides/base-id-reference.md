@@ -25,7 +25,7 @@ Use `teable link bseXXXX` to bind a working directory. Without an ID, `teable li
 | `table get` | — |
 | `field get`, `record get`, `view get` | `--table-id` |
 | `sql-query` | `--sql` |
-| `get-ai-config`, `get-collaborators` | — |
+| `field ai-docs`, `get-collaborators` | — |
 
 ### CRUD
 
@@ -53,7 +53,7 @@ Use `teable link bseXXXX` to bind a working directory. Without an ID, `teable li
 
 | Command | Also requires |
 |---------|---------------|
-| `trigger-ai-fill` | `--table-id`, `--field-id` |
+| `field ai-fill` | `--table-id`, `--field-id` |
 | `app list/create/update` | — |
 | `app get-code/delete/status/unpublish` | `--app-id` |
 | `app init` | `--name` |
@@ -112,7 +112,7 @@ Use `teable link bseXXXX` to bind a working directory. Without an ID, `teable li
 |---------|---------------|
 | `search-api` | `--query` |
 | `call-api` | `--method`, `--url` |
-| `import` | `--file` or `--attachment-token` + mode flag |
+| `import file` | file, attachment token, inline data, or stdin; omit target flags to analyze |
 | `scrape search` | platform or relevance search inputs |
 | `scrape inspect` | `--endpoint-id` |
 | `scrape run` | `--endpoint-id`, `--input` |
@@ -121,10 +121,10 @@ Use `teable link bseXXXX` to bind a working directory. Without an ID, `teable li
 | `query repair-apply/repair-dismiss` | `--repair-id` |
 | `template install/status/submit/guide/guide-save` | see [Template Guide](template-guide.md) |
 | `send-email` | `--subject`, `--body`, `--to`/`--bcc` |
-| `import-airtable` | `--airtable-base-id` + `--space-id`/`--base-name` (new project) — note: `--base-id` here is an **optional import target** (no `-b` short flag), not the usual configured Teable project |
-| `import-google-sheet` | `--spreadsheet-id` + `--space-id`/`--base-name` (new project) — `--base-id` is an optional existing import target, not project context |
+| `import airtable` | `--airtable-base-id` + `--space-id`/`--base-name` (new project) — note: `--base-id` here is an **optional import target** (no `-b` short flag), not the usual configured Teable project |
+| `import google-sheet` | `--spreadsheet-id` + `--space-id`/`--base-name` (new project) — `--base-id` is an optional existing import target, not project context |
 | `tools list`, `get-doc` | `--topic` (get-doc only) |
 
 ## Commands that do NOT need --base-id
 
-`auth` / `auth status`, `config`, `base list/create`, `artifact update/get/share`, `upload-attachment`, `import-status`, `integration list/search/connect/get-token`, `link`, `operation capabilities/preview`, `template search`, `query execute/inline/explain`, offline `query schema/manifest-schema/validate/generate/lint/deps/coverage`, `env list/set/update/delete`, `secret list/set/grant/revoke/delete`
+`auth` / `auth status`, `config`, `base list/create`, `artifact update/get/share`, `upload-attachment`, `import status`, `field ai-status`, `record count/stats`, `integration list/search/connect/get-token`, `link`, `operation capabilities/preview`, `template search`, `query execute/inline/explain`, offline `query schema/manifest-schema/validate/generate/lint/deps/coverage`, `env list/set/update/delete`, `secret list/set/grant/revoke/delete`
