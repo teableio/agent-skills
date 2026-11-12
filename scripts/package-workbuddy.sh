@@ -10,13 +10,13 @@
 # auth_mode is left out: the server follows the MCP authorization spec (resource metadata,
 # dynamic client registration, PKCE), so the WorkBuddy client signs in on its own.
 #
-# WorkBuddy's marketplace serves mainland China, so the server defaults to teable.cn.
-#   TEABLE_MCP_URL  MCP server address          (default https://mcp.teable.cn/mcp)
+# The server address is the one in .mcp.json, the same server every other client uses.
+#   TEABLE_MCP_URL  use another MCP server address, e.g. https://mcp.teable.cn/mcp
 #   FLAT=1          put the files at the ZIP root instead of inside a teable/ directory
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
-url="${TEABLE_MCP_URL:-https://mcp.teable.cn/mcp}"
+url="${TEABLE_MCP_URL:-$(node -p "Object.values(require('$root/.mcp.json').mcpServers)[0].url")}"
 version="$(node -p "require('$root/.claude-plugin/plugin.json').version")"
 out="$root/dist/teable-workbuddy-$version.zip"
 tmp="$(mktemp -d)"
