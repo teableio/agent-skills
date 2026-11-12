@@ -27,6 +27,11 @@ never copied per client.
 - The two manifests carry the same `version`; raise both together when a release should
   reach plugin users.
 - `scripts/package-openai.sh` builds the ZIP for the OpenAI plugin portal into `dist/`.
+- The plugin also reaches clients that cannot run commands (ChatGPT on the web gets the same
+  package as Codex). A skill that depends on the CLI says so in two places: its `description`
+  ("Requires an environment that can run shell commands"), so such a client does not pick
+  it, and a **No shell** line in its prerequisites that falls back to the Teable MCP tools.
+  Keep both when editing `teable-assistant-ops`, including in automated doc syncs.
 - `.mcp.json` needs `"type": "http"`; Claude Code drops a remote server without it.
 
 ## Creating a New Skill

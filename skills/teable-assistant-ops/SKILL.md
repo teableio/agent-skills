@@ -2,7 +2,8 @@
 name: teable-assistant-ops
 description: >-
   Operate Teable projects — tables, fields, views, records, SQL queries, automations,
-  headless routines, apps, image generation, and web scraping. Trigger when user mentions Cuppy, Teable, teable CLI, or
+  headless routines, apps, image generation, and web scraping — through the `teable` CLI.
+  Requires an environment that can run shell commands. Trigger when user mentions Cuppy, Teable, teable CLI, or
   Teable-style IDs (bseXXX, tblXXX, fldXXX, recXXX, viwXXX), or wants to manage
   tables/fields/records, build dashboards/apps, generate images or charts, create automations,
   import/export data, trigger AI fill, or scrape websites (LinkedIn, Amazon, YouTube,
@@ -19,6 +20,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 ## 1. Prerequisites & Constraints
 
 - All operations use `teable` CLI. Only check auth (`auth status`) if a command fails.
+- **No shell**: if shell commands cannot be run in this environment, do not attempt CLI commands. Use the Teable MCP tools (when present) for projects, tables, fields and records, and tell the user that the rest needs a local environment with the `teable` CLI.
 - **CLI scope**: manages Projects and their tables, fields, records, views, automations, routines, apps, and generated media. It cannot create Spaces (direct the user to Teable web UI).
 - **Install**: if `teable` not found → run the install script at `scripts/install.sh` relative to this skill's directory. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
 - **Project context**: use the supplied project ID; otherwise reuse the directory binding/default. Use `teable link` to discover/bind a project, and ask only if the target remains ambiguous. Explicit `--base-id` overrides the nearest directory/parent binding, then user config. See [guides/base-id-reference.md](guides/base-id-reference.md).
