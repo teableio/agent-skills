@@ -27,6 +27,11 @@ never copied per client.
 - The two manifests carry the same `version`; raise both together when a release should
   reach plugin users.
 - `scripts/package-openai.sh` builds the ZIP for the OpenAI plugin portal into `dist/`.
+- `scripts/package-workbuddy.sh` builds the connector ZIP for the WorkBuddy Open Platform
+  into `dist/`. Its listing metadata and 64x64 icon live in `workbuddy/`; the version comes
+  from the plugin manifest, and the MCP server defaults to `https://mcp.teable.cn/mcp`
+  because that marketplace serves mainland China. An update there is a new ZIP with a higher
+  version, submitted for review again.
 - The plugin also reaches clients that cannot run commands (ChatGPT on the web gets the same
   package as Codex). A skill that depends on the CLI says so in two places: its `description`
   ("Requires an environment that can run shell commands"), so such a client does not pick

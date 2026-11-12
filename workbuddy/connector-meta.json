@@ -1,0 +1,20 @@
+{
+  "name": "Teable",
+  "name_zh": "Teable",
+  "name_en": "Teable",
+  "description": "连接你的 Teable 多维表格：查询和分析数据，新增、修改和删除记录，管理表和字段。",
+  "description_zh": "连接你的 Teable 多维表格：查询和分析数据，新增、修改和删除记录，管理表和字段。",
+  "description_en": "Query, analyze and update your Teable databases: records, tables, fields and read-only SQL.",
+  "source": "teable",
+  "type": "mcp",
+  "examples_zh": [
+    "列出我的 Teable 项目，以及每个项目里有哪些表",
+    "汇总项目管理表里还没完成的任务，按负责人分组",
+    "在客户表里新增一条线索记录"
+  ],
+  "examples_en": [
+    "List my Teable projects and the tables in each one",
+    "Summarize the open tasks in my project tracker, grouped by owner",
+    "Add a record to my CRM table for a new lead"
+  ]
+}
