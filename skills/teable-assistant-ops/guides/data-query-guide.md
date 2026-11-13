@@ -10,7 +10,7 @@ Use this guide to choose a data-read path or diagnose a query failure. Query exe
 | Row total for a table, view, or filter | `record count` |
 | Whole-table/view/filter field summaries (sum, average, unique, etc.) | `record stats` |
 | Cross-table joins or SQL-specific analysis | `sql-query`, following [SQL critical rules](cli-reference.md#sql-critical-rules) |
-| One-off structured read during App development | `teable query inline` on an explicitly enabled host |
+| One-off structured records or aggregate read during App development | `teable query inline` on an explicitly enabled host |
 | Diagnose admission/routing without reading rows | `teable query explain` on an explicitly enabled host |
 | Reusable reads in a named-query App | Versioned `teable/queries.yaml` and generated server-only functions; see the workflow below |
 
@@ -37,7 +37,7 @@ With a view scope, a hidden field yields `value: null` plus a note, not zero. Ch
 
 ### Temporary inline reads during App development
 
-Use the ephemeral records command when the AI needs to inspect live data before deciding what
+Use the ephemeral records or aggregate command when the AI needs to inspect live data before deciding what
 belongs in the App. It builds the same canonical `definition` sent by `teable query execute` and
 does not write `queries.yaml`, `lib/queries.ts`, or an App version:
 
@@ -49,7 +49,9 @@ teable query inline \
   --limit 100
 ```
 
-The default/maximum limit is 100/1000. For relation-aware reads, `--relations` takes a JSON map of aliases to `{ linkFieldId, tableId, filter? }` and infers version 2 unless formula projections or filters require version 3; use stable IDs and the canonical schema rather than SQL join syntax. This is a development inspection entry only; do not copy it into page runtime code. `teable query execute --request @file` accepts the full canonical request, including aggregate definitions, without a duplicate project ID. Neither execution entry falls back to SQL.
+The default/maximum limit is 100/1000. For relation-aware reads, `--relations` takes a JSON map of aliases to `{ linkFieldId, tableId, filter? }` and infers version 2 unless formula features require version 3/4; use stable IDs and the canonical schema rather than SQL join syntax. This is a development inspection entry only; do not copy it into page runtime code. `teable query execute --request @file` accepts the full canonical request without a duplicate project ID. Neither execution entry falls back to SQL.
+
+For a temporary summary, inline and explain accept `--aggregates` instead of `--select`; use `--group-by` for grouped output. Apply `--filter` to input rows and `--having` to aggregate output aliases and declared parameters, rather than filtering downloaded results. Read `query schema` for metric/group/reference shapes before constructing the JSON. Formula metrics, metric-local filters and HAVING infer version 4; ordinary aggregates no longer require a full request just to use the inline entry.
 
 In an App that has `teable/queries.yaml`, runtime reads use generated `lib/queries.ts`. Do not
 import or call `sqlQuery` from `@/lib/teable` as a fallback. Keep `sql-query` for legacy Apps and
@@ -67,7 +69,7 @@ teable query inline --table-id tblXXX \
   --parameter-definitions '{"minimum":{"type":"number"}}' --parameters '{"minimum":100}'
 ```
 
-Formula projections/boolean filters infer definition version 3; legacy inputs retain version 1/2 inference. For an explicit version or aggregates, use the canonical request with `query execute` (or `query explain` for diagnostics) and consult `query schema`. Combine formula leaves with legacy field filters through `conjunction`/`items` or `not`; standalone operands, comparison nodes and null-test nodes are unsupported. Inline `LAST_MODIFIED_TIME({field})` is unsupported: reference a stored formula field instead; zero-argument `LAST_MODIFIED_TIME()` still works.
+Formula projections/boolean filters infer definition version 3 unless aggregate features require version 4 as above; legacy inputs retain version 1/2 inference. For an explicit `definition.version`, use the canonical request with `query execute` (or `query explain` for diagnostics) and consult `query schema`. Combine formula leaves with legacy field filters through `conjunction`/`items` or `not`; standalone operands, comparison nodes and null-test nodes are unsupported. Inline `LAST_MODIFIED_TIME({field})` is unsupported: reference a stored formula field instead; zero-argument `LAST_MODIFIED_TIME()` still works.
 
 ### Named-query Apps, when available
 
