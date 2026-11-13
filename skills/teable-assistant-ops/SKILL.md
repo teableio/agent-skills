@@ -67,7 +67,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 |-------------|---------------|----------------|
 | Per-row AI (sentiment, tagging, translation) | Fields: AI field (`--ai-config`) → `field ai-fill` → `field ai-status` | Manually read/analyze/write each row |
 | Count / whole-table statistics | Data Query: `record count` / `record stats` (table, view, or filter) | Fetch all records + compute in code |
-| Grouped aggregation / buckets | Data Query: `sql-query` with GROUP BY | Fetch all records + compute in code |
+| Grouped aggregation / buckets | Data Query: `sql-query` with GROUP BY; for structured App-development inspection on an enabled host, `query inline` aggregates | Fetch all records + compute in code |
 | Same change to all matching rows / delete by condition | Records: resolve field metadata → pass filter directly; see [bulk writes](api-reference/record.bulk-update.md) | Enumerate matching record IDs first |
 | Fixed record selection or different values per row | Data Query: `record get` when IDs are needed, then Records | `sql-query` (no record IDs) |
 | Cross-table analytics / JOINs | Data Query: `sql-query` | Multiple `record get` calls |

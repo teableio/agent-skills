@@ -8,7 +8,7 @@ Use `teable config show` to check current endpoint, baseId, and token status.
 |---------|-----|
 | `record get` defaults to all fields | Use `--projection '["fldXXX","fldYYY"]'` to select specific fields |
 | Enumerating IDs for the same change to all matching rows | Use `record update` with filter + shared fields; compact header + records is for fixed IDs, per-row values, or reordering |
-| `--search "keyword"` scope | Plain string auto-wraps to `{"value":"keyword"}`; for field-scoped: `--search '{"value":"keyword","fieldId":"fldXXX"}'` |
+| `--search "keyword"` scope | Plain string auto-wraps to `{"value":"keyword"}`; use `fieldId` for one field or `fieldIds` for several; choose matching deliberately (see below) |
 | `field update --name "X"` | `--name` is a convenience flag; for other properties use `--updates '{"name":"X"}'` |
 | `table create --fields '[{...}]'` object format | Object format auto-converts; canonical shorthand: `--fields '["X:text"]'` |
 | Treating `table delete` as permanent | It moves the table to project trash. Verify the table ID first; restore from trash after an accidental deletion. |
@@ -43,7 +43,7 @@ For choosing a read entry, inline execution, versioned App-local named queries, 
 
 **`record get` vs `sql-query`** — for fixed-ID writes, use `record get` when identities are needed; for analytics or cross-table reads, use `sql-query`. Condition writes need field metadata, not a record-ID read.
 
-- **record get** — record IDs for subsequent writes, `--search` for fuzzy search, simple pagination. Returns compact tabular output with an `id` column per row.
+- **record get** — record IDs for subsequent writes, `--search` for text search, simple pagination. Returns compact tabular output with an `id` column per row.
 - **sql-query** — JOINs across tables, aggregations (COUNT/SUM/AVG/GROUP BY), complex WHERE, subqueries. Returns flat rows without record IDs. Read-only (SELECT only).
 - **Counts/statistics**: use `record count` for row totals and `record stats` for whole-table/view/filter field summaries. Use `sql-query` with GROUP BY for groups or buckets; see [count/statistics decisions](data-query-guide.md#counts-and-field-statistics).
 
@@ -52,6 +52,12 @@ For choosing a read entry, inline execution, versioned App-local named queries, 
 teable record get --table-id tblXXX --projection '["fldXXX","fldYYY"]'
 # SQL: must use dbTableName/dbFieldName from table get/field get, double-quote identifiers
 teable sql-query --sql 'SELECT "name" FROM "bseXXX"."tbl_users" LIMIT 100'
+```
+
+For `record get` search, keep the default `match: "phrase"` when the whole search value should stay together; choose `"all-terms"` when every space-separated word must appear in a searched field, or `"exact"` when the field must equal the value. Scope with `fieldId` (one field) or `fieldIds` (several) to avoid unrelated-column hits:
+
+```bash
+teable record get --table-id tblXXX --search '{"value":"release notes","match":"all-terms","fieldIds":["Title","Description"]}'
 ```
 
 ### SQL Critical Rules
