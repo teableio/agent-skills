@@ -10,11 +10,19 @@ Use this guide to choose a data-read path or diagnose a query failure. Query exe
 | Row total for a table, view, or filter | `record count` |
 | Whole-table/view/filter field summaries (sum, average, unique, etc.) | `record stats` |
 | Cross-table joins or SQL-specific analysis | `sql-query`, following [SQL critical rules](cli-reference.md#sql-critical-rules) |
-| One-off structured read during App development | `teable query inline` on an explicitly enabled host |
+| One-off structured records or aggregate read during App development | `teable query inline` on an explicitly enabled host |
 | Diagnose admission/routing without reading rows | `teable query explain` on an explicitly enabled host |
 | Reusable reads in a named-query App | Versioned `teable/queries.yaml` and generated server-only functions; see the workflow below |
 
 For an unfamiliar capability, discover the installed command surface with `teable --help` or `teable tools list --search query`, then read the selected command's help. Backend implementation, a source PR, and a CLI version number alone do not prove that a target host has enabled a route. This skill follows the released CLI manifest; do not invent command names, query IDs, or URLs for an unavailable feature. Keep using the supported entry that fits the requested operation.
+
+## Search decisions
+
+For `record get`, choose search semantics before interpreting a missing result: default `phrase` searches the whole supplied value; `all-terms` requires every space-separated word to appear in a searched field; `exact` requires field equality. Use `fieldIds` to restrict a multi-field search rather than repeating global searches; `fieldId` still scopes a single field.
+
+```bash
+teable record get --table-id tblXXX --search '{"value":"weekly report","match":"all-terms","fieldIds":["Title","Description"]}'
+```
 
 ## Counts and field statistics
 
@@ -37,7 +45,7 @@ With a view scope, a hidden field yields `value: null` plus a note, not zero. Ch
 
 ### Temporary inline reads during App development
 
-Use the ephemeral records command when the AI needs to inspect live data before deciding what
+Use the ephemeral records/aggregate command when the AI needs to inspect live data before deciding what
 belongs in the App. It builds the same canonical `definition` sent by `teable query execute` and
 does not write `queries.yaml`, `lib/queries.ts`, or an App version:
 
@@ -49,7 +57,7 @@ teable query inline \
   --limit 100
 ```
 
-The default/maximum limit is 100/1000. For relation-aware reads, `--relations` takes a JSON map of aliases to `{ linkFieldId, tableId, filter? }` and infers version 2 unless formula projections or filters require version 3; use stable IDs and the canonical schema rather than SQL join syntax. This is a development inspection entry only; do not copy it into page runtime code. `teable query execute --request @file` accepts the full canonical request, including aggregate definitions, without a duplicate project ID. Neither execution entry falls back to SQL.
+The default/maximum limit is 100/1000. For relation-aware reads, `--relations` takes a JSON map of aliases to `{ linkFieldId, tableId, filter? }`; use stable IDs and the canonical schema rather than SQL join syntax. Legacy inputs infer version 1/2; formula features can require version 3/4. This is a development inspection entry only; do not copy it into page runtime code. `teable query execute --request @file` accepts the full canonical request without a duplicate project ID. Neither execution entry falls back to SQL.
 
 In an App that has `teable/queries.yaml`, runtime reads use generated `lib/queries.ts`. Do not
 import or call `sqlQuery` from `@/lib/teable` as a fallback. Keep `sql-query` for legacy Apps and
@@ -67,7 +75,13 @@ teable query inline --table-id tblXXX \
   --parameter-definitions '{"minimum":{"type":"number"}}' --parameters '{"minimum":100}'
 ```
 
-Formula projections/boolean filters infer definition version 3; legacy inputs retain version 1/2 inference. For an explicit version or aggregates, use the canonical request with `query execute` (or `query explain` for diagnostics) and consult `query schema`. Combine formula leaves with legacy field filters through `conjunction`/`items` or `not`; standalone operands, comparison nodes and null-test nodes are unsupported. Inline `LAST_MODIFIED_TIME({field})` is unsupported: reference a stored formula field instead; zero-argument `LAST_MODIFIED_TIME()` still works.
+Formula projections/boolean filters infer definition version 3; formula metrics, metric-local filters or HAVING infer version 4. Legacy inputs retain version 1/2 inference. For an explicit version, use the canonical request with `query execute` (or `query explain` for diagnostics) and consult `query schema`. Combine formula leaves with legacy field filters through `conjunction`/`items` or `not`; standalone operands, comparison nodes and null-test nodes are unsupported. Inline `LAST_MODIFIED_TIME({field})` is unsupported: reference a stored formula field instead; zero-argument `LAST_MODIFIED_TIME()` still works.
+
+### Aggregates, existence and distinct results
+
+- For one-off summaries on an enabled host, inline and explain accept `--aggregates` **instead of** `--select`. Group only when separate buckets are needed (`--group-by`); use `--having` for a boolean formula over aggregate output aliases and declared parameters, not a pre-aggregation row filter. Resolve metric/group payloads through `query schema`; do not invent SQL expressions.
+- To select roots with matching linked records (or none), use an explicit version 5 canonical request with `query execute --request` or `query explain --request`. Put `{relation:"items",quantifier:"any"|"none"}` in the root filter (composable with AND/OR/NOT), and matching conditions in `relations.items.filter`. Relation/metric filters cannot contain existence leaves. This filters roots before aggregate/sort/page/total and retains version 4 metrics/HAVING.
+- For unique output tuples, use the canonical request with `definition: {version:6,kind:"records",distinct:true,...}`. There is **no inline DISTINCT flag**. Uniqueness covers all selected outputs after scopes, masks, formulas and relation metrics; adding an ID projection changes the tuple. Totals count unique tuples before paging. Prefer selected aliases for sorting, especially transformed/repeated projections; no hidden ID tie-break is added. Explain uses the same tuple and ordering semantics as execution.
 
 ### Named-query Apps, when available
 
@@ -98,7 +112,7 @@ For generated apps, login controls admission to the app; it does not by itself e
 
 Before renaming, retyping or deleting fields, run `teable query deps` against each relevant App manifest and review the stable table/field dependency index. It is fully offline: SQL-path queries (`auto`, `sql-query`) have incomplete field sets, so absence from the index is not proof a field is unused.
 
-After a schema change or `app pull`, inspect `query repairs` for the project/app, then use the repair ID to read its full per-query plan and manifest diff. Apply only a reviewed `applyable: true` plan with `query repair-apply`; blocked plans need a human decision. Applying writes a **new App version**, preserving history, and refuses stale app versions/manifests. Pull the checkout afterwards. If handled manually instead, use `query repair-dismiss` with a reason; dismissing is not a code repair.
+After a schema change, `app schema` or `app pull`, inspect `query repairs` for the project/app, then use the repair ID to read its full per-query plan and manifest diff. Apply only a reviewed `applyable: true` plan with `query repair-apply`; blocked plans need a human decision. Applying writes a **new App version**, preserving history, and refuses stale app versions/manifests. Pull the checkout afterwards. If handled manually instead, use `query repair-dismiss` with a reason; dismissing is not a code repair.
 
 ## Failure and performance decisions
 

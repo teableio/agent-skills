@@ -43,7 +43,7 @@ For choosing a read entry, inline execution, versioned App-local named queries, 
 
 **`record get` vs `sql-query`** — for fixed-ID writes, use `record get` when identities are needed; for analytics or cross-table reads, use `sql-query`. Condition writes need field metadata, not a record-ID read.
 
-- **record get** — record IDs for subsequent writes, `--search` for fuzzy search, simple pagination. Returns compact tabular output with an `id` column per row.
+- **record get** — record IDs for subsequent writes, text search, simple pagination. Returns compact tabular output with an `id` column per row. Choose phrase/all-terms/exact matching and single/multi-field scope deliberately; see [search decisions](data-query-guide.md#search-decisions).
 - **sql-query** — JOINs across tables, aggregations (COUNT/SUM/AVG/GROUP BY), complex WHERE, subqueries. Returns flat rows without record IDs. Read-only (SELECT only).
 - **Counts/statistics**: use `record count` for row totals and `record stats` for whole-table/view/filter field summaries. Use `sql-query` with GROUP BY for groups or buckets; see [count/statistics decisions](data-query-guide.md#counts-and-field-statistics).
 
