@@ -58,7 +58,7 @@ Use `teable link bseXXXX` to bind a working directory. Without an ID, `teable li
 | `app get-code/delete/status/unpublish` | `--app-id` |
 | `app init` | `--name` |
 | `app clone` | `--app-id` |
-| `app pull/push` | local checkout |
+| `app pull/push/schema/signin` | local checkout |
 | `app publish/versions` | app ID or enclosing checkout |
 | `app rollback` | target version and app ID or enclosing checkout |
 | `app login-config/ai-enable` | `--app-id` |
@@ -119,7 +119,7 @@ Use `teable link bseXXXX` to bind a working directory. Without an ID, `teable li
 | `scrape status` | `--job-id` |
 | `query repairs` | optional app/repair ID |
 | `query repair-apply/repair-dismiss` | `--repair-id` |
-| `template install/status/submit/guide/guide-save` | see [Template Guide](template-guide.md) |
+| `template install/status/extract/check/submit/guide/guide-save` | see [Template Guide](template-guide.md) |
 | `send-email` | `--subject`, `--body`, `--to`/`--bcc` |
 | `import airtable` | `--airtable-base-id` + `--space-id`/`--base-name` (new project) — note: `--base-id` here is an **optional import target** (no `-b` short flag), not the usual configured Teable project |
 | `import google-sheet` | `--spreadsheet-id` + `--space-id`/`--base-name` (new project) — `--base-id` is an optional existing import target, not project context |

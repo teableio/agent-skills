@@ -46,8 +46,8 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
 | Routines | Headless agent tasks triggered by schedules or connected-app events | `routine *` | [routine-guide.md](guides/routine-guide.md) |
 | App Builder | Live dashboards, custom web UIs | `app create/update/list/get-code`, `app publish/status/unpublish`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
-| Local Apps | Edit app code externally, sync and restore versions | `app init/clone/pull/push/versions/rollback` | [app-development-guide.md](guides/app-development-guide.md); the `teable-app-builder` skill, when installed, has the full local workflow |
-| Templates | Reuse project workflows and review setup health | `template search/install/status/submit/guide/guide-save` | [template-guide.md](guides/template-guide.md) |
+| Local Apps | Edit app code externally, refresh schema, test login, sync and restore versions | `app init/clone/pull/push/schema/signin/versions/rollback` | [app-development-guide.md](guides/app-development-guide.md); the `teable-app-builder` skill, when installed, has the full local workflow |
+| Templates | Reuse workflows, prepare safe template projects and review setup health | `template search/install/status/extract/check/submit/guide/guide-save` | [template-guide.md](guides/template-guide.md) |
 | Operation Previews | Assess supported write effects before execution | `operation capabilities/preview` | [operation-guide.md](guides/operation-guide.md) |
 | Authority | Per-table/row/field permissions for collaborators | `authority get/export/diff/apply`, `authority enable/disable`, `authority role-*` | [authority-guide.md](guides/authority-guide.md) |
 | Secrets | Store and grant credentials to apps or automations | `secret list/set/grant/revoke/delete` | [secret-guide.md](guides/secret-guide.md) |
