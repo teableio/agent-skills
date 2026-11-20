@@ -1,7 +1,7 @@
 {
   "name": "teable",
   "version": "1.0.0",
-  "description": "Work with your Teable projects: browse tables and fields, query, create, update and delete records, run read-only SQL, reach the rest of the Teable API, and build Teable apps locally with the teable CLI.",
+  "description": "Work with your Teable projects: browse tables and fields, query, create, update and delete records, run read-only SQL, manage tables, fields and views, and build Teable apps locally with the teable CLI.",
   "author": {
     "name": "Teable",
     "email": "support@teable.ai",
@@ -23,7 +23,7 @@
   "interface": {
     "displayName": "Teable",
     "shortDescription": "Your AI spreadsheet database",
-    "longDescription": "Teable is an AI spreadsheet for business: spaces contain projects, projects contain tables, and tables hold fields, views and records. This plugin connects Codex and ChatGPT to your Teable account so they can find your projects and tables, read the field structure, query records, run read-only SQL for aggregates and cross-table questions, and create, update or delete records. Tables, fields, views, automations and other settings are reached through the Teable REST API with separate read and write tools, so every change is confirmed. Every request runs as you, with your own role and the permissions you approve on Teable's sign-in screen; the plugin cannot see spaces or projects you cannot. Works with app.teable.ai accounts; self-hosted Teable deployments can connect the same server through their own URL.",
+    "longDescription": "Teable is an AI spreadsheet for business: spaces contain projects, projects contain tables, and tables hold fields, views and records. This plugin connects Codex and ChatGPT to your Teable account so they can find your projects and tables, read the field structure, query records, run read-only SQL for aggregates and cross-table questions, and create, update or delete records. It can also create, rename and delete tables, add and change fields, and create and configure views; tools that change data are marked so your client confirms them. Every request runs as you, with your own role and the permissions you approve on Teable's sign-in screen; the plugin cannot see spaces or projects you cannot. Works with app.teable.ai accounts; self-hosted Teable deployments can connect the same server through their own URL.",
     "developerName": "Teable",
     "category": "Productivity",
     "capabilities": [
@@ -32,7 +32,7 @@
       "Query and filter records",
       "Run read-only SQL queries",
       "Create, update and delete records",
-      "Manage tables, fields and views through the Teable API"
+      "Create and change tables, fields and views"
     ],
     "websiteURL": "https://teable.ai",
     "supportURL": "https://github.com/teableio/agent-skills/issues",
@@ -64,9 +64,9 @@
               "expected_behavior": "Returns only the task records whose status is not Done, with their names and statuses, matching the sample data."
             },
             {
-              "description": "Aggregate with read-only SQL",
+              "description": "Aggregate records",
               "prompt": "How many tasks are in each status in my Project Tracker?",
-              "tools_triggered": "get-tables-meta, get-fields, sql-query",
+              "tools_triggered": "get-tables-meta, get-fields, query-data",
               "expected_behavior": "Returns a count per status that matches the sample data, without changing any record."
             },
             {
@@ -101,7 +101,7 @@
         "commerce_description": "This plugin does not sell products or process payments."
       },
       "publication": {
-        "release_notes": "Initial release: projects, tables, fields, records, read-only SQL, and the Teable REST API with separate read and write tools."
+        "release_notes": "Initial release: projects, tables, fields, views and records, structured queries and read-only SQL, with one tool per operation."
       }
     }
   }
