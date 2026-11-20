@@ -26,7 +26,11 @@ never copied per client.
   from the Teable product all resolve that path.
 - The two manifests carry the same `version`; raise both together when a release should
   reach plugin users.
-- `scripts/package-openai.sh` builds the ZIP for the OpenAI plugin portal into `dist/`.
+- `scripts/package-openai.sh` builds the ZIP for the OpenAI plugin portal into `dist/`. The
+  ZIP points at the strict MCP endpoint (`/mcp/strict`, one tool per operation, no
+  `search-api` / `call-api-*`), because OpenAI rejects generic executors, and pins
+  `@teable/cli@latest` in the skills to the version in `.github/teable-cli-manifest.json`.
+  The review test cases in `.codex-plugin/plugin.json` may only name tools that endpoint lists.
 - `scripts/package-workbuddy.sh` builds the connector ZIP for the WorkBuddy Open Platform
   into `dist/`. Its listing metadata and 64x64 icon live in `workbuddy/`; the version comes
   from the plugin manifest and the MCP server address from `.mcp.json`. An update there is

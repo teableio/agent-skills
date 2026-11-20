@@ -111,6 +111,10 @@ Tools that change data are annotated as such, so your client asks for confirmati
 before running them. Which tools appear depends on the permissions you grant: a
 read-only grant hides every tool that writes.
 
+The OpenAI plugin (ChatGPT and Codex) connects to `https://mcp.teable.ai/mcp/strict` instead.
+It has no `search-api`, `call-api-read` or `call-api-write`; tables, fields and views
+have their own tools there, one per operation.
+
 ## Self-hosted Teable
 
 The same server ships with every Teable deployment at `<your Teable URL>/mcp`. Point
