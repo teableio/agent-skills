@@ -39,9 +39,10 @@ copied per client.
 - The Claude plugin directory reads the `claude-release` branch, not `main`. That branch is
   generated: `scripts/build-claude-directory.mjs` removes from the plugin what the directory's
   policy scan refuses (standalone AI media generation, scraping instructions), as listed in
-  `.github/claude-directory.json`, and the manual `publish-claude-directory` workflow pushes the
-  result. Never commit to `claude-release` by hand. Every push there is a new directory version
-  and replaces one in review or under appeal, so run the workflow only to release. If you reword
+  `.github/claude-directory.json`, and the `publish-claude-directory` workflow pushes the result
+  when a merge to `main` changes the plugin version. Never commit to `claude-release` by hand.
+  Every push there is a new directory version and replaces one in review or under appeal, so do
+  not raise the plugin version while a directory version is in review or under appeal. If you reword
   text that an edit in `.github/claude-directory.json` matches, update the edit in the same PR:
   CI fails when an edit no longer matches exactly once.
 - The two manifests carry the same `version`; raise both together when a release should
