@@ -1,6 +1,6 @@
 # Integration Guide
 
-Use connections for the user's own accounts (inbox, CRM, personal posts). For public/platform data independent of their account, use [scraping](scrape-guide.md), even if that platform is connected.
+Use connections for the user's own accounts (inbox, CRM, personal posts).
 
 ## Discover → connect → bind
 

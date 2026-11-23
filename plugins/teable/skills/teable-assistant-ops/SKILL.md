@@ -2,12 +2,11 @@
 name: teable-assistant-ops
 description: >-
   Operate Teable projects — tables, fields, views, records, SQL queries, automations,
-  headless routines, apps, image generation, and web scraping — through the `teable` CLI.
+  headless routines, and apps — through the `teable` CLI.
   Requires an environment that can run shell commands. Trigger when user mentions Cuppy, Teable, teable CLI, or
   Teable-style IDs (bseXXX, tblXXX, fldXXX, recXXX, viwXXX), or wants to manage
-  tables/fields/records, build dashboards/apps, generate images or charts, create automations,
-  import/export data, trigger AI fill, or scrape websites (LinkedIn, Amazon, YouTube,
-  etc.) — even if they don't explicitly say "Teable" but are clearly working with a
+  tables/fields/records, build dashboards/apps or charts, create automations,
+  import/export data, or trigger AI fill — even if they don't explicitly say "Teable" but are clearly working with a
   Teable project (called base in the API).
 ---
 
@@ -21,7 +20,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 
 - All operations use `teable` CLI. Only check auth (`auth status`) if a command fails.
 - **No shell**: if shell commands cannot be run in this environment, do not attempt CLI commands. Use the Teable MCP tools (when present) for projects, tables, fields and records, and tell the user that the rest needs a local environment with the `teable` CLI.
-- **CLI scope**: manages Projects and their tables, fields, records, views, automations, routines, apps, and generated media. It cannot create Spaces (direct the user to Teable web UI).
+- **CLI scope**: manages Projects and their tables, fields, records, views, automations, routines, and apps. It cannot create Spaces (direct the user to Teable web UI).
 - **Install**: if `teable` not found → check `node -v` is 18 or later, run `npm install -g @teable/cli`, then `teable auth login` (add `--endpoint <your Teable URL>` for a self-hosted instance) unless `teable auth status` already succeeds. If an authorization URL is printed, send it to the user. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
 - **Project context**: use the supplied project ID; otherwise reuse the directory binding/default. Use `teable link` to discover/bind a project, and ask only if the target remains ambiguous. Explicit `--base-id` overrides the nearest directory/parent binding, then user config. See [guides/base-id-reference.md](guides/base-id-reference.md).
 - **Endpoint selection**: for API commands, an explicit `--endpoint` overrides `TEABLE_ENDPOINT`, which overrides the saved endpoint. Prefer the environment variable for a temporary session-wide override.
@@ -44,8 +43,6 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | Views | Persistent filtered/sorted/grouped perspectives | `view create/update/delete` | [view.filter.md](api-reference/view.filter.md), [view.sort.md](api-reference/view.sort.md) |
 | Import | CSV/Excel loading; Airtable or Google Sheets migration | `import file/airtable/google-sheet/status` | [data-import-guide.md](guides/data-import-guide.md) |
 | Artifacts | Durable HTML pages, charts, and Markdown reports | `artifact list/create/update/get/share` | [artifact-guide.md](guides/artifact-guide.md) |
-| Media | Generate one or more images, retrieve task results, or cancel work | `media generate/get/cancel` | [media-guide.md](guides/media-guide.md) |
-| Scraping | Extract structured data from supported platform pages | `scrape search/inspect/run/status` | [scrape-guide.md](guides/scrape-guide.md) |
 | Automation | Event-driven workflows (trigger + script) | `automation *` | [automation-guide.md](guides/automation-guide.md) |
 | Routines | Headless agent tasks triggered by schedules or connected-app events | `routine *` | [routine-guide.md](guides/routine-guide.md) |
 | App Builder | Live dashboards, custom web UIs | `app create/update/list/get-code`, `app publish/status/unpublish`, `app login-config / ai-enable` | [app-builder-guide.md](guides/app-builder-guide.md) |
@@ -78,7 +75,6 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | One-time chart shown only in the conversation | Visualization: HTML code block | App Builder or artifact |
 | Durable report/chart stored in Teable | Artifacts: `artifact list` → `artifact update` or `artifact create` | App Builder |
 | Live dashboard / data-connected custom UI | App Builder: `app create` | HTML code block or artifact |
-| Standalone generated image(s) | Media: `media generate` | App Builder or artifact |
 | Bulk data loading (>50 rows) | Import: `import file` | `record create` in loop |
 | Relationships between tables | Fields: Link field → Lookup/Rollup | singleSelect simulating categories |
 | Computed/derived values (same row) | Fields: Formula | — |
@@ -164,6 +160,5 @@ Files in `api-reference/`, named `{category}.{subtopic}.md` — read when you ne
 **Records**: `record.bulk-update.md` (condition vs fixed-ID writes, counts and permission safeguards), `record.value-format.md`
 **Automations** (fetched live, `@teable/cli` 0.6.55 or later): script runtime and REST APIs `teable get-doc --topic automation.api`; triggers `teable get-doc --topic automation.trigger`; email sending `teable get-doc --topic automation.send-email`
 **Integrations**: Slack: `teable get-doc --topic integration.slack`
-**Scraping**: `scrape.guide.md` (endpoint discovery; do not use legacy dataset payloads)
 **Reference**: `reference.url.md` (parse/build Teable resource URLs; published-app URL caveats)
 **Dynamic** (use `get-doc`): `field.ai`, `app.ai`, `automation.ai`

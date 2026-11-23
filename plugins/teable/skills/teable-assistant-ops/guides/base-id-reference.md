@@ -79,13 +79,6 @@ All `query library` operations require `--base-id`. `query validate/generate` al
 
 `artifact list` accepts optional project context; omit it to search across all projects. `artifact update/get/share` target an artifact ID directly and do not accept `--base-id`.
 
-### Media
-
-| Command | Also requires |
-|---------|---------------|
-| `media generate` | `--prompt` or `--input` |
-| `media get/cancel` | `--id` |
-
 ### Authority
 
 | Command | Also requires |
@@ -119,10 +112,6 @@ All `query library` operations require `--base-id`. `query validate/generate` al
 | `search-api` | `--query` |
 | `call-api` | `--method`, `--url` |
 | `import file` | file, attachment token, inline data, or stdin; omit target flags to analyze |
-| `scrape search` | platform or relevance search inputs |
-| `scrape inspect` | `--endpoint-id` |
-| `scrape run` | `--endpoint-id`, `--input` |
-| `scrape status` | `--job-id` |
 | `query repairs` | optional app/repair ID |
 | `query repair-apply/repair-dismiss` | `--repair-id` |
 | `template install/status/extract/check/submit/guide/guide-save` | see [Template Guide](template-guide.md) |

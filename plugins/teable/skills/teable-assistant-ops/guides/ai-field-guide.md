@@ -1,6 +1,6 @@
 # AI Field Guide
 
-Use AI-configured fields for per-record classification, extraction, summaries, translation, or generated images; use [media](media-guide.md) for standalone images and [App AI](app-builder-guide.md#ai-in-apps) for application code.
+Use AI-configured fields for per-record classification, extraction, summaries, translation, or generated images; use [App AI](app-builder-guide.md#ai-in-apps) for application code.
 
 ## Configure → fill → wait → verify
 
