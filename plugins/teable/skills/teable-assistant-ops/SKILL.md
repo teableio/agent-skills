@@ -25,6 +25,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 - **Install**: if `teable` not found → check `node -v` is 18 or later, run `npm install -g @teable/cli`, then `teable auth login` (add `--endpoint <your Teable URL>` for a self-hosted instance) unless `teable auth status` already succeeds. If an authorization URL is printed, send it to the user. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
 - **Project context**: use the supplied project ID; otherwise reuse the directory binding/default. Use `teable link` to discover/bind a project, and ask only if the target remains ambiguous. Explicit `--base-id` overrides the nearest directory/parent binding, then user config. See [guides/base-id-reference.md](guides/base-id-reference.md).
 - **Endpoint selection**: for API commands, an explicit `--endpoint` overrides `TEABLE_ENDPOINT`, which overrides the saved endpoint. Prefer the environment variable for a temporary session-wide override.
+- **Local database work**: a local clone does not make ordinary commands offline. Use `--local` only where supported and follow [database sync safety](guides/db-guide.md); `db pull/push` is separate from app-code sync.
 - **Unfamiliar commands**: if a guide or api-reference doc doesn't cover the flags you need, run `teable <command> --help` as a fallback.
 - **Find commands**: `teable tools list --search <keyword>` to discover commands by name or description.
 
@@ -35,6 +36,8 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | Module | What it solves | Entry commands | Guide to read |
 |--------|---------------|----------------|---------------|
 | Data Query | Read records, counts/statistics, analytics, named-query diagnostics and repairs | `record get/count/stats`, `sql-query`, `query *` | [data-query-guide.md](guides/data-query-guide.md), [CLI reference](guides/cli-reference.md#data-queries) |
+| Saved Queries | Discover, run fixed revisions, save privately and share Project queries | `query library *` | [query-library-guide.md](guides/query-library-guide.md) |
+| Local Database | Clone data, edit locally, merge conflicts and review before upstream sync | `db *`, supported commands with `--local` | [db-guide.md](guides/db-guide.md) |
 | Tables | Create/modify table structure | `table create/update/delete` | [cli-reference.md § Field Type Aliases](guides/cli-reference.md#field-type-aliases) |
 | Fields | Add/change columns, computed fields, and per-row AI | `field create/update/delete`, `field ai-docs/ai-fill/ai-status` | [field.simple.md](api-reference/field.simple.md), [AI field guide](guides/ai-field-guide.md) |
 | Records | Write row data, attachments, reordering | `record create/update/delete` | [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) |

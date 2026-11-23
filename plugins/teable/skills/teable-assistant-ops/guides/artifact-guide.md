@@ -14,6 +14,8 @@ Use artifacts for durable HTML pages, charts, or Markdown reports that should re
 
 Artifacts are private to their creator by default. Never share automatically after creation; use `artifact share` only when the user explicitly asks. Inspect an existing share with `--status` before changing it. Confirm the audience: `space` requires signed-in members of its space; `public` permits anyone with the link. The first share needs an explicit scope; later updates retain it when omitted.
 
+Changing only `--password` or `--expires-at` leaves a disabled share off. Re-enable only when requested, with an explicit scope or a share call without those settings; check status afterwards rather than reporting that a settings update restored access.
+
 Use only a password the user supplied, never invent one. An expiry must be an ISO datetime; an empty string removes the password or expiry, so do not clear either implicitly. Return the command's link rather than constructing one. To stop access, use `--disable`; it invalidates the link immediately.
 
 ## Content Rules
@@ -22,4 +24,4 @@ Use only a password the user supplied, never invent one. An expiry must be an IS
 - Do not reference external CDN URLs. If a library is needed, load an exact version from `/api/artifact-vendor/<pkg>@<version>/<file>`.
 - Choose Markdown for text-first reports; use HTML for charts or interactive presentation.
 - `artifact create` uses project context; `artifact update`, `artifact get`, and `artifact share` target the artifact ID directly.
-- Use `artifact get --version <n>` when restoring a specific historical version rather than the current one.
+- Use `artifact get --version <n>` for your own historical versions. For an artifact shared with you, extract the `artXXXX` ID from its shared URL and use `artifact get`; it downloads the current version, not arbitrary history. Shared read access does not imply permission to update it.

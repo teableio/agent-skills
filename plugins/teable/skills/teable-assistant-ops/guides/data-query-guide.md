@@ -12,6 +12,7 @@ Use this guide to choose a data-read path or diagnose a query failure. Query exe
 | Cross-table joins or SQL-specific analysis | `sql-query`, following [SQL critical rules](cli-reference.md#sql-critical-rules) |
 | One-off structured records or aggregate read during App development | `teable query inline` on an explicitly enabled host |
 | Diagnose admission/routing without reading rows | `teable query explain` on an explicitly enabled host |
+| Discover/reuse a saved Project query at a fixed revision | `query library`; see [Saved Query Library](query-library-guide.md) |
 | Reusable reads in a named-query App | Versioned `teable/queries.yaml` and generated server-only functions; see the workflow below |
 
 For an unfamiliar capability, discover the installed command surface with `teable --help` or `teable tools list --search query`, then read the selected command's help. Backend implementation, a source PR, and a CLI version number alone do not prove that a target host has enabled a route. This skill follows the released CLI manifest; do not invent command names, query IDs, or URLs for an unavailable feature. Keep using the supported entry that fits the requested operation.
@@ -39,7 +40,7 @@ With a view scope, a hidden field yields `value: null` plus a note, not zero. Ch
 ## Structured execution, when available
 
 - Use `teable query schema` (offline, no credentials/project/network) and help as the request authority. HTTP clients and CLI callers should use that same request/response contract, not separate hand-maintained schemas.
-- The transport accepts `definition`, optional public `parameters`, and optional `queryId` for observability. The full definition is always required; a name does not grant access or refer to a server-side query library. The server validates current fields, authorization and parameter types before compiling parameterized SQL.
+- The transport accepts `definition`, optional public `parameters`, and optional `queryId` for observability. The full definition is always required; the observability name does not grant access or resolve a saved query. For saved IDs/revisions use [query library](query-library-guide.md). The server validates current fields, authorization and parameter types before compiling parameterized SQL.
 - Structured execute/inline/explain require the host to enable `V2_DATA_QUERY_ENABLED` or `V2_DATA_QUERY_EXECUTE_ENABLED` (both default off). A disabled host does not advertise it in public OpenAPI. Explicit host enablement and a CLI release containing the command are separate prerequisites.
 - Use stable table/field IDs and declared output aliases for structured reads. Keep database names confined to the raw SQL entry. Support for arbitrary SQL or joins in one entry does not imply support in another.
 
