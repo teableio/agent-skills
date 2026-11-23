@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Builds the ZIP uploaded to https://platform.openai.com/plugins (ChatGPT and Codex).
 #
-# The repository root is the plugin. It keeps the Codex layout (.codex-plugin/plugin.json +
+# plugins/teable is the plugin. It keeps the Codex layout (.codex-plugin/plugin.json +
 # .mcp.json) because the Codex CLI only reads that, and the Claude manifest next to it.
 # Locally, Claude Code and the Codex CLI share .mcp.json, which needs "type": "http"
 # (Claude drops a remote server without it).
@@ -26,13 +26,13 @@
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
-plugin="$root"
+plugin="$root/plugins/teable"
 version="$(node -p "require('$plugin/.codex-plugin/plugin.json').version")"
 out="$root/dist/teable-$version.zip"
 stage="$(mktemp -d)"
 trap 'rm -rf "$stage"' EXIT
 
-cli_version="$(node -p "require('$plugin/.github/teable-cli-manifest.json').version")"
+cli_version="$(node -p "require('$root/.github/teable-cli-manifest.json').version")"
 
 cp -R "$plugin/assets" "$plugin/skills" "$plugin/README.md" "$stage/"
 

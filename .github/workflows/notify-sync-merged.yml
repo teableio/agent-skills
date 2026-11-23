@@ -36,7 +36,7 @@ jobs:
     env:
       GROUP_WEBHOOK_URL: ${{ secrets.GROUP_WEBHOOK_URL }}
       SYNC_META: .github/teable-cli-sync.json
-      SKILL_META: skills/teable-assistant-ops/metadata.json
+      SKILL_META: plugins/teable/skills/teable-assistant-ops/metadata.json
     steps:
       - name: Webhook not configured
         if: env.GROUP_WEBHOOK_URL == ''
@@ -48,7 +48,7 @@ jobs:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
           sparse-checkout: |
             .github/teable-cli-sync.json
-            skills/teable-assistant-ops/metadata.json
+            plugins/teable/skills/teable-assistant-ops/metadata.json
           sparse-checkout-cone-mode: false
 
       - name: Notify webhook

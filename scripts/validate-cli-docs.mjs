@@ -14,7 +14,7 @@ import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const REPO_ROOT = process.cwd();
-const SKILL_DIR = join(REPO_ROOT, 'skills', 'teable-assistant-ops');
+const SKILL_DIR = join(REPO_ROOT, 'plugins', 'teable', 'skills', 'teable-assistant-ops');
 const MANIFEST_PATH = join(REPO_ROOT, '.github', 'teable-cli-manifest.json');
 
 const SHELL_LANGS = new Set(['', 'bash', 'sh', 'shell', 'zsh', 'console']);

@@ -22,8 +22,8 @@ set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
 auth="${AUTH:-client}"
-url="${TEABLE_MCP_URL:-$(node -p "Object.values(require('$root/.mcp.json').mcpServers)[0].url")}"
-version="$(node -p "require('$root/.claude-plugin/plugin.json').version")"
+url="${TEABLE_MCP_URL:-$(node -p "Object.values(require('$root/plugins/teable/.mcp.json').mcpServers)[0].url")}"
+version="$(node -p "require('$root/plugins/teable/.claude-plugin/plugin.json').version")"
 suffix=""; [ "$auth" = "client" ] || suffix="-$auth"
 out="$root/dist/teable-workbuddy-$version$suffix.zip"
 tmp="$(mktemp -d)"
@@ -31,7 +31,7 @@ trap 'rm -rf "$tmp"' EXIT
 stage="$tmp/teable"
 mkdir -p "$stage"
 
-cp -R "$root/skills" "$stage/"
+cp -R "$root/plugins/teable/skills" "$stage/"
 cp "$root/workbuddy/icon.png" "$stage/"
 
 node - "$root" "$stage" "$version" "$url" "$auth" <<'JS'
@@ -71,6 +71,7 @@ write("connector-meta.json", meta);
 write("mcp.json", { mcpServers: { [meta.source]: { type: "streamableHttp", url } } });
 
 for (const dir of fs.readdirSync(path.join(stage, "skills"))) {
+  if (dir.startsWith(".")) continue;
   const md = path.join(stage, "skills", dir, "SKILL.md");
   fs.existsSync(md) || fail(`skills/${dir} has no SKILL.md`);
   const head = fs.readFileSync(md, "utf8").match(/^---\n([\s\S]*?)\n---/);

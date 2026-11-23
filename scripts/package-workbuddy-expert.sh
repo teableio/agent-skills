@@ -15,15 +15,15 @@
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
-version="$(node -p "require('$root/.claude-plugin/plugin.json').version")"
+version="$(node -p "require('$root/plugins/teable/.claude-plugin/plugin.json').version")"
 out="$root/dist/teable-workbuddy-expert-$version.zip"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 stage="$tmp/teable"
 mkdir -p "$stage/.codebuddy-plugin" "$stage/avatars"
 
-cp -R "$root/skills" "$root/workbuddy/expert/agents" "$root/workbuddy/expert/README.md" "$stage/"
-cp "$root/assets/logo.png" "$stage/avatars/expert.png"
+cp -R "$root/plugins/teable/skills" "$root/workbuddy/expert/agents" "$root/workbuddy/expert/README.md" "$stage/"
+cp "$root/plugins/teable/assets/logo.png" "$stage/avatars/expert.png"
 
 node - "$root" "$stage" "$version" <<'JS'
 const fs = require("fs");
@@ -35,7 +35,7 @@ const fail = (m) => { throw new Error(m); };
 const chars = (s) => [...s].length;
 
 const skills = fs.readdirSync(path.join(stage, "skills")).filter((d) =>
-  fs.existsSync(path.join(stage, "skills", d, "SKILL.md")));
+  !d.startsWith(".") && fs.existsSync(path.join(stage, "skills", d, "SKILL.md")));
 const { name, ...rest } = read("workbuddy/expert/plugin.json");
 const manifest = { name, version, ...rest, skills: skills.map((d) => `./skills/${d}`) };
 
@@ -60,7 +60,7 @@ fs.statSync(path.join(stage, "avatars/expert.png")).size <= 500 * 1024 || fail("
 
 write(".codebuddy-plugin/plugin.json", manifest);
 
-const servers = read(".mcp.json").mcpServers;
+const servers = read("plugins/teable/.mcp.json").mcpServers;
 for (const server of Object.values(servers)) {
   server.url.startsWith("https://") || fail("the MCP server address must use HTTPS");
   server["x-workbuddy"] = {

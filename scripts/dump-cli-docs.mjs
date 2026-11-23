@@ -13,7 +13,7 @@
 //
 // Usage:
 //   node scripts/dump-cli-docs.mjs --manifest <manifest.json> [--cli teable]
-//        [--out skills/teable-assistant-ops/api-reference] [--check]
+//        [--out plugins/teable/skills/teable-assistant-ops/api-reference] [--check]
 //
 // --check compares instead of writing. Exit codes: 0 in sync / written,
 // 10 drift found (in --check mode), 1 error.
@@ -29,7 +29,7 @@ const opt = (name, fallback) => {
 };
 const manifestPath = opt('--manifest');
 const cliBin = opt('--cli', 'teable');
-const outDir = opt('--out', 'skills/teable-assistant-ops/api-reference');
+const outDir = opt('--out', 'plugins/teable/skills/teable-assistant-ops/api-reference');
 const exclusionsPath = opt('--exclusions', '.github/teable-docs-exclusions.json');
 const checkOnly = args.includes('--check');
 
