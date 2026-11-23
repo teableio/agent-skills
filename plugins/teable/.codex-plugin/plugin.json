@@ -1,6 +1,6 @@
 {
   "name": "teable",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Work with your Teable projects: browse tables and fields, query, create, update and delete records, run read-only SQL, manage tables, fields and views, and build Teable apps locally with the teable CLI.",
   "author": {
     "name": "Teable",

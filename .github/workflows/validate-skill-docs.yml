@@ -14,6 +14,8 @@ on:
       - '.github/teable-cli-manifest.json'
       - 'scripts/validate-cli-docs.mjs'
       - 'scripts/check-plugin-env-reads.mjs'
+      - 'scripts/build-claude-directory.mjs'
+      - '.github/claude-directory.json'
   push:
     branches: [main]
     paths:
@@ -21,6 +23,8 @@ on:
       - '.github/teable-cli-manifest.json'
       - 'scripts/validate-cli-docs.mjs'
       - 'scripts/check-plugin-env-reads.mjs'
+      - 'scripts/build-claude-directory.mjs'
+      - '.github/claude-directory.json'
   workflow_dispatch:
 
 permissions:
@@ -38,6 +42,8 @@ jobs:
         run: node scripts/validate-cli-docs.mjs
       - name: Keep environment reads out of the plugin
         run: node scripts/check-plugin-env-reads.mjs
+      - name: Claude directory edition still builds
+        run: node scripts/build-claude-directory.mjs --check
 
       # Advisory until the mirrors first converge — flip continue-on-error to
       # false once a sync PR with regenerated mirrors has merged.

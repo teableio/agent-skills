@@ -36,8 +36,14 @@ copied per client.
   use a `YOUR_*` placeholder where a value must be shown. Mirrored `get-doc` topics with such
   examples go in `.github/teable-docs-exclusions.json`. CI enforces this with
   `scripts/check-plugin-env-reads.mjs`.
-- Every merge that changes `plugins/teable/` is picked up and scanned again by the Claude
-  plugin directory; batch automated doc syncs instead of merging each one as it arrives.
+- The Claude plugin directory reads the `claude-release` branch, not `main`. That branch is
+  generated: `scripts/build-claude-directory.mjs` removes from the plugin what the directory's
+  policy scan refuses (standalone AI media generation, scraping instructions), as listed in
+  `.github/claude-directory.json`, and the manual `publish-claude-directory` workflow pushes the
+  result. Never commit to `claude-release` by hand. Every push there is a new directory version
+  and replaces one in review or under appeal, so run the workflow only to release. If you reword
+  text that an edit in `.github/claude-directory.json` matches, update the edit in the same PR:
+  CI fails when an edit no longer matches exactly once.
 - The two manifests carry the same `version`; raise both together when a release should
   reach plugin users.
 - `scripts/package-openai.sh` builds the ZIP for the OpenAI plugin portal into `dist/`. The

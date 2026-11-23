@@ -4,6 +4,9 @@ The Teable plugin for Claude Code, Codex and ChatGPT: [Teable](https://teable.ai
 server (`https://mcp.teable.ai/mcp`) plus the Teable agent skills. Every request runs as you,
 with the permissions you approve on Teable's sign-in screen.
 
+Some features hand work to AI models that Teable operates: AI fields, routines, App Builder and
+the AI steps in apps and automations. For those, Teable's models, not Claude, write the results.
+
 | Skill | What it does |
 | --- | --- |
 | [teable-assistant-ops](skills/teable-assistant-ops) | Operate Teable projects, tables, fields, views, records, SQL queries, automations and apps through the `teable` CLI. |

@@ -1,0 +1,91 @@
+{
+  "comment": "The Claude directory edition of plugins/teable: main minus what the directory's policy scan refuses. scripts/build-claude-directory.mjs applies this to a checkout of main, and the publish-claude-directory workflow pushes the result to the claude-release branch, which the directory tracks. Everyone else (Codex, npx skills, installs from GitHub) reads main, which keeps everything. Refused on 2026-11-23: standalone AI media generation (media-guide) and scraping instructions read as bypassing site defences (scrape-guide, scrape.* mirrors). Every edit must match exactly once, so a reworded source line fails the build instead of shipping unfiltered.",
+  "pluginRoot": "plugins/teable",
+  "omitFiles": [
+    "skills/teable-assistant-ops/guides/media-guide.md",
+    "skills/teable-assistant-ops/guides/scrape-guide.md",
+    "skills/teable-assistant-ops/api-reference/scrape.*.md"
+  ],
+  "edits": [
+    {
+      "file": "skills/teable-assistant-ops/SKILL.md",
+      "find": "  headless routines, apps, image generation, and web scraping — through the `teable` CLI.\n",
+      "replace": "  headless routines, and apps — through the `teable` CLI.\n"
+    },
+    {
+      "file": "skills/teable-assistant-ops/SKILL.md",
+      "find": "build dashboards/apps, generate images or charts, create automations,\n  import/export data, trigger AI fill, or scrape websites (LinkedIn, Amazon, YouTube,\n  etc.) — even if",
+      "replace": "build dashboards/apps or charts, create automations,\n  import/export data, or trigger AI fill — even if"
+    },
+    {
+      "file": "skills/teable-assistant-ops/SKILL.md",
+      "find": "automations, routines, apps, and generated media.",
+      "replace": "automations, routines, and apps."
+    },
+    {
+      "file": "skills/teable-assistant-ops/SKILL.md",
+      "removeLineContaining": "| Media | Generate one or more images"
+    },
+    {
+      "file": "skills/teable-assistant-ops/SKILL.md",
+      "removeLineContaining": "| Scraping | Extract structured data"
+    },
+    {
+      "file": "skills/teable-assistant-ops/SKILL.md",
+      "removeLineContaining": "| Standalone generated image(s) |"
+    },
+    {
+      "file": "skills/teable-assistant-ops/SKILL.md",
+      "removeLineContaining": "**Scraping**: `scrape.guide.md`"
+    },
+    {
+      "file": "skills/teable-assistant-ops/guides/base-id-reference.md",
+      "find": "### Media\n\n| Command | Also requires |\n|---------|---------------|\n| `media generate` | `--prompt` or `--input` |\n| `media get/cancel` | `--id` |\n\n",
+      "replace": ""
+    },
+    {
+      "file": "skills/teable-assistant-ops/guides/base-id-reference.md",
+      "removeLineContaining": "| `scrape search` |"
+    },
+    {
+      "file": "skills/teable-assistant-ops/guides/base-id-reference.md",
+      "removeLineContaining": "| `scrape inspect` |"
+    },
+    {
+      "file": "skills/teable-assistant-ops/guides/base-id-reference.md",
+      "removeLineContaining": "| `scrape run` |"
+    },
+    {
+      "file": "skills/teable-assistant-ops/guides/base-id-reference.md",
+      "removeLineContaining": "| `scrape status` |"
+    },
+    {
+      "file": "skills/teable-assistant-ops/guides/integration-guide.md",
+      "find": " For public/platform data independent of their account, use [scraping](scrape-guide.md), even if that platform is connected.",
+      "replace": ""
+    },
+    {
+      "file": "skills/teable-assistant-ops/guides/ai-field-guide.md",
+      "find": "; use [media](media-guide.md) for standalone images and [App AI]",
+      "replace": "; use [App AI]"
+    },
+    {
+      "file": "skills/teable-assistant-ops/metadata.json",
+      "find": "\"app-builder\", \"media\", \"ai-tools\"",
+      "replace": "\"app-builder\", \"ai-tools\""
+    },
+    {
+      "file": "skills/teable-assistant-ops/metadata.json",
+      "find": "automations, routines, media, and app workflows",
+      "replace": "automations, routines, and app workflows"
+    }
+  ],
+  "forbid": [
+    "media-guide\\.md",
+    "scrape-guide\\.md",
+    "scrape\\.(guide|datasets)",
+    "\\bmedia (generate|get|cancel)\\b",
+    "\\bscrape (search|inspect|run|status)\\b",
+    "^#+ Media$"
+  ]
+}
