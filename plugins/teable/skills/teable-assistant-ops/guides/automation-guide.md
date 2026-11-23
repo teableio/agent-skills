@@ -84,7 +84,7 @@ Use `automation get --include-active-snapshot` to compare draft vs published ver
 Script actions are Turing-complete: CRUD, AI generation, email, HTTP requests, Slack/Teams/webhook integrations — all via Teable REST API and built-in `fetch()`.
 
 > **Required**: `api-reference/automation.api.md` — REST APIs available in scripts (records, fields, filters)
-> **Optional**: `api-reference/automation.send-email.md` — email sending; `api-reference/integration.slack.md` — Slack API
+> **Optional**: `teable get-doc --topic automation.send-email` — email sending; `teable get-doc --topic integration.slack` — Slack API
 
 **Script environment** (available at runtime):
 
@@ -103,7 +103,7 @@ Script actions are Turing-complete: CRUD, AI generation, email, HTTP requests, S
 - Use built-in `fetch()` only — never `node-fetch` or other HTTP libraries
 - For sync/import keyed by a unique value, use `POST /api/table/<tableId>/record/upsert`, never create-then-catch-duplicate. Set `matchField` to one field with `unique=true`; `onConflict: "ignore"` leaves existing rows unchanged, while `"update"` writes only supplied columns.
 - `console.log` is debug-only — never use it to notify users
-- Notifications: default to **Email API** when no channel is specified (read `api-reference/automation.send-email.md` first); Slack/Teams/webhook via HTTP requests in script
+- Notifications: default to **Email API** when no channel is specified (run `teable get-doc --topic automation.send-email` first); Slack/Teams/webhook via HTTP requests in script
 
 **AI in scripts**: call `POST ${PUBLIC_ORIGIN}/api/automation/runtime/ai` with `{ prompt, attachments?, modelKey?, temperature?, outputType? }` — supports up to 10 file attachments (images, PDFs, Office docs; each ≤20MB) and `outputType: "object"` for parsed JSON output. The project comes from the automation context — do NOT put a baseId in the URL. Read `teable get-doc --topic automation.ai` first for the full request shape, attachment field mapping, and available model keys. Prefer one request with several attachments over one request per attachment; on 429 (AI concurrency saturated) retry later, don't loop immediately.
 
@@ -137,11 +137,6 @@ const aiRes = await fetch(`${baseUrl}/api/automation/runtime/ai`, {
 });
 const { message } = await aiRes.json(); // string, or parsed object for outputType "object"
 
-// External API (e.g., Slack webhook)
-await fetch("https://hooks.slack.com/...", {
-  method: "POST",
-  body: JSON.stringify({ text: "Hello from Teable" })
-});
 ```
 
 ## External Integrations

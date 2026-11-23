@@ -150,7 +150,7 @@ for (const f of readdirSync(outDir).filter((f) => f.endsWith('.md'))) {
     console.log(`orphan   ${name} — no such get-doc topic (curated or stale?)`);
   }
 }
-if (excluded.length) console.log(`excluded ${excluded.join(', ')} (runtime/AI topics, not mirrored)`);
+if (excluded.length) console.log(`excluded ${excluded.join(', ')} (not mirrored, see the exclusions file)`);
 
 server.close();
 if (failures) process.exit(1);

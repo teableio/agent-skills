@@ -9,6 +9,6 @@ Use connections for the user's own accounts (inbox, CRM, personal posts). For pu
 3. An unconnected search hit can be authorized with `integration connect --toolkit <slug> --wait`; do not ask for an API key just because it is not connected. If the toolkit instead prompts for an API key, the user must run that connection themselves in their terminal. Never collect or echo that key in chat.
 4. Verify connection completion before binding it to an app/workflow. Connection ownership and resource grants are separate; use [Secrets Guide](secret-guide.md) for resource access.
 
-Use `integration get-token` only when an access token is actually needed, and never expose it in replies. For automation script bindings and Slack token selection, see [External Integrations](automation-guide.md#external-integrations) and [Slack reference](../api-reference/integration.slack.md).
+Use `integration get-token` only when an access token is actually needed, and never expose it in replies. For automation script bindings and Slack token selection, see [External Integrations](automation-guide.md#external-integrations) and the Slack reference (`teable get-doc --topic integration.slack`).
 
 Tool discovery is not event discovery: do not substitute a search tool slug for a connector-event type in a routine or automation.

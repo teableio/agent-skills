@@ -116,7 +116,7 @@ Use filter + shared fields when every matching row receives the same update; use
 
 ## Sending Email
 
-`teable send-email` sends an email **directly** via the Teable mail sender (system SMTP by default). This is a one-off send — for event-driven emails *inside a workflow*, use the automation SendEmail action instead (see [automation.send-email.md](../api-reference/automation.send-email.md)).
+`teable send-email` sends an email **directly** via the Teable mail sender (system SMTP by default). This is a one-off send — for event-driven emails *inside a workflow*, use the automation SendEmail action instead (see `teable get-doc --topic automation.send-email`).
 
 ```bash
 teable send-email \
