@@ -1,0 +1,56 @@
+# Builds the Claude directory edition of plugins/teable from main and pushes
+# it to the claude-release branch, which the Claude plugin directory tracks.
+#
+# The edition is main minus what the directory's policy scan refuses
+# (.github/claude-directory.json, applied by scripts/build-claude-directory.mjs).
+# Everyone else installs from main.
+#
+# Manual on purpose: every push to claude-release becomes a new version in the
+# directory, and a new version replaces one that is in review or under appeal.
+# Run it only when a release should reach the directory.
+
+name: publish-claude-directory
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Commit or branch of main to build from
+        required: true
+        default: main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-claude-directory
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build the directory edition
+        run: node scripts/build-claude-directory.mjs
+      - name: Keep environment reads out of the plugin
+        run: node scripts/check-plugin-env-reads.mjs
+      - name: Push to claude-release
+        env:
+          REF: ${{ inputs.ref }}
+        run: |
+          set -euo pipefail
+          source_sha="$(git rev-parse HEAD)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A plugins/teable
+          git commit -m "chore: Claude directory edition of ${source_sha::7}" \
+            -m "Built from ${REF} (${source_sha}) with .github/claude-directory.json."
+          git push --force origin HEAD:refs/heads/claude-release
+          echo "claude-release now holds the directory edition of ${source_sha}" >> "$GITHUB_STEP_SUMMARY"
