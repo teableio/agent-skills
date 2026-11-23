@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "teable",
-      "source": "./",
+      "source": "./plugins/teable",
       "description": "Work with your Teable projects: tables, fields, records, read-only SQL and the Teable API."
     }
   ]

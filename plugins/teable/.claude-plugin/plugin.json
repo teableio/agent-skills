@@ -19,7 +19,6 @@
     "no-code",
     "mcp"
   ],
-  "icon": "./assets/icon.png",
   "privacyPolicyUrl": "https://teable.ai/mcp-terms#privacy",
   "termsOfServiceUrl": "https://teable.ai/mcp-terms#terms"
 }

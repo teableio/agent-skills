@@ -12,8 +12,8 @@ One repository serves every way of installing them:
 
 | Skill | Description |
 | ----- | ----------- |
-| [teable-assistant-ops](skills/teable-assistant-ops) | Operate Teable projects, tables, fields, views, records, SQL queries, and automations with a safe read-before-write process. |
-| [teable-app-builder](skills/teable-app-builder) | Build, change and publish Teable apps from your machine with the `teable` CLI: `teable app init\|clone` for a local checkout, the dev loop, `teable app push` to record versions, `publish`, versions and rollback. |
+| [teable-assistant-ops](plugins/teable/skills/teable-assistant-ops) | Operate Teable projects, tables, fields, views, records, SQL queries, and automations with a safe read-before-write process. |
+| [teable-app-builder](plugins/teable/skills/teable-app-builder) | Build, change and publish Teable apps from your machine with the `teable` CLI: `teable app init\|clone` for a local checkout, the dev loop, `teable app push` to record versions, `publish`, versions and rollback. |
 
 Both skills call the [`@teable/cli`](https://www.npmjs.com/package/@teable/cli), which signs
 in through the browser.
@@ -129,23 +129,24 @@ any client above at that URL instead of `mcp.teable.ai`.
 
 ## Structure
 
-The repository root is the plugin, so the skills keep one location for every installer.
+The plugin lives in `plugins/teable/`, so the skills keep one location for every installer
+and the repository tooling stays out of what plugin directories scan.
 
 ```
-.claude-plugin/
-  marketplace.json                  Claude Code marketplace
-  plugin.json                       Claude plugin manifest
-.codex-plugin/plugin.json           Codex / OpenAI manifest, with listing and review metadata
-.agents/plugins/marketplace.json    Codex marketplace
-.mcp.json                           The MCP server, shared by all clients
-assets/                             Logo and composer icon
-skills/
-└── <skill-name>/
-    ├── SKILL.md           # Skill definition (entry point for agents)
-    ├── api-reference/     # API documentation (optional)
-    ├── guides/            # Usage guides (optional)
-    ├── references/        # Detail loaded on demand (optional)
-    └── metadata.json      # Version and metadata (optional)
+.claude-plugin/marketplace.json     Claude Code marketplace, pointing at plugins/teable
+.agents/plugins/marketplace.json    Codex marketplace, pointing at plugins/teable
+plugins/teable/                     The plugin (what the Claude plugin directory receives)
+  .claude-plugin/plugin.json        Claude plugin manifest
+  .codex-plugin/plugin.json         Codex / OpenAI manifest, with listing and review metadata
+  .mcp.json                         The MCP server, shared by all clients
+  assets/                           Logo and composer icon
+  skills/
+  └── <skill-name>/
+      ├── SKILL.md         # Skill definition (entry point for agents)
+      ├── api-reference/   # API documentation (optional)
+      ├── guides/          # Usage guides (optional)
+      ├── references/      # Detail loaded on demand (optional)
+      └── metadata.json    # Version and metadata (optional)
 scripts/package-openai.sh           Builds the ZIP uploaded to the OpenAI plugin portal
 scripts/package-workbuddy.sh        Builds the connector ZIP for the WorkBuddy Open Platform
 scripts/package-workbuddy-expert.sh Builds the expert (plugin) ZIP for the WorkBuddy Open Platform

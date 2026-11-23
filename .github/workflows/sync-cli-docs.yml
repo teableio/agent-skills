@@ -226,9 +226,9 @@ jobs:
           Task:
           1. Read $RUNNER_TEMP/manifest-diff.md, then AGENTS.md for repo conventions (especially
              File Organization). Survey the whole skill before editing: read SKILL.md (the module
-             map) and every file under skills/teable-assistant-ops/ so you know the existing
+             map) and every file under plugins/teable/skills/teable-assistant-ops/ so you know the existing
              structure and where content belongs.
-          2. Grep skills/teable-assistant-ops/ for every mention of each changed command, then update
+          2. Grep plugins/teable/skills/teable-assistant-ops/ for every mention of each changed command, then update
              the skill files (SKILL.md, guides/, api-reference/) so that:
              - added commands/options are documented where they belong — a brand-new command group
                or topic area gets a dedicated guides/<topic>-guide.md (modeled on the existing
@@ -243,7 +243,7 @@ jobs:
              rules, workflows, pitfalls, destructive-operation warnings), with examples only
              where the invocation shape is non-obvious, and keep it tight — every line costs
              agent context tokens.
-          3. Update skills/teable-assistant-ops/metadata.json: bump "version" (minor for new
+          3. Update plugins/teable/skills/teable-assistant-ops/metadata.json: bump "version" (minor for new
              capability, patch for corrections). If the docs now rely on commands that only exist
              since this CLI release, raise the "engines.teableCli" minimum accordingly.
           4. Write a concise reviewer summary to $RUNNER_TEMP/pr-summary.md: what changed in the
@@ -262,7 +262,7 @@ jobs:
             generated verbatim mirrors of the CLI's embedded get-doc content — never edit them;
             they are regenerated mechanically. Curated exceptions you may edit: field.simple.md,
             view.statistic.md.
-          - Only edit files under skills/teable-assistant-ops/ plus the summary file above. Do not
+          - Only edit files under plugins/teable/skills/teable-assistant-ops/ plus the summary file above. Do not
             touch .github/, scripts/, or the manifest snapshot.
           - Do not run git commands; committing and opening the PR happen after you finish.
           EOF
@@ -353,7 +353,7 @@ jobs:
           commit-message: 'docs: sync teable-assistant-ops skill to Teable CLI v${{ steps.version.outputs.version }}'
           body-path: ${{ runner.temp }}/pr-body.md
           add-paths: |
-            skills/**
+            plugins/teable/skills/**
             .github/teable-cli-manifest.json
             .github/teable-cli-sync.json
 

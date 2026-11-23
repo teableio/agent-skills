@@ -5,7 +5,7 @@ This repository contains a collection of agent skills. Follow these guidelines w
 ## Repository Structure
 
 ```
-skills/
+plugins/teable/skills/
 └── <skill-name>/
     ├── SKILL.md           # Required: skill definition with frontmatter
     ├── api-reference/     # Optional: API documentation files
@@ -16,14 +16,21 @@ skills/
 
 ## Plugin (Claude Code, Codex, ChatGPT)
 
-The repository root is also the Teable plugin: `.claude-plugin/` (marketplace and manifest),
+The Teable plugin is `plugins/teable/`: `.claude-plugin/plugin.json` (Claude manifest),
 `.codex-plugin/plugin.json` (Codex / OpenAI manifest with the listing and review metadata),
-`.agents/plugins/marketplace.json` (Codex marketplace), `.mcp.json` (Teable's hosted MCP
-server) and `assets/`. Every installer reads the same `skills/` directory, so a skill is
-never copied per client.
+`.mcp.json` (Teable's hosted MCP server), `assets/` and `skills/`. The marketplaces at the
+repository root (`.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`) point
+at it. Every installer reads the same `plugins/teable/skills/` directory, so a skill is never
+copied per client.
 
-- Keep `skills/<skill-name>/` where it is: the plugin manifests, `npx skills add` and links
-  from the Teable product all resolve that path.
+- Keep the plugin in `plugins/teable/` and everything else outside it. The Claude plugin
+  directory submission is that folder
+  (`https://github.com/teableio/agent-skills/tree/main/plugins/teable`), and the directory
+  refuses scripts, `AGENTS.md` / `CLAUDE.md` and other repository tooling inside it from
+  organizations that are not Verified. `npx skills add teableio/agent-skills` finds the skills
+  there through the marketplace.
+- Every merge that changes `plugins/teable/` is picked up and scanned again by the Claude
+  plugin directory; batch automated doc syncs instead of merging each one as it arrives.
 - The two manifests carry the same `version`; raise both together when a release should
   reach plugin users.
 - `scripts/package-openai.sh` builds the ZIP for the OpenAI plugin portal into `dist/`. The
@@ -48,7 +55,7 @@ never copied per client.
 
 ## Creating a New Skill
 
-1. Create a new directory under `skills/` with a descriptive kebab-case name
+1. Create a new directory under `plugins/teable/skills/` with a descriptive kebab-case name
 2. Add a `SKILL.md` file with the required frontmatter:
 
 ```yaml

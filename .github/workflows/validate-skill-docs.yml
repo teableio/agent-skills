@@ -8,13 +8,13 @@ name: validate-skill-docs
 on:
   pull_request:
     paths:
-      - 'skills/teable-assistant-ops/**'
+      - 'plugins/teable/skills/teable-assistant-ops/**'
       - '.github/teable-cli-manifest.json'
       - 'scripts/validate-cli-docs.mjs'
   push:
     branches: [main]
     paths:
-      - 'skills/teable-assistant-ops/**'
+      - 'plugins/teable/skills/teable-assistant-ops/**'
       - '.github/teable-cli-manifest.json'
       - 'scripts/validate-cli-docs.mjs'
   workflow_dispatch:

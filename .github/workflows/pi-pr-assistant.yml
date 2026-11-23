@@ -151,10 +151,10 @@ jobs:
           Task:
           1. Read AGENTS.md first (repo conventions, especially File Organization),
              then survey the whole skill before editing: read SKILL.md (the module
-             map) and every file under skills/teable-assistant-ops/ so you know the
+             map) and every file under plugins/teable/skills/teable-assistant-ops/ so you know the
              existing structure and where content belongs.
           2. Make the change the reviewer asked for, in files under
-             skills/teable-assistant-ops/. Reviewer comments can be terse — interpret
+             plugins/teable/skills/teable-assistant-ops/. Reviewer comments can be terse — interpret
              them against the PR, the existing docs, and the manifest, and make the
              change a maintainer would expect. Keep unrelated content untouched.
           3. Structure matters: documenting a new command group or topic area means a
@@ -181,7 +181,7 @@ jobs:
              style") to $RUNNER_TEMP/commit-subject.txt. English only.
 
           Hard rules:
-          - Only edit files under skills/teable-assistant-ops/ plus the reply file.
+          - Only edit files under plugins/teable/skills/teable-assistant-ops/ plus the reply file.
             Do not touch .github/, scripts/, or workflow files.
           - api-reference files named <category>.<subtopic>.md (e.g. field.formula.md) are
             generated verbatim mirrors of the CLI's embedded get-doc content — never edit
@@ -214,7 +214,7 @@ jobs:
           APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
         run: |
           set -euo pipefail
-          git add -A skills/teable-assistant-ops
+          git add -A plugins/teable/skills/teable-assistant-ops
           if git diff --cached --quiet; then
             echo "pushed=false" >> "$GITHUB_OUTPUT"
             exit 0
