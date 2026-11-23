@@ -159,7 +159,7 @@ Files in `api-reference/`, named `{category}.{subtopic}.md` — read when you ne
 **Fields**: `field.simple.md` (type guide), `field.basic.md`, `field.select.md`, `field.link.md`, `field.lookup.md`, `field.rollup.md`, `field.formula.md`, `field.formatting.md`, `field.show-as.md`, `field.colors.md`
 **Views**: `view.filter.md`, `view.sort.md`, `view.group.md`, `view.column.md`, `view.statistic.md`
 **Records**: `record.bulk-update.md` (condition vs fixed-ID writes, counts and permission safeguards), `record.value-format.md`
-**Automations**: `automation.api.md`; triggers: `teable get-doc --topic automation.trigger`; email sending: `teable get-doc --topic automation.send-email`
+**Automations** (fetched live, `@teable/cli` 0.6.55 or later): script runtime and REST APIs `teable get-doc --topic automation.api`; triggers `teable get-doc --topic automation.trigger`; email sending `teable get-doc --topic automation.send-email`
 **Integrations**: Slack: `teable get-doc --topic integration.slack`
 **Scraping**: `scrape.guide.md` (endpoint discovery; do not use legacy dataset payloads)
 **Reference**: `reference.url.md` (parse/build Teable resource URLs; published-app URL caveats)

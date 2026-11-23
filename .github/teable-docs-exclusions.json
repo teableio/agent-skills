@@ -1,11 +1,12 @@
 {
-  "comment": "get-doc topics intentionally NOT mirrored into api-reference/. app.ai, automation.ai, field.ai: their content depends on the runtime environment (AI model keys etc.). automation.send-email, automation.trigger, integration.slack: their examples pair a credential (token, mailbox password) with an external host or the command line, which the Claude plugin directory holds for review. Agents call `teable get-doc --topic <t>` live for these.",
+  "comment": "get-doc topics intentionally NOT mirrored into api-reference/. app.ai, automation.ai, field.ai: their content depends on the runtime environment (AI model keys etc.). automation.api, automation.send-email, automation.trigger, integration.slack: they name credentials (the script runtime token, mailbox passwords, integration tokens), which the Claude plugin directory holds for review when a plugin also ships an MCP server. Agents call `teable get-doc --topic <t>` live for these.",
   "topics": [
     "app.ai",
     "automation.ai",
     "field.ai",
     "automation.send-email",
     "integration.slack",
-    "automation.trigger"
+    "automation.trigger",
+    "automation.api"
   ]
 }

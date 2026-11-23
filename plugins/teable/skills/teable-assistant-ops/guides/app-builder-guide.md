@@ -94,8 +94,8 @@ teable app ai-enable --app-id appXXX
 ```
 
 - **Idempotent** — safe to run when already enabled. `--app-id` falls back to `TEABLE_APP_ID` when omitted (`app login-config` has no such fallback — always pass it there).
-- Injects `TEABLE_AI_API_BASE_URL` and `TEABLE_AI_API_KEY` into the app on its **next preview restart**.
-- The proxy is **Anthropic-compatible** and **server-side only** — never expose `TEABLE_AI_API_KEY` to the browser. The key value is never printed.
+- Injects the AI proxy's base URL and key into the app's environment on its **next preview restart**; `teable get-doc --topic app.ai` names the variables and shows server-side usage.
+- The proxy is **Anthropic-compatible** and **server-side only** — never expose the key to the browser. The key value is never printed.
 - System-model usage consumes credits; BYOK models run on the space's own key.
 
 For usage patterns and the **available model keys for the current project** (resolved dynamically), read the docs — do not hardcode model names:
