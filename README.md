@@ -30,10 +30,11 @@ npx skills add https://github.com/teableio/agent-skills
 
 ### Step 2 — Install Teable CLI and authenticate
 
-> Run this from the installed `teable-assistant-ops` skill directory. The script installs or upgrades `@teable/cli`, then proactively starts CLI browser authentication when no valid login is found. If an authorization URL is printed, extract it and send it to the user.
+> Requires Node.js 18 or later. Install or upgrade `@teable/cli`, then start browser authentication unless a valid login already exists. If an authorization URL is printed, extract it and send it to the user. For a self-hosted instance, add `--endpoint <your Teable URL>` to `teable auth login`.
 
 ```bash
-bash scripts/install.sh
+npm install -g @teable/cli
+teable auth status || teable auth login
 ```
 
 ### Step 3 — Verify
