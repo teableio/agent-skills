@@ -22,7 +22,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 - All operations use `teable` CLI. Only check auth (`auth status`) if a command fails.
 - **No shell**: if shell commands cannot be run in this environment, do not attempt CLI commands. Use the Teable MCP tools (when present) for projects, tables, fields and records, and tell the user that the rest needs a local environment with the `teable` CLI.
 - **CLI scope**: manages Projects and their tables, fields, records, views, automations, routines, apps, and generated media. It cannot create Spaces (direct the user to Teable web UI).
-- **Install**: if `teable` not found → check `node -v` is 18 or later, run `npm install -g @teable/cli`, then `teable auth login` (add `--endpoint "$TEABLE_ENDPOINT"` for a self-hosted instance) unless `teable auth status` already succeeds. If an authorization URL is printed, send it to the user. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
+- **Install**: if `teable` not found → check `node -v` is 18 or later, run `npm install -g @teable/cli`, then `teable auth login` (add `--endpoint <your Teable URL>` for a self-hosted instance) unless `teable auth status` already succeeds. If an authorization URL is printed, send it to the user. See [guides/cli-install.md](guides/cli-install.md) for PAT/custom endpoint.
 - **Project context**: use the supplied project ID; otherwise reuse the directory binding/default. Use `teable link` to discover/bind a project, and ask only if the target remains ambiguous. Explicit `--base-id` overrides the nearest directory/parent binding, then user config. See [guides/base-id-reference.md](guides/base-id-reference.md).
 - **Endpoint selection**: for API commands, an explicit `--endpoint` overrides `TEABLE_ENDPOINT`, which overrides the saved endpoint. Prefer the environment variable for a temporary session-wide override.
 - **Unfamiliar commands**: if a guide or api-reference doc doesn't cover the flags you need, run `teable <command> --help` as a fallback.
@@ -159,7 +159,7 @@ Files in `api-reference/`, named `{category}.{subtopic}.md` — read when you ne
 **Fields**: `field.simple.md` (type guide), `field.basic.md`, `field.select.md`, `field.link.md`, `field.lookup.md`, `field.rollup.md`, `field.formula.md`, `field.formatting.md`, `field.show-as.md`, `field.colors.md`
 **Views**: `view.filter.md`, `view.sort.md`, `view.group.md`, `view.column.md`, `view.statistic.md`
 **Records**: `record.bulk-update.md` (condition vs fixed-ID writes, counts and permission safeguards), `record.value-format.md`
-**Automations**: `automation.trigger.md`, `automation.api.md`; email sending: `teable get-doc --topic automation.send-email`
+**Automations** (fetched live, `@teable/cli` 0.6.55 or later): script runtime and REST APIs `teable get-doc --topic automation.api`; triggers `teable get-doc --topic automation.trigger`; email sending `teable get-doc --topic automation.send-email`
 **Integrations**: Slack: `teable get-doc --topic integration.slack`
 **Scraping**: `scrape.guide.md` (endpoint discovery; do not use legacy dataset payloads)
 **Reference**: `reference.url.md` (parse/build Teable resource URLs; published-app URL caveats)

@@ -11,4 +11,4 @@ The scope defaults to `user`; app and automation scopes are not supported. Env c
 - `env update` targets an existing variable ID when changing its value or description.
 - `env delete` is destructive; verify the ID and consumers first.
 
-Keys must match `^[A-Z][A-Z0-9_]{0,63}$` so code can read them as `process.env.KEY`. Never confuse these custom values with automation runtime variables such as `AUTOMATION_TOKEN` and `PUBLIC_ORIGIN`, which are built in.
+Keys must match `^[A-Z][A-Z0-9_]{0,63}$` so code can read them as environment variables. Never confuse these custom values with the automation runtime's built-in variables (listed in `teable get-doc --topic automation.api`).

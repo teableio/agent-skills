@@ -6,7 +6,7 @@ Everything below runs on the user's machine. Replace ids as needed; inside a che
 ## A. First-time setup (once per machine)
 
 ```bash
-npx -y @teable/cli@latest auth login      # opens the browser; or export TEABLE_TOKEN=<PAT>
+npx -y @teable/cli@latest auth login      # opens the browser
 teable auth status                        # account + endpoint
 ```
 
@@ -100,7 +100,7 @@ teable app rollback --to 7 && teable app pull
 teable secret list --resource app:appXXXX
 # the user runs this in a terminal window of their own (not `!` in Claude Code: no TTY);
 # it prompts for the value without echo and also writes it to the checkout's .env.local:
-teable secret set --key STRIPE_KEY --grant app:appXXXX --dev-env
+teable secret set --key YOUR_API_KEY --grant app:appXXXX --dev-env
 teable integration connect --provider slack            # browser consent
 teable secret grant --type connection --id <connectionId> --resource app:appXXXX --alias SLACK
 ```

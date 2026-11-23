@@ -29,10 +29,13 @@ copied per client.
   refuses scripts, `AGENTS.md` / `CLAUDE.md` and other repository tooling inside it from
   organizations that are not Verified. `npx skills add teableio/agent-skills` finds the skills
   there through the marketplace.
-- Do not put a credential-named variable (`*_TOKEN`, `*_KEY`, `${slackToken}` …) and an external
-  host in the same plugin file: the Claude plugin directory holds the plugin for review as a
-  credential that could leave the user's machine. Mirrored `get-doc` topics with such examples
-  go in `.github/teable-docs-exclusions.json`; the skill points at `teable get-doc --topic <t>`.
+- Do not read an environment variable (`process.env.X`, `$X`, `os.environ` …) or name a
+  credential variable (`*_TOKEN`, `*_KEY`, `${slackToken}` …) anywhere in `plugins/teable/`: the
+  Claude plugin directory holds the plugin for review as a credential that could leave the
+  user's machine. Describe such variables in prose and point at `teable get-doc --topic <t>`;
+  use a `YOUR_*` placeholder where a value must be shown. Mirrored `get-doc` topics with such
+  examples go in `.github/teable-docs-exclusions.json`. CI enforces this with
+  `scripts/check-plugin-env-reads.mjs`.
 - Every merge that changes `plugins/teable/` is picked up and scanned again by the Claude
   plugin directory; batch automated doc syncs instead of merging each one as it arrives.
 - The two manifests carry the same `version`; raise both together when a release should

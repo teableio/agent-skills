@@ -22,7 +22,7 @@ Use automations for event-driven work and deterministic trigger/action workflows
 
 ## Trigger Selection
 
-> **Required**: `api-reference/automation.trigger.md` — trigger config, output variables, schedule config reference
+> **Required**: `teable get-doc --topic automation.trigger` — trigger config, output variables, schedule config reference
 
 | User scenario | Trigger type | Required options |
 |--------------|-------------|-----------------|
@@ -83,21 +83,10 @@ Use `automation get --include-active-snapshot` to compare draft vs published ver
 
 Script actions are Turing-complete: CRUD, AI generation, email, HTTP requests, Slack/Teams/webhook integrations — all via Teable REST API and built-in `fetch()`.
 
-> **Required**: `api-reference/automation.api.md` — REST APIs available in scripts (records, fields, filters)
+> **Required**: `teable get-doc --topic automation.api` — the script runtime (built-in auth token and base URL, trigger input, outputs, granted secrets), request examples, and the REST APIs scripts call. It needs `@teable/cli` 0.6.55 or later: if the output has no **Script Runtime** section, run `npm install -g @teable/cli` and read it again.
 > **Optional**: `teable get-doc --topic automation.send-email` — email sending; `teable get-doc --topic integration.slack` — Slack API
 
-**Script environment** (available at runtime):
-
-| Variable | Purpose |
-|----------|---------|
-| `process.env.AUTOMATION_TOKEN` | Auth token for Teable API calls (NEVER use `TEABLE_TOKEN` — it does not exist in scripts) |
-| `process.env.PUBLIC_ORIGIN` | Base URL for API requests |
-| `input[triggerId]` | Trigger data (record, fields, etc.) |
-| `input.integrations["<id>"].authConfig` | Integration credentials |
-| `output.set(key, value)` | Return data for next action |
-| `process.env.<KEY>` | Custom secrets you provisioned (API keys, etc.) |
-
-**Custom secrets**: store and grant credentials to the workflow with `teable secret`; read a granted secret by its alias via `process.env.STRIPE_KEY`. Inspect resource placeholders and bindings before granting. See [secret-guide.md](secret-guide.md). (`AUTOMATION_TOKEN` / `PUBLIC_ORIGIN` are built-in and always present.)
+**Custom secrets**: store and grant credentials to the workflow with `teable secret`; the script reads a granted secret by its alias (see the runtime section of `teable get-doc --topic automation.api`). Inspect resource placeholders and bindings before granting. See [secret-guide.md](secret-guide.md).
 
 **Rules:**
 - Use built-in `fetch()` only — never `node-fetch` or other HTTP libraries
@@ -105,39 +94,9 @@ Script actions are Turing-complete: CRUD, AI generation, email, HTTP requests, S
 - `console.log` is debug-only — never use it to notify users
 - Notifications: default to **Email API** when no channel is specified (run `teable get-doc --topic automation.send-email` first); Slack/Teams/webhook via HTTP requests in script
 
-**AI in scripts**: call `POST ${PUBLIC_ORIGIN}/api/automation/runtime/ai` with `{ prompt, attachments?, modelKey?, temperature?, outputType? }` — supports up to 10 file attachments (images, PDFs, Office docs; each ≤20MB) and `outputType: "object"` for parsed JSON output. The project comes from the automation context — do NOT put a baseId in the URL. Read `teable get-doc --topic automation.ai` first for the full request shape, attachment field mapping, and available model keys. Prefer one request with several attachments over one request per attachment; on 429 (AI concurrency saturated) retry later, don't loop immediately.
+**AI in scripts**: call `POST /api/automation/runtime/ai` on the runtime base URL with `{ prompt, attachments?, modelKey?, temperature?, outputType? }` — supports up to 10 file attachments (images, PDFs, Office docs; each ≤20MB) and `outputType: "object"` for parsed JSON output. The project comes from the automation context — do NOT put a baseId in the URL. Read `teable get-doc --topic automation.ai` first for the full request shape, attachment field mapping, and available model keys. Prefer one request with several attachments over one request per attachment; on 429 (AI concurrency saturated) retry later, don't loop immediately.
 
-**Common script patterns** (runtime variables + fetch):
-```javascript
-const baseUrl = process.env.PUBLIC_ORIGIN;
-const headers = {
-  Authorization: `Bearer ${process.env.AUTOMATION_TOKEN}`,
-  "Content-Type": "application/json"
-};
-
-// Get records
-const res = await fetch(`${baseUrl}/api/table/${tableId}/record`, { headers });
-
-// Create records
-await fetch(`${baseUrl}/api/table/${tableId}/record`, {
-  method: "POST", headers,
-  body: JSON.stringify({ records: [{ fields: { Name: "Test" } }] })
-});
-
-// Send email (built-in API)
-await fetch(`${baseUrl}/api/automation/runtime/email`, {
-  method: "POST", headers,
-  body: JSON.stringify({ to: "user@example.com", subject: "Hi", body: "Hello" })
-});
-
-// Call AI (built-in API — see get-doc --topic automation.ai for models & attachments)
-const aiRes = await fetch(`${baseUrl}/api/automation/runtime/ai`, {
-  method: "POST", headers,
-  body: JSON.stringify({ prompt: "Extract invoice number and total. Return JSON.", outputType: "object" })
-});
-const { message } = await aiRes.json(); // string, or parsed object for outputType "object"
-
-```
+**Common script patterns**: the auth header and get/create record examples are in `teable get-doc --topic automation.api`; email and AI calls use the same header (`automation.send-email`, `automation.ai`).
 
 ## External Integrations
 

@@ -9,7 +9,7 @@ Use `teable secret` for credentials consumed by a specific app or automation. Cr
 3. Run `secret list --resource app:appXXX` or `--resource automation:wflXXX` to verify bindings and find unbound placeholders expected by resource code.
 4. Revoke a grant when only one resource should lose access. Delete the secret only when every grant should lose it.
 
-Resource identifiers must use `app:<id>` or `automation:<id>`. Aliases become `process.env.ALIAS` for secrets and must be uppercase identifiers. Prefer the resource's unbound placeholder name when one exists.
+Resource identifiers must use `app:<id>` or `automation:<id>`. A secret's alias is the environment variable name a script or app reads it by, and must be an uppercase identifier. Prefer the resource's unbound placeholder name when one exists.
 
 ## Safety rules
 

@@ -264,6 +264,10 @@ jobs:
             view.statistic.md.
           - Only edit files under plugins/teable/skills/teable-assistant-ops/ plus the summary file above. Do not
             touch .github/, scripts/, or the manifest snapshot.
+          - Never write an environment-variable read (process.env.X, \$X, os.environ) or a
+            credential-named variable (*_TOKEN, *_KEY, *_SECRET) into the plugin, not even in an
+            example: describe it in prose and point at \`teable get-doc --topic <t>\`. CI
+            (scripts/check-plugin-env-reads.mjs) fails the PR otherwise.
           - Do not run git commands; committing and opening the PR happen after you finish.
           EOF
           pi --provider custom --model "$PI_MODEL" \
