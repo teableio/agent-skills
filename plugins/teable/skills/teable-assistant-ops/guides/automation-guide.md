@@ -22,7 +22,7 @@ Use automations for event-driven work and deterministic trigger/action workflows
 
 ## Trigger Selection
 
-> **Required**: `api-reference/automation.trigger.md` — trigger config, output variables, schedule config reference
+> **Required**: `teable get-doc --topic automation.trigger` — trigger config, output variables, schedule config reference
 
 | User scenario | Trigger type | Required options |
 |--------------|-------------|-----------------|

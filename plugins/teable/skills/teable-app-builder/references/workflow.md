@@ -6,7 +6,7 @@ Everything below runs on the user's machine. Replace ids as needed; inside a che
 ## A. First-time setup (once per machine)
 
 ```bash
-npx -y @teable/cli@latest auth login      # opens the browser; or export TEABLE_TOKEN=<PAT>
+npx -y @teable/cli@latest auth login      # opens the browser
 teable auth status                        # account + endpoint
 ```
 
