@@ -2,11 +2,11 @@
 
 Fetch structured data from 1,600+ web platforms. Each dataset requires a `datasetId` identifier and an `inputs` array of objects with the required fields.
 
-The tables below are the curated datasets with known inputs. For any other platform (Glassdoor, Indeed, Trustpilot, ...), call `scrape-search` with `query: "<platform> <data type>"`: each match gives a raw `gd_...` id, the inputs it needs to collect URLs, and its `modes` (discover by keyword, profile, category...) with their own inputs. The same search also covers a curated platform when no curated id fits the request (Amazon by UPC, YouTube by search filters, X posts of several profiles at once): pick the mode from `modes` and pass it as `discoverBy`.
+The tables below are the curated datasets with known inputs. For any other platform (Glassdoor, Indeed, Trustpilot, ...), call `scrape-search` with `query: "<platform> <data type>"`: each match gives a raw `gd_...` id, the inputs it needs to collect URLs, and its `modes` (discover by keyword, profile, category...) with their own inputs. The same search also covers a curated platform when no curated id fits the request (Amazon by UPC, YouTube by search filters, X posts of several profiles at once): pick the mode from `modes` and send it as `discoverBy`.
 
 A pending result is resumed with `scrape-status` and its snapshotId, never by running `scrape` again.
 
-Plain datasets scrape the pages you pass; `*_by_*` datasets take a keyword, hashtag, profile, category or shop URL and find the records themselves. Each input yields **at most 10 records**; raise `limitPerInput` (max 50) only when the user asks for more, since every record is billed. It caps the records per input for every dataset, and dataset fields such as `num_of_comments` cannot exceed it. One call is capped at inputs × limitPerInput = 1000 records. Credits for inputs × limitPerInput are held while the scrape runs, so when each input is a single page (a profile, product page, single post or video) pass `limitPerInput: 1`; one call can then carry up to 1000 URLs. Split a larger job into several calls.
+Plain datasets scrape the pages you give; `*_by_*` datasets take a keyword, hashtag, profile, category or shop URL and find the records themselves. Each input yields **at most 10 records**; raise `limitPerInput` (max 50) only when the user asks for more, since every record is billed. It caps the records per input for every dataset, and dataset fields such as `num_of_comments` cannot exceed it. One call is capped at inputs × limitPerInput = 1000 records. Credits for inputs × limitPerInput are held while the scrape runs, so when each input is a single page (a profile, product page, single post or video) set `limitPerInput: 1`; one call can then carry up to 1000 URLs. Split a larger job into several calls.
 
 ## Usage
 
@@ -41,19 +41,19 @@ limitPerInput: 20              // optional, only when the user asks for more tha
 | `zara_products` | `url` |  |
 | `etsy_products` | `url` |  |
 | `bestbuy_products` | `url` |  |
-| `amazon_product_by_category` | `url` | Pass the category URL. Optional `sort_by`, `zipcode`. |
-| `amazon_best_sellers` | `category_url` | Pass the best sellers URL. Optional `zipcode`. |
+| `amazon_product_by_category` | `url` | Give the category URL. Optional `sort_by`, `zipcode`. |
+| `amazon_best_sellers` | `category_url` | Give the best sellers URL. Optional `zipcode`. |
 | `walmart_product_by_keyword` | `keyword` | Default `domain`: https://www.walmart.com. |
-| `walmart_product_by_category` | `category_url` | Pass the category URL. |
+| `walmart_product_by_category` | `category_url` | Give the category URL. |
 | `ebay_product_by_keyword` | `keywords` |  |
-| `ebay_product_by_shop` | `url` | Pass the store URL. |
-| `ebay_product_by_category` | `url` | Pass the category URL. |
+| `ebay_product_by_shop` | `url` | Give the store URL. |
+| `ebay_product_by_category` | `url` | Give the category URL. |
 | `etsy_products_by_keyword` | `keywords` |  |
-| `etsy_products_by_shop` | `url` | Pass the shop URL. |
+| `etsy_products_by_shop` | `url` | Give the shop URL. |
 | `bestbuy_products_by_keyword` | `keywords` |  |
 | `homedepot_products_by_keyword` | `keyword` |  |
-| `homedepot_products_by_category` | `url` | Pass the category URL. Optional `zipcode`, `max_product`. |
-| `zara_products_by_category` | `url` | Pass the category URL. |
+| `homedepot_products_by_category` | `url` | Give the category URL. Optional `zipcode`, `max_product`. |
+| `zara_products_by_category` | `url` | Give the category URL. |
 
 ## LinkedIn
 
@@ -65,15 +65,15 @@ limitPerInput: 20              // optional, only when the user asks for more tha
 | `linkedin_posts` | `url` | URL must be a pulse or posts URL. |
 | `linkedin_people_search` | `url`, `first_name`, `last_name` |  |
 | `linkedin_job_listings_by_keyword` | `location` | Optional `keyword`, `country`, `time_range`, `job_type`, `experience_level`, `remote`. |
-| `linkedin_posts_by_profile` | `url` | Pass a `/in/` profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
-| `linkedin_posts_by_company` | `url` | Pass a `/company/` URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
+| `linkedin_posts_by_profile` | `url` | Give a `/in/` profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
+| `linkedin_posts_by_company` | `url` | Give a `/company/` URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
 
 ## Business Intelligence
 
 | Dataset ID | Inputs (required first) | Notes |
 |---|---|---|
 | `crunchbase_company` | `url` |  |
-| `crunchbase_person` | `url` | Pass a `/person/` URL. |
+| `crunchbase_person` | `url` | Give a `/person/` URL. |
 | `zoominfo_company_profile` | `url` |  |
 | `crunchbase_company_by_keyword` | `keyword` |  |
 
@@ -85,8 +85,8 @@ limitPerInput: 20              // optional, only when the user asks for more tha
 | `instagram_posts` | `url` |  |
 | `instagram_reels` | `url` |  |
 | `instagram_comments` | `url` |  |
-| `instagram_posts_by_profile` | `url` | Pass the profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD), `post_type`. |
-| `instagram_reels_by_profile` | `url` | Pass the profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
+| `instagram_posts_by_profile` | `url` | Give the profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD), `post_type`. |
+| `instagram_reels_by_profile` | `url` | Give the profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
 
 ## Facebook
 
@@ -97,10 +97,10 @@ limitPerInput: 20              // optional, only when the user asks for more tha
 | `facebook_company_reviews` | `url`, `num_of_reviews` | Default `num_of_reviews`: 10. |
 | `facebook_events` | `url` |  |
 | `facebook_page_profile` | `url` |  |
-| `facebook_page_posts` | `url` | Pass the page or profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
-| `facebook_group_posts` | `url` | Pass the `/groups/` URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
-| `facebook_reels` | `url` | Pass the profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
-| `facebook_comments` | `url` | Pass the post URL. Optional `comments_sort`. |
+| `facebook_page_posts` | `url` | Give the page or profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
+| `facebook_group_posts` | `url` | Give the `/groups/` URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
+| `facebook_reels` | `url` | Give the profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD). |
+| `facebook_comments` | `url` | Give the post URL. Optional `comments_sort`. |
 | `facebook_marketplace_by_keyword` | `keyword`, `city` | Optional `date_listed`. |
 
 ## TikTok
@@ -112,10 +112,10 @@ limitPerInput: 20              // optional, only when the user asks for more tha
 | `tiktok_shop` | `url` |  |
 | `tiktok_comments` | `url` |  |
 | `tiktok_posts_by_keyword` | `search_keyword` | Optional `country`. |
-| `tiktok_posts_by_profile` | `url` | Pass the profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD), `post_type`, `sort_by`. |
+| `tiktok_posts_by_profile` | `url` | Give the profile URL. Optional `start_date`, `end_date` (YYYY-MM-DD), `post_type`, `sort_by`. |
 | `tiktok_shop_by_keyword` | `keyword` |  |
-| `tiktok_shop_by_category` | `category_url` | Pass the category URL. |
-| `tiktok_shop_by_shop` | `url` | Pass the shop URL. |
+| `tiktok_shop_by_category` | `category_url` | Give the category URL. |
+| `tiktok_shop_by_shop` | `url` | Give the shop URL. |
 
 ## X (Twitter)
 
@@ -134,7 +134,7 @@ limitPerInput: 20              // optional, only when the user asks for more tha
 | `youtube_videos` | `url` |  |
 | `youtube_videos_by_keyword` | `keyword` | Optional `start_date`, `end_date` (YYYY-MM-DD), `country`. |
 | `youtube_videos_by_hashtag` | `hashtag` | Discover YouTube videos tagged with a hashtag (without `#`). Optional `start_date`, `end_date` (YYYY-MM-DD), `country`. |
-| `youtube_videos_by_channel` | `url` | Pass the channel or playlist URL. Optional `start_date`, `end_date` (YYYY-MM-DD), `order_by`. |
+| `youtube_videos_by_channel` | `url` | Give the channel or playlist URL. Optional `start_date`, `end_date` (YYYY-MM-DD), `order_by`. |
 | `youtube_profiles_by_keyword` | `keyword` |  |
 
 ## Reddit
@@ -144,8 +144,8 @@ limitPerInput: 20              // optional, only when the user asks for more tha
 | `reddit_posts` | `url` |  |
 | `reddit_comments` | `url`, `days_back` | Optional `days_back` limits by recency. |
 | `reddit_posts_by_keyword` | `keyword` | Default `date`: All time (also Past hour/day/week/month/year). Optional `sort_by`. |
-| `reddit_posts_by_subreddit` | `url` | Pass the subreddit URL. Optional `sort_by` (new/top/hot), `keyword`, `start_date`. |
-| `reddit_posts_by_author` | `url` | Pass the user URL. Optional `sort_by`. |
+| `reddit_posts_by_subreddit` | `url` | Give the subreddit URL. Optional `sort_by` (new/top/hot), `keyword`, `start_date`. |
+| `reddit_posts_by_author` | `url` | Give the user URL. Optional `sort_by`. |
 
 ## Other platforms
 
