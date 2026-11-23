@@ -26,6 +26,12 @@ never copied per client.
   from the Teable product all resolve that path.
 - The two manifests carry the same `version`; raise both together when a release should
   reach plugin users.
+- The Claude plugin directory tracks the generated `claude-plugin` branch
+  (`teableio/agent-skills@claude-plugin`), not `main`: it refuses scripts, AGENTS.md /
+  CLAUDE.md and other tooling in the folder it scans. Run the **Publish Claude plugin
+  branch** workflow when a release should reach the directory; every new commit on that
+  branch is scanned again. Never edit the branch by hand, and keep its file list in the
+  workflow in step with what the plugin ships.
 - `scripts/package-openai.sh` builds the ZIP for the OpenAI plugin portal into `dist/`. The
   ZIP points at the strict MCP endpoint (`/mcp/strict`, one tool per operation, no
   `search-api` / `call-api-*`), because OpenAI rejects generic executors, and pins
