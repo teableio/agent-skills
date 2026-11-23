@@ -27,6 +27,12 @@ Use `teable link bseXXXX` to bind a working directory. Without an ID, `teable li
 | `sql-query` | `--sql` |
 | `field ai-docs`, `get-collaborators` | — |
 
+### Local Database and Saved Queries
+
+`db clone` accepts a positional Project ID or `--base-id`; subsequent database sync operations select the clone with `--dir`. This is distinct from ordinary commands' `--local` targeting; see [Local Database Sync](db-guide.md).
+
+All `query library` operations require `--base-id`. `query validate/generate` also accept it to resolve library references; do not confuse that Project context with inline execution's observability name. See [Saved Query Library](query-library-guide.md).
+
 ### CRUD
 
 | Command | Also requires |

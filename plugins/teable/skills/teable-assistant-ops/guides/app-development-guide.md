@@ -2,6 +2,8 @@
 
 Use local development when the user wants to edit app code with external tools. For prompt-driven changes use [App Builder](app-builder-guide.md); for inspection alone use `app get-code`, whose snapshot is not a pushable checkout.
 
+For a cloned Project database, supported app commands can target it with `--local`; this is separate from merely having app source on disk. See [Local Database Sync](db-guide.md) before mixing app-code and database sync.
+
 ## Checkout → sync → edit → save
 
 1. Check `app list` before creating anything. Use `app init` for a new app or `app clone` for an existing app. Both require project Owner/Creator editing/create permission and a deployment with a git registry; choose an empty or absent target directory. Cloning an app never generated before first creates scaffold version 1.
