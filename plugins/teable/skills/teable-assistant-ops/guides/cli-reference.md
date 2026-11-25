@@ -190,7 +190,7 @@ Use this pair to access any Teable API not covered by dedicated CLI commands.
 1. `search-api --query "duplicate record"` — find the API
 2. `call-api --method POST --url "/path" --params '{...}'` — execute it
 
-**Narrowing results**: `--tags '["record"]'` filters by API category; `--limit 10` returns up to 10 results (default 5, max 10).
+**Narrowing results**: `--tags '["record"]'` filters by API category (`--tag` is an alias, still requiring a JSON array, not a bare category); `--limit 10` returns up to 10 results (default 5, max 10).
 
 **Note**: `call-api` can execute any method (GET/POST/PUT/PATCH/DELETE).
 

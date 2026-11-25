@@ -12,6 +12,10 @@ Install globally via npm:
 npm install -g @teable/cli
 ```
 
+## Upgrading an existing installation
+
+Use `teable upgrade` (CLI 0.6.56 or later) when the installed CLI is too old for a needed capability. It detects the installing package manager from the running CLI's location; if detection is ambiguous, choose from the printed commands rather than installing a second copy with a different manager. For older CLIs without this command, update through the original package manager. Check `teable --version` afterwards before retrying the operation.
+
 ## Authentication
 
 Two ways to authenticate:

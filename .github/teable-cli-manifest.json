@@ -1,6 +1,6 @@
 {
   "name": "teable",
-  "version": "0.6.55",
+  "version": "0.6.56",
   "description": "Teable AI Tools CLI for operating Teable projects, tables, fields, views, records, SQL read queries, and related app/automation workflows with a safe read-before-write process.",
   "options": [
     {
@@ -12,7 +12,7 @@
       "description": "Show CLI version"
     }
   ],
-  "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable projects, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                Show CLI version\n  --debug                      Enable debug output (verbose logging to stderr)\n  -h, --help                   display help for command\n\nSetup:\n  auth|init [options]          Manage auth for teable\n  config                       Manage project-level CLI configuration\n  link [options] [baseId]      Bind this directory to a project so commands here need no --base-id\n\nResources:\n  query                        query operations (schema, execute, library, inline, explain,\n                               manifest-schema, validate, generate, lint, deps, coverage, repairs,\n                               repair-apply, repair-dismiss)\n  operation                    operation operations (capabilities, preview)\n  media                        media operations (generate, get, cancel)\n  base                         project operations (create, get, list, update, delete)\n  db                           db operations (clone, status, diff, pull, conflicts, resolve, push,\n                               serve)\n  template                     template operations (search, install, status, extract, check, submit,\n                               guide, guide-save)\n  table                        table operations (create, get, update, delete)\n  field                        field operations (create, get, update, delete, ai-docs, ai-fill,\n                               ai-status)\n  record                       record operations (create, get, update, delete, count, stats)\n  import                       import operations (file, airtable, google-sheet, status)\n  view                         view operations (create, get, update, delete)\n  app                          app operations (list, get-code, create, update, delete, publish,\n                               status, unpublish, login-config, ai-docs, ai-enable, init, clone,\n                               pull, push, schema, signin, versions, rollback)\n  automation                   automation operations (list, get, update, activate, setup-trigger,\n                               delete, test-node, delete-node, generate-script, generate-flowchart,\n                               get-script-input, get-runs, get-run)\n  routine                      routine operations (create, list, get, update, activate, deactivate,\n                               delete, run-now, get-runs, get-run)\n  authority                    authority operations (get, export, diff, apply, enable, disable,\n                               role-list, role-get, role-delete, role-duplicate)\n  folder                       folder operations (create, update, delete, move)\n  artifact                     artifact operations (list, create, update, get, share)\n  scrape                       scrape operations (search, inspect, run, status)\n  integration                  integration operations (connect, list, get-token, search)\n  env                          env operations (list, set, update, delete)\n  secret                       secret operations (list, set, grant, revoke, delete)\n  sandbox                      sandbox operations (tool)\n  skill                        skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]      Get the tree structure of all nodes (tables, automations, apps, etc.)\n                               in a project\n  search-api [options]         Search available APIs by description to find the right endpoint\n  get-doc [options]            Get documentation for a topic\n  tools                        Tool discovery and metadata commands\n  sql-query [options]          Run read-only SQL for explicit SQL requests or unsupported structured\n                               queries\n  get-collaborators [options]  Get collaborators in the current project with pagination and search\n  upload-attachment [options]  Upload a local file as an attachment\n  call-api [options]           Call any Teable API (axios-style: method, url, params, data)\n  send-email [options]         Send an email to one or more recipients (system SMTP by default, or\n                               --smtp for a custom transport)\n\nCommands:\n  help [command]               display help for command\n\nProject = API base (bse-prefixed ID). Commands use teable base and --base-id.\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
+  "help": "Usage: teable [options] [command]\n\nTeable AI Tools CLI for operating Teable projects, tables, fields, views, records, SQL read queries,\nand related app/automation workflows with a safe read-before-write process.\n\nOptions:\n  -V, --version                Show CLI version\n  --debug                      Enable debug output (verbose logging to stderr)\n  -h, --help                   display help for command\n\nSetup:\n  auth|init [options]          Manage auth for teable\n  config                       Manage project-level CLI configuration\n  link [options] [baseId]      Bind this directory to a project so commands here need no --base-id\n  upgrade                      Upgrade the Teable CLI to the latest version\n\nResources:\n  query                        query operations (schema, execute, library, inline, explain,\n                               manifest-schema, validate, generate, lint, deps, coverage, repairs,\n                               repair-apply, repair-dismiss)\n  operation                    operation operations (capabilities, preview)\n  media                        media operations (generate, get, cancel)\n  base                         project operations (create, get, list, update, delete)\n  db                           db operations (clone, status, diff, rollback, pull, conflicts,\n                               resolve, push, serve)\n  template                     template operations (search, install, status, extract, check, submit,\n                               guide, guide-save)\n  table                        table operations (create, get, update, delete)\n  field                        field operations (create, get, update, delete, ai-docs, ai-fill,\n                               ai-status)\n  record                       record operations (create, get, update, delete, count, stats)\n  import                       import operations (file, airtable, google-sheet, status)\n  view                         view operations (create, get, update, delete)\n  app                          app operations (list, get-code, create, update, delete, publish,\n                               status, unpublish, login-config, ai-docs, ai-enable, init, clone,\n                               pull, push, schema, signin, versions, rollback)\n  automation                   automation operations (list, get, update, activate, setup-trigger,\n                               delete, test-node, delete-node, generate-script, generate-flowchart,\n                               get-script-input, get-runs, get-run)\n  routine                      routine operations (create, list, get, update, activate, deactivate,\n                               delete, run-now, get-runs, get-run)\n  authority                    authority operations (get, export, diff, apply, enable, disable,\n                               role-list, role-get, role-delete, role-duplicate)\n  folder                       folder operations (create, update, delete, move)\n  artifact                     artifact operations (list, create, update, get, share)\n  scrape                       scrape operations (search, inspect, run, status)\n  integration                  integration operations (connect, list, get-token, search)\n  env                          env operations (list, set, update, delete)\n  secret                       secret operations (list, set, grant, revoke, delete)\n  sandbox                      sandbox operations (tool)\n  skill                        skill operations (list, import-github, import-file, update)\n\nTools:\n  get-node-tree [options]      Get the tree structure of all nodes (tables, automations, apps, etc.)\n                               in a project\n  search-api [options]         Search available APIs by description to find the right endpoint\n  get-doc [options]            Get documentation for a topic\n  tools                        Tool discovery and metadata commands\n  sql-query [options]          Run read-only SQL for explicit SQL requests or unsupported structured\n                               queries\n  get-collaborators [options]  Get collaborators in the current project with pagination and search\n  upload-attachment [options]  Upload a local file as an attachment\n  call-api [options]           Call any Teable API (axios-style: method, url, params, data)\n  send-email [options]         Send an email to one or more recipients (system SMTP by default, or\n                               --smtp for a custom transport)\n\nCommands:\n  help [command]               display help for command\n\nProject = API base (bse-prefixed ID). Commands use teable base and --base-id.\n\nExamples:\n  teable table get --table-id tblXXXX            List table metadata\n  teable record get --table-id tblXXXX           Query records\n  teable table create --name Tasks --fields '[\"Title:text\",\"Status:sel:Todo,Done\"]'\n",
   "commands": [
     {
       "name": "app",
@@ -2299,7 +2299,7 @@
     },
     {
       "name": "db",
-      "description": "db operations (clone, status, diff, pull, conflicts, resolve, push, serve)",
+      "description": "db operations (clone, status, diff, rollback, pull, conflicts, resolve, push, serve)",
       "subcommands": [
         {
           "name": "clone",
@@ -2315,6 +2315,10 @@
             }
           ],
           "options": [
+            {
+              "flags": "--at <revision>",
+              "description": "Check out a historical revision as a read-only local database"
+            },
             {
               "flags": "--endpoint <url>",
               "description": "Teable instance URL override (overrides TEABLE_ENDPOINT / TEABLE_URL)"
@@ -2360,7 +2364,7 @@
               "description": "Local VCS working directory"
             }
           ],
-          "help": "Usage: teable db clone [options] [baseId] [targetDir]\n\nClone a Teable base into a local binary PGlite database (.teable/vcs/pglite)\n\nArguments:\n  baseId                             Base ID (bseXXXX); optional if provided via --base-id or\n                                     TEABLE_BASE_ID\n  targetDir                          Target local directory (defaults to --dir or current directory)\n\nOptions:\n  -b, --base-id <baseId>             Base ID (bseXXXX); defaults to TEABLE_BASE_ID or linked project\n                                     config\n  --tables <csv>                     Comma-separated list of table IDs for sparse clone\n  --headless-url <url>               Headless runtime URL to hydrate on clone instead of local\n                                     PGlite\n  --multi-value-strategy <strategy>  Default multi-value merge strategy (strict | set)\n  --schema-only                      Clone table schemas and views without downloading records\n  --force                            Overwrite an existing VCS workspace in the target directory\n  -d, --dir <dir>                    Local VCS working directory\n  --endpoint <url>                   Teable instance URL override (overrides TEABLE_ENDPOINT /\n                                     TEABLE_URL)\n  --token <token>                    Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json                             Output structured JSON\n  --pretty                           Pretty-print JSON output\n  -h, --help                         display help for command\n"
+          "help": "Usage: teable db clone [options] [baseId] [targetDir]\n\nClone a Teable base into a local binary PGlite database (.teable/vcs/pglite)\n\nArguments:\n  baseId                             Base ID (bseXXXX); optional if provided via --base-id or\n                                     TEABLE_BASE_ID\n  targetDir                          Target local directory (defaults to --dir or current directory)\n\nOptions:\n  -b, --base-id <baseId>             Base ID (bseXXXX); defaults to TEABLE_BASE_ID or linked project\n                                     config\n  --at <revision>                    Check out a historical revision as a read-only local database\n  --tables <csv>                     Comma-separated list of table IDs for sparse clone\n  --headless-url <url>               Headless runtime URL to hydrate on clone instead of local\n                                     PGlite\n  --multi-value-strategy <strategy>  Default multi-value merge strategy (strict | set)\n  --schema-only                      Clone table schemas and views without downloading records\n  --force                            Overwrite an existing VCS workspace in the target directory\n  -d, --dir <dir>                    Local VCS working directory\n  --endpoint <url>                   Teable instance URL override (overrides TEABLE_ENDPOINT /\n                                     TEABLE_URL)\n  --token <token>                    Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json                             Output structured JSON\n  --pretty                           Pretty-print JSON output\n  -h, --help                         display help for command\n"
         },
         {
           "name": "conflicts",
@@ -2391,7 +2395,7 @@
         },
         {
           "name": "diff",
-          "description": "Diff local working database against live remote server (or base.snapshot.json with --offline)",
+          "description": "Diff the local working database or compare two remote revisions with --from and --to",
           "options": [
             {
               "flags": "--against-snapshot <file>",
@@ -2400,6 +2404,10 @@
             {
               "flags": "--endpoint <url>",
               "description": "Teable instance URL override (overrides TEABLE_ENDPOINT / TEABLE_URL)"
+            },
+            {
+              "flags": "--from <revision>",
+              "description": "Start of a revision-to-revision diff"
             },
             {
               "flags": "--headless-url <url>",
@@ -2422,15 +2430,23 @@
               "description": "Return the display review with --json (up to 200 change rows)"
             },
             {
+              "flags": "--to <revision>",
+              "description": "End of a revision-to-revision diff"
+            },
+            {
               "flags": "--token <token>",
               "description": "Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Remote base for revision-to-revision diff"
             },
             {
               "flags": "-d, --dir <dir>",
               "description": "Local VCS working directory"
             }
           ],
-          "help": "Usage: teable db diff [options]\n\nDiff local working database against live remote server (or base.snapshot.json with --offline)\n\nOptions:\n  --review                   Return the display review with --json (up to 200 change rows)\n  --against-snapshot <file>  Compare against a VCS clone response saved to disk\n  --offline                  Compare local working database only against base.snapshot.json without\n                             contacting remote\n  --headless-url <url>       Headless runtime URL override\n  -d, --dir <dir>            Local VCS working directory\n  --endpoint <url>           Teable instance URL override (overrides TEABLE_ENDPOINT / TEABLE_URL)\n  --token <token>            Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json                     Output structured JSON\n  --pretty                   Pretty-print JSON output\n  -h, --help                 display help for command\n"
+          "help": "Usage: teable db diff [options]\n\nDiff the local working database or compare two remote revisions with --from and --to\n\nOptions:\n  --from <revision>          Start of a revision-to-revision diff\n  --to <revision>            End of a revision-to-revision diff\n  -b, --base-id <baseId>     Remote base for revision-to-revision diff\n  --review                   Return the display review with --json (up to 200 change rows)\n  --against-snapshot <file>  Compare against a VCS clone response saved to disk\n  --offline                  Compare local working database only against base.snapshot.json without\n                             contacting remote\n  --headless-url <url>       Headless runtime URL override\n  -d, --dir <dir>            Local VCS working directory\n  --endpoint <url>           Teable instance URL override (overrides TEABLE_ENDPOINT / TEABLE_URL)\n  --token <token>            Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json                     Output structured JSON\n  --pretty                   Pretty-print JSON output\n  -h, --help                 display help for command\n"
         },
         {
           "name": "pull",
@@ -2558,6 +2574,46 @@
           "help": "Usage: teable db resolve [options]\n\nResolve one or all unresolved merge conflicts\n\nOptions:\n  --id <conflictId>     Resolve a specific conflict ID\n  --all                 Resolve all unresolved conflicts using the selected strategy\n  --ours                Keep local changes (\"ours\")\n  --theirs              Take remote changes (\"theirs\")\n  --value-json <json>   Provide a manual JSON value\n  --headless-url <url>  Headless runtime URL override\n  -d, --dir <dir>       Local VCS working directory\n  --endpoint <url>      Teable instance URL override (overrides TEABLE_ENDPOINT / TEABLE_URL)\n  --token <token>       Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json                Output structured JSON\n  --pretty              Pretty-print JSON output\n  -h, --help            display help for command\n"
         },
         {
+          "name": "rollback",
+          "description": "Preview a rollback or confirm the preview to create a new remote revision",
+          "options": [
+            {
+              "flags": "--confirm <confirmation>",
+              "description": "Confirmation returned by the preview"
+            },
+            {
+              "flags": "--endpoint <url>",
+              "description": "Teable instance URL override (overrides TEABLE_ENDPOINT / TEABLE_URL)"
+            },
+            {
+              "flags": "--json",
+              "description": "Output structured JSON"
+            },
+            {
+              "flags": "--pretty",
+              "description": "Pretty-print JSON output"
+            },
+            {
+              "flags": "--to <revision>",
+              "description": "Historical revision to restore",
+              "required": true
+            },
+            {
+              "flags": "--token <token>",
+              "description": "Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)"
+            },
+            {
+              "flags": "-b, --base-id <baseId>",
+              "description": "Remote base to restore"
+            },
+            {
+              "flags": "-d, --dir <dir>",
+              "description": "Local VCS working directory"
+            }
+          ],
+          "help": "Usage: teable db rollback [options]\n\nPreview a rollback or confirm the preview to create a new remote revision\n\nOptions:\n  --to <revision>           Historical revision to restore\n  -b, --base-id <baseId>    Remote base to restore\n  --confirm <confirmation>  Confirmation returned by the preview\n  -d, --dir <dir>           Local VCS working directory\n  --endpoint <url>          Teable instance URL override (overrides TEABLE_ENDPOINT / TEABLE_URL)\n  --token <token>           Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json                    Output structured JSON\n  --pretty                  Pretty-print JSON output\n  -h, --help                display help for command\n"
+        },
+        {
           "name": "serve",
           "description": "Serve the local cloned VCS PGlite database over HTTP",
           "options": [
@@ -2626,7 +2682,7 @@
           "help": "Usage: teable db status [options]\n\nShow local PGlite working database status, pending changes, and conflicts\n\nOptions:\n  --remote          Query remote head revision as well\n  -d, --dir <dir>   Local VCS working directory\n  --endpoint <url>  Teable instance URL override (overrides TEABLE_ENDPOINT / TEABLE_URL)\n  --token <token>   Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json            Output structured JSON\n  --pretty          Pretty-print JSON output\n  -h, --help        display help for command\n"
         }
       ],
-      "help": "Usage: teable db [options] [command]\n\ndb operations (clone, status, diff, pull, conflicts, resolve, push, serve)\n\nOptions:\n  -h, --help                            display help for command\n\nCommands:\n  clone [options] [baseId] [targetDir]  Clone a Teable base into a local binary PGlite database\n                                        (.teable/vcs/pglite)\n  status [options]                      Show local PGlite working database status, pending changes,\n                                        and conflicts\n  diff [options]                        Diff local working database against live remote server (or\n                                        base.snapshot.json with --offline)\n  pull [options]                        Fetch upstream changes and run local 3-way merge\n  conflicts [options]                   List unresolved merge conflicts recorded in\n                                        .teable/vcs/conflicts.json\n  resolve [options]                     Resolve one or all unresolved merge conflicts\n  push [options]                        Push local working database changes upstream with CAS\n                                        revision protection\n  serve [options]                       Serve the local cloned VCS PGlite database over HTTP\n  help [command]                        display help for command\n\nExamples:\n  teable db clone bseXXXX ./my-base\n  teable db status --dir ./my-base --remote\n  teable db diff --dir ./my-base\n  teable db pull --dir ./my-base\n  teable db conflicts --dir ./my-base\n  teable db resolve --dir ./my-base --id <conflictId> --ours\n  teable db push --dir ./my-base -m \"Update table records\"\n  teable db serve --dir ./my-base --port 4231\n"
+      "help": "Usage: teable db [options] [command]\n\ndb operations (clone, status, diff, rollback, pull, conflicts, resolve, push, serve)\n\nOptions:\n  -h, --help                            display help for command\n\nCommands:\n  clone [options] [baseId] [targetDir]  Clone a Teable base into a local binary PGlite database\n                                        (.teable/vcs/pglite)\n  status [options]                      Show local PGlite working database status, pending changes,\n                                        and conflicts\n  diff [options]                        Diff the local working database or compare two remote\n                                        revisions with --from and --to\n  rollback [options]                    Preview a rollback or confirm the preview to create a new\n                                        remote revision\n  pull [options]                        Fetch upstream changes and run local 3-way merge\n  conflicts [options]                   List unresolved merge conflicts recorded in\n                                        .teable/vcs/conflicts.json\n  resolve [options]                     Resolve one or all unresolved merge conflicts\n  push [options]                        Push local working database changes upstream with CAS\n                                        revision protection\n  serve [options]                       Serve the local cloned VCS PGlite database over HTTP\n  help [command]                        display help for command\n\nExamples:\n  teable db clone bseXXXX ./my-base\n  teable db status --dir ./my-base --remote\n  teable db diff --dir ./my-base\n  teable db clone bseXXXX ./history --at r1\n  teable db diff --dir ./my-base --from r1 --to r3\n  teable db rollback --dir ./my-base --to r1\n  teable db pull --dir ./my-base\n  teable db conflicts --dir ./my-base\n  teable db resolve --dir ./my-base --id <conflictId> --ours\n  teable db push --dir ./my-base -m \"Update table records\"\n  teable db serve --dir ./my-base --port 4231\n"
     },
     {
       "name": "env",
@@ -4372,7 +4428,7 @@
           "subcommands": [
             {
               "name": "describe",
-              "description": "Read a visible query revision",
+              "description": "Read revision parameters, dimensions (including monthDimensions) and outputs",
               "options": [
                 {
                   "flags": "--base-id <baseId>",
@@ -4403,11 +4459,11 @@
                   "description": "Personal access token; falls back to TEABLE_TOKEN env var"
                 }
               ],
-              "help": "Usage: teable query library describe [options]\n\nRead a visible query revision\n\nOptions:\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  --base-id <baseId>     Target project ID\n  --id <id>\n  --revision <number>\n  --include-definition\n  -h, --help             display help for command\n"
+              "help": "Usage: teable query library describe [options]\n\nRead revision parameters, dimensions (including monthDimensions) and outputs\n\nOptions:\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  --base-id <baseId>     Target project ID\n  --id <id>\n  --revision <number>\n  --include-definition\n  -h, --help             display help for command\n"
             },
             {
               "name": "list",
-              "description": "Search visible saved queries",
+              "description": "Search visible saved queries and shared metrics",
               "options": [
                 {
                   "flags": "--base-id <baseId>",
@@ -4444,7 +4500,7 @@
                   "description": "Personal access token; falls back to TEABLE_TOKEN env var"
                 }
               ],
-              "help": "Usage: teable query library list [options]\n\nSearch visible saved queries\n\nOptions:\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  --base-id <baseId>     Target project ID\n  --scope <scope>        all, mine or base\n  --q <text>             Search phrase\n  --limit <number>       Page size\n  --cursor <cursor>      Next page cursor\n  -h, --help             display help for command\n"
+              "help": "Usage: teable query library list [options]\n\nSearch visible saved queries and shared metrics\n\nOptions:\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  --base-id <baseId>     Target project ID\n  --scope <scope>        all, mine or base\n  --q <text>             Search phrase\n  --limit <number>       Page size\n  --cursor <cursor>      Next page cursor\n  -h, --help             display help for command\n"
             },
             {
               "name": "run",
@@ -4464,7 +4520,8 @@
                   "required": true
                 },
                 {
-                  "flags": "--parameters <json|@file>"
+                  "flags": "--parameters <json|@file>",
+                  "description": "For ordinary metrics, pass groupBy (admitted aliases) and where_<alias> (equality). For month comparison, pass compareDimension (from monthDimensions) and compareMonth (YYYY-MM) together. Omit groupBy and where_<comparison alias>. Pass exact numeric strings unchanged."
                 },
                 {
                   "flags": "--pretty",
@@ -4480,7 +4537,7 @@
                   "description": "Personal access token; falls back to TEABLE_TOKEN env var"
                 }
               ],
-              "help": "Usage: teable query library run [options]\n\nRun a fixed query revision\n\nOptions:\n  --token <token>            Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>      Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                             saved config\n  --pretty                   Indent JSON for human readability (default: false)\n  --base-id <baseId>         Target project ID\n  --id <id>\n  --revision <number>\n  --parameters <json|@file>\n  -h, --help                 display help for command\n"
+              "help": "Usage: teable query library run [options]\n\nRun a fixed query revision\n\nOptions:\n  --token <token>            Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>      Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                             saved config\n  --pretty                   Indent JSON for human readability (default: false)\n  --base-id <baseId>         Target project ID\n  --id <id>\n  --revision <number>\n  --parameters <json|@file>  For ordinary metrics, pass groupBy (admitted aliases) and where_<alias>\n                             (equality). For month comparison, pass compareDimension (from\n                             monthDimensions) and compareMonth (YYYY-MM) together. Omit groupBy and\n                             where_<comparison alias>. Pass exact numeric strings unchanged.\n  -h, --help                 display help for command\n"
             },
             {
               "name": "save",
@@ -4609,7 +4666,7 @@
               "help": "Usage: teable query library unshare [options]\n\nRevoke all shared revisions\n\nOptions:\n  --token <token>                    Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>              Teable API server base URL; falls back to TEABLE_ENDPOINT env\n                                     var, then saved config\n  --pretty                           Indent JSON for human readability (default: false)\n  --base-id <baseId>                 Target project ID\n  --id <id>\n  --expected-state-version <number>\n  -h, --help                         display help for command\n"
             }
           ],
-          "help": "Usage: teable query library [options] [command]\n\nFind and manage saved Base queries\n\nOptions:\n  -h, --help          display help for command\n\nCommands:\n  list [options]      Search visible saved queries\n  describe [options]  Read a visible query revision\n  run [options]       Run a fixed query revision\n  save [options]      Save a private query revision\n  share [options]     Share the current head with this Base\n  unshare [options]   Revoke all shared revisions\n  help [command]      display help for command\n"
+          "help": "Usage: teable query library [options] [command]\n\nFind and manage saved Base queries\n\nOptions:\n  -h, --help          display help for command\n\nCommands:\n  list [options]      Search visible saved queries and shared metrics\n  describe [options]  Read revision parameters, dimensions (including monthDimensions) and outputs\n  run [options]       Run a fixed query revision\n  save [options]      Save a private query revision\n  share [options]     Share the current head with this Base\n  unshare [options]   Revoke all shared revisions\n  help [command]      display help for command\n"
         },
         {
           "name": "lint",
@@ -5975,6 +6032,10 @@
           "description": "Alias for --query"
         },
         {
+          "flags": "--tag <jsonArray>",
+          "description": "Alias for --tags"
+        },
+        {
           "flags": "--tags <jsonArray>",
           "description": "Optional tag filter to narrow search (e.g., [\"record\", \"field\"])"
         },
@@ -5988,7 +6049,7 @@
           "required": true
         }
       ],
-      "help": "Usage: teable search-api [options]\n\nSearch available Teable APIs by keyword or description.\n\nReturns APIs matching your permission level. Use with call-api to execute.\n\nParameters:\n  - query (required): Search keywords in any language\n  - tags: Filter by API category (e.g., [\"record\", \"field\"])\n  - limit: Max results (default: 5, max: 10)\n\nReturns API details including:\n  - method, url: Pass directly to call-api\n  - summary, description\n  - parameters: Required and optional params with descriptions\n  - requestBody: Body schema for POST/PUT/PATCH endpoints\n\nExample: search-api({ query: \"update records\" })\n  → { method: \"PATCH\", url: \"/table/{tableId}/record\", parameters: [...], requestBody: {...} }\n  → call-api({ method: \"PATCH\", url: \"/table/{tableId}/record\", params: { tableId: \"tblXXX\" }, data:\n{ ... } })\n\nOptions:\n  --query <query>         Search keywords (e.g., \"duplicate record\", \"get fields\", \"create\n                          automation\")\n  --search <query>        Alias for --query\n  --keyword <query>       Alias for --query\n  --tags <jsonArray>      Optional tag filter to narrow search (e.g., [\"record\", \"field\"])\n  --limit <number>        Maximum number of results to return (default: 5, max: 10)\n  --max-results <number>  Alias for --limit\n  -b, --base-id <baseId>  Target project ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --local                 Execute against the local cloned VCS PGlite database (.teable/vcs/pglite)\n                          instead of remote server\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
+      "help": "Usage: teable search-api [options]\n\nSearch available Teable APIs by keyword or description.\n\nReturns APIs matching your permission level. Use with call-api to execute.\n\nParameters:\n  - query (required): Search keywords in any language\n  - tags: Filter by API category (e.g., [\"record\", \"field\"])\n  - limit: Max results (default: 5, max: 10)\n\nReturns API details including:\n  - method, url: Pass directly to call-api\n  - summary, description\n  - parameters: Required and optional params with descriptions\n  - requestBody: Body schema for POST/PUT/PATCH endpoints\n\nExample: search-api({ query: \"update records\" })\n  → { method: \"PATCH\", url: \"/table/{tableId}/record\", parameters: [...], requestBody: {...} }\n  → call-api({ method: \"PATCH\", url: \"/table/{tableId}/record\", params: { tableId: \"tblXXX\" }, data:\n{ ... } })\n\nOptions:\n  --query <query>         Search keywords (e.g., \"duplicate record\", \"get fields\", \"create\n                          automation\")\n  --search <query>        Alias for --query\n  --keyword <query>       Alias for --query\n  --tags <jsonArray>      Optional tag filter to narrow search (e.g., [\"record\", \"field\"])\n  --tag <jsonArray>       Alias for --tags\n  --limit <number>        Maximum number of results to return (default: 5, max: 10)\n  --max-results <number>  Alias for --limit\n  -b, --base-id <baseId>  Target project ID (required, e.g. bseXXXX). Set default: `teable config\n                          base-id <id>`.\n  --local                 Execute against the local cloned VCS PGlite database (.teable/vcs/pglite)\n                          instead of remote server\n  --token <token>         Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>   Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                          saved config\n  --pretty                Indent JSON for human readability (default: false)\n  -h, --help              display help for command\n"
     },
     {
       "name": "secret",
@@ -6378,7 +6439,7 @@
         },
         {
           "name": "update",
-          "summary": "Update skill icon or enabled state",
+          "summary": "Enable or disable a skill",
           "options": [
             {
               "flags": "--endpoint <endpoint>",
@@ -6411,7 +6472,7 @@
           "help": "Usage: teable skill update [options]\n\nOptions:\n  --skill-id <id>        Skill ID (sklXXXX)\n  --is-enabled <bool>    true or false (choices: \"true\", \"false\")\n  --token <token>        Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>  Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                         saved config\n  --pretty               Indent JSON for human readability (default: false)\n  -h, --help             display help for command\n"
         }
       ],
-      "help": "Usage: teable skill [options] [command]\n\nskill operations (list, import-github, import-file, update)\n\nOptions:\n  -h, --help               display help for command\n\nCommands:\n  list [options]           List installed or available skills by scope\n  import-github [options]  Import a skill from a GitHub repository URL\n  import-file [options]    Import a skill from a local .skill or .zip file\n  update [options]         Update skill icon or enabled state\n  help [command]           display help for command\n\nExamples:\n  teable skill list --scope user\n  teable skill import-github --scope user --url https://github.com/owner/repo/tree/main/skills/my-skill\n  teable skill import-file --scope user --file-path ./my-skill.skill\n  teable skill update --skill-id sklXXXX --is-enabled true\n"
+      "help": "Usage: teable skill [options] [command]\n\nskill operations (list, import-github, import-file, update)\n\nOptions:\n  -h, --help               display help for command\n\nCommands:\n  list [options]           List installed or available skills by scope\n  import-github [options]  Import a skill from a GitHub repository URL\n  import-file [options]    Import a skill from a local .skill or .zip file\n  update [options]         Enable or disable a skill\n  help [command]           display help for command\n\nExamples:\n  teable skill list --scope user\n  teable skill import-github --scope user --url https://github.com/owner/repo/tree/main/skills/my-skill\n  teable skill import-file --scope user --file-path ./my-skill.skill\n  teable skill update --skill-id sklXXXX --is-enabled true\n"
     },
     {
       "name": "sql-query",
@@ -6977,6 +7038,13 @@
         }
       ],
       "help": "Usage: teable tools [options] [command]\n\nTool discovery and metadata commands\n\nOptions:\n  -h, --help      display help for command\n\nCommands:\n  list [options]  List tools available for current project and permission level\n  help [command]  display help for command\n"
+    },
+    {
+      "name": "upgrade",
+      "summary": "Upgrade the Teable CLI to the latest version",
+      "description": "Upgrade @teable/cli with the package manager that installed it (npm, pnpm, yarn, bun, vite-plus or Volta), told apart by where the running CLI lives. When that cannot be told, prints the commands to choose from.",
+      "help": "Usage: teable upgrade [options]\n\nUpgrade @teable/cli with the package manager that installed it (npm, pnpm, yarn, bun, vite-plus or\nVolta), told apart by where the running CLI lives. When that cannot be told, prints the commands to\nchoose from.\n\nOptions:\n  -h, --help  display help for command\n",
+      "availability": "managed-sandbox-disabled"
     },
     {
       "name": "upload-attachment",
