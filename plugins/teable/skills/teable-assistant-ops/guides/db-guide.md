@@ -1,6 +1,6 @@
 # Local Database Sync Guide
 
-Use `db` to work on a local clone of a Project and review changes before syncing upstream. This is database sync, not the [app-code checkout workflow](app-development-guide.md). Requires CLI 0.6.55 or later and access to the remote Project for clone and sync.
+Use `db` to work on a local clone of a Project and review changes before syncing upstream. This is database sync, not the [app-code checkout workflow](app-development-guide.md). Requires CLI 0.6.56 or later and access to the remote Project for clone and sync.
 
 ## Safe working sequence
 
@@ -25,6 +25,12 @@ teable db push --dry-run
 # Only after reviewing the merged diff and obtaining required approval:
 teable db push -m "Apply reviewed project changes"
 ```
+
+## History inspection and remote recovery
+
+- To inspect an earlier state without changing the remote, use `db clone --at <revision>` in a separate directory. Historical checkouts are read-only; do not use them as editable sync workspaces.
+- To compare remote history rather than pending local edits, use `db diff --from <revision> --to <revision>`. Select the remote Project with `--base-id` or the workspace with `--dir`; this is not the default local-versus-remote diff.
+- To restore a historical state remotely, first run `db rollback --to <revision>` for the intended Project. Inspect the preview and obtain explicit approval for the restoration before passing its returned confirmation to `--confirm`. Never invent a confirmation or treat the preview as a completed restore. Confirming creates a **new remote revision**, rather than rewriting history; verify remote state afterwards.
 
 ## Targeting pitfalls
 
