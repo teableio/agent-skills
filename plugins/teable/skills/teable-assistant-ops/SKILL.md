@@ -38,6 +38,7 @@ A **Project** (项目 in Chinese) is called `base` in the API, with IDs starting
 | Data Query | Read records, counts/statistics, analytics, named-query diagnostics and repairs | `record get/count/stats`, `sql-query`, `query *` | [data-query-guide.md](guides/data-query-guide.md), [CLI reference](guides/cli-reference.md#data-queries) |
 | Saved Queries | Discover shared metrics, run fixed revisions, save privately and share Project queries | `query library *` | [query-library-guide.md](guides/query-library-guide.md) |
 | Local Database | Clone/edit data, merge conflicts, compare history and preview remote rollback | `db *`, supported commands with `--local` | [db-guide.md](guides/db-guide.md) |
+| Data PR Promotion | Validate Builder working copies, export selected row changes and reconcile applied receipts | `db diff`, `db pull` with promotion options | [data-promotion-guide.md](guides/data-promotion-guide.md) |
 | Tables | Create/modify table structure | `table create/update/delete` | [cli-reference.md § Field Type Aliases](guides/cli-reference.md#field-type-aliases) |
 | Fields | Add/change columns, computed fields, and per-row AI | `field create/update/delete`, `field ai-docs/ai-fill/ai-status` | [field.simple.md](api-reference/field.simple.md), [AI field guide](guides/ai-field-guide.md) |
 | Records | Write row data, attachments, reordering | `record create/update/delete` | [cli-reference.md § Record Operations](guides/cli-reference.md#record-operations) |

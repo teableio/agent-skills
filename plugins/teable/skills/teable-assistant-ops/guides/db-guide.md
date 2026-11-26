@@ -1,6 +1,6 @@
 # Local Database Sync Guide
 
-Use `db` to work on a local clone of a Project and review changes before syncing upstream. This is database sync, not the [app-code checkout workflow](app-development-guide.md). Requires CLI 0.6.56 or later and access to the remote Project for clone and sync.
+Use `db` to work on a local clone of a Project and review changes before syncing upstream. This is database sync, not the [app-code checkout workflow](app-development-guide.md). Requires CLI 0.6.57 or later; ordinary remote clone and sync need access to the remote Project.
 
 ## Safe working sequence
 
@@ -25,6 +25,12 @@ teable db push --dry-run
 # Only after reviewing the merged diff and obtaining required approval:
 teable db push -m "Apply reviewed project changes"
 ```
+
+## Reuse a checkout safely
+
+- When initializing from a saved checkout, use `db clone --from-snapshot <file>` with the **complete immutable VCS checkout response**, not a display review, row export, or hand-built JSON substitute.
+- To enroll an existing PGlite clone without replacing it, use `db clone --adopt-existing` only for a compatible, clean clone. If enrollment fails, investigate compatibility or pending edits; do not fall back to `--force` and erase the workspace.
+- For selected-row export through Builder Data PRs rather than ordinary upstream push, follow the separate [Data PR promotion workflow](data-promotion-guide.md).
 
 ## History inspection and remote recovery
 

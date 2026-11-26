@@ -17,6 +17,7 @@ Use `media` for standalone image generation. Use App Builder when images are onl
 
 ## Output decisions
 
+- Choose the deliverable format at generation time: `media generate` defaults to WebP; use `--format png` or `--format jpeg` when the downstream consumer requires it. Match the local filename extension to the requested format rather than treating a renamed file as conversion.
 - For a single image needed locally, write to a new file.
 - For a batch, use a directory; later retrieval can download completed results there without regenerating.
 - Without a local output target, generated images remain available through the task/ChatFile result.
