@@ -1,6 +1,6 @@
 {
   "name": "teable",
-  "version": "0.6.56",
+  "version": "0.6.57",
   "description": "Teable AI Tools CLI for operating Teable projects, tables, fields, views, records, SQL read queries, and related app/automation workflows with a safe read-before-write process.",
   "options": [
     {
@@ -2316,6 +2316,10 @@
           ],
           "options": [
             {
+              "flags": "--adopt-existing",
+              "description": "Enroll a compatible clean PGlite clone without replacing it"
+            },
+            {
               "flags": "--at <revision>",
               "description": "Check out a historical revision as a read-only local database"
             },
@@ -2326,6 +2330,10 @@
             {
               "flags": "--force",
               "description": "Overwrite an existing VCS workspace in the target directory"
+            },
+            {
+              "flags": "--from-snapshot <file>",
+              "description": "Initialize from a complete immutable VCS checkout response"
             },
             {
               "flags": "--headless-url <url>",
@@ -2364,7 +2372,7 @@
               "description": "Local VCS working directory"
             }
           ],
-          "help": "Usage: teable db clone [options] [baseId] [targetDir]\n\nClone a Teable base into a local binary PGlite database (.teable/vcs/pglite)\n\nArguments:\n  baseId                             Base ID (bseXXXX); optional if provided via --base-id or\n                                     TEABLE_BASE_ID\n  targetDir                          Target local directory (defaults to --dir or current directory)\n\nOptions:\n  -b, --base-id <baseId>             Base ID (bseXXXX); defaults to TEABLE_BASE_ID or linked project\n                                     config\n  --at <revision>                    Check out a historical revision as a read-only local database\n  --tables <csv>                     Comma-separated list of table IDs for sparse clone\n  --headless-url <url>               Headless runtime URL to hydrate on clone instead of local\n                                     PGlite\n  --multi-value-strategy <strategy>  Default multi-value merge strategy (strict | set)\n  --schema-only                      Clone table schemas and views without downloading records\n  --force                            Overwrite an existing VCS workspace in the target directory\n  -d, --dir <dir>                    Local VCS working directory\n  --endpoint <url>                   Teable instance URL override (overrides TEABLE_ENDPOINT /\n                                     TEABLE_URL)\n  --token <token>                    Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json                             Output structured JSON\n  --pretty                           Pretty-print JSON output\n  -h, --help                         display help for command\n"
+          "help": "Usage: teable db clone [options] [baseId] [targetDir]\n\nClone a Teable base into a local binary PGlite database (.teable/vcs/pglite)\n\nArguments:\n  baseId                             Base ID (bseXXXX); optional if provided via --base-id or\n                                     TEABLE_BASE_ID\n  targetDir                          Target local directory (defaults to --dir or current directory)\n\nOptions:\n  -b, --base-id <baseId>             Base ID (bseXXXX); defaults to TEABLE_BASE_ID or linked project\n                                     config\n  --at <revision>                    Check out a historical revision as a read-only local database\n  --from-snapshot <file>             Initialize from a complete immutable VCS checkout response\n  --adopt-existing                   Enroll a compatible clean PGlite clone without replacing it\n  --tables <csv>                     Comma-separated list of table IDs for sparse clone\n  --headless-url <url>               Headless runtime URL to hydrate on clone instead of local\n                                     PGlite\n  --multi-value-strategy <strategy>  Default multi-value merge strategy (strict | set)\n  --schema-only                      Clone table schemas and views without downloading records\n  --force                            Overwrite an existing VCS workspace in the target directory\n  -d, --dir <dir>                    Local VCS working directory\n  --endpoint <url>                   Teable instance URL override (overrides TEABLE_ENDPOINT /\n                                     TEABLE_URL)\n  --token <token>                    Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json                             Output structured JSON\n  --pretty                           Pretty-print JSON output\n  -h, --help                         display help for command\n"
         },
         {
           "name": "conflicts",
@@ -2426,6 +2434,14 @@
               "description": "Pretty-print JSON output"
             },
             {
+              "flags": "--promotion-base <baseId>",
+              "description": "Validate a complete, writable Builder working copy for export"
+            },
+            {
+              "flags": "--promotion-selection <file>",
+              "description": "Read bounded Data PR candidates or export selected row changes"
+            },
+            {
               "flags": "--review",
               "description": "Return the display review with --json (up to 200 change rows)"
             },
@@ -2446,7 +2462,7 @@
               "description": "Local VCS working directory"
             }
           ],
-          "help": "Usage: teable db diff [options]\n\nDiff the local working database or compare two remote revisions with --from and --to\n\nOptions:\n  --from <revision>          Start of a revision-to-revision diff\n  --to <revision>            End of a revision-to-revision diff\n  -b, --base-id <baseId>     Remote base for revision-to-revision diff\n  --review                   Return the display review with --json (up to 200 change rows)\n  --against-snapshot <file>  Compare against a VCS clone response saved to disk\n  --offline                  Compare local working database only against base.snapshot.json without\n                             contacting remote\n  --headless-url <url>       Headless runtime URL override\n  -d, --dir <dir>            Local VCS working directory\n  --endpoint <url>           Teable instance URL override (overrides TEABLE_ENDPOINT / TEABLE_URL)\n  --token <token>            Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json                     Output structured JSON\n  --pretty                   Pretty-print JSON output\n  -h, --help                 display help for command\n"
+          "help": "Usage: teable db diff [options]\n\nDiff the local working database or compare two remote revisions with --from and --to\n\nOptions:\n  --from <revision>             Start of a revision-to-revision diff\n  --to <revision>               End of a revision-to-revision diff\n  -b, --base-id <baseId>        Remote base for revision-to-revision diff\n  --review                      Return the display review with --json (up to 200 change rows)\n  --against-snapshot <file>     Compare against a VCS clone response saved to disk\n  --offline                     Compare local working database only against base.snapshot.json\n                                without contacting remote\n  --promotion-base <baseId>     Validate a complete, writable Builder working copy for export\n  --promotion-selection <file>  Read bounded Data PR candidates or export selected row changes\n  --headless-url <url>          Headless runtime URL override\n  -d, --dir <dir>               Local VCS working directory\n  --endpoint <url>              Teable instance URL override (overrides TEABLE_ENDPOINT /\n                                TEABLE_URL)\n  --token <token>               Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json                        Output structured JSON\n  --pretty                      Pretty-print JSON output\n  -h, --help                    display help for command\n"
         },
         {
           "name": "pull",
@@ -2473,6 +2489,10 @@
               "description": "Pretty-print JSON output"
             },
             {
+              "flags": "--promotion-receipt <file>",
+              "description": "Advance the local Builder checkout from applied Data PR receipts"
+            },
+            {
               "flags": "--token <token>",
               "description": "Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)"
             },
@@ -2481,7 +2501,7 @@
               "description": "Local VCS working directory"
             }
           ],
-          "help": "Usage: teable db pull [options]\n\nFetch upstream changes and run local 3-way merge\n\nOptions:\n  --multi-value-strategy <strategy>  Multi-value merge strategy (strict | set)\n  --headless-url <url>               Headless runtime URL override\n  -d, --dir <dir>                    Local VCS working directory\n  --endpoint <url>                   Teable instance URL override (overrides TEABLE_ENDPOINT /\n                                     TEABLE_URL)\n  --token <token>                    Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json                             Output structured JSON\n  --pretty                           Pretty-print JSON output\n  -h, --help                         display help for command\n"
+          "help": "Usage: teable db pull [options]\n\nFetch upstream changes and run local 3-way merge\n\nOptions:\n  --multi-value-strategy <strategy>  Multi-value merge strategy (strict | set)\n  --promotion-receipt <file>         Advance the local Builder checkout from applied Data PR\n                                     receipts\n  --headless-url <url>               Headless runtime URL override\n  -d, --dir <dir>                    Local VCS working directory\n  --endpoint <url>                   Teable instance URL override (overrides TEABLE_ENDPOINT /\n                                     TEABLE_URL)\n  --token <token>                    Teable API token override (overrides TEABLE_TOKEN / TEABLE_PAT)\n  --json                             Output structured JSON\n  --pretty                           Pretty-print JSON output\n  -h, --help                         display help for command\n"
         },
         {
           "name": "push",
@@ -3967,6 +3987,10 @@
               "description": "Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then saved config"
             },
             {
+              "flags": "--format <format>",
+              "description": "Output image format: webp (default), png or jpeg"
+            },
+            {
               "flags": "--input <file>",
               "description": "JSON image list or {items:[...]}; use - to read stdin"
             },
@@ -4022,7 +4046,7 @@
               "description": "Download the single generated image to a new local file"
             }
           ],
-          "help": "Usage: teable media generate [options]\n\nGenerate a batch of images in one task; save to ChatFile or download locally\n\nOptions:\n  -b, --base-id <baseId>    Target project ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --local                   Execute against the local cloned VCS PGlite database\n                            (.teable/vcs/pglite) instead of remote server\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -o, --output <file>       Download the single generated image to a new local file\n  --output-dir <directory>  Download completed images immediately into a local directory\n  --type <type>             Media type (currently image) (default: \"image\")\n  --prompt <text>           Prompt for a single image\n  --description <text>      Short description for the image\n  --aspect-ratio <ratio>    Aspect ratio supported by the selected image model\n  --quality <quality>       Image quality: low, medium or high\n  --model <key>             Image model key from the base AI settings; omit for the default\n  --reference <file>        Local reference image; repeat for multiple references\n  --input <file>            JSON image list or {items:[...]}; use - to read stdin\n  --request-id <id>         Stable submission ID; reuse it when recovering an interrupted submission\n  -h, --help                display help for command\n"
+          "help": "Usage: teable media generate [options]\n\nGenerate a batch of images in one task; save to ChatFile or download locally\n\nOptions:\n  -b, --base-id <baseId>    Target project ID (required, e.g. bseXXXX). Set default: `teable config\n                            base-id <id>`.\n  --local                   Execute against the local cloned VCS PGlite database\n                            (.teable/vcs/pglite) instead of remote server\n  --token <token>           Personal access token; falls back to TEABLE_TOKEN env var\n  --endpoint <endpoint>     Teable API server base URL; falls back to TEABLE_ENDPOINT env var, then\n                            saved config\n  --pretty                  Indent JSON for human readability (default: false)\n  -o, --output <file>       Download the single generated image to a new local file\n  --output-dir <directory>  Download completed images immediately into a local directory\n  --type <type>             Media type (currently image) (default: \"image\")\n  --prompt <text>           Prompt for a single image\n  --description <text>      Short description for the image\n  --aspect-ratio <ratio>    Aspect ratio supported by the selected image model\n  --quality <quality>       Image quality: low, medium or high\n  --format <format>         Output image format: webp (default), png or jpeg\n  --model <key>             Image model key from the base AI settings; omit for the default\n  --reference <file>        Local reference image; repeat for multiple references\n  --input <file>            JSON image list or {items:[...]}; use - to read stdin\n  --request-id <id>         Stable submission ID; reuse it when recovering an interrupted submission\n  -h, --help                display help for command\n"
         },
         {
           "name": "get",

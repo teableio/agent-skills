@@ -112,7 +112,9 @@ Supports multiple file uploads.
 ```typescript
 {
   type: "attachment",
-  options: {}                // no required options
+  options: {
+    isPublic?: boolean       // public links for the field's files; refused where the deployment has none
+  }
 }
 ```
 Image preview and file download supported.
